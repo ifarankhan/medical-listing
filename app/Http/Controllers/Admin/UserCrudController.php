@@ -80,9 +80,14 @@ class UserCrudController extends CrudController
         CRUD::field('email');
 
         $selectedRole = null;
-        if (CRUD::getCurrentEntryId() !== null) {
+        // For creating new record
+        if (CRUD::getCurrentEntryId() !== false) {
             // Get selected role by current user id.
             $selectedRole = User::find(CRUD::getCurrentEntryId())->userRole->pluck('id')->first();
+            // If the selected role is null (user has no role), assign 0
+            if ($selectedRole === null) {
+                $selectedRole = 0;
+            }
         }
 
         CRUD::addField([
@@ -100,7 +105,7 @@ class UserCrudController extends CrudController
             })
         ]);
 
-        CRUD::field('password');
+        CRUD::field('password')->type('password');
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
