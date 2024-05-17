@@ -13,6 +13,7 @@ use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -86,7 +87,7 @@ class UserCrudController extends CrudController
             $selectedRole = User::find(CRUD::getCurrentEntryId())->userRole->pluck('id')->first();
             // If the selected role is null (user has no role), assign 0
             if ($selectedRole === null) {
-                $selectedRole = 0;
+                $selectedRole = false;
             }
         }
 
