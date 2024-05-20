@@ -21,7 +21,7 @@ class DashboardController extends Controller
         // Access user roles
         $userRoles = $user->userRole->first()->title;
 
-        return view('dashboard', [
+        return view('dash', [
             'user' => $user,
             'userName' => $userName,
             'userRoles' => $userRoles
