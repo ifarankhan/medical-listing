@@ -80,39 +80,34 @@ class UserCrudController extends CrudController
         CRUD::field('name');
         CRUD::field('email');
 
-        $selectedRole = null;
+        $selectedRole = false;
         // For creating new record
         if (CRUD::getCurrentEntryId() !== false) {
             // Get selected role by current user id.
-            $selectedRole = User::find(CRUD::getCurrentEntryId())->userRole->pluck('id')->first();
+            $selectedRole = User::find(CRUD::getCurrentEntryId())
+                ->userRole->pluck('id')
+                ->toArray();
             // If the selected role is null (user has no role), assign 0
             if ($selectedRole === null) {
                 $selectedRole = false;
             }
         }
 
+        $roleOptions = UserRole::orderBy('title', 'ASC')
+               ->pluck('title', 'id')
+               ->toArray();
+
         CRUD::addField([
             'label'     => 'Role',
-            'type'      => 'select',
-            'name'      => 'userRole', // Change this to the actual relationship method in your User model
-            'entity'    => 'userRole', // Change this to the name of the relationship method in your User model
-            'attribute' => 'title', // Change this to the attribute you want to display from the Role model
-            'model'     => 'App\Models\UserRole', // Change this to the namespace of your Role model
-            'pivot'     => true, // Set this to true if your relationship uses a pivot table
-            'value'   => $selectedRole, // For default, used value and assign role id of current user.
-            'options'   => (function ($query) {
-                // Return UserRole model object with data.
-                return $query->orderBy('title', 'ASC')->get();
-            })
+            'type'      => 'select_from_array',
+            'name'      => 'userRole',
+            'options'   => $roleOptions,
+            'allows_null' => false,
+            //'allows_multiple' => false,
+            'value'     => $selectedRole,
         ]);
 
         CRUD::field('password')->type('password');
-
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
-         */
     }
 
     /**

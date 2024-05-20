@@ -17,7 +17,8 @@ class RegisterController extends Controller
 {
     public function register(): Factory|View|Application
     {
-        $userRoles = UserRole::all();
+        // Don't show Admin role for front end.
+        $userRoles = UserRole::all()->where('name', '!=', UserRole::ROLE_ADMIN);
 
         return view('register', ['userRoles' => $userRoles]);
     }
@@ -39,13 +40,13 @@ class RegisterController extends Controller
 
             $user->name = $request->name;
             $user->email = $request->email;
-            $user->password = Hash::make($request->password);
+            $user->password = $request->password;
 
             $user->save();
             // Fetch the role ID from the request
             $roleId = $request->input('role');
             // Attach the role to the user
-            $user->role()->attach($roleId);
+            $user->userRole()->attach($roleId);
 
             DB::commit();
 

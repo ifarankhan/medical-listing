@@ -15,11 +15,11 @@ class DashboardController extends Controller
         // Get the authenticated user
         $user = Auth::user();
         // Load the user's roles
-        $user->load('role');
+        $user->load('userRole');
         // Access user information
         $userName = $user->name;
         // Access user roles
-        $userRoles = $user->role->first()->title;
+        $userRoles = $user->userRole->first()->title;
 
         return view('dashboard', [
             'user' => $user,
