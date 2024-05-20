@@ -82,7 +82,11 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                    @method('DELETE')
+                </form>
+                <a href="{{ route('logout') }}"  onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_8.png') }}" alt="icon"
                                      class="img-fluid w-100">
