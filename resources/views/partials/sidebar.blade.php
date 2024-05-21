@@ -4,7 +4,7 @@
         <i class="far fa-times dash_close_icon"></i>
     </div>
 
-    <a class="dashboard_sidebar_logo" href="index.html">
+    <a class="dashboard_sidebar_logo" href="/">
         <img src="{{ asset('frontend/images/logo_1.png') }}" alt="LISTIAN" class="img-fluid w-100">
     </a>
     <div class="dashboard_sidebar_user">
@@ -19,7 +19,7 @@
     <div class="dashboard_sidebar_menu">
         <ul>
             <li>
-                <a href="dashboard.html">
+                <a class="{{ request()->is('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_1.png') }}" alt="icon"
                                      class="img-fluid w-100">
@@ -28,7 +28,7 @@
                 </a>
             </li>
             <li>
-                <a href="dashboard_profile.html">
+                <a class="{{ request()->is('profile') ? 'active' : '' }}" href="dashboard_profile.html">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_2.png') }}" alt="icon"
                                      class="img-fluid w-100">
@@ -37,7 +37,7 @@
                 </a>
             </li>
             <li>
-                <a class="active" href="dashboard_listing.html">
+                <a class="{{ request()->is('listings*') ? 'active' : '' }}" href="{{ route('listings.index') }}">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_3.png') }}" alt="icon"
                                      class="img-fluid w-100">
@@ -46,7 +46,7 @@
                 </a>
             </li>
             <li>
-                <a href="dashboard_pricing.html">
+                <a class="{{ request()->is('pricing') ? 'active' : '' }}" href="dashboard_pricing.html">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_4.png') }}" alt="icon"
                                      class="img-fluid w-100">
@@ -55,7 +55,7 @@
                 </a>
             </li>
             <li>
-                <a href="dashboard_order.html">
+                <a class="{{ request()->is('order') ? 'active' : '' }}" href="dashboard_order.html">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_7.png') }}" alt="icon"
                                      class="img-fluid w-100">
@@ -64,7 +64,7 @@
                 </a>
             </li>
             <li>
-                <a href="dashboard_wishlist.html">
+                <a class="{{ request()->is('wishlist') ? 'active' : '' }}" href="dashboard_wishlist.html">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_6.png') }}" alt="icon"
                                      class="img-fluid w-100">
@@ -73,7 +73,7 @@
                 </a>
             </li>
             <li>
-                <a href="dashboard_review.html">
+                <a class="{{ request()->is('review') ? 'active' : '' }}" href="dashboard_review.html">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_5.png') }}" alt="icon"
                                      class="img-fluid w-100">
