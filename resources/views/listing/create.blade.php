@@ -7,24 +7,35 @@
     <section class="dashboard">
         @include('partials.sidebar')
         <div class="dashboard_content">
-            <h2 class="dashboard_title">Products/Services <a class="common_btn" href="{{ route('listings.create') }}">+ Add A Product/Service</a></h2>
+            <h2 class="dashboard_title">Products/Services <a class="common_btn" href="{{ route('listing.create') }}">+ Add A Product/Service</a></h2>
             <div class="dashboard_add_property">
-                <form action="{{ route('listings.store') }}" method="POST">
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form action="{{ route('listing.store') }}" method="POST">
+                    @csrf
                     <!-- Eligibility Section -->
                     <div class="add_property_info wow fadeInUp" data-wow-duration="1.5s">
                         <h3>Eligibility</h3>
 
-                            @csrf
                             <div class="row">
                                 <div class="col-xxl-4 col-md-6">
                                     <div class="add_property_input">
                                         <label>Are you legally authorized to promote products and services that you wish to list on diverrx?</label>
                                         <div>
-                                            <input type="radio" id="authorized_yes" name="authorized" value="yes" required>
+                                            <input type="radio" id="authorized_yes" name="authorized" value="1" required>
                                             <label for="authorized_yes">Yes</label>
                                         </div>
                                         <div>
-                                            <input type="radio" id="authorized_no" name="authorized" value="no" required>
+                                            <input type="radio" id="authorized_no" name="authorized" value="0" required>
                                             <label for="authorized_no">No</label>
                                         </div>
                                     </div>
@@ -33,11 +44,11 @@
                                     <div class="add_property_input">
                                         <label>Is the business you wish to promote on diverrx a legally registered entity? (Proof of registration will be required in subsequent steps)</label>
                                         <div>
-                                            <input type="radio" id="registered_yes" name="registered" value="yes" required>
+                                            <input type="radio" id="registered_yes" name="registered" value="1" required>
                                             <label for="registered_yes">Yes</label>
                                         </div>
                                         <div>
-                                            <input type="radio" id="registered_no" name="registered" value="no" required>
+                                            <input type="radio" id="registered_no" name="registered" value="0" required>
                                             <label for="registered_no">No</label>
                                         </div>
                                     </div>
@@ -130,7 +141,6 @@
                     <div class="add_property_info wow fadeInUp" data-wow-duration="1.5s">
                         <h3>Product/Services Information</h3>
 
-                            @csrf
                             <div class="row">
                                 <div class="col-xxl-12">
                                     <h4>Product/Service 1</h4>
@@ -138,18 +148,18 @@
                                 <div class="col-xxl-4 col-md-6">
                                     <div class="add_property_input">
                                         <label for="product_service_0">Enter the Name of the product/service 1:</label>
-                                        <input type="text" id="product_service_0" name="product_service_1" placeholder="Product/Service Name" required>
+                                        <input type="text" id="product_service_0" name="products[0][name]" placeholder="Product/Service Name" required>
                                     </div>
                                 </div>
                                 <div class="col-xxl-4 col-md-6">
                                     <div class="add_property_input">
                                         <label>Click all options below that apply:</label>
                                         <div>
-                                            <input type="checkbox" id="virtual_0" name="products[0][virtual]" value="virtual">
+                                            <input type="checkbox" id="virtual_0" name="products[0][virtual]" value="1">
                                             <label for="virtual_0">Virtual</label>
                                         </div>
                                         <div>
-                                            <input type="checkbox" id="in_person_0" name="products[0][in_person]" value="in_person">
+                                            <input type="checkbox" id="in_person_0" name="products[0][in_person]" value="1">
                                             <label for="in_person_0">In person</label>
                                         </div>
                                     </div>
@@ -164,11 +174,11 @@
                                     <div class="add_property_input">
                                         <label>Do you accept insurance for this product?</label>
                                         <div>
-                                            <input type="radio" id="accept_insurance_yes_0" name="products[0][accept_insurance]" value="yes" required>
+                                            <input type="radio" id="accept_insurance_yes_0" name="products[0][accept_insurance]" value="1" required>
                                             <label for="accept_insurance_yes_0">Yes</label>
                                         </div>
                                         <div>
-                                            <input type="radio" id="accept_insurance_no_0" name="products[0][accept_insurance]" value="no" required>
+                                            <input type="radio" id="accept_insurance_no_0" name="products[0][accept_insurance]" value="0" required>
                                             <label for="accept_insurance_no_0">No</label>
                                         </div>
                                     </div>
@@ -176,7 +186,7 @@
                                 <div class="col-xxl-4 col-md-6" id="insurance_list_0" style="display:none;">
                                     <div class="add_property_input">
                                         <label>If you accept insurance for this product, please list down all the insurances you are currently accepting:</label>
-                                        <input type="text" id="insurance_0" name="products[0][insurance]" placeholder="Insurance List">
+                                        <input type="text" id="insurance_0" name="products[0][insurance_list]" placeholder="Insurance List">
                                     </div>
                                 </div>
                                 <div class="col-xxl-4 col-md-6" id="price_0" style="display:none;">

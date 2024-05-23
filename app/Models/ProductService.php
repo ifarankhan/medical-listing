@@ -10,6 +10,7 @@ class ProductService extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'listing_id',
         'name',
         'description',
         'virtual',

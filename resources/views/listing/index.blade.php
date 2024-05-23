@@ -7,7 +7,7 @@
     <section class="dashboard">
         @include('partials.sidebar')
         <div class="dashboard_content">
-            <h2 class="dashboard_title">Products/Services <a class="common_btn" href="{{ route('listings.create') }}">+ Add A Product/Service</a></h2>
+            <h2 class="dashboard_title">Products/Services <a class="common_btn" href="{{ route('listing.create') }}">+ Add A Product/Service</a></h2>
             <div class="overview_listing wow fadeInUp" data-wow-duration="1.5s">
                 <div class="table-responsive">
                     <table>

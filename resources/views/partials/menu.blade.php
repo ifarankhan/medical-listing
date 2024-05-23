@@ -71,7 +71,7 @@
                 </li>
                 <li class="menu_btn">
                     @auth
-                        <a class="common_btn" href="{{ route('listings.create') }}">Add A Product/Service <i
+                        <a class="common_btn" href="{{ route('listing.create') }}">Add A Product/Service <i
                                 class="far fa-plus"></i></a>
                     @else
                         <a class="common_btn" href="{{ route('login') }}">Add A Product/Service <i

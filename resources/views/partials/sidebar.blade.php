@@ -37,7 +37,7 @@
                 </a>
             </li>
             <li>
-                <a class="{{ request()->is('listings*') ? 'active' : '' }}" href="{{ route('listings.index') }}">
+                <a class="{{ request()->is('listing*') ? 'active' : '' }}" href="{{ route('listing.index') }}">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_3.png') }}" alt="icon"
                                      class="img-fluid w-100">

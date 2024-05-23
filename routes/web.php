@@ -33,7 +33,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::delete('/logout', [LogoutController::class, 'logout'])->name('logout');
 
-    Route::get('/listings', [ListingController::class, 'index'])->name('listings.index');
-    Route::get('/listings/create', [ListingController::class, 'create'])->name('listings.create');
-    Route::post('/listings/store', [ListingController::class, 'store'])->name('listings.store');
+    Route::get('/listing', [ListingController::class, 'index'])->name('listing.index');
+    Route::get('/listing/create', [ListingController::class, 'create'])->name('listing.create');
+    Route::post('/listing/store', [ListingController::class, 'store'])->name('listing.store');
 });
