@@ -63,10 +63,15 @@
             </ul>
             <ul class="menu_right d-flex align-items-center">
                 <li>
-                    <a class="user_login" href="/login">
-                            <span> <img src="{{ asset('frontend/images/login_icon.png') }}" alt="user" class="img-fluid w-100">
-                            </span>
-                        Log in
+                    <a class="user_login" href="{{ Auth::check() ? route('account') : route('login') }}">
+    <span>
+        <img src="{{ asset('frontend/images/login_icon.png') }}" alt="user" class="img-fluid w-100">
+    </span>
+                        @auth
+                            Account
+                        @else
+                            Log in
+                        @endauth
                     </a>
                 </li>
                 <li class="menu_btn">

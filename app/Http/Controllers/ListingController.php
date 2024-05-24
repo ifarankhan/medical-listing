@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Listing;
 use App\Models\ProductService;
 use App\Rules\WordCount;
@@ -29,7 +30,8 @@ class ListingController extends Controller
      */
     public function create(): Factory|View|Application
     {
-        return view('listing.create');
+        $categories = Category::all();
+        return view('listing.create', compact('categories'));
     }
 
     /**
@@ -41,7 +43,6 @@ class ListingController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        Log::info('REQUEST RECIEVED');
         // Validate the request data
         $validatedData = $request->validate([
             'authorized' => 'required|boolean',
@@ -58,7 +59,7 @@ class ListingController extends Controller
             'business_email' => 'required|email',
             // Validation rules for product/services - upto 5
             'products' => 'required|array|max:5', // Maximum 5 products allowed
-            'products.*.name' => 'required|string', // Validate each product name
+            'products.*.category_id' => 'required|exists:categories,id', // Ensure category_id is required and exists.
             'products.*.description' => ['required', 'string', new WordCount(150)], // Validate each product description
             'products.*.virtual' => 'nullable|boolean', // Validate each product virtual attribute
             'products.*.in_person' => 'nullable|boolean', // Validate each product in_person attribute
@@ -66,7 +67,6 @@ class ListingController extends Controller
             'products.*.insurance_list' => 'nullable|string', // Validate each product insurance_list attribute
             'products.*.price' => 'nullable|numeric|min:0', // Validate each product price
         ]);
-
         // Create a new listing instance and save the data
         $listing = new Listing();
         $listing->user_id = Auth::id();
@@ -88,7 +88,7 @@ class ListingController extends Controller
 
             $productService = new ProductService([
                 'listing_id' => $listing->id,
-                'name' => $product['name'],
+                'category_id' => $product['category_id'],
                 'description' => $product['description'],
                 'virtual' => $product['virtual'] ?? false,
                 'in_person' => $product['in_person'] ?? false,
@@ -96,6 +96,7 @@ class ListingController extends Controller
                 'insurance_list' => $product['insurance_list'] ?? '',
                 'price' => $product['price'],
             ]);
+
             $productService->save();
         }
 

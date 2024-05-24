@@ -5,7 +5,7 @@
     </div>
 
     <a class="dashboard_sidebar_logo" href="/">
-        <img src="{{ asset('frontend/images/logo_1.png') }}" alt="LISTIAN" class="img-fluid w-100">
+        <img src="{{ asset('frontend/images/logo_1.png') }}" alt="Diverrx" class="img-fluid w-100">
     </a>
     <div class="dashboard_sidebar_user">
         <div class="img">
@@ -13,8 +13,8 @@
             <label for="profile_photo"><i class="far fa-camera"></i></label>
             <input type="file" id="profile_photo" hidden>
         </div>
-        <h3>Addition Smith</h3>
-        <p>Paris, France</p>
+        <h3>{{ Auth::user()->name }}</h3>
+        <p style="display: none;">Paris, France</p>
     </div>
     <div class="dashboard_sidebar_menu">
         <ul>
@@ -28,7 +28,7 @@
                 </a>
             </li>
             <li>
-                <a class="{{ request()->is('profile') ? 'active' : '' }}" href="dashboard_profile.html">
+                <a class="{{ request()->is('profile') ? 'active' : '' }}" href="dashboard_profile.html" style="display: none;">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_2.png') }}" alt="icon"
                                      class="img-fluid w-100">
@@ -46,7 +46,7 @@
                 </a>
             </li>
             <li>
-                <a class="{{ request()->is('pricing') ? 'active' : '' }}" href="dashboard_pricing.html">
+                <a class="{{ request()->is('pricing') ? 'active' : '' }}" href="dashboard_pricing.html" style="display: none;">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_4.png') }}" alt="icon"
                                      class="img-fluid w-100">
@@ -55,7 +55,7 @@
                 </a>
             </li>
             <li>
-                <a class="{{ request()->is('order') ? 'active' : '' }}" href="dashboard_order.html">
+                <a class="{{ request()->is('order') ? 'active' : '' }}" href="dashboard_order.html" style="display: none;">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_7.png') }}" alt="icon"
                                      class="img-fluid w-100">
@@ -64,7 +64,7 @@
                 </a>
             </li>
             <li>
-                <a class="{{ request()->is('wishlist') ? 'active' : '' }}" href="dashboard_wishlist.html">
+                <a class="{{ request()->is('wishlist') ? 'active' : '' }}" href="dashboard_wishlist.html" style="display: none;">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_6.png') }}" alt="icon"
                                      class="img-fluid w-100">
@@ -73,7 +73,7 @@
                 </a>
             </li>
             <li>
-                <a class="{{ request()->is('review') ? 'active' : '' }}" href="dashboard_review.html">
+                <a class="{{ request()->is('review') ? 'active' : '' }}" href="dashboard_review.html" style="display: none;">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_5.png') }}" alt="icon"
                                      class="img-fluid w-100">

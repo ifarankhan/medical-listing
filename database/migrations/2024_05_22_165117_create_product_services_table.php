@@ -20,7 +20,11 @@ return new class extends Migration
                   ->references('id')
                   ->on('listings')
                   ->onDelete('cascade');
-            $table->string('name');
+            $table->unsignedBigInteger('category_id'); // Add category_id column
+            $table->foreign('category_id') // Define foreign key constraint
+                  ->references('id')
+                  ->on('categories')
+                  ->onDelete('cascade');
             $table->text('description');
             $table->boolean('virtual')->default(false);
             $table->boolean('in_person')->default(false);

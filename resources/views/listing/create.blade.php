@@ -147,8 +147,15 @@
                                 </div>
                                 <div class="col-xxl-4 col-md-6">
                                     <div class="add_property_input">
-                                        <label for="product_service_0">Enter the Name of the product/service 1:</label>
-                                        <input type="text" id="product_service_0" name="products[0][name]" placeholder="Product/Service Name" required>
+                                        <label>Choose the Name of the product/service 1:</label>
+
+                                        <select class="select_2" id="product_service_0" name="products[0][category_id]" required>
+                                            <option value="">Select a product/service</option>
+                                            @foreach($categories as $category)
+                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                            @endforeach
+                                        </select>
+
                                     </div>
                                 </div>
                                 <div class="col-xxl-4 col-md-6">
@@ -201,20 +208,28 @@
 
 
                     </div>
-
-                    <button type="submit" class="common_btn">Submit</button>
+                    <div class="col-12">
+                        <button type="submit" class="common_btn">Submit</button>
+                    </div>
                 </form>
             </div>
         </div>
     </section>
 
     <script>
+        var categories = @json($categories);
+        // Build the options for the categories dropdown
+        let categoryOptions = '<option value="">Select a product/service</option>';
+        categories.forEach(category => {
+            categoryOptions += `<option value="${category.id}">${category.name}</option>`;
+        });
+
         // Show or hide insurance and price fields based on the selection
-        document.querySelectorAll('input[name="accept_insurance_0"]').forEach((elem) => {
+        document.querySelectorAll('input[name="products[0][accept_insurance]"]').forEach((elem) => {
             elem.addEventListener("change", function() {
                 let insuranceList = document.getElementById('insurance_list_0');
                 let priceInput = document.getElementById('price_0');
-                if (this.value === 'yes') {
+                if (this.value === '1') {
                     insuranceList.style.display = 'block';
                     priceInput.style.display = 'none';
                 } else {
@@ -229,6 +244,7 @@
         document.getElementById('add_product_btn').addEventListener('click', function() {
             productCount++;
             let newProductHTML = `
+
         <div class="row">
             <div class="col-xxl-12">
                 <h4>Product/Service ${productCount}</h4>
@@ -236,7 +252,9 @@
             <div class="col-xxl-4 col-md-6">
                 <div class="add_property_input">
                     <label for="product_service_${productCount}">Enter the Name of the product/service ${productCount}:</label>
-                    <input type="text" id="product_service_${productCount}" name="products[${productCount}][product_service]" placeholder="Product/Service Name" required>
+                    <select class="select_2" id="product_service_${productCount}" name="products[${productCount}][category_id]" required>
+                        ${categoryOptions}
+                    </select>
                 </div>
             </div>
             <div class="col-xxl-4 col-md-6">
@@ -262,11 +280,11 @@
                 <div class="add_property_input">
                     <label>Do you accept insurance for this product?</label>
                     <div>
-                        <input type="radio" id="accept_insurance_yes_${productCount}" name="products[${productCount}][accept_insurance]" value="yes">
+                        <input type="radio" id="accept_insurance_yes_${productCount}" name="products[${productCount}][accept_insurance]" value="1">
                         <label for="accept_insurance_yes_${productCount}">Yes</label>
                     </div>
                     <div>
-                        <input type="radio" id="accept_insurance_no_${productCount}" name="products[${productCount}][accept_insurance]" value="no">
+                        <input type="radio" id="accept_insurance_no_${productCount}" name="products[${productCount}][accept_insurance]" value="0">
                         <label for="accept_insurance_no_${productCount}">No</label>
                     </div>
                 </div>
@@ -274,7 +292,7 @@
             <div class="col-xxl-4 col-md-6" id="insurance_list_${productCount}" style="display:none;">
                 <div class="add_property_input">
                     <label>If you accept insurance for this product, please list down all the insurances you are currently accepting:</label>
-                    <input type="text" id="insurance_${productCount}" name="products[${productCount}][insurance]" placeholder="Insurance List">
+                    <input type="text" id="insurance_${productCount}" name="products[${productCount}][insurance_list]" placeholder="Insurance List">
                 </div>
             </div>
             <div class="col-xxl-4 col-md-6" id="price_${productCount}" style="display:none;">
@@ -286,13 +304,14 @@
         </div>`;
 
             document.getElementById('additional_products').insertAdjacentHTML('beforeend', newProductHTML);
-
+            // Initialize select2 for the new dropdown
+            $(`#product_service_${productCount}`).select2();
             // Show or hide insurance and price fields based on the selection for new product
-            document.querySelectorAll(`input[name="accept_insurance_${productCount}"]`).forEach((elem) => {
+            document.querySelectorAll(`input[name="products[${productCount}][accept_insurance]"]`).forEach((elem) => {
                 elem.addEventListener("change", function() {
                     let insuranceList = document.getElementById(`insurance_list_${productCount}`);
                     let priceInput = document.getElementById(`price_${productCount}`);
-                    if (this.value === 'yes') {
+                    if (this.value === '1') {
                         insuranceList.style.display = 'block';
                         priceInput.style.display = 'none';
                     } else {
