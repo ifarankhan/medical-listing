@@ -53,8 +53,8 @@ class CategoryCrudController extends CrudController
     protected function setupCreateOperation(): void
     {
         $this->crud->setValidation([
-             'name' => 'required|min:2',
-             'slug' => 'required|min:2',
+             'name' => 'required|string|max:255|unique:categories,name,'. $this->crud->getCurrentEntryId(),
+             'slug' => 'required|string|max:255|unique:categories,slug,'. $this->crud->getCurrentEntryId(),
         ]);
 
         $this->crud->addField([
