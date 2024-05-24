@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/responsive.css') }}">
 </head>
-<body>
+<body class="home_2">
 <header>
     <!-- Include your header content here -->
 </header>
