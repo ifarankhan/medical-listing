@@ -1,10 +1,10 @@
 <!--=============================
         MAIN MENU START
     ==============================-->
-<nav class="navbar navbar-expand-lg main_menu">
+<nav class="navbar navbar-expand-lg main_menu main_menu_2">
     <div class="container">
-        <a class="navbar-brand" href="index.html">
-            <img src="{{ asset('frontend/images/logo_1.png') }}" alt="Directory & Listings Template" class="img-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="{{ asset('frontend/images/logo_2.png') }}" alt="Directory & Listings Template" class="img-fluid">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,13 +16,13 @@
                 <li class="nav-item">
                     <a class="nav-link active" href="#">Home <i class="far fa-angle-down"></i></a>
                     <ul class="droap_menu">
-                        <li><a class="active" href="index.html">home style 01</a></li>
-                        <li><a href="index_2.html">home style 02</a></li>
+                        <li><a href="index.html">home style 01</a></li>
+                        <li><a class="active" href="index_2.html">home style 02</a></li>
                         <li><a href="index_3.html">home style 03</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="about_us.html">About</a>
+                    <a class="nav-link" href="about_us.html">About Us</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Listing <i class="far fa-angle-down"></i></a>
@@ -58,23 +58,28 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="contact.html">Contact</a>
+                    <a class="nav-link" href="contact.html">Contact Us</a>
                 </li>
             </ul>
             <ul class="menu_right d-flex align-items-center">
                 <li>
-                    <a class="user_login" href="dashboard.html">
-                            <span> <img src="{{ asset('frontend/images/login_icon.png') }}" alt="user" class="img-fluid w-100">
-                            </span>
-                        Account
+                    <a class="user_login" href="{{ Auth::check() ? route('account') : route('login') }}">
+    <span>
+        <img src="{{ asset('frontend/images/login_icon.png') }}" alt="user" class="img-fluid w-100">
+    </span>
+                        @auth
+                            Account
+                        @else
+                            Log in
+                        @endauth
                     </a>
                 </li>
                 <li class="menu_btn">
                     @auth
-                    <a class="common_btn" href="{{ route('dashboard') }}">Add Listing <i
-                            class="far fa-plus"></i></a>
+                        <a class="common_btn" href="{{ route('listing.create') }}">Add A Product/Service <i
+                                class="far fa-plus"></i></a>
                     @else
-                        <a class="common_btn" href="{{ route('login') }}">Add Listing <i
+                        <a class="common_btn" href="{{ route('login') }}">Add A Product/Service <i
                                 class="far fa-plus"></i></a>
                     @endauth
                 </li>
@@ -82,6 +87,3 @@
         </div>
     </div>
 </nav>
-<!--=============================
-    MAIN MENU END
-==============================-->
