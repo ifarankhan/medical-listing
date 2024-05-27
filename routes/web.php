@@ -28,7 +28,7 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('/login', [LoginController::class, 'loginPost'])->name('login');
 });
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['auth', 'role:customer,insurance_provider']], function () {
 
     Route::get('/account', [DashboardController::class, 'index'])->name('account');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
