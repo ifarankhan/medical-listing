@@ -23,33 +23,35 @@
                 <form action="{{ route('listing.store') }}" method="POST">
                     @csrf
                     <!-- Eligibility Section -->
-                    <div class="add_property_info wow fadeInUp" data-wow-duration="1.5s">
+                    <div class="add_property_info add_property_aminities wow fadeInUp" data-wow-duration="1.5s">
                         <h3>Eligibility</h3>
 
                             <div class="row">
-                                <div class="col-xxl-4 col-md-6">
+                                <div class="col-xxl-6 col-md-2">
                                     <div class="add_property_input">
                                         <label>Are you legally authorized to promote products and services that you wish to list on diverrx?</label>
-                                        <div>
-                                            <input type="radio" id="authorized_yes" name="authorized" value="1" required>
-                                            <label for="authorized_yes">Yes</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="authorized_yes" name="authorized" value="1" required>
+                                            <label class="form-check-label" for="authorized_yes">Yes</label>
                                         </div>
-                                        <div>
-                                            <input type="radio" id="authorized_no" name="authorized" value="0" required>
-                                            <label for="authorized_no">No</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="authorized_no" name="authorized" value="0" required>
+                                            <label class="form-check-label" for="authorized_no">No</label>
                                         </div>
+
                                     </div>
                                 </div>
-                                <div class="col-xxl-4 col-md-6">
+                                <div class="col-xxl-6 col-md-2">
                                     <div class="add_property_input">
                                         <label>Is the business you wish to promote on diverrx a legally registered entity? (Proof of registration will be required in subsequent steps)</label>
-                                        <div>
-                                            <input type="radio" id="registered_yes" name="registered" value="1" required>
-                                            <label for="registered_yes">Yes</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="registered_yes" name="registered" value="1" required>
+                                            <label class="form-check-label" for="registered_yes">Yes</label>
+
                                         </div>
-                                        <div>
-                                            <input type="radio" id="registered_no" name="registered" value="0" required>
-                                            <label for="registered_no">No</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="registered_no" name="registered" value="0" required>
+                                            <label class="form-check-label" for="registered_no">No</label>
                                         </div>
                                     </div>
                                 </div>
@@ -66,6 +68,9 @@
                                     <div class="add_property_input">
                                         <label for="first_name">First Name:</label>
                                         <input type="text" id="first_name" name="first_name" placeholder="First Name" required>
+                                        @error('first_name')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-xxl-4 col-md-6">
@@ -138,7 +143,7 @@
                     </div>
 
                     <!-- Product/Services Information Section -->
-                    <div class="add_property_info wow fadeInUp" data-wow-duration="1.5s">
+                    <div class="add_property_info add_property_aminities wow fadeInUp" data-wow-duration="1.5s">
                         <h3>Product/Services Information</h3>
 
                             <div class="row">
@@ -159,36 +164,44 @@
                                     </div>
                                 </div>
                                 <div class="col-xxl-4 col-md-6">
-                                    <div class="add_property_input">
+
                                         <label>Click all options below that apply:</label>
-                                        <div>
-                                            <input type="checkbox" id="virtual_0" name="products[0][virtual]" value="1">
-                                            <label for="virtual_0">Virtual</label>
+
+                                        <div class="form-check">
+
+                                            <input class="form-check-input" type="checkbox" id="virtual_0" name="products[0][virtual]" value="1">
+                                            <label class="form-check-label" for="virtual_0">Virtual</label>
+
+
                                         </div>
-                                        <div>
-                                            <input type="checkbox" id="in_person_0" name="products[0][in_person]" value="1">
-                                            <label for="in_person_0">In person</label>
+
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="in_person_0" name="products[0][in_person]" value="1">
+                                            <label class="form-check-label" for="in_person_0">In person</label>
                                         </div>
-                                    </div>
+
                                 </div>
                                 <div class="col-xxl-4 col-md-6">
                                     <div class="add_property_input">
                                         <label for="description_0">Brief description (150 word limit):</label>
-                                        <textarea id="description_0" name="products[0][description]" placeholder="Description" maxlength="150" required></textarea>
+                                        <div class="note-editor note-frame panel panel-default">
+
+                                            <textarea id="description_0" name="products[0][description]" placeholder="Description" maxlength="150" required></textarea>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-xxl-4 col-md-6">
-                                    <div class="add_property_input">
+
                                         <label>Do you accept insurance for this product?</label>
-                                        <div>
-                                            <input type="radio" id="accept_insurance_yes_0" name="products[0][accept_insurance]" value="1" required>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="accept_insurance_yes_0" name="products[0][accept_insurance]" value="1" required>
                                             <label for="accept_insurance_yes_0">Yes</label>
                                         </div>
-                                        <div>
-                                            <input type="radio" id="accept_insurance_no_0" name="products[0][accept_insurance]" value="0" required>
-                                            <label for="accept_insurance_no_0">No</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="accept_insurance_no_0" name="products[0][accept_insurance]" value="0" required>
+                                            <label class="form-check-label" for="accept_insurance_no_0">No</label>
                                         </div>
-                                    </div>
+
                                 </div>
                                 <div class="col-xxl-4 col-md-6" id="insurance_list_0" style="display:none;">
                                     <div class="add_property_input">
@@ -204,12 +217,15 @@
                                 </div>
                             </div>
                             <div id="additional_products"></div>
-                            <button type="button" class="common_btn" id="add_product_btn">Add Another Product/Service</button>
+                            <button type="button" class="common_btn mt-4" id="add_product_btn">Add Another Product/Service</button>
 
 
                     </div>
-                    <div class="col-12">
-                        <button type="submit" class="common_btn">Submit</button>
+
+                    <div class="add_property_info add_property_aminities wow fadeInUp" data-wow-duration="1.5s">
+                        <div class="col-12">
+                            <button type="submit" class="common_btn">Save</button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -245,7 +261,7 @@
             productCount++;
             let newProductHTML = `
 
-        <div class="row">
+        <div class="row mt-4 border-1">
             <div class="col-xxl-12">
                 <h4>Product/Service ${productCount}</h4>
             </div>
@@ -260,32 +276,34 @@
             <div class="col-xxl-4 col-md-6">
                 <div class="add_property_input">
                     <label>Click all options below that apply:</label>
-                    <div>
-                        <input type="checkbox" id="virtual_${productCount}" name="products[${productCount}][virtual]" value="virtual">
-                        <label for="virtual_${productCount}">Virtual</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="virtual_${productCount}" name="products[${productCount}][virtual]" value="virtual">
+                        <label class="form-check-label" for="virtual_${productCount}">Virtual</label>
                     </div>
-                    <div>
-                        <input type="checkbox" id="in_person_${productCount}" name="products[${productCount}][in_person]" value="in_person">
-                        <label for="in_person_${productCount}">In person</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="in_person_${productCount}" name="products[${productCount}][in_person]" value="in_person">
+                        <label class="form-check-label" for="in_person_${productCount}">In person</label>
                     </div>
                 </div>
             </div>
             <div class="col-xxl-4 col-md-6">
                 <div class="add_property_input">
                     <label for="description_${productCount}">Brief description (150 word limit):</label>
-                    <textarea id="description_${productCount}" name="products[${productCount}][description]" placeholder="Description" maxlength="150" required></textarea>
+                    <div class="note-editor note-frame panel panel-default">
+                        <textarea id="description_${productCount}" name="products[${productCount}][description]" placeholder="Description" maxlength="150" required></textarea>
+                    </div>
                 </div>
             </div>
             <div class="col-xxl-4 col-md-6">
                 <div class="add_property_input">
                     <label>Do you accept insurance for this product?</label>
-                    <div>
-                        <input type="radio" id="accept_insurance_yes_${productCount}" name="products[${productCount}][accept_insurance]" value="1">
-                        <label for="accept_insurance_yes_${productCount}">Yes</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="accept_insurance_yes_${productCount}" name="products[${productCount}][accept_insurance]" value="1">
+                        <label class="form-check-label" for="accept_insurance_yes_${productCount}">Yes</label>
                     </div>
-                    <div>
-                        <input type="radio" id="accept_insurance_no_${productCount}" name="products[${productCount}][accept_insurance]" value="0">
-                        <label for="accept_insurance_no_${productCount}">No</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="accept_insurance_no_${productCount}" name="products[${productCount}][accept_insurance]" value="0">
+                        <label class="form-check-label" for="accept_insurance_no_${productCount}">No</label>
                     </div>
                 </div>
             </div>

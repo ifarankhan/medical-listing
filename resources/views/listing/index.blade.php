@@ -7,6 +7,14 @@
     <section class="dashboard">
         @include('partials.sidebar')
         <div class="dashboard_content">
+            <!-- Success message using Bootstrap's alert component -->
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
             <h2 class="dashboard_title">Products/Services <a class="common_btn" href="{{ route('listing.create') }}">+ Add A Product/Service</a></h2>
             <div class="overview_listing wow fadeInUp" data-wow-duration="1.5s">
                 <div class="table-responsive">

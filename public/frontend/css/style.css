@@ -1,6 +1,6 @@
 /****************************************
 Template Name: LISTIAN - Directory & Listings HTML Template.
-Author: ThemeLab-Portfolio 
+Author: ThemeLab-Portfolio
 Author Email: themelab.bd@gmail.com
 Version: 1.0
 Description: LISTIAN - Directory and List HTML Template is 100% compatible with Creative Design and includes a front-end user dashboard, a built-in booking system, and many more features! We built it using the latest trends and best practices to reduce development time and complexity, as well as simplify the customization process. We have structured it in such a way that users can easily compose a new page using our components and customize it without much hassle.
@@ -8,9 +8,9 @@ Description: LISTIAN - Directory and List HTML Template is 100% compatible with 
 
 CSS INDEX
 ===================================
-01. GLOBAL CSS 
+01. GLOBAL CSS
 02. HOME PAGE 01
-03. HOME PAGE 02 
+03. HOME PAGE 02
 04. HOME PAGE 03
 05. ABOUT PAGE
 06. AGENT DETAILS
@@ -21,7 +21,7 @@ CSS INDEX
 11. LOGIN PAGE
 12. PRIVACY POLICY
 13. ERROR PAGE
-14. LISTING GRID VIEW 
+14. LISTING GRID VIEW
 15. LISTING LEFT SIDEBAR
 16. PAYMENT PAGE
 17. LISTING DETAILS
@@ -7098,6 +7098,22 @@ button {
     border: 1px solid rgba(3, 26, 38, 0.10);
 }
 
+/** One Form **/
+.add_property_info div.row label,
+.dashboard_profile_edit form label {
+    text-transform: capitalize;
+    margin-bottom: 5px;
+    display: block;
+    color: var(--colorBlack);
+}
+
+.add_property_info div.row input,
+.dashboard_profile_edit form input {
+    margin-bottom: 15px;
+    border: 1px solid rgba(3, 26, 38, 0.10);
+}
+/** One Form **/
+
 .add_property_info form input[type=file],
 .dashboard_profile_edit form input[type=file] {
     background: var(--colorWhite);
@@ -7382,3 +7398,4 @@ button {
 /*=============================
     DASHBOARD END
 =============================*/
+
