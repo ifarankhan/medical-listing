@@ -102,4 +102,13 @@ class ListingController extends Controller
 
         return redirect()->route('listing.index')->with('success', 'Listing created successfully.');
     }
+
+    public function showStep($step)
+    {
+        if ($step == 1) {
+            return view('listing.information');
+        } elseif ($step == 2) {
+            return view('listing.subscription');
+        }
+    }
 }

@@ -25,7 +25,7 @@ class UserRoleSeeder extends Seeder
             ],
             [
                 'name'       => UserRole::ROLE_INSURANCE_PROVIDER,
-                'title'      => 'Insurance Provider',
+                'title'      => 'Service Provider',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
