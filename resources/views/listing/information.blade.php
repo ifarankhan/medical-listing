@@ -1,4 +1,4 @@
-<input type="hidden" name="step" value="1">
+
 <!-- Eligibility Section -->
 <div class="add_property_info add_property_aminities wow fadeInUp" data-wow-duration="1.5s">
     <h3>Eligibility</h3>

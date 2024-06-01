@@ -34,9 +34,8 @@ Route::group(['middleware' => ['auth', 'role:customer,insurance_provider']], fun
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::delete('/logout', [LogoutController::class, 'logout'])->name('logout');
 
-    Route::get('/form-step/{step}', [ListingController::class, 'showStep'])->name('form.step');
-
     Route::get('/listing', [ListingController::class, 'index'])->name('listing.index');
     Route::get('/listing/create', [ListingController::class, 'create'])->name('listing.create');
     Route::post('/listing/store', [ListingController::class, 'store'])->name('listing.store');
+    Route::get('/listing/{id}/subscription', [ListingController::class, 'subscription'])->name('listing.step.subscription');
 });

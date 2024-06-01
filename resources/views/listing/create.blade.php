@@ -1,12 +1,20 @@
 {{-- resources/views/listings/create.blade.php --}}
 @extends('layout')
 
-@section('title', 'Dashboard')
+@section('title', 'Listing Information')
 
 @section('content')
     <section class="dashboard">
         @include('partials.sidebar')
         <div class="dashboard_content">
+            <!-- Success message using Bootstrap's alert component -->
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+            
             <h2 class="dashboard_title">Products/Services</h2>
             <div class="dashboard_add_property">
 
@@ -22,9 +30,7 @@
 
                 <form action="{{ route('listing.store') }}" method="POST" id="multiStepForm">
                     @csrf
-                    <div class="step-content" id="step1">@include('listing.information')</div>
-                    <div class="step-content" style="display: none;" id="step2">@include('listing.subscription')</div>
-
+                    @include('listing.information')
                 </form>
             </div>
         </div>
@@ -137,43 +143,5 @@
                 });
             });
         });
-
-        /*$(document).ready(function() {
-            // Load the first step
-            loadStep(1);
-
-            // Function to load form steps
-            function loadStep(step) {
-                $.ajax({
-                    url: `/form-step/${step}`,
-                    method: 'GET',
-                    success: function(response) {
-                        $('#formContainer').html(response);
-                    }
-                });
-            }
-
-            // Handle form submission for each step
-            $(document).on('submit', '#multiStepForm', function(event) {
-                event.preventDefault();
-                const form = $(this);
-                $.ajax({
-                    url: form.attr('action'),
-                    method: form.attr('method'),
-                    data: form.serialize(),
-                    success: function(response) {
-                        if (response.nextStep) {
-                            loadStep(response.nextStep);
-                        } else if (response.redirectUrl) {
-                            window.location.href = response.redirectUrl;
-                        }
-                    },
-                    error: function(response) {
-                        // Handle validation errors and display them
-                        console.log(response);
-                    }
-                });
-            });
-        });*/
     </script>
 @endsection

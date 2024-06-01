@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Log;
 
 class ListingController extends Controller
 {
+    const STATUS_PAID = 'paid';
+
     public function index(): Factory|View|Application
     {
         $listings = Listing::all();
@@ -100,10 +102,25 @@ class ListingController extends Controller
             $productService->save();
         }
 
-        return redirect()->route('listing.index')->with('success', 'Listing created successfully.');
+        return redirect()->route('listing.step.subscription', ['id' => $listing->id])
+            ->with('success', 'Listing created successfully. Please choose the plan.');
     }
 
-    public function showStep($step)
+    public function subscription(int $listingId)
+    {
+        $currentUser = Auth::user();
+        $listing = $currentUser->listings()
+            ->find($listingId);
+
+        if (!$listing) {
+            return response()
+                ->json(['message' => 'Listing not found'], 404);
+        }
+
+        return $this->showStep(2);
+    }
+
+    public function showStep(int $step)
     {
         if ($step == 1) {
             return view('listing.information');
