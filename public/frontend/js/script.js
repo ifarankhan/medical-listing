@@ -540,7 +540,7 @@ $(function () {
     $(document).ready(function(){
         setTimeout(function(){
             $(".alert").alert('close');
-        }, 5000); // 5000 milliseconds = 5 seconds
+        }, 7000); // 5000 milliseconds = 5 seconds
     });
 
 });

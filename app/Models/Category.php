@@ -5,6 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
@@ -54,4 +55,8 @@ class Category extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+    public function productService(): HasMany
+    {
+        return $this->hasMany(ProductService::class);
+    }
 }
