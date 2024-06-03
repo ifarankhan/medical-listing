@@ -7,6 +7,15 @@
     <section class="dashboard">
         @include('partials.sidebar')
         <div class="dashboard_content">
+
+            <!-- Success message using Bootstrap's alert component -->
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
             <h2 class="dashboard_title">Products/Services</h2>
             <div class="dashboard_add_property">
 
@@ -21,65 +30,29 @@
                 @endif
 
                 <form action="{{ route('listing.store') }}" method="POST" id="multiStepForm">
-                    @csrf   
+                    @csrf
                     <div class="dashboard_pricing">
                         <div class="row">
                             <div class="col-xl-3 col-md-6 col-lg-4 wow fadeInUp" data-wow-duration="1.5s">
                                 <div class="pricing_item">
-                                    <h5>Free</h5>
-                                    <p>Ut non metus estibulum neque a quam molestie.</p>
-                                    <h3>$0 <span>/year</span></h3>
+                                    <h5>Monthly Subscription</h5>
+
+                                    <h3>$75 <span>/month</span></h3>
+                                    <p>Add On:</p>
                                     <ul>
-                                        <li>Duration: 5 days</li>
-                                        <li>10 Listing</li>
-                                        <li>Contact Display</li>
-                                        <li>Price Range</li>
-                                        <li>raw price</li>
+                                        <li>$20 per month to appear in top 5 search results</li>
                                     </ul>
                                     <a href="#">Register Now</a>
                                 </div>
                             </div>
                             <div class="col-xl-3 col-md-6 col-lg-4 wow fadeInUp" data-wow-duration="1.5s">
                                 <div class="pricing_item">
-                                    <h5>Basic</h5>
-                                    <p>Ut non metus estibulum neque a quam molestie.</p>
-                                    <h3>$34 <span>/year</span></h3>
+                                    <h5>Annual Subscription</h5>
+
+                                    <h3>$750 <span>/year</span></h3>
+                                    <p>Add On:</p>
                                     <ul>
-                                        <li>Duration: 10 days</li>
-                                        <li>20 Listing</li>
-                                        <li>Contact Display</li>
-                                        <li>Price Range</li>
-                                        <li>raw price</li>
-                                    </ul>
-                                    <a href="#">Register Now</a>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6 col-lg-4 wow fadeInUp" data-wow-duration="1.5s">
-                                <div class="pricing_item">
-                                    <h5>Premium </h5>
-                                    <p>Ut non metus estibulum neque a quam molestie.</p>
-                                    <h3>$68 <span>/year</span></h3>
-                                    <ul>
-                                        <li>Duration: 20 days</li>
-                                        <li>30 Listing</li>
-                                        <li>Contact Display</li>
-                                        <li>Price Range</li>
-                                        <li>Business Hours</li>
-                                    </ul>
-                                    <a href="#">Register Now</a>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6 col-lg-4 wow fadeInUp" data-wow-duration="1.5s">
-                                <div class="pricing_item">
-                                    <h5>gold </h5>
-                                    <p>Ut non metus estibulum neque a quam molestie.</p>
-                                    <h3>$79 <span>/year</span></h3>
-                                    <ul>
-                                        <li>Duration: 30 days</li>
-                                        <li>40 Listing</li>
-                                        <li>Contact Display</li>
-                                        <li>Price Range</li>
-                                        <li>Business Hours</li>
+                                        <li>$200 per month to appear in top 5 search results</li>
                                     </ul>
                                     <a href="#">Register Now</a>
                                 </div>

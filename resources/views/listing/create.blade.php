@@ -14,11 +14,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
-            
+
             <h2 class="dashboard_title">Products/Services</h2>
             <div class="dashboard_add_property">
 
-                @if ($errors->any())
+                @if($errors->any())
                     <div class="alert alert-danger">
                         <ul>
                             @foreach ($errors->all() as $error)
@@ -30,7 +30,11 @@
 
                 <form action="{{ route('listing.store') }}" method="POST" id="multiStepForm">
                     @csrf
-                    @include('listing.information')
+                    @if(isset($listing))
+                        @include('listing.edit')
+                    @else
+                        @include('listing.information')
+                    @endif
                 </form>
             </div>
         </div>

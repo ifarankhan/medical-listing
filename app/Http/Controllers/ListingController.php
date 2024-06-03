@@ -14,14 +14,17 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Nette\Schema\ValidationException;
 
 class ListingController extends Controller
 {
     const STATUS_PAID = 'paid';
+    const STATUS_PENDING = 'pending';
 
     public function index(): Factory|View|Application
     {
-        $listings = Listing::all();
+        $currentUser = Auth::user();
+        $listings = $currentUser->listings()->get();
 
         return view('listing.index', compact('listings'));
     }
@@ -37,6 +40,21 @@ class ListingController extends Controller
     }
 
     /**
+     * @param Listing $listing
+     *
+     * @return Factory|View|Application|RedirectResponse
+     */
+    public function edit(Listing $listing): Factory|View|Application|RedirectResponse
+    {
+        if ($listing->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized'); // Or redirect to a different page
+        }
+        $categories = Category::all();
+        $listing->with(['productService', 'productService.category']);
+
+        return view('listing.create', compact('listing', 'categories'));
+    }
+    /**
      * Store a newly created listing in storage.
      *
      * @param Request $request
@@ -45,8 +63,44 @@ class ListingController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        // Validate the request data
-        $validatedData = $request->validate([
+        try {
+            // Validate the request data
+            $validatedData = $this->validateListingData($request);
+            $listingId = $request->input('listing_id');
+            // Create a new listing instance and save the data
+            if ($listingId) {
+
+                $listing = Listing::findOrFail($listingId);
+                $this->updateListing($listing, $validatedData);
+                $message = 'Listing updated successfully.';
+            } else {
+
+                $listing = $this->createListing($validatedData);
+                $message = 'Listing created successfully. Please choose the plan.';
+            }
+            // Save product/services associated with the listing.
+            $this->saveProductServices($listing, $validatedData['products']);
+
+            return redirect()->route('listing.step.subscription', $listing)
+                             ->with('success', $message);
+        } catch (ValidationException $exception) {
+            // If validation fails, redirect back with validation errors
+            return redirect()->back()->withErrors($exception->errors())->withInput();
+        }
+    }
+    private function updateListing(Listing $listing, array $data): void
+    {
+        $listing->update($data);
+        $listing->productService()->delete();
+    }
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
+    private function validateListingData(Request $request): array
+    {
+        return $request->validate([
             'authorized' => 'required|boolean',
             'registered' => 'required|boolean',
             'first_name' => 'required|string',
@@ -69,25 +123,31 @@ class ListingController extends Controller
             'products.*.insurance_list' => 'nullable|string', // Validate each product insurance_list attribute
             'products.*.price' => 'nullable|numeric|min:0', // Validate each product price
         ]);
-        // Create a new listing instance and save the data
+    }
+    private function createListing(array $data): Listing
+    {
         $listing = new Listing();
         $listing->user_id = Auth::id();
-        $listing->authorized = $validatedData['authorized'];
-        $listing->registered = $validatedData['registered'];
-        $listing->first_name = $validatedData['first_name'];
-        $listing->last_name = $validatedData['last_name'];
-        $listing->email = $validatedData['email'];
-        $listing->contact_number = $validatedData['contact_number'];
-        $listing->address = $validatedData['address'];
-        $listing->business_name = $validatedData['business_name'];
-        $listing->ein = $validatedData['ein'];
-        $listing->business_address = $validatedData['business_address'];
-        $listing->business_contact = $validatedData['business_contact'];
-        $listing->business_email = $validatedData['business_email'];
-        $listing->save();
-        // Save product/services associated with the listing.
-        foreach ($request->input('products') as $product) {
+        $listing->authorized = $data['authorized'];
+        $listing->registered = $data['registered'];
+        $listing->first_name = $data['first_name'];
+        $listing->last_name = $data['last_name'];
+        $listing->email = $data['email'];
+        $listing->contact_number = $data['contact_number'];
+        $listing->address = $data['address'];
+        $listing->business_name = $data['business_name'];
+        $listing->ein = $data['ein'];
+        $listing->business_address = $data['business_address'];
+        $listing->business_contact = $data['business_contact'];
+        $listing->business_email = $data['business_email'];
 
+        $listing->save();
+
+        return $listing;
+    }
+    private function saveProductServices(Listing $listing, array $products): void
+    {
+        foreach ($products as $product) {
             $productService = new ProductService([
                 'listing_id' => $listing->id,
                 'category_id' => $product['category_id'],
@@ -101,31 +161,49 @@ class ListingController extends Controller
 
             $productService->save();
         }
-
-        return redirect()->route('listing.step.subscription', ['id' => $listing->id])
-            ->with('success', 'Listing created successfully. Please choose the plan.');
     }
 
-    public function subscription(int $listingId)
+    /**
+     * @param Listing $listing
+     *
+     * @return Application|Factory|View|RedirectResponse
+     */
+    public function subscription(Listing $listing): Factory|View|Application|RedirectResponse
     {
-        $currentUser = Auth::user();
-        $listing = $currentUser->listings()
-            ->find($listingId);
-
-        if (!$listing) {
-            return response()
-                ->json(['message' => 'Listing not found'], 404);
+        if ($listing->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized'); // Or redirect to a different page
         }
 
-        return $this->showStep(2);
+        return view('listing.subscription', compact('listing'));
     }
 
-    public function showStep(int $step)
+    public function delete(Listing $listing): RedirectResponse
     {
-        if ($step == 1) {
-            return view('listing.information');
-        } elseif ($step == 2) {
-            return view('listing.subscription');
+        $delete = $this->deleteListing($listing);
+
+        if (!$delete) {
+            return redirect()->route('listing.index')
+                ->with('error', 'Listing with id ${$listingId} not found.');
         }
+
+        return redirect()->route('listing.index')
+            ->with('success', 'Listing deleted successfully.');
+    }
+
+    /**
+     * @param Listing $listing
+     *
+     * @return bool
+     */
+    private function deleteListing(Listing $listing): bool
+    {
+        if ($listing->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized'); // Or redirect to a different page
+        }
+
+        $listing->productService()->delete();
+        $listing->delete();
+
+        return true;
     }
 }

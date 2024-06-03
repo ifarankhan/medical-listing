@@ -11,20 +11,19 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('listings', function (Blueprint $table) {
             $table->string('listing_status')->default('pending');
             $table->string('selected_package')->nullable();
         });
     }
-
     /**
      * Reverse the migrations.
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('listings', function (Blueprint $table) {
             $table->dropColumn('listing_status');
