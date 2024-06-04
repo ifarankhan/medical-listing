@@ -74,13 +74,13 @@
                         @endauth
                     </a>
                 </li>
-                <li class="menu_btn">
+                <li class="menu_btn_2">
                     @auth
-                        <a class="common_btn" href="{{ route('listing.create') }}">Add A Product/Service <i
-                                class="far fa-plus"></i></a>
+                        <a class="common_btn_2" href="{{ route('listing.create') }}">Add A Product/Service <span><i
+                                class="far fa-plus"></i></span></a>
                     @else
-                        <a class="common_btn" href="{{ route('login') }}">Add A Product/Service <i
-                                class="far fa-plus"></i></a>
+                        <a class="common_btn_2" href="{{ route('login') }}">Add A Product/Service <span><i
+                                class="far fa-plus"></i></span></a>
                     @endauth
                 </li>
             </ul>
