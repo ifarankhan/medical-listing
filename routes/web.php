@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PricingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ListingController;
 /*
@@ -19,13 +22,16 @@ use App\Http\Controllers\ListingController;
 
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/register', [RegisterController::class, 'register'])->name('register');
     Route::post('/register', [RegisterController::class, 'registerPost'])->name('register');
     Route::get('/login', [LoginController::class, 'login'])->name('login');
     Route::post('/login', [LoginController::class, 'loginPost'])->name('login');
+    Route::get('/about', [AboutController::class, 'index'])->name('about');
+    Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
+    Route::get('/contact', [ContactUsController::class, 'index'])->name('contact');
 });
 
 Route::group(['middleware' => ['auth', 'role:customer,insurance_provider']], function () {
