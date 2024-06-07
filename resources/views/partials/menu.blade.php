@@ -22,7 +22,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="about_us.html">About Us</a>
+                    <a class="nav-link" href="{{ route('about') }}">About Us</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Listing <i class="far fa-angle-down"></i></a>
@@ -47,7 +47,7 @@
                         <li><a href="agent_details.html">agent details</a></li>
                         <li><a href="checkout.html">checkout</a></li>
                         <li><a href="payment.html">payment</a></li>
-                        <li><a href="pricing_plan.html">pricing plan</a></li>
+                        <li><a href="{{ route('pricing') }}">pricing plan</a></li>
                         <li><a href="privacy_policy.html">privacy policy</a></li>
                         <li><a href="terms_condition.html">Terms & condition</a></li>
                         <li><a href="forgot_password.html">forgot password </a></li>
@@ -58,7 +58,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="contact.html">Contact Us</a>
+                    <a class="nav-link" href="{{ route('contact') }}">Contact Us</a>
                 </li>
             </ul>
             <ul class="menu_right d-flex align-items-center">
