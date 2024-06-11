@@ -16,7 +16,7 @@
                         <div class="banner_2_contant">
                             <h3>Explore & Get Your Ideal Space</h3>
                             <h1>Explore & Connect in Fantastic <span>Locations</span>.</h1>
-                            <form action="#" class="banner_form">
+                            <form action="{{ route('search') }}" method="GET" class="banner_form">
                                 <ul class="d-flex flex-wrap">
                                     <li class="banner_input">
                                         <input type="text" placeholder="What are you looking for?">
@@ -24,20 +24,16 @@
                                                    class="img-fluid w-100"></span>
                                     </li>
                                     <li class="banner_selector">
-                                        <select class="select_2" name="state">
-                                            <option value="">Location</option>
-                                            <option value="">dhaka</option>
-                                            <option value="">dubai</option>
-                                            <option value="">london</option>
-                                            <option value="">new york</option>
+                                        <select class="select_2" name="zip_code">
+                                            <option value="">Zip Code</option>
                                         </select>
                                     </li>
                                     <li class="banner_selector">
-                                        <select class="select_2" name="state">
+                                        <select class="select_2" name="category">
                                             <option value="">All Categories</option>
-                                            <option value="">category 1</option>
-                                            <option value="">category 2</option>
-                                            <option value="">category 3</option>
+                                                @foreach($serviceCategories as $category)
+                                                    <option value="{{ $category->slug }}">{{ $category->name }}</option>
+                                                @endforeach
                                         </select>
                                     </li>
                                     <li class="banner_btn">
