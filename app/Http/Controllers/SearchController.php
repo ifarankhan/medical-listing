@@ -22,7 +22,13 @@ class SearchController extends Controller
         $serviceCategories = $this->categoryDropDown->getServiceCategories();
         $filters = $request->only(['category']);
         $listings = $this->searchService->search($filters);
+        $resultThreshold = SearchService::RESULT_THRESHOLD;
 
-        return view('search.index', compact('listings', 'serviceCategories'));
+        return view('search.index', compact(
+            'listings',
+            'serviceCategories',
+            'filters',
+            'resultThreshold'
+        ));
     }
 }

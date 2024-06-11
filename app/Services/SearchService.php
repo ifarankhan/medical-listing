@@ -6,7 +6,8 @@ use App\Models\Listing;
 
 class SearchService
 {
-    public function search($filters)
+    const RESULT_THRESHOLD = 12;
+    public function search($filters, $paginate = self::RESULT_THRESHOLD)
     {
         $query = Listing::query();
 
@@ -20,6 +21,6 @@ class SearchService
         }
 
         //echo $query->getQuery()->toSql();exit;
-        return $query->get();
+        return $query->paginate($paginate);
     }
 }

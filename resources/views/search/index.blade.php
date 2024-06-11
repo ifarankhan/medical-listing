@@ -250,23 +250,39 @@
                     </div>
                     @endfor
                 </div>
-                <div class="row mt_35 wow fadeInUp" data-wow-duration="1.5s">
-                    <div class=" col-12">
-                        <div id="pagination_area">
-                            <nav aria-label="...">
-                                <ul class="pagination justify-content-center">
-                                    <li class="page-item"><a class="page-link" href="#"><i
-                                                class="far fa-angle-double-left" aria-hidden="true"></i></a></li>
-                                    <li class="page-item"><a class="page-link active" href="#">01</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">02</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">03</a></li>
-                                    <li class="page-item"><a class="page-link" href="#"><i
-                                                class="far fa-angle-double-right" aria-hidden="true"></i></a></li>
-                                </ul>
-                            </nav>
+                @if ($listings->total() > $resultThreshold)
+                    <div class="row mt_35 wow fadeInUp" data-wow-duration="1.5s">
+                        <div class=" col-12">
+                            <div id="pagination_area">
+                                <nav aria-label="...">
+                                    <ul class="pagination justify-content-center">
+                                        @if ($listings->onFirstPage())
+                                            <li class="page-item"><a class="page-link" href="#"><i
+                                                    class="far fa-angle-double-left" aria-hidden="true"></i></a></li>
+                                        @else
+                                            <li class="page-item">
+                                                    <a class="page-link" href="{{ $listings->appends($filters)->previousPageUrl() }}" rel="prev">&laquo;</a>
+                                                </li>
+                                            @endif
+                                            @foreach ($listings->getUrlRange(1, $listings->lastPage()) as $page => $url)
+                                                <li class="page-item"><a
+                                                        class="page-link {{ $listings->currentPage() == $page ? ' active' : '' }}"
+                                                        href="{{ $url }}{{ strpos($url, '?') === false ? '?' : '&' }}{{ http_build_query($filters) }}">{{ $page }}</a></li>
+                                            @endforeach
+                                            @if ($listings->hasMorePages())
+                                                <li class="page-item"><a class="page-link" href="{{ $listings->appends($filters)->nextPageUrl() }}"><i
+                                                    class="far fa-angle-double-right" aria-hidden="true"></i></a></li>
+                                            @else
+                                                <li class="page-item disabled">
+                                                    <span class="page-link" aria-hidden="true">&raquo;</span>
+                                                </li>
+                                            @endif
+                                    </ul>
+                                </nav>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
     </div>
