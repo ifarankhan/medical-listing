@@ -68,7 +68,6 @@
                         <ul>
                             <li><a href="{{ route('home') }}">home</a></li>
                             <li><a href="listing_right_sidebar.html">listing</a></li>
-                            <li><a href="blog.html">blog</a></li>
                             <li><a href="privacy_policy.html">Privacy Policy</a></li>
                             <li><a href="contact.html">contact</a></li>
                         </ul>

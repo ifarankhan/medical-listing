@@ -20,20 +20,14 @@
                     <a class="nav-link" href="{{ route('about') }}">About Us</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Listing</a>
+                    <a class="nav-link" href="{{ route('search') }}">Listing</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">pages <i class="far fa-angle-down"></i></a>
                     <ul class="droap_menu">
-
                         <li><a href="{{ route('pricing') }}">pricing plan</a></li>
                         <li><a href="privacy_policy.html">privacy policy</a></li>
                         <li><a href="terms_condition.html">Terms & condition</a></li>
-                        <li><a href="forgot_password.html">forgot password </a></li>
-                        <li><a href="faq.html">FAQ's</a></li>
-                        <li><a href="error.html">404</a></li>
-                        <li><a href="sign_in.html">sign in</a></li>
-                        <li><a href="sign_up.html">sign up</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">

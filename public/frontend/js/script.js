@@ -543,4 +543,82 @@ $(function () {
         }, 7000); // 5000 milliseconds = 5 seconds
     });
 
+    // Handle message modal form submit.
+    $(document).ready(function (){
+
+        const sendMessageModal = $('#sendMessageModal');
+        const sendMessageForm = $('#sendMessageForm');
+        // Handle click on Send Message button
+        $('.sendMessageBtn').click(function(e) {
+
+            e.preventDefault(); // Prevent default behavior (if any)
+            let button = $(this);
+            // Check if user is authenticated
+            $.ajax({
+                url: '/check-auth',
+                method: 'GET',
+                success: function(response) {
+
+                    if (response.authenticated) {
+                        // Retrieve the listing ID from the data attribute
+                        let listingId = button.closest('.listing').data('listing-id');
+                        // Populate the hidden input with the listing ID in the modal
+                        $('#listingId').val(listingId);
+                        // User is authenticated, show the modal
+                        sendMessageModal.modal('show');
+                    } else {
+                        // User is not authenticated, redirect to login.
+                        window.location.href = '/login';
+                    }
+                },
+                error: function(xhr) {
+                    alert('An error occurred: ' + xhr.responseText);
+                }
+            });
+        });
+
+        // Handle form submission for sending message
+        sendMessageForm.submit(function(e) {
+
+            e.preventDefault();
+            const fullName = $('#FullName').val();
+            const email = $('#Email').val();
+            const phone = $('#Phone').val();
+            const subject = $('#Subject').val();
+            const message = $('#Message').val();
+            const listingId = $('#listingId').val(); // Retrieve listing ID from hidden input
+
+            $.ajax({
+                url: '/send-message',
+                method: 'POST',
+                data: {
+                    message: message,
+                    fullName: fullName,
+                    phone: phone,
+                    email: email,
+                    subject: subject,
+                    listing_id: listingId // Pass listing ID in the AJAX request
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert(response.message);
+                        sendMessageModal.modal('hide');
+                        sendMessageForm.clear(); // Clear form fields.
+                    }
+                },
+                error: function(xhr) {
+
+                    let errors = xhr.responseJSON.errors;
+                    let errorMessages = '';
+                    for (let key in errors) {
+                        if (errors.hasOwnProperty(key)) {
+                            errorMessages += errors[key][0] + '\n';
+                        }
+                    }
+
+                    alert('Validation error(s):\n' + errorMessages);
+                }
+            });
+        });
+    });
 });

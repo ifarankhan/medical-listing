@@ -7394,6 +7394,13 @@ button {
     margin-right: 5px;
 }
 
+/* Custom CSS for modal positioning */
+#sendMessageModal {
+
+    top: 100px; /* Adjust this value based on your layout */
+}
+
+
 /* order invoice end */
 /*=============================
     DASHBOARD END
