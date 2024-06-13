@@ -213,42 +213,40 @@
             </div>
             <div class="col-xl-8 property_sm_margin">
                 <div class="row">
-                    @for($i = 0; $i < count($listings); $i++)
-                        <div class="col-xl-6 col-lg-4 col-md-6 wow fadeInUp" data-wow-duration="1.5s">
-                        <div class="listing_item">
-                            <div class="listing_img">
-                                <img src="{{ asset('frontend/images/listing_1.jpg') }}" alt="img" class="img-fluid w-100">
-{{--                                <a href="#" class="category"><i class="fas fa-star"></i>Featured</a>--}}
-{{--                                <a class="love" href="#"><i class="fas fa-heart"></i></a>--}}
-                            </div>
-                            <div class="listing_text">
-                                <a href="#">{{ $listings[$i]->business_name }}</a>
-                                <ul>
-                                    <li><i class="fas fa-map-marker-alt"></i>{{ $listings[$i]->business_address }}</li>
-                                    <li><i class="fas fa-phone-alt"></i>{{ $listings[$i]->business_contact }}</li>
-                                </ul>
-                                <div class="listing_bottom">
-                                    <p>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <span>(4.5)</span>
-                                    </p>
-                                    <ul class="d-flex flex-wrap">
-                                        <li><span><img src="{{ asset('frontend/images/eye.png') }}" alt="img"
-                                                       class="img-fluid w-100"></span>798</li>
-                                        <li><span><img src="{{ asset('frontend/images/comment.png') }}" alt="img"
-                                                       class="img-fluid w-100"></span>24</li>
-                                    </ul>
-                                </div>
-                                <span class="person"><img src="{{ asset('frontend/images/person_1.png') }}" alt="person"
-                                                          class="img-fluid w-100"></span>
-                            </div>
+
+                    @if ($listings->isEmpty())
+                        <div class="alert alert-info" role="alert">
+                            No listings found.
                         </div>
-                    </div>
-                    @endfor
+                    @else
+                        @for($i = 0; $i < count($listings); $i++)
+                            <div class="col-xl-6 col-lg-4 col-md-6 wow fadeInUp" data-wow-duration="1.5s">
+                                <div class="listing_item">
+                                    <div class="listing_img">
+                                        <img src="{{ asset('frontend/images/listing_1.jpg') }}" alt="img" class="img-fluid w-100">
+        {{--                                <a href="#" class="category"><i class="fas fa-star"></i>Featured</a>--}}
+        {{--                                <a class="love" href="#"><i class="fas fa-heart"></i></a>--}}
+                                    </div>
+                                    <div class="listing_text">
+                                        <a href="#">{{ $listings[$i]->business_name }}</a>
+                                        <ul>
+                                            <li><i class="fas fa-map-marker-alt"></i>{{ $listings[$i]->business_address }}</li>
+                                            <li><i class="fas fa-phone-alt"></i>{{ $listings[$i]->business_contact }}</li>
+                                        </ul>
+                                        <div class="listing_bottom">
+                                            <p class="small">
+                                                Send Message
+                                            </p>
+                                            <p class="small">Allow Contact</p>
+                                        </div>
+                                        <span class="person"><img src="{{ asset('frontend/images/person_1.png') }}" alt="person"
+                                                                  class="img-fluid w-100"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        @endfor
+                    @endif
                 </div>
                 @if ($listings->total() > $resultThreshold)
                     <div class="row mt_35 wow fadeInUp" data-wow-duration="1.5s">
