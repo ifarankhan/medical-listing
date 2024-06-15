@@ -104,7 +104,8 @@
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
                 <label for="ein">EIN:</label>
-                <input type="text" id="ein" name="ein" placeholder="EIN"
+                <input type="text" id="ein" name="ein" placeholder="XX-XXXXXXX"
+                       pattern="\d{2}-\d{7}"
                        value="{{ old('ein', $listing->ein) }}" required>
                 <small class="text-muted">(This will be used to verify business information)</small>
             </div>
