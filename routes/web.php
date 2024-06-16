@@ -45,6 +45,9 @@ Route::group(['middleware' => ['auth', 'role:customer,insurance_provider']], fun
     Route::get('/account', [DashboardController::class, 'index'])->name('account');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::delete('/logout', [LogoutController::class, 'logout'])->name('logout');
+});
+
+Route::group(['middleware' => ['auth', 'insurance_provider']], function () {
 
     Route::get('/dashboard/listing', [ListingController::class, 'index'])->name('listing.index');
     Route::get('/dashboard/listing/create', [ListingController::class, 'create'])->name('listing.create');

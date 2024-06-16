@@ -536,6 +536,23 @@ $(function () {
         $(".dashboard_sidebar").toggleClass("dash_show_menu");
     });
 
+    $(document).ready(function() {
+        $('#ein').on('input', function() {
+            let value = $(this).val();
+            value = value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+
+            // Apply formatting
+            if (value.length > 2) {
+                value = value.slice(0, 2) + '-' + value.slice(2);
+            }
+            if (value.length > 10) {
+                value = value.slice(0, 10); // Limit length to 10 characters
+            }
+
+            $(this).val(value);
+        });
+    });
+
     <!-- JavaScript to auto-dismiss the alert -->
     $(document).ready(function(){
         setTimeout(function(){

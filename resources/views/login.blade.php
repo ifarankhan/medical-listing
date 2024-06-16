@@ -1,44 +1,113 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Listing App Login and Registration - Login Page</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-</head>
-<body>
-<div class="row justify-content-center mt-5">
-        <div class="col-lg-4">
-            <div class="card">
-                <div class="card-header">
-                    <h1 class="card-title">Login</h1>
-                </div>
-                <div class="card-body">
-                    @if(Session::has('error'))
-                        <div class="alert alert-danger" role="alert">
-                            {{ Session::get('error') }}
+<!-- resources/views/login.blade.php -->
+@extends('layout')
+
+@section('title', 'Login')
+
+@section('content')
+    @include('partials.menu')
+    <!--=============================
+            BREADCRUMBS START
+        ==============================-->
+    <section class="breadcrumbs" style="background: url({{ './frontend/images/breadcrumbs_bg.jpg' }});">
+        <div class="breadcrumbs_overly">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 justify-content-center">
+                        <div class="breadcrumb_text wow fadeInUp" data-wow-duration="1.5s">
+                            <h1>Login</h1>
+                            <ul class="d-flex flex-wrap justify-content-center">
+                                <li><a href="#"><i class="fas fa-home"></i>Home</a></li>
+                                <li><a href="#">Login</a></li>
+                            </ul>
                         </div>
-                    @endif
-                    <form action="{{ route('login') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email address</label>
-                            <input type="email" name="email" class="form-control" id="email" placeholder="name@example.com" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" name="password" class="form-control" id="password" required>
-                        </div>
-                        <div class="mb-3">
-                            <div class="d-grid">
-                                <button class="btn btn-primary">Login</button>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</body>
-</html>
+    </section>
+    <!--=============================
+        BREADCRUMBS END
+    ==============================-->
+    <!--=============================
+        LOGIN START
+    ==============================-->
+    <section class="login_area pt_120 xs_pt_100 pb_120 xs_pb_100">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-10 col-lg-8 col-xl-11">
+                    <div class="main_login_area">
+                        <div class="row">
+                            <div class="col-xl-6 wow fadeInLeft" data-wow-duration="1.5s">
+
+                                <div class=" login_text">
+
+                                    @if(Session::has('error'))
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ Session::get('error') }}
+                                        </div>
+                                    @endif
+
+                                    <h4>Login</h4>
+                                    <form action="{{ route('login') }}" method="POST">
+                                        @csrf
+                                        <div class="single_input">
+                                            <label>Email</label>
+                                            <input type="text" name="email" placeholder="Email" required>
+                                        </div>
+                                        <div class="single_input">
+                                            <label>Password</label>
+                                            <input name="password" type="password" placeholder="********" required>
+                                            <span class="show_password">
+                                                <i class="far fa-eye open_eye"></i>
+                                                <i class="far fa-eye-slash close_eye"></i>
+                                            </span>
+                                        </div>
+                                        <div
+                                            class="single_input d-flex flex-wrap align-items-center justify-content-between">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                       id="flexCheckDefault">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    Remember me
+                                                </label>
+                                            </div>
+                                            <a class="forget_password" href="forgot_password.html">Forgot password ?</a>
+                                        </div>
+                                        <button class="common_btn" type="submit">Login</button>
+                                    </form>
+{{--                                    <span>Or login with</span>--}}
+{{--                                    <ul class="other_login_option d-flex flex-wrap justify-content-center">--}}
+{{--                                        <li>--}}
+{{--                                            <a href="#">--}}
+{{--                                                <span><img src="assets/images/google.png" alt="img"--}}
+{{--                                                           class="img-fluid w-100"></span>--}}
+{{--                                                google--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
+{{--                                        <li>--}}
+{{--                                            <a href="#">--}}
+{{--                                                <span><img src="assets/images/facebook.png" alt="img"--}}
+{{--                                                           class="img-fluid w-100"></span>--}}
+{{--                                                facebook--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
+{{--                                    </ul>--}}
+                                    <p>Don’t you have an account? <a href="{{ route('register') }}">Register</a></p>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 d-none d-xl-block wow fadeInRight" data-wow-duration="1.5s">
+                                <div class=" login_img">
+                                    <img src="{{ asset('frontend/images/login_bg.jpg') }}" alt="img" class="img-fluid w-100">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--=============================
+        LOGIN END
+    ==============================-->
+    @include('partials.footer')
+@endsection

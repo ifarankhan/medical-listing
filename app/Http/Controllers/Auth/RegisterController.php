@@ -27,11 +27,19 @@ class RegisterController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'password' => 'required|min:5',
-            'email' => 'required|email|unique:users'
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6|required_with:password_confirmation|same:password_confirmation',
+            'password_confirmation' => 'min:6',
+            'role' => 'required',
         ], [
             'name.required' => 'Name is required',
-            'password.required' => 'Password is required'
+            'email.required' => 'Email is required',
+            'email.email' => 'Please enter a valid email address',
+            'email.unique' => 'This email address has already been taken',
+            'password.required' => 'Password is required',
+            'password.min' => 'Password must be at least 5 characters long',
+            'password.confirmed' => 'Password confirmation does not match',
+            'role.required' => 'Role is required',
         ]);
         try {
             DB::beginTransaction();
@@ -49,15 +57,12 @@ class RegisterController extends Controller
             $user->userRole()->attach($roleId);
 
             DB::commit();
-
+            return back()->with('success', 'User registered successfully');
         } catch (\Exception $e) {
 
             DB::rollBack();
 
             return back()->with('error', 'Registration failed. Please try again.');
         }
-
-
-        return back()->with('success', 'Register successfully');
     }
 }
