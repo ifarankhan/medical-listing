@@ -1,36 +1,6 @@
 <footer class="footer footer_2 pt_120 xs_pt_100">
     <div class="container">
-        <div class="footer_apps">
-            <div class="row justify-content-between align-items-center">
-                <div class="col-xxl-3 col-lg-3 col-xl-3 wow fadeInUp" data-wow-duration="1.5s">
-                    <div class="footer_apps_img">
-                        <img src="{{ asset('frontend/images/phone.png') }}" alt="App" class="img-fluid">
-                    </div>
-                </div>
-                <div class="col-xxl-4 col-lg-5 col-xl-5 wow fadeInUp" data-wow-duration="1.5s">
-                    <div class="section_title_2 section_title_left_2">
-                        <h2>Looking For The Best App?</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetu adipiscing
-                            elit nam placate elit ac null nec clamorers rises digicam
-                            lorem sed nibh fringilla.</p>
-                    </div>
-
-                </div>
-                <div class="col-xxl-5 col-lg-4 col-xl-4 wow fadeInUp" data-wow-duration="1.5s">
-                    <ul class="d-flex flex-wrap justify-content-end">
-                        <li><a href="#" class="ios">
-                                <span><img src="{{ asset('frontend/images/apple.png') }}" alt="apps" class="img-fluid w-100"></span>
-                                Download iOS</a>
-                        </li>
-                        <li><a href="#" class="android">
-                                    <span><img src="{{ asset('frontend/images/android.png') }}" alt="apps"
-                                               class="img-fluid w-100"></span>
-                                Download Android</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+    {{--        keeping it here so that menu is not affected while scrolling down --}}
     </div>
     <div class="footer_area pt_120 xs_pt_100 pb_115 xs_pb_95">
         <div class="container">
