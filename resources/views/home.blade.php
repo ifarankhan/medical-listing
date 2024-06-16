@@ -56,78 +56,17 @@
     <section class="category_2">
         <div class="container-fluid">
             <div class="row category_2_slider">
-                <div class="col-xl-2 wow fadeInUp" data-wow-duration="1.5s">
-                    <a href="listing_left_sidebar.html" class="category_2_item">
-                        <div class="text">
-                            <b>Hotels</b>
-                            <p>34+ listings</p>
-                        </div>
-                        <span><img src="{{ asset('frontend/images/categoris_7.png') }}" alt="icon" class="img-fluid w-100"></span>
-                    </a>
-                </div>
-                <div class="col-xl-2 wow fadeInUp" data-wow-duration="1.5s">
-                    <a href="listing_left_sidebar.html" class="category_2_item">
-                        <div class="text">
-                            <b>Eat & Drink</b>
-                            <p>59+ listings</p>
-                        </div>
-                        <span><img src="{{ asset('frontend/images/categoris_6.png') }}" alt="icon" class="img-fluid w-100"></span>
-                    </a>
-                </div>
-                <div class="col-xl-2 wow fadeInUp" data-wow-duration="1.5s">
-                    <a href="listing_left_sidebar.html" class="category_2_item">
-                        <div class="text">
-                            <b>Fitness</b>
-                            <p>57+ listings</p>
-                        </div>
-                        <span><img src="{{ asset('frontend/images/categoris_8.png') }}" alt="icon" class="img-fluid w-100"></span>
-                    </a>
-                </div>
-                <div class="col-xl-2 wow fadeInUp" data-wow-duration="1.5s">
-                    <a href="listing_left_sidebar.html" class="category_2_item">
-                        <div class="text">
-                            <b>Events</b>
-                            <p>63+ listings</p>
-                        </div>
-                        <span><img src="{{ asset('frontend/images/categoris_8.png') }}" alt="icon" class="img-fluid w-100"></span>
-                    </a>
-                </div>
-                <div class="col-xl-2 wow fadeInUp" data-wow-duration="1.5s">
-                    <a href="listing_left_sidebar.html" class="category_2_item">
-                        <div class="text">
-                            <b>Dance Floors</b>
-                            <p>69+ listings</p>
-                        </div>
-                        <span><img src="{{ asset('frontend/images/categoris_9.png') }}" alt="icon" class="img-fluid w-100"></span>
-                    </a>
-                </div>
-                <div class="col-xl-2 wow fadeInUp" data-wow-duration="1.5s">
-                    <a href="listing_left_sidebar.html" class="category_2_item">
-                        <div class="text">
-                            <b>Real Estate</b>
-                            <p>24+ listings</p>
-                        </div>
-                        <span><img src="{{ asset('frontend/images/categoris_10.png') }}" alt="icon" class="img-fluid w-100"></span>
-                    </a>
-                </div>
-                <div class="col-xl-2 wow fadeInUp" data-wow-duration="1.5s">
-                    <a href="listing_left_sidebar.html" class="category_2_item">
-                        <div class="text">
-                            <b>Restaurant</b>
-                            <p>37+ listings</p>
-                        </div>
-                        <span><img src="{{ asset('frontend/images/categoris_11.png') }}" alt="icon" class="img-fluid w-100"></span>
-                    </a>
-                </div>
-                <div class="col-xl-2 wow fadeInUp" data-wow-duration="1.5s">
-                    <a href="listing_left_sidebar.html" class="category_2_item">
-                        <div class="text">
-                            <b>Eat & Drink</b>
-                            <p>59+ listings</p>
-                        </div>
-                        <span><img src="{{ asset('frontend/images/categoris_12.png') }}" alt="icon" class="img-fluid w-100"></span>
-                    </a>
-                </div>
+                @for($i = 0; $i < count($serviceCategories); $i++)
+                    <div class="col-xl-2 wow fadeInUp" data-wow-duration="1.5s">
+                        <a href="{{ route('search', ['category' => $serviceCategories[$i]->slug]) }}" class="category_2_item">
+                            <div class="text">
+                                <b>{{ $serviceCategories[$i]->name }}</b>
+                                <p>{{ $serviceCategories[$i]->listing_count }}+ listings</p>
+                            </div>
+                            <span><img src="{{ asset('frontend/images/categoris_7.png') }}" alt="icon" class="img-fluid w-100"></span>
+                        </a>
+                    </div>
+                @endfor
             </div>
         </div>
     </section>
