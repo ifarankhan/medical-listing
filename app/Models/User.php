@@ -55,6 +55,11 @@ class User extends Authenticatable
         return $this->belongsToMany(UserRole::class, 'user_role_user');
     }
 
+    public function hasRole(string $role): bool
+    {
+        return $this->userRole->contains('name', $role);
+    }
+
     public static function getUserCountByRole(string $role)
     {
         return self::whereHas('userRole', function ($query) use ($role) {

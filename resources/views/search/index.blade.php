@@ -221,7 +221,7 @@
                     @else
                         @for($i = 0; $i < count($listings); $i++)
                             <div class="col-xl-6 col-lg-4 col-md-6 wow fadeInUp" data-wow-duration="1.5s">
-                                <div class="listing_item">
+                                <div class="listing_item" data-listing-id="{{ $listings[$i]->id }}">
                                     <div class="listing_img">
                                         <img src="{{ asset('frontend/images/listing_1.jpg') }}" alt="img" class="img-fluid w-100">
         {{--                                <a href="#" class="category"><i class="fas fa-star"></i>Featured</a>--}}
@@ -235,9 +235,12 @@
                                         </ul>
                                         <div class="listing_bottom">
                                             <p class="small">
-                                                Send Message
+                                                <button data-bs-toggle="modal"
+                                                    data-bs-target="#sendMessageModal"
+                                                    id="sendMessageBtn"
+                                                    class="btn sendMessageBtn">Send Message</button>
                                             </p>
-                                            <p class="small">Allow Contact</p>
+                                            <p class="small"><button id="allowContact" class="btn">Allow Contact</button></p>
                                         </div>
                                         <span class="person"><img src="{{ asset('frontend/images/person_1.png') }}" alt="person"
                                                                   class="img-fluid w-100"></span>
@@ -288,6 +291,7 @@
 <!--=============================
     LISTING LEFT SIDEBAR END
 ==============================-->
-
+    <!-- Include the custom send message form -->
+    @include('partials.message-modal')
     @include('partials.footer')
 @endsection

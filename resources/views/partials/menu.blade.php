@@ -4,7 +4,7 @@
 <nav class="navbar navbar-expand-lg main_menu main_menu_2">
     <div class="container">
         <a class="navbar-brand" href="{{ route('home') }}">
-            <img src="{{ asset('frontend/images/logo_2.png') }}" alt="Directory & Listings Template" class="img-fluid">
+            <img src="{{ asset('frontend/images/logo_diverrx.png') }}" alt="Directory & Listings Template" class="img-fluid">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,21 +20,7 @@
                     <a class="nav-link" href="{{ route('about') }}">About Us</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Listing</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">pages <i class="far fa-angle-down"></i></a>
-                    <ul class="droap_menu">
-
-                        <li><a href="{{ route('pricing') }}">pricing plan</a></li>
-                        <li><a href="privacy_policy.html">privacy policy</a></li>
-                        <li><a href="terms_condition.html">Terms & condition</a></li>
-                        <li><a href="forgot_password.html">forgot password </a></li>
-                        <li><a href="faq.html">FAQ's</a></li>
-                        <li><a href="error.html">404</a></li>
-                        <li><a href="sign_in.html">sign in</a></li>
-                        <li><a href="sign_up.html">sign up</a></li>
-                    </ul>
+                    <a class="nav-link" href="{{ route('search') }}">Services/Products</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('contact') }}">Contact Us</a>
@@ -42,7 +28,7 @@
             </ul>
             <ul class="menu_right d-flex align-items-center">
                 <li>
-                    <a class="user_login" href="{{ Auth::check() ? route('account') : route('login') }}">
+                    <a class="user_login" href="{{ Auth::check() ? route('dashboard') : route('login') }}">
                         <span>
                             <img src="{{ asset('frontend/images/login_icon.png') }}" alt="user" class="img-fluid w-100">
                         </span>

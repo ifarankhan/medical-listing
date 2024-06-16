@@ -1,3 +1,4 @@
+@php use App\Models\Role; @endphp
 <div class="dashboard_sidebar">
     <div class="sidebar_menu_icon">
         <i class="fas fa-bars dash_bar_icon"></i>
@@ -5,7 +6,7 @@
     </div>
 
     <a class="dashboard_sidebar_logo" href="/">
-        <img src="{{ asset('frontend/images/logo_1.png') }}" alt="Diverrx" class="img-fluid w-100">
+        <img src="{{ asset('frontend/images/logo_diverrx.png') }}" alt="Diverrx" class="img-fluid w-100">
     </a>
     <div class="dashboard_sidebar_user">
         <div class="img">
@@ -28,7 +29,8 @@
                 </a>
             </li>
             <li>
-                <a class="{{ request()->is('profile') ? 'active' : '' }}" href="dashboard_profile.html" style="display: none;">
+                <a class="{{ request()->is('profile') ? 'active' : '' }}" href="dashboard_profile.html"
+                   style="display: none;">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_2.png') }}" alt="icon"
                                      class="img-fluid w-100">
@@ -36,17 +38,22 @@
                     Profile
                 </a>
             </li>
+
+            <!-- Menu items for insurance_provider role -->
+            @if(Auth::user()->hasRole(Role::ROLE_INSURANCE_PROVIDER))
+                <li>
+                    <a class="{{ request()->is('listing*') ? 'active' : '' }}" href="{{ route('listing.index') }}">
+                                <span>
+                                    <img src="{{ asset('frontend/images/dashboard_icon_3.png') }}" alt="icon"
+                                         class="img-fluid w-100">
+                                </span>
+                        listing
+                    </a>
+                </li>
+            @endif
             <li>
-                <a class="{{ request()->is('listing*') ? 'active' : '' }}" href="{{ route('listing.index') }}">
-                            <span>
-                                <img src="{{ asset('frontend/images/dashboard_icon_3.png') }}" alt="icon"
-                                     class="img-fluid w-100">
-                            </span>
-                    listing
-                </a>
-            </li>
-            <li>
-                <a class="{{ request()->is('pricing') ? 'active' : '' }}" href="dashboard_pricing.html" style="display: none;">
+                <a class="{{ request()->is('pricing') ? 'active' : '' }}" href="dashboard_pricing.html"
+                   style="display: none;">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_4.png') }}" alt="icon"
                                      class="img-fluid w-100">
@@ -55,7 +62,8 @@
                 </a>
             </li>
             <li>
-                <a class="{{ request()->is('order') ? 'active' : '' }}" href="dashboard_order.html" style="display: none;">
+                <a class="{{ request()->is('order') ? 'active' : '' }}" href="dashboard_order.html"
+                   style="display: none;">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_7.png') }}" alt="icon"
                                      class="img-fluid w-100">
@@ -64,7 +72,8 @@
                 </a>
             </li>
             <li>
-                <a class="{{ request()->is('wishlist') ? 'active' : '' }}" href="dashboard_wishlist.html" style="display: none;">
+                <a class="{{ request()->is('wishlist') ? 'active' : '' }}" href="dashboard_wishlist.html"
+                   style="display: none;">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_6.png') }}" alt="icon"
                                      class="img-fluid w-100">
@@ -73,7 +82,8 @@
                 </a>
             </li>
             <li>
-                <a class="{{ request()->is('review') ? 'active' : '' }}" href="dashboard_review.html" style="display: none;">
+                <a class="{{ request()->is('review') ? 'active' : '' }}" href="dashboard_review.html"
+                   style="display: none;">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_5.png') }}" alt="icon"
                                      class="img-fluid w-100">
@@ -86,7 +96,8 @@
                     @csrf
                     @method('DELETE')
                 </form>
-                <a href="{{ route('logout') }}"  onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <a href="{{ route('logout') }}"
+                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_8.png') }}" alt="icon"
                                      class="img-fluid w-100">

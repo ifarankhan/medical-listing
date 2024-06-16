@@ -9,8 +9,10 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\SearchController;
+use App\Models\Role;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,6 +31,8 @@ Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
 Route::get('/contact', [ContactUsController::class, 'index'])->name('contact');
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 
+Route::get('/check-auth', [AuthController::class, 'checkAuth'])->name('check-auth');
+
 Route::group(['middleware' => 'guest'], function () {
 
     Route::get('/register', [RegisterController::class, 'register'])->name('register');
@@ -44,15 +48,14 @@ Route::group(['middleware' => ['auth', 'role:customer,insurance_provider']], fun
     Route::delete('/logout', [LogoutController::class, 'logout'])->name('logout');
 });
 
-Route::group(['middleware' => ['auth', 'insurance_provider']], function () {
+Route::group(['middleware' => ['auth', Role::ROLE_INSURANCE_PROVIDER]], function () {
 
-    Route::get('/listing', [ListingController::class, 'index'])->name('listing.index');
-    Route::get('/listing/create', [ListingController::class, 'create'])->name('listing.create');
-    Route::post('/listing/store', [ListingController::class, 'store'])->name('listing.store');
-    Route::get('/listing/{listing}/subscription', [
-            ListingController::class,
-            'subscription']
-    )->name('listing.step.subscription');
-    Route::get('/listing/{listing}/edit', [ListingController::class, 'edit'])->name('listing.edit');
-    Route::get('/listing/{listing}/delete', [ListingController::class, 'delete'])->name('listing.delete');
+    Route::get('/dashboard/listing', [ListingController::class, 'index'])->name('listing.index');
+    Route::get('/dashboard/listing/create', [ListingController::class, 'create'])->name('listing.create');
+    Route::post('/dashboard/listing/store', [ListingController::class, 'store'])->name('listing.store');
+    Route::get('/dashboard/listing/{listing}/subscription', [ListingController::class, 'subscription'])
+         ->name('listing.step.subscription');
+    Route::get('/dashboard/listing/{listing}/edit', [ListingController::class, 'edit'])->name('listing.edit');
+    Route::get('/dashboard/listing/{listing}/delete', [ListingController::class, 'delete'])
+         ->name('listing.delete');
 });
