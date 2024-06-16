@@ -426,30 +426,7 @@
         COUNTER 2 START
     ==============================-->
     <section class="counter_area pb_120 xs_pb_100">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12 wow fadeInUp" data-wow-duration="1.5s">
-                    <ul class="d-flex flex-wrap">
-                        <li>
-                            <h4><span class="counter">74</span>+</h4>
-                            <p>Honors Received</p>
-                        </li>
-                        <li>
-                            <h4><span class="counter">93</span>k</h4>
-                            <p>Granted Listing</p>
-                        </li>
-                        <li>
-                            <h4><span class="counter">85</span>+</h4>
-                            <p>Expert People</p>
-                        </li>
-                        <li>
-                            <h4><span class="counter">67</span>k</h4>
-                            <p>Happy Customers</p>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+
     </section>
     <!--=============================
         COUNTER 2 END
