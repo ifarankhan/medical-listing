@@ -53,25 +53,23 @@
                                         @csrf
                                         <div class="single_input">
                                             <label>Name</label>
-                                            <input type="text" class="@error('name') is-invalid @enderror" placeholder="Name" name="name" required>
+                                            <input type="text" placeholder="Name" name="name" value="{{ old('name') }}" required>
                                         </div>
                                         @error('name')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
+                                            <div class="invalid-feedback" role="alert">{{ $message }}</div>
                                         @enderror
 
                                         <div class="single_input">
                                             <label>Email</label>
-                                            <input type="email" class=" @error('email') is-invalid @enderror" name="email" placeholder="Email" required>
+                                            <input type="email" name="email" placeholder="Email" value="{{ old('email') }}" required>
                                         </div>
                                         @error('email')
-                                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                            <div class="invalid-feedback" style="display: block" role="alert">{{ $message }}</div>
                                         @enderror
 
                                         <div class="single_input">
                                             <label>Role</label>
-                                            <select id="role" name="role" required>
+                                            <select class="form-select" id="role" name="role" required>
                                                 <option value="">Select Role</option>
                                                 @foreach ($userRoles as $role)
                                                     <option value="{{ $role->id }}">{{ $role->title }}</option>
@@ -79,30 +77,26 @@
                                             </select>
                                         </div>
                                         @error('role')
-                                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                            <div class="invalid-feedback" style="display: block" role="alert">{{ $message }}</div>
                                         @enderror
 
                                         <div class="single_input">
                                             <label>Password</label>
-                                            <input type="password"
-                                                class="@error('password') is-invalid @enderror"
-                                                placeholder="********"
-                                                required>
+                                            <input type="password" name="password" placeholder="********" required>
 
                                         </div>
                                         @error('password')
-                                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                            <div class="invalid-feedback" style="display: block" role="alert">{{ $message }}</div>
                                         @enderror
 
                                         <div class="single_input">
                                             <label>Confirm password</label>
                                             <input
                                                 type="password"
-                                                class="@error('password_confirmation') is-invalid @enderror"
                                                 name="password_confirmation" placeholder="********" required>
                                         </div>
                                         @error('password_confirmation')
-                                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                            <div class="invalid-feedback" style="display: block" role="alert">{{ $message }}</div>
                                         @enderror
 
                                         <button class="common_btn">Registration </button>

@@ -21,6 +21,9 @@ class CheckRoleType
      */
     public function handle(Request $request, Closure $next, string ...$roles): Response|RedirectResponse
     {
+        if (!Auth::check()) {
+            return redirect('login');
+        }
         // Get the authenticated user
         $user = $request->user();
         // Check if the user exists and has any of the specified role types
