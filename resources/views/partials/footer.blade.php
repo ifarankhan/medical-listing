@@ -8,7 +8,7 @@
                 <div class="col-lg-3 col-sm-6 wow fadeInRight" data-wow-duration="1s">
                     <div class="footer_left">
                         <div class="footer_logo">
-                            <img src="{{ asset('frontend/images/footer_logo_2.png') }}" alt="logo" class="img-fluid w-100">
+                            <img src="{{ asset('frontend/images/logo_diverrx.png') }}" alt="logo" class="img-fluid w-100">
                         </div>
                         <p>Morbi pharetra, eros sed euismod pellentesque, nulla risus lobortis purus quis maximus.
                         </p>

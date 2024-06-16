@@ -4,7 +4,7 @@
 <nav class="navbar navbar-expand-lg main_menu main_menu_2">
     <div class="container">
         <a class="navbar-brand" href="{{ route('home') }}">
-            <img src="{{ asset('frontend/images/logo_2.png') }}" alt="Directory & Listings Template" class="img-fluid">
+            <img src="{{ asset('frontend/images/logo_diverrx.png') }}" alt="Directory & Listings Template" class="img-fluid">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,14 +21,6 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('search') }}">Listing</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">pages <i class="far fa-angle-down"></i></a>
-                    <ul class="droap_menu">
-                        <li><a href="{{ route('pricing') }}">pricing plan</a></li>
-                        <li><a href="privacy_policy.html">privacy policy</a></li>
-                        <li><a href="terms_condition.html">Terms & condition</a></li>
-                    </ul>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('contact') }}">Contact Us</a>
