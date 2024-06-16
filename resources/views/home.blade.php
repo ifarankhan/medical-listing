@@ -8,7 +8,7 @@
     <!--=============================
             BANNER 2 START
         ==============================-->
-    <section class="banner_2" style="background: url({{ 'frontend/images/banner_bg_2.jpg' }});">
+    <section class="banner_2" style="background: url({{ 'frontend/images/banner_diverrx.jpg' }});">
         <div class="banner_2_overly">
             <div class="container">
                 <div class="row wow fadeInUp" data-wow-duration="1.5s">
