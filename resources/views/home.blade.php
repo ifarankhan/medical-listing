@@ -14,8 +14,8 @@
                 <div class="row wow fadeInUp" data-wow-duration="1.5s">
                     <div class="col-xl-8 col-lg-10">
                         <div class="banner_2_contant">
-                            <h3>Explore & Get Your Ideal Space</h3>
-                            <h1>Explore & Connect in Fantastic <span>Locations</span>.</h1>
+                            <h3>Diverxx: A diverse, inclusive and versatile marketplace to empower every ability.</h3>
+                            <h1>Find Services and Providers near you.</h1>
                             <form action="{{ route('search') }}" method="GET" class="banner_form">
                                 <ul class="d-flex flex-wrap">
                                     <li class="banner_input">
