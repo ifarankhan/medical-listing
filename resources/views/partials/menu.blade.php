@@ -20,7 +20,7 @@
                     <a class="nav-link" href="{{ route('about') }}">About Us</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('search') }}">Listing</a>
+                    <a class="nav-link" href="{{ route('search') }}">Services/Products</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('contact') }}">Contact Us</a>
@@ -28,7 +28,7 @@
             </ul>
             <ul class="menu_right d-flex align-items-center">
                 <li>
-                    <a class="user_login" href="{{ Auth::check() ? route('account') : route('login') }}">
+                    <a class="user_login" href="{{ Auth::check() ? route('dashboard') : route('login') }}">
                         <span>
                             <img src="{{ asset('frontend/images/login_icon.png') }}" alt="user" class="img-fluid w-100">
                         </span>

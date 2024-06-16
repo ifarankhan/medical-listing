@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\SearchController;
+use App\Models\Role;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\AuthController;
@@ -47,7 +48,7 @@ Route::group(['middleware' => ['auth', 'role:customer,insurance_provider']], fun
     Route::delete('/logout', [LogoutController::class, 'logout'])->name('logout');
 });
 
-Route::group(['middleware' => ['auth', 'insurance_provider']], function () {
+Route::group(['middleware' => ['auth', Role::ROLE_INSURANCE_PROVIDER]], function () {
 
     Route::get('/dashboard/listing', [ListingController::class, 'index'])->name('listing.index');
     Route::get('/dashboard/listing/create', [ListingController::class, 'create'])->name('listing.create');

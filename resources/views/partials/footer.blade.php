@@ -37,9 +37,9 @@
                         <h4>Useful Links</h4>
                         <ul>
                             <li><a href="{{ route('home') }}">home</a></li>
-                            <li><a href="listing_right_sidebar.html">listing</a></li>
+                            <li><a href="{{ route('search') }}">services/products</a></li>
                             <li><a href="privacy_policy.html">Privacy Policy</a></li>
-                            <li><a href="contact.html">contact</a></li>
+                            <li><a href="{{ route('contact') }}">contact</a></li>
                         </ul>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                     <div class="footer_menu">
                         <h4>Navigation</h4>
                         <ul>
-                            <li><a href="dashboard.html">Dashboard</a></li>
+                            <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
                             <li><a href="dashboard_profile.html">Profile</a></li>
                             <li><a href="dashboard_listing.html">My Listing</a></li>
                             <li><a href="dashboard_review.html">Favorites</a></li>
@@ -59,9 +59,15 @@
                     <div class="footer_menu">
                         <h4>Help</h4>
                         <ul>
-                            <li><a href="sign_in.html">sign in</a></li>
-                            <li><a href="sign_up.html">Register</a></li>
-                            <li><a href="dashboard_add_listing.html">add listing</a></li>
+                            <li><a href="{{ route('login') }}">sign in</a></li>
+                            <li><a href="{{ route('register') }}">Register</a></li>
+                            <li>
+                                @auth
+                                    <a href="{{ route('listing.create') }}">Add A Product/Service</a>
+                                @else
+                                    <a href="{{ route('login') }}">Add A Product/Service</a>
+                                @endauth
+                            </li>
                             <li><a href="{{ route('pricing') }}">Pricing</a></li>
                             <li><a href="{{ route('contact') }}">contuct us</a></li>
                         </ul>
