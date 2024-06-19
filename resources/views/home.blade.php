@@ -19,7 +19,7 @@
                             <form action="{{ route('search') }}" method="GET" class="banner_form">
                                 <ul class="d-flex flex-wrap">
                                     <li class="banner_input">
-                                        <input type="text" placeholder="What are you looking for?">
+                                        <input type="text" name="q" placeholder="What are you looking for?">
                                         <span><img src="{{ asset('frontend/images/search_icon.png') }}" alt="search"
                                                    class="img-fluid w-100"></span>
                                     </li>

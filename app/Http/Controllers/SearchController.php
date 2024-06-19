@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Services\CategoryDropDown;
 use App\Services\SearchService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
@@ -17,10 +20,10 @@ class SearchController extends Controller
         $this->categoryDropDown = $categoryDropDown;
     }
 
-    public function search(Request $request)
+    public function search(Request $request): Factory|View|Application
     {
         $serviceCategories = $this->categoryDropDown->getServiceCategories();
-        $filters = $request->only(['category']);
+        $filters = $request->only(array_keys($this->searchService->filters));
         $listings = $this->searchService->search($filters);
         $resultThreshold = SearchService::RESULT_THRESHOLD;
 
