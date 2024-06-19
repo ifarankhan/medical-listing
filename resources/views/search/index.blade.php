@@ -39,28 +39,27 @@
         <div class="row">
             <div class="col-xl-4 col-md-7 order-2 order-xl-0">
                 <div class="property_sidebar sticky_sidebar">
-                    <div class="sidebar_search sidebar_wizerd">
-                        <h3>search</h3>
-                        <form action="#">
-                            <input type="text" placeholder="Search">
-                            <button type="submit"><i class="far fa-search"></i></button>
-                        </form>
-                    </div>
+
                     <form action="{{ route('search') }}" method="GET">
+
+                        <div class="sidebar_search sidebar_wizerd">
+                            <h3>search</h3>
+                            <input name="q" type="text" placeholder="Search">
+                        </div>
                         <div class="sidebar_dropdown sidebar_wizerd">
-                            <h3>Insurances</h3>
+                            <h3>insurances</h3>
                             <select class="select_2" name="insurance">
                                 <option value="">Select Insurance</option>
                             </select>
                         </div>
                         <div class="sidebar_dropdown sidebar_wizerd">
-                            <h3>Zip Code</h3>
+                            <h3>zip code</h3>
                             <select class="select_2" name="zip_code">
                                 <option value="">Select Zip Code</option>
                             </select>
                         </div>
                         <div class="sidebar_dropdown sidebar_wizerd">
-                            <h3>Service Category</h3>
+                            <h3>service category</h3>
                             <select class="select_2" name="category">
                                 <option value="">Select Category</option>
                                 @foreach($serviceCategories as $category)
