@@ -1,4 +1,4 @@
-@php use App\Models\Role; @endphp
+@php use App\Models\UserRole; @endphp
 <div class="dashboard_sidebar">
     <div class="sidebar_menu_icon">
         <i class="fas fa-bars dash_bar_icon"></i>
@@ -40,7 +40,7 @@
             </li>
 
             <!-- Menu items for insurance_provider role -->
-            @if(Auth::user()->hasRole(Role::ROLE_INSURANCE_PROVIDER))
+            @userRole(UserRole::ROLE_INSURANCE_PROVIDER)
                 <li>
                     <a class="{{ request()->is('listing*') ? 'active' : '' }}" href="{{ route('listing.index') }}">
                                 <span>
@@ -50,7 +50,7 @@
                         listing
                     </a>
                 </li>
-            @endif
+            @enduserRole
             <li>
                 <a class="{{ request()->is('pricing') ? 'active' : '' }}" href="dashboard_pricing.html"
                    style="display: none;">
