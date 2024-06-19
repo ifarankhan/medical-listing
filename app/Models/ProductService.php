@@ -30,5 +30,4 @@ class ProductService extends Model
     {
         return $this->belongsTo(Category::class);
     }
-
 }
