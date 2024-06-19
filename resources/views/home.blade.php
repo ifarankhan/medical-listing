@@ -380,7 +380,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-5 col-md-6 wow fadeInLeft" data-wow-duration="1.5s">
                     <div class="testimonial_2_img">
-                        <img src="{{ asset('frontend/images/testimonial_img.png') }}" alt="img" class="img-fluid w-100">
+                        <img src="{{ asset('frontend/images/testimonial_img5.jpg') }}" alt="img" class="img-fluid w-100">
                     </div>
                 </div>
                 <div class="col-lg-7 wow fadeInRight" data-wow-duration="1.5s">
@@ -399,12 +399,9 @@
                                             <i class="fas fa-star"></i>
                                             <i class="far fa-star"></i>
                                         </span>
-                                    <p>“Morbi consectetur elementum purus mattis cursus purus vel metus iaculis
-                                        sagittis. Vestibulum molestie bibendum turpis luctus sem lacinia quis. Quisque
-                                        amet velit sit amet dui hendrerit ultricies a id ipsum Mauris sit amet lacinia
-                                        est, vitae tristique metus tempor nibh ultricies.”</p>
-                                    <h4>Dominic L. Emen</h4>
-                                    <h6>Product Designer</h6>
+                                    <p>“Diverrx is a game-changer for our family! Finding reliable private duty nursing providers used to be a daunting task, but with Diverrx, it's become super easy. Their platform streamlined the entire process, connecting us with highly qualified nurses who provide exceptional care for our loved one. We couldn't be happier!”</p>
+{{--                                    <h4>Dominic L. Emen</h4>--}}
+{{--                                    <h6>Product Designer</h6>--}}
                                 </div>
                             </div>
                             <div class="col-xl-12">
@@ -416,14 +413,54 @@
                                             <i class="fas fa-star"></i>
                                             <i class="far fa-star"></i>
                                         </span>
-                                    <p>“Morbi consectetur elementum purus mattis cursus purus vel metus iaculis
-                                        sagittis. Vestibulum molestie bibendum turpis luctus sem lacinia quis. Quisque
-                                        amet velit sit amet dui hendrerit ultricies a id ipsum Mauris sit amet lacinia
-                                        est, vitae tristique metus tempor nibh ultricies.”</p>
-                                    <h4>Dominic L. Emen</h4>
-                                    <h6>Product Designer</h6>
+                                    <p>“As a music therapist, I've struggled to find clients who are the right fit
+                                        for my services. Thanks to Diverrx, that's a thing of the past! Their platform
+                                        not only makes it incredibly easy for me to showcase my skills and expertise,
+                                        but it also helps clients find the perfect music therapist for their needs.
+                                        It's a win-win for everyone involved!”</p>
+{{--                                    <h4>Dominic L. Emen</h4>--}}
+{{--                                    <h6>Product Designer</h6>--}}
                                 </div>
                             </div>
+
+                            <div class="col-xl-12">
+                                <div class="testimonial_2_item">
+                                        <span>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </span>
+                                    <p>“Finding the right speech therapist for my child was overwhelming until we
+                                        discovered Diverrx. With their user-friendly platform, we were able to browse
+                                        through a diverse range of qualified speech therapists and easily find one who
+                                        resonated with our needs. Diverrx made the entire process hassle-free, and now
+                                        our child is making great progress thanks to their amazing speech therapist!”</p>
+{{--                                    <h4>Dominic L. Emen</h4>--}}
+{{--                                    <h6>Product Designer</h6>--}}
+                                </div>
+                            </div>
+
+                            <div class="col-xl-12">
+                                <div class="testimonial_2_item">
+                                        <span>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </span>
+                                    <p>“Diverrx has revolutionized the way we procure DME supplies for our clinic.
+                                        Gone are the days of tedious searches and unreliable suppliers. With Diverrx,
+                                        we can easily find high-quality DME supplies from trusted providers with just
+                                        a few clicks. Their platform has simplified our procurement process and ensured
+                                        that we always have the supplies we need to provide the best care for our patients.”</p>
+{{--                                    <h4>Dominic L. Emen</h4>--}}
+{{--                                    <h6>Product Designer</h6>--}}
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
