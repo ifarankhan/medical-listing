@@ -8,7 +8,7 @@
     <!--=============================
             BANNER 2 START
         ==============================-->
-    <section class="banner_2" style="background: url({{ 'frontend/images/banner_diverrx.jpg' }});">
+    <section class="banner_2" style="background: url({{ 'frontend/images/banner_diverrx1.jpg' }});">
         <div class="banner_2_overly">
             <div class="container">
                 <div class="row wow fadeInUp" data-wow-duration="1.5s">
@@ -61,7 +61,7 @@
                         <a href="{{ route('search', ['category' => $serviceCategories[$i]->slug]) }}" class="category_2_item">
                             <div class="text">
                                 <b>{{ $serviceCategories[$i]->name }}</b>
-                                <p>{{ $serviceCategories[$i]->listing_count }}+ listings</p>
+                                @if($serviceCategories[$i]->listing_count > 0) <p>{{ $serviceCategories[$i]->listing_count }}+ listings</p> @endif
                             </div>
                             <span><img src="{{ asset('frontend/images/categoris_7.png') }}" alt="icon" class="img-fluid w-100"></span>
                         </a>
