@@ -279,18 +279,18 @@
                     <div class="col-xl-6 col-lg-7 wow fadeInUp" data-wow-duration="1.5s">
                         <div class="popular_listing_content">
                             <div class="section_title_2 section_title_left_2">
-                                <h4>Popular Listings</h4>
-                                <h2>Explore & Connect in Stunning <span>Places.</span> </h2>
+                                <h4>Crowd Favorite</h4>
+                                <h2> Explore Community Events, & Other Resources In Your <span>Area</span> </h2>
                             </div>
-                            <p>Lorem ipsum dolor sit amet, consectetu adipiscing elit. Nam placerat elit ac nulla nec
-                                ullamcorper risus dignissim.</p>
-                            <a href="listing_details.html" class="common_btn_2">Comprehensive Details<span><i
+{{--                            <p>Lorem ipsum dolor sit amet, consectetu adipiscing elit. Nam placerat elit ac nulla nec--}}
+{{--                                ullamcorper risus dignissim.</p>--}}
+                            <a href="listing_details.html" class="common_btn_2">explore the community<span><i
                                         class="far fa-plus"></i></span></a>
                         </div>
                     </div>
                     <div class="col-xl-4 col-lg-5 wow fadeInUp" data-wow-duration="1.5s">
                         <div class="polular_listing_img">
-                            <img src="{{ asset('frontend/images/popular_listing_img.png') }}" alt="img" class="img-fluid w-100">
+                            <img src="{{ asset('frontend/images/crowd_favorite.jpg') }}" alt="img" class="img-fluid w-100">
                         </div>
                     </div>
                 </div>
@@ -377,7 +377,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-5 col-md-6 wow fadeInLeft" data-wow-duration="1.5s">
                     <div class="testimonial_2_img">
-                        <img src="{{ asset('frontend/images/testimonial_img5.jpg') }}" alt="img" class="img-fluid w-100">
+                        <img src="{{ asset('frontend/images/crowd_favorite.jpg') }}" alt="img" class="img-fluid w-100">
                     </div>
                 </div>
                 <div class="col-lg-7 wow fadeInRight" data-wow-duration="1.5s">
