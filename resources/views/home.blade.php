@@ -309,7 +309,7 @@
                 <div class="col-xl-6 wow fadeInUp" data-wow-duration="1.5s">
                     <div class="section_title_2 mb_25">
                         <h4>Find Out Here</h4>
-                        <h2>Operational <span>Process</span> Breakdown</h2>
+                        <h2>Getting <span>Services</span> for yourself or your loved ones is now as easy as 1,2, 3 only with Diverrx.</h2>
                     </div>
                 </div>
             </div>
@@ -320,10 +320,9 @@
                             <img src="{{ asset('frontend/images/process_icon_5.png') }}" alt="icon" class="img-fluid w-100">
                         </div>
                         <div class="text">
-                            <h4>Find Interesting Place</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetu
-                                adipiscing elit. Nam placerat elit ac nulla nec
-                                ullamcorper risus dignissim.</p>
+                            <h4>Find Product and Services</h4>
+                            <p>Search for the services/products
+                                you are looking for based on your area.</p>
                         </div>
                     </div>
                 </div>
@@ -333,10 +332,9 @@
                             <img src="{{ asset('frontend/images/process_icon_4.png') }}" alt="icon" class="img-fluid w-100">
                         </div>
                         <div class="text">
-                            <h4>Contact a Few Owners</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetu
-                                adipiscing elit. Nam placerat elit ac nulla nec
-                                ullamcorper risus dignissim.</p>
+                            <h4>Contact Your Preferred Five Providers</h4>
+                            <p>Get in touch with your preferred five
+                                service providers or let them contact you.</p>
                         </div>
                     </div>
                 </div>
@@ -346,10 +344,9 @@
                             <img src="{{ asset('frontend/images/process_icon_6.png') }}" alt="icon" class="img-fluid w-100">
                         </div>
                         <div class="text">
-                            <h4>Make a Reservation</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetu
-                                adipiscing elit. Nam placerat elit ac nulla nec
-                                ullamcorper risus dignissim.</p>
+                            <h4>Secure your service/product</h4>
+                            <p>Book your service or products with
+                                the selected service provider.</p>
                         </div>
                     </div>
                 </div>
