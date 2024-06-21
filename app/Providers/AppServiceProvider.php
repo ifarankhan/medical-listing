@@ -29,5 +29,10 @@ class AppServiceProvider extends ServiceProvider
 
             return auth()->check() && auth()->user()->hasRole($role);
         });
+        // Custom directive for using false check.
+        Blade::if('notUserRole', function ($role) {
+
+            return !(auth()->check() && auth()->user()->hasRole($role));
+        });
     }
 }

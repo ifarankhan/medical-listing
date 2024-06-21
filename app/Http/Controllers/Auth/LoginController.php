@@ -25,10 +25,12 @@ class LoginController extends Controller
             'password' => $request->password,
         ];
 
-        if (Auth::attempt($credentials)) {
-            return redirect('/dashboard')->with('success', 'Login Success');
+        if (Auth::attempt($credentials, $request->filled('remember'))) {
+
+            return redirect()->back();
         }
 
         return back()->with('error', 'Error Email or Password');
     }
+
 }
