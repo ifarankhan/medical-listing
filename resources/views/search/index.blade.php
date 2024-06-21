@@ -233,7 +233,7 @@
                                             <li><i class="fas fa-map-marker-alt"></i>{{ $listings[$i]->business_address }}</li>
                                             <li><i class="fas fa-phone-alt"></i>{{ $listings[$i]->business_contact }}</li>
                                         </ul>
-                                        @userRole(UserRole::ROLE_CUSTOMER)
+                                        @notUserRole(UserRole::ROLE_INSURANCE_PROVIDER)
                                             <div class="listing_bottom">
                                                 <p class="small">
                                                     <button data-bs-toggle="modal"
@@ -243,7 +243,7 @@
                                                 </p>
                                                 <p class="small"><button id="allowContact" class="btn">Allow Contact</button></p>
                                             </div>
-                                        @enduserRole
+                                        @endnotUserRole
                                         <span class="person"><img src="{{ asset('frontend/images/person_1.png') }}" alt="person"
                                                                   class="img-fluid w-100"></span>
                                     </div>
