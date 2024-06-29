@@ -578,10 +578,11 @@ $(function () {
 
                     if (response.authenticated) {
                         // Retrieve the listing ID from the data attribute
-                        let listingId = button.closest('.listing').data('listing-id');
-                        // Populate the hidden input with the listing ID in the modal
+                        let listingId = button.closest('.listing_item')
+                            .data('listing-id');
+                        // Populate the hidden input with the listing ID in the modal.
                         $('#listingId').val(listingId);
-                        // User is authenticated, show the modal
+                        // User is authenticated, show the modal.
                         sendMessageModal.modal('show');
                     } else {
                         // User is not authenticated, redirect to login.
@@ -594,7 +595,13 @@ $(function () {
             });
         });
 
-        // Handle form submission for sending message
+        // Set up AJAX to include the CSRF token in the headers
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        // Handle form submission for sending message.
         sendMessageForm.submit(function(e) {
 
             e.preventDefault();
@@ -618,15 +625,20 @@ $(function () {
                 },
                 success: function(response) {
                     if (response.success) {
-                        alert(response.message);
+
                         sendMessageModal.modal('hide');
-                        sendMessageForm.clear(); // Clear form fields.
+                        // Clear form fields
+                        sendMessageForm[0].reset(); // Reset the form
+
+                        alert(response.message);
                     }
                 },
                 error: function(xhr) {
 
                     let errors = xhr.responseJSON.errors;
                     let errorMessages = '';
+
+                    // Construct error messages from response
                     for (let key in errors) {
                         if (errors.hasOwnProperty(key)) {
                             errorMessages += errors[key][0] + '\n';

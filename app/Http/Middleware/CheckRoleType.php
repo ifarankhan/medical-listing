@@ -17,21 +17,22 @@ class CheckRoleType
      * @param Closure(Request): (Response|RedirectResponse) $next
      * @param string ...$roles
      *
-     * @return Response|RedirectResponse
+     * @return
      */
-    public function handle(Request $request, Closure $next, string ...$roles): Response|RedirectResponse
+    public function handle(Request $request, Closure $next, string ...$roles)
     {
         if (!Auth::check()) {
             return redirect('login');
         }
         // Get the authenticated user
-        $user = $request->user();
-        // Check if the user exists and has any of the specified role types
-        if ($user && $user->userRole()->whereIn('name', $roles)->exists()) {
+        $user = Auth::user();
+        // Check if the user exists and has allowed role.
+        if ($user->userRole()->whereIn('name', $roles)->exists()) {
             return $next($request);
         }
         // If the user doesn't have any of the specified role types, invalidate the session and redirect to logout
         Auth::logout();
-        return redirect()->route('login')->with('error', 'You are not authorized to access this resource.');
+        return redirect()->route('login')
+           ->with('error', 'You are not authorized to access this resource.');
     }
 }

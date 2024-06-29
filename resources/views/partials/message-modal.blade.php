@@ -10,18 +10,19 @@
             <div class="modal-body">
 
                 <form id="sendMessageForm" action="#">
+                    @csrf
                     <!-- Hidden input to store listing ID -->
                     <input type="hidden" id="listingId" name="listing_id">
                     <div class="row">
                         <div class="col-md-6 col-lg-12 col-xl-6">
                             <div class="contact_input">
-                                <input type="text" placeholder="Your Name" id="FullName">
+                                <input type="text" placeholder="Your Name" id="FullName" value="{{ auth()->user()->name }}">
                                 <span class="contact_input_icon"><img src="{{ asset('frontend/images/user_icon_3.png') }}" alt="icon" class="img-fluid w-100"></span>
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-12 col-xl-6">
                             <div class="contact_input">
-                                <input type="email" placeholder="Your Email" id="Email">
+                                <input type="email" placeholder="Your Email" id="Email" value="{{ auth()->user()->email }}">
                                 <span class="contact_input_icon"><img
                                         src="{{ asset('frontend/images/massage_4.png') }}"
                                         alt="icon" class="img-fluid w-100"></span>
@@ -60,5 +61,3 @@
         </div>
     </div>
 </div>
-
-

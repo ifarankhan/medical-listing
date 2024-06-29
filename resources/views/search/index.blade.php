@@ -236,12 +236,14 @@
                                         @notUserRole(UserRole::ROLE_INSURANCE_PROVIDER)
                                             <div class="listing_bottom">
                                                 <p class="small">
-                                                    <button data-bs-toggle="modal"
-                                                        data-bs-target="#sendMessageModal"
+                                                    <button
+{{--    Remove attribute when triggering from different source i.e, conditional trigger. data-bs-toggle="modal"--}}
+
+{{--    Remove attribute when triggering from different source i.e, conditional trigger. data-bs-target="#sendMessageModal"--}}
                                                         id="sendMessageBtn"
                                                         class="btn sendMessageBtn">Send Message</button>
                                                 </p>
-                                                <p class="small"><button id="allowContact" class="btn">Allow Contact</button></p>
+
                                             </div>
                                         @endnotUserRole
                                         <span class="person"><img src="{{ asset('frontend/images/person_1.png') }}" alt="person"
