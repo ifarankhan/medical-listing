@@ -12,7 +12,7 @@
                 <form id="sendMessageForm" action="#">
                     @csrf
                     <!-- Hidden input to store listing ID -->
-                    <input type="hidden" id="listingId" name="listing_id">
+                    <input type="hidden" id="listingId" name="listing_id[]">
                     <div class="row">
                         <div class="col-md-6 col-lg-12 col-xl-6">
                             <div class="contact_input">

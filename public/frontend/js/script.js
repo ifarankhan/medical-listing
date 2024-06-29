@@ -610,7 +610,7 @@ $(function () {
             const phone = $('#Phone').val();
             const subject = $('#Subject').val();
             const message = $('#Message').val();
-            const listingId = $('#listingId').val(); // Retrieve listing ID from hidden input
+            const listingIds = $('#listingId').val();// Retrieve listing ID from hidden input
 
             $.ajax({
                 url: '/send-message',
@@ -621,7 +621,7 @@ $(function () {
                     phone: phone,
                     email: email,
                     subject: subject,
-                    listing_id: listingId // Pass listing ID in the AJAX request
+                    'listing_id[]': listingIds // Pass listing ID in the AJAX request
                 },
                 success: function(response) {
                     if (response.success) {

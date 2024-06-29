@@ -29,7 +29,8 @@ class SendMessageRequest extends FormRequest
             'phone' => 'required|string|max:15',
             'subject' => 'required|string|max:255',
             'message' => 'required|string',
-            'listing_id' => 'required|exists:listings,id',
+            'listing_id' => 'required|array',
+            'listing_id.*' => 'integer|exists:listings,id', // Validate each listing ID
         ];
     }
 

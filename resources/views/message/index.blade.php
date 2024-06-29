@@ -23,19 +23,13 @@
 
                             <div id="collapse-{{ $message->id }}" class="collapse" aria-labelledby="heading-{{ $message->id }}" data-parent="#messages-container">
                                 <div class="card-body">
-                                    <p>From: {{ $message->user->name }} &lt;{{ $message->user->email }}&gt;</p>
-                                    <p>Sent On: {{ $message->created_at->format('F d, Y') }}</p>
+                                    <p><b>From:</b> {{ $message->user->name }} &lt;{{ $message->user->email }}&gt;</p>
+                                    <p><b>To Service Provider:</b> {{ $message->provider->name }} &lt;{{ $message->provider->email }}&gt;</p>
+                                    <p><b>Sent On:</b> {{ $message->created_at->format('F d, Y h:i A') }}</p>
+                                    <br/>
+                                    <p><b>Message:</b></p>
                                     <p>{{ $message->body }}</p>
 
-                                    <!-- Reply Form -->
-                                    <form class="reply-form" data-message-id="{{ $message->id }}">
-                                        @csrf
-                                        <div class="mb-3">
-                                            <label for="reply-{{ $message->id }}" class="form-label">Reply</label>
-                                            <textarea class="form-control" id="reply-{{ $message->id }}" rows="3"></textarea>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Send Reply</button>
-                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -60,35 +54,6 @@
                 success: function(data) {
                     $('#messages-container').html(data.messages);
                     $('#pagination-links').html(data.pagination);
-                }
-            });
-        });
-
-        // Handle reply form submission
-        $(document).on('submit', '.reply-form', function(event) {
-            event.preventDefault();
-
-            let form = $(this);
-            let messageId = form.data('message-id');
-            let reply = form.find('textarea').val();
-
-            $.ajax({
-                url: '/messages/' + messageId + '/reply',
-                method: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    reply: reply
-                },
-                success: function(response) {
-                    if (response.success) {
-                        alert('Reply sent successfully!');
-                        form.find('textarea').val(''); // Clear the textarea
-                    } else {
-                        alert('Failed to send reply.');
-                    }
-                },
-                error: function(xhr) {
-                    alert('Error: ' + xhr.responseText);
                 }
             });
         });

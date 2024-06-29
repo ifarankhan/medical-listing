@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class MessageController extends Controller
 {
@@ -28,26 +29,28 @@ class MessageController extends Controller
         try {
             // Validate request, ensure all fields are provided.
             $request->validated();
-            // Get provider ID by listing ID
-            $providerId = $this->getProviderIdByListingId($request->listing_id);
-            // Get request and store in message table.
-            // Create a new message instance
-            $message = $this->message;
-            $message->full_name = $request->fullName;
-            $message->email = $request->email;
-            $message->phone = $request->phone;
-            $message->subject = $request->subject;
-            $message->body = $request->message;
-            $message->user_id = Auth::id();
-            $message->provider_id = $providerId;
-            $message->listing_id = $request->listing_id;
-            // Save the message
-            $message->save();
-            // Send email to service provider
-            // Fetch user id of the listing's owner
-            // Send email.
+            // Array of listing ids.
+            $listingIds = $request->listing_id;
+            // Prepare and store the message in message table and send email.
+            foreach($listingIds as $listingId) {
+
+                $serviceProvider = $this->getProviderIdByListingId($listingId);
+                $message = $this->message;
+                $message->full_name = $request->fullName;
+                $message->email = $request->email;
+                $message->phone = $request->phone;
+                $message->subject = $request->subject;
+                $message->body = $request->message;
+                $message->user_id = Auth::id();
+                // Get provider ID by listing ID
+                $message->provider_id = $serviceProvider->id;
+                $message->listing_id = $listingId;
+                // Save the message
+                $message->save();
+                // Send email to service provider
+                // Mail::to($serviceProvider->email)->send(new MessageSent($message));
+            }
             // Show success message.
-            // Show error message.
             return response()->json([
                 'success' => true,
                 'message' => 'Message sent successfully!'
@@ -84,6 +87,6 @@ class MessageController extends Controller
     {
         $listing = $this->listing->findOrFail($listingId);
 
-        return $listing->user_id;
+        return $listing->user()->first();
     }
 }
