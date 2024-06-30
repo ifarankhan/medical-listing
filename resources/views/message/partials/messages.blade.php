@@ -1,10 +1,11 @@
+@php use App\Models\UserRole; @endphp
 <div>
     @foreach ($messages as $message)
         <div class="card mb-3">
             <div class="card-header" id="heading-{{ $message->id }}">
                 <h5 class="mb-0">
                     <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#collapse-{{ $message->id }}" aria-expanded="true" aria-controls="collapse-{{ $message->id }}">
-                        {{ $message->subject }}
+                        @notUserRole(UserRole::ROLE_CUSTOMER) {{ $message->user->name }} - @endnotUserRole {{ $message->subject }}
                     </button>
                 </h5>
             </div>
@@ -14,6 +15,7 @@
                     <p><b>From:</b> {{ $message->user->name }} &lt;{{ $message->user->email }}&gt;</p>
                     <p><b>To Service Provider:</b> {{ $message->provider->name }} &lt;{{ $message->provider->email }}&gt;</p>
                     <p><b>Sent On:</b> {{ $message->created_at->format('F d, Y h:i A') }}</p>
+                    <p><b>Phone:</b> {{ $message->phone }}</p>
                     <br/>
                     <p><b>Message:</b></p>
                     <p>{{ $message->body }}</p>

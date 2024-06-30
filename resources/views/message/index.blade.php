@@ -7,7 +7,8 @@
         @include('partials.sidebar')
         <div class="dashboard_content">
             <h2 class="dashboard_title">Messages</h2>
-            <div class="container">
+
+            <div class="container" style="margin-top: 25px;">
                 <div id="messages-container">
                     @include('message.partials.messages', ['messages' => $messages])
 
