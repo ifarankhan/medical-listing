@@ -15,18 +15,30 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->string('full_name');
-            $table->string('email');
-            $table->string('phone');
-            $table->string('subject');
-            $table->text('message');
-            $table->enum('status', [
-                'unread',
-                'read'
-            ])->default('unread');
+            $table->string('full_name', 200);
+            $table->string('email', 200);
+            $table->string('phone', 50);
+            $table->string('subject', 200);
+            $table->text('body');
+            $table->unsignedBigInteger('listing_id');
+            $table->unsignedBigInteger('provider_id');
+            $table->unsignedBigInteger('user_id');
+            $table->enum('status', ['unread', 'read'])->default('unread');
             $table->timestamp('created_at')->useCurrent(); // Use CURRENT_TIMESTAMP as default
             $table->timestamp('updated_at')->useCurrent(); // Use CURRENT_TIMESTAMP as default
-            $table->timestamps();
+
+            // Foreign key constraints
+            $table->foreign('listing_id')
+                  ->references('id')
+                  ->on('listings')
+                  ->onDelete('cascade');
+            $table->foreign('provider_id')
+                  ->references('id')->on('users')
+                                    ->onDelete('cascade');
+            $table->foreign('user_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('cascade');
         });
     }
 
