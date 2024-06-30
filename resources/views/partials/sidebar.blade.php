@@ -29,6 +29,15 @@
                 </a>
             </li>
             <li>
+                <a class="{{ request()->is('message') ? 'active' : '' }}" href="{{ route('message') }}">
+                            <span>
+                                <img src="{{ asset('frontend/images/massage.png') }}" alt="icon"
+                                     class="img-fluid w-100">
+                            </span>
+                    message
+                </a>
+            </li>
+            <li>
                 <a class="{{ request()->is('profile') ? 'active' : '' }}" href="dashboard_profile.html"
                    style="display: none;">
                             <span>

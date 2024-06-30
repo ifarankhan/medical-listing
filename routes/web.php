@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\SearchController;
 use App\Models\UserRole;
@@ -46,6 +47,8 @@ Route::group(['middleware' => ['auth', 'role:customer,insurance_provider']], fun
     Route::get('/account', [DashboardController::class, 'index'])->name('account');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::delete('/logout', [LogoutController::class, 'logout'])->name('logout');
+
+    Route::get('/message', [MessageController::class, 'index'])->name('message');
 });
 
 Route::group(['middleware' => ['auth', UserRole::ROLE_INSURANCE_PROVIDER]], function () {
@@ -58,4 +61,8 @@ Route::group(['middleware' => ['auth', UserRole::ROLE_INSURANCE_PROVIDER]], func
     Route::get('/dashboard/listing/{listing}/edit', [ListingController::class, 'edit'])->name('listing.edit');
     Route::get('/dashboard/listing/{listing}/delete', [ListingController::class, 'delete'])
          ->name('listing.delete');
+});
+
+Route::group(['middleware' => ['auth', 'role:customer']], function () {
+    Route::post('/send-message', [MessageController::class, 'send'])->name('send-message');
 });
