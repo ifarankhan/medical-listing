@@ -3,14 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SendMessageRequest;
+use App\Mail\MessageSend;
 use App\Models\Listing;
 use App\Models\Message;
 
 
+use App\Models\User;
+use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class MessageController extends Controller
@@ -48,7 +52,7 @@ class MessageController extends Controller
                 // Save the message
                 $message->save();
                 // Send email to service provider
-                // Mail::to($serviceProvider->email)->send(new MessageSent($message));
+                $this->sendMail($serviceProvider->email, $message);
             }
             // Show success message.
             return response()->json([
@@ -67,19 +71,20 @@ class MessageController extends Controller
 
     public function index(Request $request)
     {
+        /** @var User $user */
+        $user = Auth::user();
         // Fetch messages by current user.
-        $messages = Auth::user()
-            ->messages()
+        $messages = $user->messages()
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
         if ($request->ajax()) {
+            $view = view('message.partials.messages', compact('messages'))->render();
             return response()->json([
-                'messages' => $messages,
-                'pagination' => (string) $messages->links()
+                'messages' => $view,
+                'pagination' => (string) $messages->links('pagination::bootstrap-4')
             ]);
         }
-
         // Load view.
         return view('message.index', compact('messages'));
     }
@@ -88,5 +93,15 @@ class MessageController extends Controller
         $listing = $this->listing->findOrFail($listingId);
 
         return $listing->user()->first();
+    }
+
+    private function sendMail(string $email, $message): void
+    {
+        try {
+            Mail::to($email)->send(new MessageSend($message));
+        } catch (Exception $e) {
+
+            Log::error('Error sending email: ' . $e->getMessage());
+        }
     }
 }

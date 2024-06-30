@@ -81,6 +81,10 @@ class User extends Authenticatable
         ];
     }
 
+    public function isServiceProvider(): bool
+    {
+        return $this->hasRole(UserRole::ROLE_INSURANCE_PROVIDER);
+    }
     public function setPasswordAttribute($value): void
     {
         $this->attributes['password'] = Hash::make($value);
@@ -92,6 +96,8 @@ class User extends Authenticatable
 
     public function messages(): HasMany
     {
-        return $this->hasMany(Message::class);
+        $key = $this->isServiceProvider()? 'provider_id': 'user_id';
+
+        return $this->hasMany(Message::class, $key);
     }
 }
