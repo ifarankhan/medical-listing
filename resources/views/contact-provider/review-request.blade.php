@@ -57,7 +57,12 @@
                            @if (auth()->check()) value="{{ auth()->user()->name }}" @endif>
                     <input type="hidden" id="Email" name="email"
                            @if (auth()->check()) value="{{ auth()->user()->email }}" @endif>
-                    <input type="hidden" id="Subject" name="subject" value="Message Received" />
+                    <input type="hidden" id="Subject" name="subject"
+                           @if($contactRequested)
+                               value="Customer '{{ auth()->user()->name }}' has requested to be contacted."
+                           @else
+                               value="Message received from: '{{ auth()->user()->name }}'"
+                        @endif />
                     <!-- Loop through $listingIds to create hidden input fields -->
                     @foreach ($listingIds as $listingId)
                         <input type="hidden" id="listingId" name="listing_id[]" value="{{ $listingId }}"/>
@@ -65,9 +70,16 @@
 
                     <input type="hidden" id="successRedirect" value="{{ route('message') }}"/>
                     <div class="form-group">
-                        <label for="message">Message</label>
-                        <br/>
-                        <textarea class="form-control" id="Message" name="message" rows="3" placeholder="Enter your message"></textarea>
+
+                        @if($contactRequested)
+                            <input type="hidden" id="Message"
+                                   value="Customer '{{ auth()->user()->name }}' has requested to be contacted."/>
+                        @else
+                            <label for="message">Message</label>
+                            <br/>
+                            <textarea class="form-control" id="Message" name="message" rows="3"
+                                  placeholder="Enter your message"></textarea>
+                        @endif
                     </div>
                     <div class="d-flex justify-content-between mt-3">
                         <a href="{{ session('referer_url') }}" class="btn btn-secondary">Modify Request</a>
