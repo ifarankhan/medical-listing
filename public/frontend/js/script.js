@@ -704,6 +704,37 @@ $(function () {
                 url: contactMultipleProvidersUrl, // Use the named route
                 method: 'POST',
                 data: {
+                    contactRequested: false,
+                    selectedValues: selectedValues,
+                },
+                success: function(response) {
+                    if (response.error === false) {
+                        // Redirect to another page
+                        window.location.href = requestReview; // Use the named route
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Handle the error response
+                    if (xhr.status === 401) {
+                        // Redirect to login page or handle as needed
+                        window.location.href = '/login'; // Replace with your login page URL
+                    } else {
+                        console.error(error);
+                    }
+                }
+            });
+        });
+
+        // Contact multiple providers
+        $('#AllowContactMultiple').click(function (e){
+
+            e.preventDefault();
+            // Proceed with AJAX request
+            $.ajax({
+                url: contactMultipleProvidersUrl, // Use the named route
+                method: 'POST',
+                data: {
+                    contactRequested: true,
                     selectedValues: selectedValues,
                 },
                 success: function(response) {

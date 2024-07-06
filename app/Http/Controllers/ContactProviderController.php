@@ -20,7 +20,6 @@ class ContactProviderController extends Controller
     {
         // Retrieve the referring URL (search page URL)
         $refererUrl = $request->headers->get('referer');
-
         // Store the referring URL in session
         session()->put('referer_url', $refererUrl);
 
@@ -38,6 +37,9 @@ class ContactProviderController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
+        if ($request->post('contactRequested')) {
+            session()->put('contactRequested', $request->post('contactRequested'));
+        }
         // Retrieve the selected values from the request
         $selectedListingIds = $request->input('selectedValues');
         // Store selected values in the session
@@ -46,10 +48,11 @@ class ContactProviderController extends Controller
         return response()->json(['error' => false]);
     }
 
-    public function reviewRequest(Request $request)
+    public function reviewRequest()
     {
         $listings = [];
         $listingIds = [];
+        $contactRequested = session()->has('contactRequested') == 'true';
         // Check if session variable is set
         if (session()->has('selectedValues')) {
 
@@ -57,7 +60,11 @@ class ContactProviderController extends Controller
             $listingIds = array_values(session('selectedValues'));
         }
 
-        return view('contact-provider.review-request', compact('listings', 'listingIds'));
+        return view('contact-provider.review-request', compact(
+            'listings',
+            'listingIds',
+            'contactRequested'
+        ));
     }
 
     private function prepareListingArray(array $listingIds): array
