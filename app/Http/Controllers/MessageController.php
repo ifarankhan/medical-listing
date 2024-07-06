@@ -39,7 +39,7 @@ class MessageController extends Controller
             foreach($listingIds as $listingId) {
 
                 $serviceProvider = $this->getProviderIdByListingId($listingId);
-                $message = $this->message;
+                $message = $this->message->newInstance(); // Need new instance to store individual data.
                 $message->full_name = $request->fullName;
                 $message->email = $request->email;
                 $message->phone = $request->phone;
@@ -54,6 +54,8 @@ class MessageController extends Controller
                 // Send email to service provider
                 $this->sendMail($serviceProvider->email, $message);
             }
+            // Clear the session after processing.
+            session()->forget('selectedValues');
             // Show success message.
             return response()->json([
                 'success' => true,

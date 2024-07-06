@@ -43,6 +43,21 @@
 
                     <form action="{{ route('search') }}" method="GET">
 
+                        <div id="ContactOptions"
+                             class="sidebar_amenities sidebar_wizerd sidebar_multiple_contact"
+                             style="display: none;">
+
+                            <div class="col-12">
+                                <button id="AllowContactMultiple" type="submit" class="common_btn">
+                                    allow providers to contact you
+                                </button>
+                            </div>
+                            <div class="col-12">
+                                <button id="ContactMultiple" type="submit" class="common_btn">
+                                    contact multiple providers
+                                </button>
+                            </div>
+                        </div>
                         <div class="sidebar_search sidebar_wizerd">
                             <h3>search</h3>
                             <input name="q" type="text" placeholder="Search">
@@ -243,7 +258,12 @@
                                                         id="sendMessageBtn"
                                                         class="btn sendMessageBtn">Send Message</button>
                                                 </p>
-
+                                                <p class="small"><input type="checkbox"
+                                                                        name="selectToContact[]"
+                                                                        value="{{ $listings[$i]->id }}"
+                                                                        class="select-to-contact"
+                                                        {{ in_array($listings[$i]->id, session('selectedValues', [])) ? 'checked' : '' }}
+                                                    /></p>
                                             </div>
                                         @endnotUserRole
                                         <span class="person"><img src="{{ asset('frontend/images/person_1.png') }}" alt="person"
@@ -298,4 +318,8 @@
     <!-- Include the custom send message form -->
     @include('partials.message-modal')
     @include('partials.footer')
+    <script>
+        const contactMultipleProvidersUrl = "{{ route('contact.multiple.providers') }}";
+        const requestReview = "{{ route('review.request') }}";
+    </script>
 @endsection

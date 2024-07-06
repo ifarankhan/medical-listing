@@ -4,6 +4,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ContactProviderController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
@@ -48,7 +49,7 @@ Route::group(['middleware' => ['auth', 'role:customer,insurance_provider']], fun
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::delete('/logout', [LogoutController::class, 'logout'])->name('logout');
 
-    Route::get('/message', [MessageController::class, 'index'])->name('message');
+    Route::get('/dashboard/message', [MessageController::class, 'index'])->name('message');
 });
 
 Route::group(['middleware' => ['auth', UserRole::ROLE_INSURANCE_PROVIDER]], function () {
@@ -64,5 +65,10 @@ Route::group(['middleware' => ['auth', UserRole::ROLE_INSURANCE_PROVIDER]], func
 });
 
 Route::group(['middleware' => ['auth', 'role:customer']], function () {
+
     Route::post('/send-message', [MessageController::class, 'send'])->name('send-message');
+    Route::post('/contact-multiple-providers', [ContactProviderController::class, 'contactMultiple'])
+         ->name('contact.multiple.providers');
+    Route::get('/review-request', [ContactProviderController::class, 'reviewRequest'])
+         ->name('review.request');
 });
