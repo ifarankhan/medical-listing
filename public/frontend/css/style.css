@@ -7404,34 +7404,7 @@ form .sidebar_search input {
     top: 100px; /* Adjust this value based on your layout */
 }
 
-/* Custom CSS for numbered list */
-.list-group-numbered {
-    counter-reset: item;
-    padding-left: 0;
-}
-
-.list-group-numbered .list-group-item {
-    position: relative;
-    display: block;
-    padding: .75rem 1.25rem;
-    margin-bottom: -1px;
-    background-color: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.125);
-}
-
-.list-group-numbered .list-group-item::before {
-    content: counter(item);
-    counter-increment: item;
-    position: absolute;
-    top: 50%;
-    left: -2rem;
-    transform: translateY(-50%);
-    font-weight: bold;
-}
-
-
 /* order invoice end */
 /*=============================
     DASHBOARD END
 =============================*/
-

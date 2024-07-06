@@ -42,13 +42,13 @@
                         Review & Submit Request
                     </div>
 
-                    <ol class="list-group list-group-numbered">
-                        @foreach ($listings as $listing)
+                    <ul class="list-group ">
+                        @for ($i=0; $i < count($listings); $i++)
                             <li class="list-group-item">
-                                {{ $listing->business_name }}
+                              {{ $i+1 }}.  {{ $listings[$i]->business_name }}
                             </li>
-                        @endforeach
-                    </ol>
+                        @endfor
+                    </ul>
                 </div>
 
                 <form id="sendMessageForm" action="#" class="mt-3">
@@ -66,11 +66,12 @@
                     <input type="hidden" id="successRedirect" value="{{ route('message') }}"/>
                     <div class="form-group">
                         <label for="message">Message</label>
+                        <br/>
                         <textarea class="form-control" id="Message" name="message" rows="3" placeholder="Enter your message"></textarea>
                     </div>
                     <div class="d-flex justify-content-between mt-3">
                         <a href="{{ session('referer_url') }}" class="btn btn-secondary">Modify Request</a>
-                        <button type="submit" class="btn btn-primary">Submit Request</button>
+                        <button type="submit" class="common_btn btn-primary">Submit Request</button>
                     </div>
                 </form>
             @else
