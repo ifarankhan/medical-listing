@@ -610,7 +610,15 @@ $(function () {
             const phone = $('#Phone').val();
             const subject = $('#Subject').val();
             const message = $('#Message').val();
-            const listingIds = $('#listingId').val();// Retrieve listing ID from hidden input
+            // Retrieve all non-empty listing IDs
+            const listingIds = $('input[name="listing_id[]"]')
+                .map(function() {
+                    return $(this).val();
+                }).get().filter(function(id) {
+                    return id !== ''; // Filter out empty IDs
+                });
+
+            const successRedirect = $('#successRedirect').val();
 
             $.ajax({
                 url: '/send-message',
@@ -631,6 +639,10 @@ $(function () {
                         sendMessageForm[0].reset(); // Reset the form
 
                         alert(response.message);
+
+                        if (successRedirect) {
+                            window.location.href = successRedirect
+                        }
                     }
                 },
                 error: function(xhr) {
@@ -646,6 +658,68 @@ $(function () {
                     }
 
                     alert('Validation error(s):\n' + errorMessages);
+                }
+            });
+        });
+        // Multiple select listing for contact.
+        let selectedValues = [];
+        $('.select-to-contact').on('change', function() {
+
+            selectedValues = []; // Reset the array
+            let counter = 0;
+            let isAnyChecked = false;
+
+            // Check the number of checked checkboxes and whether any checkbox is checked
+            $('.select-to-contact').each(function() {
+
+                if ($(this).is(':checked')) {
+                    isAnyChecked = true;
+                    selectedValues.push($(this).val());
+                    counter++;
+                }
+            });
+
+            // Show alert if more than 5 checkboxes are checked
+            if (counter > 5) {
+                alert('You cannot select more than 5!');
+                $(this).prop('checked', false); // Uncheck the last checked checkbox
+                counter--; // Decrement the counter
+                selectedValues.pop(); // Remove the last value
+            }
+
+            // Enable or disable the div based on whether any checkbox is checked
+            if (isAnyChecked) {
+                $('#ContactOptions').show();
+            } else {
+                $('#ContactOptions').hide();
+            }
+        });
+        // Contact multiple providers
+        $('#ContactMultiple').click(function (e){
+
+            e.preventDefault();
+
+            // Proceed with AJAX request
+            $.ajax({
+                url: contactMultipleProvidersUrl, // Use the named route
+                method: 'POST',
+                data: {
+                    selectedValues: selectedValues,
+                },
+                success: function(response) {
+                    if (response.error === false) {
+                        // Redirect to another page
+                        window.location.href = requestReview; // Use the named route
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Handle the error response
+                    if (xhr.status === 401) {
+                        // Redirect to login page or handle as needed
+                        window.location.href = '/login'; // Replace with your login page URL
+                    } else {
+                        console.error(error);
+                    }
                 }
             });
         });

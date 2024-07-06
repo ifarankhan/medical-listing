@@ -81,6 +81,10 @@ class User extends Authenticatable
         ];
     }
 
+    public function isCustomer(): bool
+    {
+        return $this->hasRole(UserRole::ROLE_CUSTOMER);
+    }
     public function isServiceProvider(): bool
     {
         return $this->hasRole(UserRole::ROLE_INSURANCE_PROVIDER);

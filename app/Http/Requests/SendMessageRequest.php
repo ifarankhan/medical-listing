@@ -26,7 +26,7 @@ class SendMessageRequest extends FormRequest
         return [
             'fullName' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:15',
+            'phone' => 'nullable|string|digits_between:1,15',
             'subject' => 'required|string|max:255',
             'message' => 'required|string',
             'listing_id' => 'required|array',
@@ -40,7 +40,7 @@ class SendMessageRequest extends FormRequest
             'fullName.required' => 'The full name field is required.',
             'email.required' => 'The email field is required.',
             'email.email' => 'Please enter a valid email address.',
-            'phone.required' => 'The phone field is required.',
+            'digits_between' => 'The phone field must be between :min and :max digits.',
             'subject.required' => 'The subject field is required.',
             'message.required' => 'The message field is required.',
             'listing_id.required' => 'The listing ID field is required.',
