@@ -66,6 +66,5 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'role' => CheckRoleType::class, // Ensure users with specific role types are logged in on frontend.
-        'insurance_provider' => CheckInsuranceProviderRole::class,
     ];
 }

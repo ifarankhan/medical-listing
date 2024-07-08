@@ -11,7 +11,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\SearchController;
-use App\Models\UserRole;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\AuthController;
@@ -43,7 +43,7 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('/login', [LoginController::class, 'loginPost'])->name('login');
 });
 
-Route::group(['middleware' => ['auth', 'role:customer,insurance_provider']], function () {
+Route::group(['middleware' => ['role:customer,insurance_provider']], function () {
 
     Route::get('/account', [DashboardController::class, 'index'])->name('account');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -52,7 +52,7 @@ Route::group(['middleware' => ['auth', 'role:customer,insurance_provider']], fun
     Route::get('/dashboard/message', [MessageController::class, 'index'])->name('message');
 });
 
-Route::group(['middleware' => ['auth', UserRole::ROLE_INSURANCE_PROVIDER]], function () {
+Route::group(['middleware' => ['auth', 'role:insurance_provider']], function () {
 
     Route::get('/dashboard/listing', [ListingController::class, 'index'])->name('listing.index');
     Route::get('/dashboard/listing/create', [ListingController::class, 'create'])->name('listing.create');

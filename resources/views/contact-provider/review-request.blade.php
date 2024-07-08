@@ -59,9 +59,9 @@
                            @if (auth()->check()) value="{{ auth()->user()->email }}" @endif>
                     <input type="hidden" id="Subject" name="subject"
                            @if($contactRequested)
-                               value="Customer '{{ auth()->user()->name }}' has requested to be contacted."
+                               value="Customer has requested to be contacted."
                            @else
-                               value="Message received from: '{{ auth()->user()->name }}'"
+                               value="Query regarding listing: "
                         @endif />
                     <!-- Loop through $listingIds to create hidden input fields -->
                     @foreach ($listingIds as $listingId)
