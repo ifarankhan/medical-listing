@@ -52,7 +52,7 @@ Route::group(['middleware' => ['role:customer,insurance_provider']], function ()
     Route::get('/dashboard/message', [MessageController::class, 'index'])->name('message');
 });
 
-Route::group(['middleware' => ['auth', 'role:insurance_provider']], function () {
+Route::group(['middleware' => ['role:insurance_provider']], function () {
 
     Route::get('/dashboard/listing', [ListingController::class, 'index'])->name('listing.index');
     Route::get('/dashboard/listing/create', [ListingController::class, 'create'])->name('listing.create');
@@ -64,7 +64,7 @@ Route::group(['middleware' => ['auth', 'role:insurance_provider']], function () 
          ->name('listing.delete');
 });
 
-Route::group(['middleware' => ['auth', 'role:customer']], function () {
+Route::group(['middleware' => ['role:customer']], function () {
 
     Route::post('/send-message', [MessageController::class, 'send'])->name('send-message');
     Route::post('/contact-multiple-providers', [ContactProviderController::class, 'contactMultiple'])
