@@ -37,7 +37,8 @@ class ContactProviderController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
-        if ($request->post('contactRequested')) {
+        if ($request->post('contactRequested') != 'false') {
+            // Review request will be without message text field.
             session()->put('contactRequested', $request->post('contactRequested'));
         }
         // Retrieve the selected values from the request

@@ -20,7 +20,7 @@
     <div class="dashboard_sidebar_menu">
         <ul>
             <li>
-                <a class="{{ request()->is('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+                <a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_1.png') }}" alt="icon"
                                      class="img-fluid w-100">
@@ -28,8 +28,9 @@
                     dashboard
                 </a>
             </li>
+
             <li>
-                <a class="{{ request()->is('message') ? 'active' : '' }}" href="{{ route('message') }}">
+                <a class="{{request()->routeIs('message') ? 'active' : '' }}" href="{{ route('message') }}">
                             <span>
                                 <img src="{{ asset('frontend/images/massage.png') }}" alt="icon"
                                      class="img-fluid w-100">
@@ -38,7 +39,7 @@
                 </a>
             </li>
             <li>
-                <a class="{{ request()->is('profile') ? 'active' : '' }}" href="dashboard_profile.html"
+                <a class="{{ request()->routeIs('profile') ? 'active' : '' }}" href="dashboard_profile.html"
                    style="display: none;">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_2.png') }}" alt="icon"
@@ -51,7 +52,7 @@
             <!-- Menu items for insurance_provider role -->
             @userRole(UserRole::ROLE_INSURANCE_PROVIDER)
                 <li>
-                    <a class="{{ request()->is('listing*') ? 'active' : '' }}" href="{{ route('listing.index') }}">
+                    <a class="{{ request()->routeIs('listing.*') ? 'active' : '' }}" href="{{ route('listing.index') }}">
                                 <span>
                                     <img src="{{ asset('frontend/images/dashboard_icon_3.png') }}" alt="icon"
                                          class="img-fluid w-100">
@@ -61,7 +62,7 @@
                 </li>
             @enduserRole
             <li>
-                <a class="{{ request()->is('pricing') ? 'active' : '' }}" href="dashboard_pricing.html"
+                <a class="{{ request()->routeIs('pricing') ? 'active' : '' }}" href="dashboard_pricing.html"
                    style="display: none;">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_4.png') }}" alt="icon"
@@ -71,7 +72,7 @@
                 </a>
             </li>
             <li>
-                <a class="{{ request()->is('order') ? 'active' : '' }}" href="dashboard_order.html"
+                <a class="{{ request()->routeIs('order') ? 'active' : '' }}" href="dashboard_order.html"
                    style="display: none;">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_7.png') }}" alt="icon"
@@ -81,7 +82,7 @@
                 </a>
             </li>
             <li>
-                <a class="{{ request()->is('wishlist') ? 'active' : '' }}" href="dashboard_wishlist.html"
+                <a class="{{ request()->routeIs('wishlist') ? 'active' : '' }}" href="dashboard_wishlist.html"
                    style="display: none;">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_6.png') }}" alt="icon"
@@ -91,7 +92,7 @@
                 </a>
             </li>
             <li>
-                <a class="{{ request()->is('review') ? 'active' : '' }}" href="dashboard_review.html"
+                <a class="{{ request()->routeIs('review') ? 'active' : '' }}" href="dashboard_review.html"
                    style="display: none;">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_5.png') }}" alt="icon"

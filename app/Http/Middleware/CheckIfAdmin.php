@@ -2,7 +2,13 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
+use Illuminate\Auth\SessionGuard;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CheckIfAdmin
 {
@@ -22,34 +28,40 @@ class CheckIfAdmin
      * does not have a '/home' route, use something you've built for your users
      * (again - users, not admins).
      *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable|null  $user
+     * @param Authenticatable|User|null $user
+     *
      * @return bool
      */
-    private function checkIfUserIsAdmin($user)
+    private function checkIfUserIsAdmin(User|Authenticatable|null $user): bool
     {
-        // return ($user->is_admin == 1);
-        return true;
+        return !is_null($user) && $user->isAdmin();
     }
 
     /**
      * Answer to unauthorized access request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @param  Request  $request
+     *
+     * @return Response|RedirectResponse
      */
     private function respondToUnauthorizedRequest($request)
     {
         if ($request->ajax() || $request->wantsJson()) {
             return response(trans('backpack::base.unauthorized'), 401);
         } else {
-            return redirect()->guest(backpack_url('login'));
+            /** @var SessionGuard $backpackAuth */
+            $backpackAuth = backpack_auth();
+            // If the user is other than backpack, log out and then redirect now guest user back to login.
+            $backpackAuth->logout();
+            return redirect()->guest(backpack_url('login'))
+                ->withErrors(['error' => trans('backpack::base.unauthorized')]);
         }
     }
 
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  \Closure  $next
      * @return mixed
      */

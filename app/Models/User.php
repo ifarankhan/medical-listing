@@ -81,6 +81,10 @@ class User extends Authenticatable
         ];
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->hasRole(UserRole::ROLE_ADMIN);
+    }
     public function isCustomer(): bool
     {
         return $this->hasRole(UserRole::ROLE_CUSTOMER);
