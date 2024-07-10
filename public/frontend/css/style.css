@@ -7403,7 +7403,17 @@ form .sidebar_search input {
 
     top: 100px; /* Adjust this value based on your layout */
 }
+/* Custom width for the modal */
+.sendMessageModal .modal-dialog {
+    max-width: 50%; /* Adjust this value as needed */
+}
 
+@media (max-width: 768px) {
+    /* For small screens, adjust the modal width */
+    .sendMessageModal .modal-dialog {
+        max-width: 95%;
+    }
+}
 /* order invoice end */
 /*=============================
     DASHBOARD END

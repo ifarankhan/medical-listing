@@ -1,5 +1,5 @@
 <!-- resources/views/partials/message-modal.blade.php -->
-<div class="modal fade" id="sendMessageModal" tabindex="-1" aria-labelledby="sendMessageModalLabel" aria-hidden="true">
+<div class="modal fade sendMessageModal" id="sendMessageModal" tabindex="-1" aria-labelledby="sendMessageModalLabel" aria-hidden="true">
 
     <div class="modal-dialog">
         <div class="modal-content">
@@ -13,6 +13,7 @@
                     @csrf
                     <!-- Hidden input to store listing ID -->
                     <input type="hidden" id="listingId" name="listing_id[]">
+
                     <div class="row">
                         <div class="col-md-6 col-lg-12 col-xl-6">
                             <div class="contact_input">
@@ -54,9 +55,16 @@
                                 <button class="common_btn">Send Message</button>
                             </div>
                         </div>
+
                     </div>
                 </form>
+            </div>
+            <div class="modal-footer">
+                <p>Your message will be sent to your selected proivders at Diverrx Inc., and a copy will be provided to you for your records. Please note that while we take precautions, email communication may not be entirely secure. Sending a message through this platform does not guarantee delivery, and spam filters may prevent its receipt.
 
+                    While a response by email is anticipated, we recommend following up with a phone call for urgent matters or if you prefer direct communication. If you prefer to communicate via phone, please include your contact number in your message.
+
+                    For emergencies, please do not use this form. Contact emergency services directly by calling 911 or your nearest hospital.</p>
             </div>
         </div>
     </div>
