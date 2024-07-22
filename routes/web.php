@@ -12,6 +12,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\SearchController;
 
+use App\Http\Controllers\SubscriptionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\AuthController;
@@ -62,6 +63,11 @@ Route::group(['middleware' => ['role:insurance_provider']], function () {
     Route::get('/dashboard/listing/{listing}/edit', [ListingController::class, 'edit'])->name('listing.edit');
     Route::get('/dashboard/listing/{listing}/delete', [ListingController::class, 'delete'])
          ->name('listing.delete');
+
+    Route::get('/subscription', [SubscriptionController::class, 'showSubscriptionForm'])
+         ->name('subscription.form');
+    Route::post('/create-subscription', [SubscriptionController::class, 'createSubscription'])
+         ->name('subscription.create');
 });
 
 Route::group(['middleware' => ['role:customer']], function () {

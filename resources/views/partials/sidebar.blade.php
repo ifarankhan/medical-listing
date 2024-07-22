@@ -19,6 +19,18 @@
     </div>
     <div class="dashboard_sidebar_menu">
         <ul>
+            <!-- Menu items for insurance_provider role -->
+            @userRole(UserRole::ROLE_INSURANCE_PROVIDER)
+            <li>
+                <a class="{{ request()->routeIs('listing.*') ? 'active' : '' }}" href="{{ route('listing.index') }}">
+                                <span>
+                                    <img src="{{ asset('frontend/images/dashboard_icon_3.png') }}" alt="icon"
+                                         class="img-fluid w-100">
+                                </span>
+                    your business profile
+                </a>
+            </li>
+            @enduserRole
             <li>
                 <a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
                             <span>
@@ -48,19 +60,6 @@
                     Profile
                 </a>
             </li>
-
-            <!-- Menu items for insurance_provider role -->
-            @userRole(UserRole::ROLE_INSURANCE_PROVIDER)
-                <li>
-                    <a class="{{ request()->routeIs('listing.*') ? 'active' : '' }}" href="{{ route('listing.index') }}">
-                                <span>
-                                    <img src="{{ asset('frontend/images/dashboard_icon_3.png') }}" alt="icon"
-                                         class="img-fluid w-100">
-                                </span>
-                        listing
-                    </a>
-                </li>
-            @enduserRole
             <li>
                 <a class="{{ request()->routeIs('pricing') ? 'active' : '' }}" href="dashboard_pricing.html"
                    style="display: none;">

@@ -37,25 +37,24 @@
                                 <div class="pricing_item">
                                     <h5>Monthly Subscription</h5>
 
-                                    <h3>$75 <span>/month</span></h3>
-                                    <p>Add On:</p>
-                                    <ul>
-                                        <li>$20 per month to appear in top 5 search results</li>
-                                    </ul>
-                                    <a href="#">Register Now</a>
+                                    <h3>$29 <span>/month</span></h3>
+
+                                    <a href="{{ route('subscription.form', ['amount' => 29, 'interval' => 'month']) }}">Register Now</a>
                                 </div>
                             </div>
                             <div class="col-xl-3 col-md-6 col-lg-4 wow fadeInUp" data-wow-duration="1.5s">
                                 <div class="pricing_item">
                                     <h5>Annual Subscription</h5>
 
-                                    <h3>$750 <span>/year</span></h3>
-                                    <p>Add On:</p>
-                                    <ul>
-                                        <li>$200 per month to appear in top 5 search results</li>
-                                    </ul>
-                                    <a href="#">Register Now</a>
+                                    <h3>$300 <span>/year</span></h3>
+
+                                    <a href="#" class="register-link">Register Now</a>
                                 </div>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="checkbox" name="terms" id="terms" required>
+                                <label for="terms">I agree to the <a href="#">Terms and Conditions</a></label>
                             </div>
                         </div>
                     </div>
@@ -63,4 +62,17 @@
             </div>
         </div>
     </section>
+    <script>
+        $(document).ready(function () {
+            $('.register-link').on('click', function (e) {
+                e.preventDefault(); // Prevent the default action of the <a> tag
+                if ($('#terms').is(':checked')) {
+                    $('#multiStepForm').submit();
+                } else {
+                    alert('You must agree to the Terms and Conditions.');
+                }
+            });
+        });
+    </script>
 @endsection
+
