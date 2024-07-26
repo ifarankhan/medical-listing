@@ -64,7 +64,7 @@ class SubscriptionController extends Controller
 
     public function showSubscriptionForm(Request $request)
     {
-        $listings = Listing::all();
-        return view('subscription.form', compact('listings'));
+        $listing = Listing::findOrFail($request->listing);
+        return view('subscription.form', compact('listing'));
     }
 }

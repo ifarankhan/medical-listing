@@ -9,8 +9,8 @@
         <div class="dashboard_content">
             <form id="subscription-form">
                 <input type="email" name="email" id="email" placeholder="Your email">
-
-                <input type="hidden" name="listing_id" value="{{}}">
+                <p>{{ $listing->business_name }}</p>
+                <input type="hidden" id="listing_id" name="listing_id" value="{{ $listing->id }}">
                 <input type="hidden" name="amount" id="amount" value="{{ request('amount') }}">
                 <input type="hidden" name="interval" id="interval" value="{{ request('interval') }}">
                 <div id="card-element"></div>
