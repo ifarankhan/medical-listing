@@ -32,7 +32,6 @@ class SubscriptionController extends Controller
         $amount = $request->amount * 100; // e.g., 29 -> 2900
         $currency = 'usd';
         $interval = $request->interval; // 'month' or 'year'
-
         // Create a new price for the subscription
         $price = Price::create([
             'unit_amount' => $amount,
@@ -44,7 +43,6 @@ class SubscriptionController extends Controller
                 'name' => 'Subscription for Listing ' . $listing->name,
             ],
         ]);
-
         // Create the subscription
         $stripeSubscription = StripeSubscription::create([
             'customer' => $customer->id,

@@ -39,7 +39,12 @@
 
                                     <h3>$29 <span>/month</span></h3>
 
-                                    <a href="{{ route('subscription.form', ['amount' => 29, 'interval' => 'month']) }}">Register Now</a>
+                                    <a href="{{ route('subscription.form', [
+                                        'listing' => $listing->id,
+                                         'amount' => 29,
+                                          'interval' => 'month'
+                                       ]) }}">Register Now
+                                    </a>
                                 </div>
                             </div>
                             <div class="col-xl-3 col-md-6 col-lg-4 wow fadeInUp" data-wow-duration="1.5s">

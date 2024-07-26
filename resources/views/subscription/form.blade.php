@@ -9,11 +9,8 @@
         <div class="dashboard_content">
             <form id="subscription-form">
                 <input type="email" name="email" id="email" placeholder="Your email">
-                <select name="listing_id" id="listing_id">
-                    @foreach($listings as $listing)
-                        <option value="{{ $listing->id }}">{{ $listing->name }}</option>
-                    @endforeach
-                </select>
+
+                <input type="hidden" name="listing_id" value="{{}}">
                 <input type="hidden" name="amount" id="amount" value="{{ request('amount') }}">
                 <input type="hidden" name="interval" id="interval" value="{{ request('interval') }}">
                 <div id="card-element"></div>
@@ -50,8 +47,7 @@
                                 interval: document.getElementById('interval').value,
                                 stripeToken: token.id,
                             }),
-                        })
-                            .then(response => response.json())
+                        }).then(response => response.json())
                             .then(data => {
                                 console.log('Subscription successful:', data);
                             })
