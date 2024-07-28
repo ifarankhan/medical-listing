@@ -84,6 +84,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\Listing;
 use App\Models\Subscription;
@@ -104,27 +105,23 @@ class SubscriptionController extends Controller
      *
      * @throws ApiErrorException
      */
-    public function createSubscription(Request $request): JsonResponse
+    public function createSubscription(Request $request): RedirectResponse
     {
+        $listing = Listing::findOrFail($request->listing_id);
+
         try {
             // Start a transaction
             DB::beginTransaction();
-
-            $listing = Listing::findOrFail($request->listing_id);
-
             Stripe::setApiKey(config('stripe.secret'));
-
             // Create Stripe Customer
             $customer = Customer::create([
                 'email' => $request->email,
                 'source' => $request->stripeToken,
             ]);
-
             // Convert amount to cents
             $amount = $request->amount * 100; // e.g., 29 -> 2900
             $currency = 'usd';
             $interval = $request->interval; // 'month' or 'year'
-
             // Create a new price for the subscription
             $price = Price::create([
                 'unit_amount' => $amount,
@@ -136,8 +133,7 @@ class SubscriptionController extends Controller
                     'name' => 'Subscription for Listing ' . $listing->name,
                 ],
             ]);
-
-            // Create the subscription
+            // Create the subscription.
             $stripeSubscription = StripeSubscription::create([
                 'customer' => $customer->id,
                 'items' => [
@@ -146,34 +142,32 @@ class SubscriptionController extends Controller
                     ],
                 ],
             ]);
-
-            // Save subscription to database
-            $subscription = Subscription::create([
+            // Save subscription to database.
+            Subscription::create([
                 'listing_id' => $listing->id,
                 'stripe_subscription_id' => $stripeSubscription->id,
                 'interval' => $interval,
             ]);
-
-            // Update status of data in another table
+            // Update status of listing.
             $listing = Listing::where('listing_id', $listing->id)->first();
             if ($listing) {
-                $listing->update(['status' => 'subscribed']);
+                $listing->update(['listing_status' => 'subscribed']);
             }
-
             // Commit the transaction
             DB::commit();
+
+            return redirect()->route('listing.index', $listing)
+                             ->with('success', 'You have successfully subscribed to this listing.');
+
         } catch (Exception $ex) {
             // Rollback the transaction
             DB::rollBack();
-
             // Log the exception or handle it as needed
             Log::error('Subscription creation failed: ' . $ex->getMessage());
 
-            // Optionally, you can throw the exception or return a response
-            throw $ex;
+            return redirect()->route('listing.step.subscription')
+                             ->with('error', 'Subscription creation failed.');
         }
-
-        return response()->json($subscription);
     }
 
     public function showSubscriptionForm(Request $request)
