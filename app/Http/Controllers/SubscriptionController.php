@@ -93,6 +93,7 @@ use Illuminate\Support\Facades\Log;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
 use Stripe\Customer;
+use Stripe\StripeClient;
 use Stripe\Subscription as StripeSubscription;
 use Stripe\Price;
 
@@ -173,6 +174,24 @@ class SubscriptionController extends Controller
     public function showSubscriptionForm(Request $request)
     {
         $listing = Listing::findOrFail($request->listing);
-        return view('subscription.form', compact('listing'));
+
+        try {
+            $stripe = new StripeClient([
+                'api_key' => config('stripe.secret'),
+                'stripe_version' => '2020-08-27',
+            ]);
+
+            $paymentIntent = $stripe->paymentIntents->create([
+                'automatic_payment_methods' => ['enabled' => true],
+                'amount' => 29 * 100,
+                'currency' => 'usd',
+            ]);
+
+            return view('subscription.form', compact('listing', 'paymentIntent'));
+
+        } catch (ApiErrorException|Exception $e) {
+
+            Log::error('Subscription creation failed: ' . $e->getMessage());
+        }
     }
 }
