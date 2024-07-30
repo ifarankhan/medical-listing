@@ -79,6 +79,42 @@
  * "id": 1
  * }
  *
+ *
+ * {
+ * "id": "pi_3PiHqUP5DX5k194S02906894",
+ * "object": "payment_intent",
+ * "amount": 2900,
+ * "amount_details": {
+ * "tip": {}
+ * },
+ * "automatic_payment_methods": {
+ * "allow_redirects": "always",
+ * "enabled": true
+ * },
+ * "canceled_at": null,
+ * "cancellation_reason": null,
+ * "capture_method": "automatic_async",
+ * "client_secret": "pi_3PiHqUP5DX5k194S02906894_secret_9wVtr5z6qcd2J272Yj5Rt2co4",
+ * "confirmation_method": "automatic",
+ * "created": 1722352814,
+ * "currency": "usd",
+ * "description": null,
+ * "last_payment_error": null,
+ * "livemode": false,
+ * "next_action": null,
+ * "payment_method": "pm_1PiHsNP5DX5k194SnHLkdYXh",
+ * "payment_method_configuration_details": null,
+ * "payment_method_types": [
+ * "card"
+ * ],
+ * "processing": null,
+ * "receipt_email": null,
+ * "setup_future_usage": null,
+ * "shipping": null,
+ * "source": null,
+ * "status": "succeeded"
+ * }
+ *
  */
 namespace App\Http\Controllers;
 
@@ -88,6 +124,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\Listing;
 use App\Models\Subscription;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Stripe\Exception\ApiErrorException;
@@ -158,7 +195,7 @@ class SubscriptionController extends Controller
             DB::commit();
 
             return redirect()->route('listing.index', $listing)
-                             ->with('success', 'You have successfully subscribed to this listing.');
+                ->with('success', 'You have successfully subscribed to this listing.');
 
         } catch (Exception $ex) {
             // Rollback the transaction
@@ -167,31 +204,166 @@ class SubscriptionController extends Controller
             Log::error('Subscription creation failed: ' . $ex->getMessage());
 
             return redirect()->route('listing.step.subscription')
-                             ->with('error', 'Subscription creation failed.');
+                ->with('error', 'Subscription creation failed.');
         }
     }
 
     public function showSubscriptionForm(Request $request)
     {
-        $listing = Listing::findOrFail($request->listing);
+        $user = Auth::user();
+        // Only one business profile per user for listing.
+        $listing = $user->listings()->firstOrFail();
 
         try {
-            $stripe = new StripeClient([
-                'api_key' => config('stripe.secret'),
-                'stripe_version' => '2020-08-27',
+            $stripe = $this->getStripe();
+
+            // Validate the request data
+            $request->validate([
+                'amount' => 'required|numeric|min:1',
+                'interval' => 'required|in:month,year',
             ]);
 
-            $paymentIntent = $stripe->paymentIntents->create([
-                'automatic_payment_methods' => ['enabled' => true],
-                'amount' => 29 * 100,
-                'currency' => 'usd',
+            // Create a Stripe customer
+            $customer = $this->createStripeCustomer($stripe, $user->email);
+
+            // Create the price for the subscription
+            $price = $this->createStripePrice($stripe, $request->amount, $request->interval, $listing->name);
+
+            // Create the subscription
+            $subscription = $this->createStripeSubscription($stripe, $customer->id, $price->id);
+
+            // Create the payment intent
+            $paymentIntent = $this->createStripePaymentIntent(
+                $stripe,
+                $request->amount,
+                $customer->id,
+                $listing->id,
+                $subscription->id,
+                $subscription->items->data[0]->price->recurring->interval
+            );
+
+            // Save subscription ID in your database for reference
+            Subscription::create([
+                'listing_id' => $listing->id,
+                'stripe_subscription_id' => $subscription->id,
+                'status' => 'pending', // Or another status
             ]);
 
-            return view('subscription.form', compact('listing', 'paymentIntent'));
+            return view('subscription.form', compact('listing', 'paymentIntent', 'customer'));
 
-        } catch (ApiErrorException|Exception $e) {
+        } catch (ApiErrorException $e) {
+
+            Log::error('Stripe API error: ' . $e->getMessage());
+            return redirect()->route('listing.step.subscription', $listing)
+                ->with('error', 'Subscription creation failed due to a Stripe error.');
+
+        } catch (Exception $e) {
 
             Log::error('Subscription creation failed: ' . $e->getMessage());
+            return redirect()->route('listing.step.subscription', $listing)
+                ->with('error', 'Subscription creation failed.');
         }
+    }
+
+    private function createStripeCustomer($stripe, $email)
+    {
+        return $stripe->customers->create(['email' => $email]);
+    }
+
+    private function createStripePrice($stripe, $amount, $interval, $listingName)
+    {
+        return $stripe->prices->create([
+            'unit_amount' => $amount * 100, // Convert to cents
+            'currency' => 'usd',
+            'recurring' => ['interval' => $interval],
+            'product_data' => ['name' => 'Subscription for Listing ' . $listingName],
+        ]);
+    }
+
+    private function createStripeSubscription($stripe, $customerId, $priceId)
+    {
+        return $stripe->subscriptions->create([
+            'customer' => $customerId,
+            'items' => [['price' => $priceId]],
+            'payment_settings' => [
+                //The payment method type `customer_balance`
+                // cannot be used with subscriptions that have the `collection_method` set to `charge_automatically`.
+                //payment_settings[payment_method_types][0]: must be one of ach_credit_transfer, ach_debit,
+                // acss_debit, amazon_pay, au_becs_debit, bacs_debit, bancontact, boleto, card, cashapp,
+                // customer_balance, eps, fpx, giropay, grabpay, ideal, konbini, link, multibanco, p24,
+                // paynow, paypal, promptpay, revolut_pay, sepa_debit, sofort, us_bank_account, or wechat_pay
+                'payment_method_types' => ['card'],
+                // Add more payment methods if needed
+            ],
+        ]);
+    }
+
+    private function createStripePaymentIntent($stripe, $amount, $customerId, $listingId, $subscriptionId, $interval)
+    {
+        $data = [
+            'amount' => $amount * 100,
+            'currency' => 'usd',
+            'customer' => $customerId,
+            'automatic_payment_methods' => ['enabled' => true],
+            'metadata' => [
+                'listing_id' => $listingId,
+                'subscription_id' => $subscriptionId,
+                'interval' => $interval,
+            ],
+        ];
+        return $stripe->paymentIntents->create($data);
+    }
+
+
+    /**
+     * @throws ApiErrorException
+     */
+    public function processCallback(Request $request)
+    {
+        $stripe = $this->getStripe();
+
+        try {
+            // Retrieve the payment intent
+            $paymentIntent = $stripe->paymentIntents->retrieve($request->get('payment_intent'));
+echo '<pre>';print_r($paymentIntent->toArray());echo '</pre>';exit;
+            // Get the listing ID and subscription ID from the metadata
+            $listingId = $paymentIntent->metadata->listing_id;
+            $subscriptionId = $paymentIntent->metadata->subscription_id;
+            $interval = $paymentIntent->metadata->interval;
+            $amount = $paymentIntent->amount/100;
+
+            // Find the listing
+            $listing = Auth::user()->listings()->findOrFail($listingId);
+
+            if ($paymentIntent->status == 'succeeded') {
+                // Update the subscription record
+                Subscription::updateOrCreate(
+                    ['listing_id' => $listing->id],
+                    [
+                        'stripe_subscription_id' => $subscriptionId,
+                        'interval' => $interval,
+                        'status' => 'active',
+                    ]
+                );
+                // Update the listing status
+                $listing->update(['listing_status' => 'subscribed']);
+
+//                return redirect()->route('listing.index', $listing)
+//                    ->with('success', "You have successfully subscribed to this listing for $amount/$interval.");
+            }
+
+            return redirect()->route('listing.index', $listing)
+                             ->with('error', 'Subscription creation failed. Please try again.');
+        } catch (\Exception $e) {
+            Log::error('Payment processing failed: ' . $e->getMessage());
+
+            return redirect()->route('listing.index')
+                             ->with('error', 'Subscription creation failed. Please try again.');
+        }
+    }
+
+    private function getStripe(): StripeClient
+    {
+        return new StripeClient(config('stripe.secret'));
     }
 }

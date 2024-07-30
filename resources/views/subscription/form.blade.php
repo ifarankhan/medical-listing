@@ -97,9 +97,7 @@
             <script src="{{ asset('frontend/js/utils.js') }}"></script>
             <script>
                 document.addEventListener('DOMContentLoaded', async () => {
-                    const stripe = Stripe('{{ config('stripe.key') }}', {
-                        apiVersion: '2020-08-27',
-                    });
+                    const stripe = Stripe('{{ config('stripe.key') }}');
 
                     const elements = stripe.elements({
                         clientSecret: '{{ $paymentIntent->client_secret }}'
@@ -119,7 +117,7 @@
                         const {error} = await stripe.confirmPayment({
                             elements,
                             confirmParams: {
-                                return_url: `${window.location.origin}/return.php`
+                                return_url: `{{ route('subscription.callback') }}`
                             }
                         });
                         if(error) {
