@@ -74,6 +74,9 @@ Route::group(['middleware' => ['role:insurance_provider']], function () {
 
     Route::get('/callback-subscription', [SubscriptionController::class, 'processCallback'])
          ->name('subscription.callback');
+
+    Route::post('/subscription/process', [SubscriptionController::class, 'processPayment'])->name('subscription.process');
+
 });
 
 Route::group(['middleware' => ['role:customer']], function () {

@@ -78,7 +78,26 @@
         <div class="dashboard_content">
 
 
+            <!-- Success message using Bootstrap's alert component -->
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form id="payment-form">
+
                 <label for="payment-element">Payment details</label>
                 <div id="payment-element">
                     <!-- Elements will create input elements here -->
@@ -102,30 +121,25 @@
                     const elements = stripe.elements({
                         clientSecret: '{{ $paymentIntent->client_secret }}'
                     });
+
                     const paymentElement = elements.create('payment');
                     paymentElement.mount('#payment-element');
 
                     const paymentForm = document.querySelector('#payment-form');
                     paymentForm.addEventListener('submit', async (e) => {
-                        // Avoid a full page POST request.
                         e.preventDefault();
 
-                        // Disable the form from submitting twice.
-                        paymentForm.querySelector('button').disabled = true;
-
-                        // Confirm the card payment that was created server side:
                         const {error} = await stripe.confirmPayment({
                             elements,
                             confirmParams: {
-                                return_url: `{{ route('subscription.callback') }}`
-                            }
+                                return_url: '{{ route('subscription.callback') }}',
+                            },
                         });
-                        if(error) {
-                            addMessage(error.message);
 
-                            // Re-enable the form so the customer can resubmit.
-                            paymentForm.querySelector('button').disabled = false;
-                            return;
+                        if (error) {
+                            document.querySelector('#error-message').textContent = error.message;
+                        } else {
+                            paymentForm.querySelector('button').disabled = true;
                         }
                     });
                 });

@@ -116,6 +116,7 @@
  * }
  *
  */
+
 namespace App\Http\Controllers;
 
 use Exception;
@@ -153,18 +154,18 @@ class SubscriptionController extends Controller
             Stripe::setApiKey(config('stripe.secret'));
             // Create Stripe Customer
             $customer = Customer::create([
-                'email' => $request->email,
+                'email'  => $request->email,
                 'source' => $request->stripeToken,
             ]);
             // Convert amount to cents
-            $amount = $request->amount * 100; // e.g., 29 -> 2900
+            $amount   = $request->amount * 100; // e.g., 29 -> 2900
             $currency = 'usd';
             $interval = $request->interval; // 'month' or 'year'
             // Create a new price for the subscription
             $price = Price::create([
-                'unit_amount' => $amount,
-                'currency' => $currency,
-                'recurring' => [
+                'unit_amount'  => $amount,
+                'currency'     => $currency,
+                'recurring'    => [
                     'interval' => $interval,
                 ],
                 'product_data' => [
@@ -174,7 +175,7 @@ class SubscriptionController extends Controller
             // Create the subscription.
             $stripeSubscription = StripeSubscription::create([
                 'customer' => $customer->id,
-                'items' => [
+                'items'    => [
                     [
                         'price' => $price->id,
                     ],
@@ -182,9 +183,9 @@ class SubscriptionController extends Controller
             ]);
             // Save subscription to database.
             Subscription::create([
-                'listing_id' => $listing->id,
+                'listing_id'             => $listing->id,
                 'stripe_subscription_id' => $stripeSubscription->id,
-                'interval' => $interval,
+                'interval'               => $interval,
             ]);
             // Update status of listing.
             $listing = Listing::where('listing_id', $listing->id)->first();
@@ -195,8 +196,7 @@ class SubscriptionController extends Controller
             DB::commit();
 
             return redirect()->route('listing.index', $listing)
-                ->with('success', 'You have successfully subscribed to this listing.');
-
+                             ->with('success', 'You have successfully subscribed to this listing.');
         } catch (Exception $ex) {
             // Rollback the transaction
             DB::rollBack();
@@ -204,7 +204,7 @@ class SubscriptionController extends Controller
             Log::error('Subscription creation failed: ' . $ex->getMessage());
 
             return redirect()->route('listing.step.subscription')
-                ->with('error', 'Subscription creation failed.');
+                             ->with('error', 'Subscription creation failed.');
         }
     }
 
@@ -219,98 +219,119 @@ class SubscriptionController extends Controller
 
             // Validate the request data
             $request->validate([
-                'amount' => 'required|numeric|min:1',
+                'amount'   => 'required|numeric|min:1',
                 'interval' => 'required|in:month,year',
+                //  'payment_method_id' => 'required|string', // Payment method ID from the frontend
             ]);
 
             // Create a Stripe customer
             $customer = $this->createStripeCustomer($stripe, $user->email);
 
-            // Create the price for the subscription
-            $price = $this->createStripePrice($stripe, $request->amount, $request->interval, $listing->name);
-
-            // Create the subscription
-            $subscription = $this->createStripeSubscription($stripe, $customer->id, $price->id);
-
-            // Create the payment intent
             $paymentIntent = $this->createStripePaymentIntent(
                 $stripe,
                 $request->amount,
                 $customer->id,
                 $listing->id,
-                $subscription->id,
-                $subscription->items->data[0]->price->recurring->interval
+                $request->interval
             );
 
-            // Save subscription ID in your database for reference
-            Subscription::create([
-                'listing_id' => $listing->id,
-                'stripe_subscription_id' => $subscription->id,
-                'status' => 'pending', // Or another status
-            ]);
 
             return view('subscription.form', compact('listing', 'paymentIntent', 'customer'));
-
-        } catch (ApiErrorException $e) {
-
-            Log::error('Stripe API error: ' . $e->getMessage());
-            return redirect()->route('listing.step.subscription', $listing)
-                ->with('error', 'Subscription creation failed due to a Stripe error.');
-
         } catch (Exception $e) {
-
             Log::error('Subscription creation failed: ' . $e->getMessage());
+
             return redirect()->route('listing.step.subscription', $listing)
-                ->with('error', 'Subscription creation failed.');
+                             ->with('error', 'Subscription creation failed.');
         }
     }
+
+    public function processPayment(Request $request)
+    {
+        $stripe = $this->getStripe();
+
+        try {
+            $paymentMethodId  = $request->input('payment_method_id');
+            $subscriptionData = json_decode($request->input('subscription_data'), true);
+
+            // Attach the payment method to the customer
+            $stripe->paymentMethods->attach(
+                $paymentMethodId,
+                ['customer' => $subscriptionData['stripe_customer_id']]
+            );
+
+            // Set the default payment method
+            $stripe->customers->update($subscriptionData['stripe_customer_id'], [
+                'invoice_settings' => ['default_payment_method' => $paymentMethodId],
+            ]);
+
+            // Create the subscription
+            $subscription = $stripe->subscriptions->create([
+                'customer'               => $subscriptionData['stripe_customer_id'],
+                'items'                  => [['price' => $subscriptionData['price_id']]],
+                'default_payment_method' => $paymentMethodId,
+            ]);
+
+            // Save subscription ID in your database for reference
+            Subscription::updateOrCreate(
+                ['listing_id' => $subscriptionData['listing_id']],
+                [
+                    'stripe_subscription_id' => $subscription->id,
+                    'status'                 => 'active',
+                ]
+            );
+
+            return response()->json(['redirect_url' => route('listing.index')]);
+        } catch (\Exception $e) {
+            Log::error('Payment processing failed: ' . $e->getMessage());
+
+            return response()->json(['error' => 'Payment processing failed. Please try again.']);
+        }
+    }
+
 
     private function createStripeCustomer($stripe, $email)
     {
         return $stripe->customers->create(['email' => $email]);
     }
 
-    private function createStripePrice($stripe, $amount, $interval, $listingName)
+    private function createStripePrice($stripe, $amount, $interval, $listing)
     {
+        // Create a price dynamically
         return $stripe->prices->create([
-            'unit_amount' => $amount * 100, // Convert to cents
+            'unit_amount' => $amount, // Already in cents
             'currency' => 'usd',
             'recurring' => ['interval' => $interval],
-            'product_data' => ['name' => 'Subscription for Listing ' . $listingName],
+            'product_data' => [
+                'name' => 'Subscription for Listing ' . $listing->name,
+            ],
         ]);
     }
 
-    private function createStripeSubscription($stripe, $customerId, $priceId)
+    private function createStripeSubscription($stripe, $paymentIntent, $price)
     {
         return $stripe->subscriptions->create([
-            'customer' => $customerId,
-            'items' => [['price' => $priceId]],
-            'payment_settings' => [
-                //The payment method type `customer_balance`
-                // cannot be used with subscriptions that have the `collection_method` set to `charge_automatically`.
-                //payment_settings[payment_method_types][0]: must be one of ach_credit_transfer, ach_debit,
-                // acss_debit, amazon_pay, au_becs_debit, bacs_debit, bancontact, boleto, card, cashapp,
-                // customer_balance, eps, fpx, giropay, grabpay, ideal, konbini, link, multibanco, p24,
-                // paynow, paypal, promptpay, revolut_pay, sepa_debit, sofort, us_bank_account, or wechat_pay
-                'payment_method_types' => ['card'],
-                // Add more payment methods if needed
+            'customer' => $paymentIntent->customer,
+            'items'    => [
+                ['price' => $price->id],
             ],
+            'default_payment_method' => $paymentIntent->payment_method,
         ]);
     }
 
-    private function createStripePaymentIntent($stripe, $amount, $customerId, $listingId, $subscriptionId, $interval)
+    private function createStripePaymentIntent($stripe, $amount, $customerId, $listingId, $interval)
     {
         $data = [
-            'amount' => $amount * 100,
-            'currency' => 'usd',
-            'customer' => $customerId,
-            'automatic_payment_methods' => ['enabled' => true],
-            'metadata' => [
+            'amount'               => $amount * 100,
+            'currency'             => 'usd',
+            'customer'             => $customerId,
+            // 'automatic_payment_methods' => ['enabled' => true],
+            'payment_method_types' => ['card'],
+            'metadata'             => [
                 'listing_id' => $listingId,
-                'subscription_id' => $subscriptionId,
-                'interval' => $interval,
+                'interval'   => $interval,
             ],
         ];
+
         return $stripe->paymentIntents->create($data);
     }
 
@@ -321,44 +342,57 @@ class SubscriptionController extends Controller
     public function processCallback(Request $request)
     {
         $stripe = $this->getStripe();
+        $listing = Auth::user()->listings()->first();
 
         try {
             // Retrieve the payment intent
             $paymentIntent = $stripe->paymentIntents->retrieve($request->get('payment_intent'));
-echo '<pre>';print_r($paymentIntent->toArray());echo '</pre>';exit;
-            // Get the listing ID and subscription ID from the metadata
-            $listingId = $paymentIntent->metadata->listing_id;
-            $subscriptionId = $paymentIntent->metadata->subscription_id;
-            $interval = $paymentIntent->metadata->interval;
-            $amount = $paymentIntent->amount/100;
-
-            // Find the listing
-            $listing = Auth::user()->listings()->findOrFail($listingId);
-
+//echo '<pre>';print_r($paymentIntent->toArray());echo '</pre>';exit;
             if ($paymentIntent->status == 'succeeded') {
-                // Update the subscription record
-                Subscription::updateOrCreate(
-                    ['listing_id' => $listing->id],
-                    [
-                        'stripe_subscription_id' => $subscriptionId,
-                        'interval' => $interval,
-                        'status' => 'active',
-                    ]
-                );
-                // Update the listing status
-                $listing->update(['listing_status' => 'subscribed']);
+                // Get the listing ID and subscription ID from the metadata
+                $listingId = $paymentIntent->metadata->listing_id;
+                $interval  = $paymentIntent->metadata->interval;
+                $amount    = $paymentIntent->amount;
+                // Find the listing
+                $listing      = Auth::user()->listings()->findOrFail($listingId);
 
-//                return redirect()->route('listing.index', $listing)
-//                    ->with('success', "You have successfully subscribed to this listing for $amount/$interval.");
+                // Attach the payment method to the customer
+                $stripe->paymentMethods->attach(
+                    $paymentIntent->payment_method,
+                    ['customer' => $paymentIntent->customer]
+                );
+
+                // Set the default payment method on the customer
+                $stripe->customers->update($paymentIntent->customer, [
+                    'invoice_settings' => ['default_payment_method' => $paymentIntent->payment_method]
+                ]);
+
+                // Create a price dynamically.
+                $price = $this->createStripePrice($stripe, $amount, $interval, $listing);
+
+                $subscription = $this->createStripeSubscription($stripe, $paymentIntent, $price);
+
+                $listing->update(['listing_status' => 'subscribed']);
+                Subscription::create([
+                    'listing_id'             => $listing->id,
+                    'stripe_subscription_id' => $subscription->id,
+                    'status'                 => 'active',
+                    'interval'               => $interval,
+                ]);
+
+                $amount = $amount / 100;
+
+                return redirect()->route('listing.index', $listing)
+                    ->with('success', "You have successfully subscribed to this listing for $amount/$interval.");
             }
 
-            return redirect()->route('listing.index', $listing)
-                             ->with('error', 'Subscription creation failed. Please try again.');
+            return redirect()->route('listing.step.subscription', $listing)
+                ->with('error', 'Subscription creation failed. Please try again.');
         } catch (\Exception $e) {
             Log::error('Payment processing failed: ' . $e->getMessage());
 
-            return redirect()->route('listing.index')
-                             ->with('error', 'Subscription creation failed. Please try again.');
+            return redirect()->route('listing.step.subscription', $listing)
+                ->with('error', 'Subscription creation failed. Please try again.');
         }
     }
 
