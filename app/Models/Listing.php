@@ -23,6 +23,8 @@ class Listing extends Model
         'business_address',
         'business_contact',
         'business_email',
+        'listing_status',
+        'selected_package'
     ];
 
     public function user(): BelongsTo

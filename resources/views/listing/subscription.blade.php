@@ -16,6 +16,12 @@
                 </div>
             @endif
 
+            @if(session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <h2 class="dashboard_title">Products/Services</h2>
             <div class="dashboard_add_property">
 
