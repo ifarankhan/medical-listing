@@ -15,6 +15,12 @@
                 </div>
             @endif
 
+            @if(session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <h2 class="dashboard_title">Products/Services <a class="common_btn" href="{{ route('listing.create') }}">+ Add A Product/Service</a></h2>
             <div class="overview_listing wow fadeInUp" data-wow-duration="1.5s">
                 <div class="table-responsive">

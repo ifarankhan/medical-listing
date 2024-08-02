@@ -41,7 +41,7 @@
     </section>
 
     <script>
-        var categories = @json($categories);
+        let categories = @json($categories);
         // Build the options for the categories dropdown
         let categoryOptions = '<option value="">Select a product/service</option>';
         categories.forEach(category => {

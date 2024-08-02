@@ -12,6 +12,8 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\SearchController;
 
+use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\WebhookController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\AuthController;
@@ -34,6 +36,8 @@ Route::get('/contact', [ContactUsController::class, 'index'])->name('contact');
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 Route::get('/check-auth', [AuthController::class, 'checkAuth'])->name('check-auth');
+
+Route::post('/webhook/stripe', [WebhookController::class, 'handleWebhook']);
 
 Route::group(['middleware' => 'guest'], function () {
 
@@ -62,6 +66,17 @@ Route::group(['middleware' => ['role:insurance_provider']], function () {
     Route::get('/dashboard/listing/{listing}/edit', [ListingController::class, 'edit'])->name('listing.edit');
     Route::get('/dashboard/listing/{listing}/delete', [ListingController::class, 'delete'])
          ->name('listing.delete');
+
+    Route::get('/subscription', [SubscriptionController::class, 'showSubscriptionForm'])
+         ->name('subscription.form');
+    Route::post('/create-subscription', [SubscriptionController::class, 'createSubscription'])
+         ->name('subscription.create');
+
+    Route::get('/callback-subscription', [SubscriptionController::class, 'processCallback'])
+         ->name('subscription.callback');
+
+    Route::post('/subscription/process', [SubscriptionController::class, 'processPayment'])->name('subscription.process');
+
 });
 
 Route::group(['middleware' => ['role:customer']], function () {
