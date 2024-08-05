@@ -32,25 +32,23 @@ class WebhookController extends Controller
             return response()->json(['error' => 'Invalid signature'], 400);
         }
 
+        $data = $event->data->object;
+
         // Handle the event
         switch ($event->type) {
+
             case 'invoice.payment_succeeded':
-                $invoice = $event->data->object;
-                $subscriptionId = $invoice->subscription;
 
-                // Update the subscription and listing tables
-                $subscription = Subscription::where('stripe_subscription_id', $subscriptionId)->first();
-                if ($subscription) {
-                    $subscription->status = 'active';
-                    $subscription->save();
+                $this->handleInvoicePaymentSucceeded($data);
 
-                    $listing = Listing::find($subscription->listing_id);
-                    if ($listing) {
-                        $listing->update(['listing_status' => 'subscribed']);
-                    }
-                }
                 break;
+            case 'invoice.payment_failed':
+
+                $this->handleInvoicePaymentFailed($data);
+                break;
+
             case 'customer.subscription.deleted':
+
                 $subscription = $event->data->object;
                 $subscriptionId = $subscription->id;
 
@@ -74,5 +72,53 @@ class WebhookController extends Controller
         }
 
         return response()->json(['success' => 'Webhook handled']);
+    }
+
+    protected function handleInvoicePaymentSucceeded($invoice): void
+    {
+        // You can update your subscription status or perform other actions
+        $subscriptionId = $invoice->subscription;
+        $amountPaid = $invoice->amount_paid;
+
+        // Find the subscription in your database
+        $subscription = Subscription::where('stripe_subscription_id', $subscriptionId)->first();
+
+        if ($subscription) {
+
+            $listing = Listing::find($subscription->listing_id);
+            if ($listing) {
+                $listing->update(['listing_status' => 'subscribed']);
+            }
+            // Update subscription details or perform other actions
+            $subscription->update([
+                'status' => 'active', // or any other relevant field
+                'last_payment_amount' => $amountPaid / 100, // convert to dollars
+            ]);
+
+            Log::info('Subscription payment succeeded for subscription ID: ' . $subscriptionId);
+        }
+    }
+
+    protected function handleInvoicePaymentFailed($invoice): void
+    {
+        $subscriptionId = $invoice->subscription;
+
+        // Find the subscription in your database
+        $subscription = Subscription::where('stripe_subscription_id', $subscriptionId)->first();
+
+        if ($subscription) {
+
+            $listing = Listing::find($subscription->listing_id);
+            if ($listing) {
+                $listing->update(['listing_status' => 'unsubscribed']);
+            }
+            // Update subscription details
+            $subscription->update([
+                'status' => 'past_due',
+                'payment_intent_status' => 'failed',
+            ]);
+
+            Log::warning('Subscription payment failed for subscription ID: ' . $subscriptionId);
+        }
     }
 }

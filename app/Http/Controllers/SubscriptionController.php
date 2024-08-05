@@ -97,7 +97,7 @@ class SubscriptionController extends Controller
                 ['listing_id' => $subscriptionData['listing_id']],
                 [
                     'stripe_subscription_id' => $subscription->id,
-                    'status'                 => 'active',
+                    'status'                 => 'pending',
                 ]
             );
 
@@ -211,20 +211,15 @@ class SubscriptionController extends Controller
                     'invoice_settings' => ['default_payment_method' => $paymentIntent->payment_method]
                 ]);
 
-                // Create a price dynamically.
-                $price = $this->createStripePrice($stripe, $amount, $interval, $listing);
-
-                $subscription = $this->createStripeSubscription($stripe, $paymentIntent, $price);
-
                 $listing->update(['listing_status' => 'subscribed']);
                 Subscription::create([
                     'listing_id'             => $listing->id,
-                    'stripe_subscription_id' => $subscription->id,
-                    'status'                 => 'active',
+                    'stripe_subscription_id' => $paymentIntent->id,
+                    'status'                 => $paymentIntent->status,
                     'interval'               => $interval,
                 ]);
 
-                $amount = $amount / 100;
+                $amount = $amount / 100; // Amount in cents.
                 DB::commit();
                 return redirect()->route('listing.index', $listing)
                     ->with('success', "You have successfully subscribed to this listing for $$amount/$interval.");
