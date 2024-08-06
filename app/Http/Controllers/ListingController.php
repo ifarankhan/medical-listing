@@ -21,12 +21,20 @@ class ListingController extends Controller
     const STATUS_PAID = 'paid';
     const STATUS_PENDING = 'pending';
 
+    const STATUS_CANCELLED = 'cancelled';
+    CONST STATUS_SUBSCRIBED = 'subscribed';
+
     public function index(): Factory|View|Application
     {
         $currentUser = Auth::user();
-        $listings = $currentUser->listings()->get();
+        $hasListing = $currentUser->listings()
+            ->exists();
+        // Show only listings that are paid for.
+        $listings = $currentUser->listings()
+            ->where('listing_status', self::STATUS_SUBSCRIBED)
+            ->get();
 
-        return view('listing.index', compact('listings'));
+        return view('listing.index', compact('listings', 'hasListing'));
     }
     /**
      * Show the form for creating a new listing.
