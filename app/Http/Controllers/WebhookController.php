@@ -13,7 +13,6 @@ class WebhookController extends Controller
 {
     public function handleWebhook(Request $request): JsonResponse
     {
-        Log::info(json_encode($request->all()));
         // Set your Stripe secret key
         Stripe::setApiKey(config('stripe.secret'));
 
@@ -66,7 +65,7 @@ class WebhookController extends Controller
         // You can update your subscription status or perform other actions
         $subscriptionId = $invoice->subscription;
         $amountPaid = $invoice->amount_paid;
-
+        Log::info($subscriptionId);
         // Find the subscription in your database
         $subscription = Subscription::where('stripe_subscription_id', $subscriptionId)->first();
 
