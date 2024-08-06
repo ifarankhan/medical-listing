@@ -4,23 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Exception;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use App\Models\Listing;
 use App\Models\Subscription;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Stripe\Exception\ApiErrorException;
-use Stripe\Stripe;
-use Stripe\Customer;
 use Stripe\StripeClient;
-use Stripe\Subscription as StripeSubscription;
-use Stripe\Price;
 
 class SubscriptionController extends Controller
 {
+    const BASIC_PRODUCT = 'prod_QbuPEDi4VgX5x2';
+    CONST YEARLY_PRODUCT = 'prod_QbuPerPo3q22fm';
     public function showSubscriptionForm(Request $request)
     {
         /** @var User $user */
@@ -128,7 +124,7 @@ class SubscriptionController extends Controller
     private function createStripePrice(StripeClient $stripe, $amount, $interval, $listing)
     {
         // Fetch stripe product.
-        $product = $interval == 'month'? 'prod_QZoqmSe5F8LmwH': 'prod_QZoq6qZOituB3n';
+        $product = $interval == 'month'? self::BASIC_PRODUCT: self::YEARLY_PRODUCT;
         $productData = $stripe->products->retrieve($product);
 
         // Check if the price exists for this product
@@ -181,7 +177,7 @@ class SubscriptionController extends Controller
     /**
      * @throws ApiErrorException
      */
-    public function processCallback(Request $request)
+    public function processCallback(Request $request): RedirectResponse
     {
         $stripe = $this->getStripe();
         $listing = Auth::user()->listings()->first();

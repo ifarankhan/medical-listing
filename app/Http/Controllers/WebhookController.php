@@ -49,20 +49,7 @@ class WebhookController extends Controller
 
             case 'customer.subscription.deleted':
 
-                $subscription = $event->data->object;
-                $subscriptionId = $subscription->id;
-
-                // Handle subscription deletion
-                $subscription = Subscription::where('stripe_subscription_id', $subscriptionId)->first();
-                if ($subscription) {
-                    $subscription->status = 'cancelled';
-                    $subscription->save();
-
-                    $listing = Listing::find($subscription->listing_id);
-                    if ($listing) {
-                        $listing->update(['listing_status' => 'unsubscribed']);
-                    }
-                }
+                $this->handleCustomerSubscriptionDeleted($data);
                 break;
             // Handle other event types as needed
             default:
@@ -119,6 +106,22 @@ class WebhookController extends Controller
             ]);
 
             Log::warning('Subscription payment failed for subscription ID: ' . $subscriptionId);
+        }
+    }
+
+    protected function handleCustomerSubscriptionDeleted($customer): void
+    {
+        $subscriptionId = $customer->id;
+        // Handle subscription deletion
+        $subscription = Subscription::where('stripe_subscription_id', $subscriptionId)->first();
+        if ($subscription) {
+            $subscription->status = 'cancelled';
+            $subscription->save();
+
+            $listing = Listing::find($subscription->listing_id);
+            if ($listing) {
+                $listing->update(['listing_status' => 'unsubscribed']);
+            }
         }
     }
 }
