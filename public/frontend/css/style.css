@@ -511,7 +511,7 @@ button {
 .main_menu .navbar-brand {
     padding: 0;
     margin: 0;
-    width: 170px;
+    width: 250px;
 }
 
 .main_menu .navbar-nav {
@@ -1351,7 +1351,7 @@ button {
 }
 
 .process_item .text h4 {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 500;
     margin-top: 20px;
 }
@@ -2067,7 +2067,7 @@ button {
 }
 
 .banner_2_contant h3 {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 400;
     text-transform: capitalize;
     color: var(--colorWhite);
@@ -2082,7 +2082,7 @@ button {
     margin-top: 15px;
     line-height: 74px;
     text-transform: capitalize;
-    color: var(--colorWhite);
+    color: var(--colorRed);
     z-index: 999;
 
 }
