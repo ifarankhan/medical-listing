@@ -63,7 +63,7 @@
                         <a href="{{ route('search', ['category' => $serviceCategories[$i]->slug]) }}" class="category_2_item">
                             <div class="text">
                                 <b>{{ $serviceCategories[$i]->name }}</b>
-                                @if($serviceCategories[$i]->listing_count > 0) <p>{{ $serviceCategories[$i]->listing_count }}+ listings</p> @endif
+                                @if($serviceCategories[$i]->listing_count > 9) <p>{{ $serviceCategories[$i]->listing_count }}+ listings</p> @endif
                             </div>
                             <span><img src="{{ asset('frontend/images/categoris_7.png') }}" alt="icon" class="img-fluid w-100"></span>
                         </a>
