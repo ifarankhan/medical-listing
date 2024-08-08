@@ -17,14 +17,14 @@
                     <a class="nav-link active" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('about') }}">About Us</a>
+                    <a class="nav-link" href="{{ route('about') }}">Providers/Businesses</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('search') }}">Services/Products</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('contact') }}">Contact Us</a>
-                </li>
+{{--                <li class="nav-item">--}}
+{{--                    <a class="nav-link" href="{{ route('contact') }}">Contact Us</a>--}}
+{{--                </li>--}}
             </ul>
             <ul class="menu_right d-flex align-items-center">
                 <li>

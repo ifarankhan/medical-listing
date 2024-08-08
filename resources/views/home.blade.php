@@ -8,14 +8,16 @@
     <!--=============================
             BANNER 2 START
         ==============================-->
-    <section class="banner_2" style="background: url({{ 'frontend/images/banner_diverrx1.jpg' }});">
+    <section class="banner_2" style="background: url({{ 'frontend/images/banner_diverrx2.jpg' }});">
         <div class="banner_2_overly">
             <div class="container">
                 <div class="row wow fadeInUp" data-wow-duration="1.5s">
                     <div class="col-xl-8 col-lg-10">
                         <div class="banner_2_contant">
-                            <h3>Diverxx: A diverse, inclusive and versatile marketplace to empower every ability.</h3>
-                            <h1>Find Services and Providers near you.</h1>
+                            <h3>Diverxx: A Diverse, Inclusive , Versatile & Compassionate Marketplace that serves
+                                the needs of individuals with neuro-diversities, different abilities and/or special
+                                needs.</h3>
+                            <h1> Find Services/Products Near You.</h1>
                             <form action="{{ route('search') }}" method="GET" class="banner_form">
                                 <ul class="d-flex flex-wrap">
                                     <li class="banner_input">
@@ -74,233 +76,6 @@
         CATEGORY 2 END
     ==============================-->
     <!--=============================
-        LISTING 2 START
-    ==============================-->
-    <section class="listing_2 pt_115 xs_pt_95 pb_120 xs_pb_100">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-xl-6 wow fadeInUp" data-wow-duration="1.5s">
-                    <div class="section_title_2 mb_40">
-                        <h4>Popular Listings</h4>
-                        <h2>Prime & <span>Popularized</span> Listings</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row listing_2_slider">
-                <div class="col-xl-4 wow fadeInUp" data-wow-duration="1.5s">
-                    <div class="listing_2_item">
-                        <div class="listing_2_img">
-                            <img src="{{ asset('frontend/images/listing_5.jpg') }}" alt="img" class="img-fluid w-100">
-                            <div class="listing_2_overly">
-                                <a href="#" class="category"><i class="fas fa-star"></i>cars</a>
-                                <a href="#" class="love"><i class="fas fa-heart"></i></a>
-                                <div class="listing_owner">
-                                        <span class="img"><img src="{{ asset('frontend/images/person_1.png') }}" alt="img"
-                                                               class="img-fluid w-100"></span>
-                                    <div class="name">
-                                        <h6>Dominic L. Emen</h6>
-                                        <span>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <b>(4.5)</b>
-                                            </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="listing_2_text">
-                            <a href="listing_details.html">Gorgeous autumn</a>
-                            <p>Lorem ipsum dolor sit amet, consectetu
-                                nadipiscing elit. Nam placerat elit ac nulla nec.</p>
-                            <ul>
-                                <li><i class="fas fa-map-marker-alt"></i>EC4M Road, United London</li>
-                                <li><i class="fas fa-phone-alt"></i>+088 45 398 7855</li>
-                            </ul>
-                            <div class="listing_2_bottom">
-                                <h6>Price: $100</h6>
-                                <ul class="d-flex flex-wrap">
-                                    <li><span><img src="{{ asset('frontend/images/eye.png') }}" alt="img"
-                                                   class="img-fluid w-100"></span>798+</li>
-                                    <li><span><img src="{{ asset('frontend/images/comment.png') }}" alt="img"
-                                                   class="img-fluid w-100"></span>24</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 wow fadeInUp" data-wow-duration="1.5s">
-                    <div class="listing_2_item">
-                        <div class="listing_2_img">
-                            <img src="{{ asset('frontend/images/listing_6.jpg') }}" alt="img" class="img-fluid w-100">
-                            <div class="listing_2_overly">
-                                <a href="#" class="category"><i class="fas fa-star"></i>Hotels</a>
-                                <a href="#" class="love"><i class="fas fa-heart"></i></a>
-                                <div class="listing_owner">
-                                        <span class="img"><img src="{{ asset('frontend/images/person_1.png') }}" alt="img"
-                                                               class="img-fluid w-100"></span>
-                                    <div class="name">
-                                        <h6>Dominic L. Emen</h6>
-                                        <span>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <b>(4.5)</b>
-                                            </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="listing_2_text">
-                            <a href="listing_details.html">Roman Chuijhal Hotel</a>
-                            <p>Lorem ipsum dolor sit amet, consectetu
-                                nadipiscing elit. Nam placerat elit ac nulla nec.</p>
-                            <ul>
-                                <li><i class="fas fa-map-marker-alt"></i>Chukoi Hotel & Restaurant</li>
-                                <li><i class="fas fa-phone-alt"></i>+088 45 398 7855</li>
-                            </ul>
-                            <div class="listing_2_bottom">
-                                <h6>Price: $200</h6>
-                                <ul class="d-flex flex-wrap">
-                                    <li><span><img src="{{ asset('frontend/images/eye.png') }}" alt="img"
-                                                   class="img-fluid w-100"></span>798+</li>
-                                    <li><span><img src="{{ asset('frontend/images/comment.png') }}" alt="img"
-                                                   class="img-fluid w-100"></span>24</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 wow fadeInUp" data-wow-duration="1.5s">
-                    <div class="listing_2_item">
-                        <div class="listing_2_img">
-                            <img src="{{ asset('frontend/images/listing_7.jpg') }}" alt="img" class="img-fluid w-100">
-                            <div class="listing_2_overly">
-                                <a href="#" class="category"><i class="fas fa-star"></i>Resorts</a>
-                                <a href="#" class="love"><i class="fas fa-heart"></i></a>
-                                <div class="listing_owner">
-                                        <span class="img"><img src="{{ asset('frontend/images/person_1.png') }}" alt="img"
-                                                               class="img-fluid w-100"></span>
-                                    <div class="name">
-                                        <h6>Dominic L. Emen</h6>
-                                        <span>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <b>(4.5)</b>
-                                            </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="listing_2_text">
-                            <a href="listing_details.html">School And Education </a>
-                            <p>Lorem ipsum dolor sit amet, consectetu
-                                nadipiscing elit. Nam placerat elit ac nulla nec.</p>
-                            <ul>
-                                <li><i class="fas fa-map-marker-alt"></i>Chontaduro Barcelona</li>
-                                <li><i class="fas fa-phone-alt"></i>+088 45 398 7855</li>
-                            </ul>
-                            <div class="listing_2_bottom">
-                                <h6>Price: $300</h6>
-                                <ul class="d-flex flex-wrap">
-                                    <li><span><img src="{{ asset('frontend/images/eye.png') }}" alt="img"
-                                                   class="img-fluid w-100"></span>798+</li>
-                                    <li><span><img src="{{ asset('frontend/images/comment.png') }}" alt="img"
-                                                   class="img-fluid w-100"></span>24</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 wow fadeInUp" data-wow-duration="1.5s">
-                    <div class="listing_2_item">
-                        <div class="listing_2_img">
-                            <img src="{{ asset('frontend/images/listing_9.jpg') }}" alt="img" class="img-fluid w-100">
-                            <div class="listing_2_overly">
-                                <a href="#" class="category"><i class="fas fa-star"></i>Houses</a>
-                                <a href="#" class="love"><i class="fas fa-heart"></i></a>
-                                <div class="listing_owner">
-                                        <span class="img"><img src="{{ asset('frontend/images/person_1.png') }}" alt="img"
-                                                               class="img-fluid w-100"></span>
-                                    <div class="name">
-                                        <h6>Dominic L. Emen</h6>
-                                        <span>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <b>(4.5)</b>
-                                            </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="listing_2_text">
-                            <a href="listing_details.html">Transport & Logistics Service</a>
-                            <p>Lorem ipsum dolor sit amet, consectetu
-                                nadipiscing elit. Nam placerat elit ac nulla nec.</p>
-                            <ul>
-                                <li><i class="fas fa-map-marker-alt"></i>EC4M Road, United London</li>
-                                <li><i class="fas fa-phone-alt"></i>+088 45 398 7855</li>
-                            </ul>
-                            <div class="listing_2_bottom">
-                                <h6>Price: $100</h6>
-                                <ul class="d-flex flex-wrap">
-                                    <li><span><img src="{{ asset('frontend/images/eye.png') }}" alt="img"
-                                                   class="img-fluid w-100"></span>798+</li>
-                                    <li><span><img src="{{ asset('frontend/images/comment.png') }}" alt="img"
-                                                   class="img-fluid w-100"></span>24</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--=============================
-        LISTING 2 END
-    ==============================-->
-    <!--=============================
-        POPULAR LISTING START
-    ==============================-->
-    <section class="polular_listing" style="background: {{ url('frontend/images/popular_listing_bg.jpg') }};">
-        <div class="popular_listing_overly pt_115 xs_pt_95 pb_120 xs_pb_100">
-            <div class="container">
-                <div class="row justify-content-between align-items-center">
-                    <div class="col-xl-6 col-lg-7 wow fadeInUp" data-wow-duration="1.5s">
-                        <div class="popular_listing_content">
-                            <div class="section_title_2 section_title_left_2">
-                                <h4>Crowd Favorite</h4>
-                                <h2> Explore Community Events, & Other Resources In Your <span>Area</span> </h2>
-                            </div>
-{{--                            <p>Lorem ipsum dolor sit amet, consectetu adipiscing elit. Nam placerat elit ac nulla nec--}}
-{{--                                ullamcorper risus dignissim.</p>--}}
-                            <a href="listing_details.html" class="common_btn_2">explore the community<span><i
-                                        class="far fa-plus"></i></span></a>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-5 wow fadeInUp" data-wow-duration="1.5s">
-                        <div class="polular_listing_img">
-                            <img src="{{ asset('frontend/images/crowd_favorite.jpg') }}" alt="img" class="img-fluid w-100">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--=============================
-        POPULAR LISTING END
-    ==============================-->
-    <!--=============================
         PROCESS 2 START
     ==============================-->
     <section class="process process_2 pt_115 xs_pt_95 pb_75 xs_pb_80">
@@ -309,7 +84,7 @@
                 <div class="col-xl-6 wow fadeInUp" data-wow-duration="1.5s">
                     <div class="section_title_2 mb_25">
                         <h4>how it works</h4>
-                        <h2>Getting <span>Services</span> for yourself or your loved ones is now as easy as 1,2, 3 only with Diverrx.</h2>
+                        <h2>Finding <span>Services/Products</span> is Now As Easy As 1, 2,3-  Only With Diverrx</h2>
                     </div>
                 </div>
             </div>
@@ -332,9 +107,9 @@
                             <img src="{{ asset('frontend/images/process_icon_4.png') }}" alt="icon" class="img-fluid w-100">
                         </div>
                         <div class="text">
-                            <h4>2. Contact Your Preferred Five Providers</h4>
-                            <p>Get in touch with your preferred five
-                                service providers or let them contact you.</p>
+                            <h4>2. Send Instant Query</h4>
+                            <p>Submit your query to up to five service/product providers at the same time or send a
+                                request to be contacted.</p>
                         </div>
                     </div>
                 </div>
@@ -344,9 +119,8 @@
                             <img src="{{ asset('frontend/images/process_icon_6.png') }}" alt="icon" class="img-fluid w-100">
                         </div>
                         <div class="text">
-                            <h4>3. Secure your service/product</h4>
-                            <p>Book your service or products with
-                                the selected service provider.</p>
+                            <h4>3. Start Using Services/Products!</h4>
+                            <p>Finalize your preferred providers and start using your desired services/ products.</p>
                         </div>
                     </div>
                 </div>
@@ -356,6 +130,234 @@
     <!--=============================
         PROCESS 2 END
     ==============================-->
+    <!--=============================
+        LISTING 2 START
+    ==============================-->
+{{--    <section class="listing_2 pt_115 xs_pt_95 pb_120 xs_pb_100">--}}
+{{--        <div class="container">--}}
+{{--            <div class="row justify-content-center">--}}
+{{--                <div class="col-xl-6 wow fadeInUp" data-wow-duration="1.5s">--}}
+{{--                    <div class="section_title_2 mb_40">--}}
+{{--                        <h4>Popular Listings</h4>--}}
+{{--                        <h2>Prime & <span>Popularized</span> Listings</h2>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--            <div class="row listing_2_slider">--}}
+{{--                <div class="col-xl-4 wow fadeInUp" data-wow-duration="1.5s">--}}
+{{--                    <div class="listing_2_item">--}}
+{{--                        <div class="listing_2_img">--}}
+{{--                            <img src="{{ asset('frontend/images/listing_5.jpg') }}" alt="img" class="img-fluid w-100">--}}
+{{--                            <div class="listing_2_overly">--}}
+{{--                                <a href="#" class="category"><i class="fas fa-star"></i>cars</a>--}}
+{{--                                <a href="#" class="love"><i class="fas fa-heart"></i></a>--}}
+{{--                                <div class="listing_owner">--}}
+{{--                                        <span class="img"><img src="{{ asset('frontend/images/person_1.png') }}" alt="img"--}}
+{{--                                                               class="img-fluid w-100"></span>--}}
+{{--                                    <div class="name">--}}
+{{--                                        <h6>Dominic L. Emen</h6>--}}
+{{--                                        <span>--}}
+{{--                                                <i class="fas fa-star"></i>--}}
+{{--                                                <i class="fas fa-star"></i>--}}
+{{--                                                <i class="fas fa-star"></i>--}}
+{{--                                                <i class="fas fa-star"></i>--}}
+{{--                                                <i class="fas fa-star"></i>--}}
+{{--                                                <b>(4.5)</b>--}}
+{{--                                            </span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="listing_2_text">--}}
+{{--                            <a href="listing_details.html">Gorgeous autumn</a>--}}
+{{--                            <p>Lorem ipsum dolor sit amet, consectetu--}}
+{{--                                nadipiscing elit. Nam placerat elit ac nulla nec.</p>--}}
+{{--                            <ul>--}}
+{{--                                <li><i class="fas fa-map-marker-alt"></i>EC4M Road, United London</li>--}}
+{{--                                <li><i class="fas fa-phone-alt"></i>+088 45 398 7855</li>--}}
+{{--                            </ul>--}}
+{{--                            <div class="listing_2_bottom">--}}
+{{--                                <h6>Price: $100</h6>--}}
+{{--                                <ul class="d-flex flex-wrap">--}}
+{{--                                    <li><span><img src="{{ asset('frontend/images/eye.png') }}" alt="img"--}}
+{{--                                                   class="img-fluid w-100"></span>798+</li>--}}
+{{--                                    <li><span><img src="{{ asset('frontend/images/comment.png') }}" alt="img"--}}
+{{--                                                   class="img-fluid w-100"></span>24</li>--}}
+{{--                                </ul>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="col-xl-4 wow fadeInUp" data-wow-duration="1.5s">--}}
+{{--                    <div class="listing_2_item">--}}
+{{--                        <div class="listing_2_img">--}}
+{{--                            <img src="{{ asset('frontend/images/listing_6.jpg') }}" alt="img" class="img-fluid w-100">--}}
+{{--                            <div class="listing_2_overly">--}}
+{{--                                <a href="#" class="category"><i class="fas fa-star"></i>Hotels</a>--}}
+{{--                                <a href="#" class="love"><i class="fas fa-heart"></i></a>--}}
+{{--                                <div class="listing_owner">--}}
+{{--                                        <span class="img"><img src="{{ asset('frontend/images/person_1.png') }}" alt="img"--}}
+{{--                                                               class="img-fluid w-100"></span>--}}
+{{--                                    <div class="name">--}}
+{{--                                        <h6>Dominic L. Emen</h6>--}}
+{{--                                        <span>--}}
+{{--                                                <i class="fas fa-star"></i>--}}
+{{--                                                <i class="fas fa-star"></i>--}}
+{{--                                                <i class="fas fa-star"></i>--}}
+{{--                                                <i class="fas fa-star"></i>--}}
+{{--                                                <i class="fas fa-star"></i>--}}
+{{--                                                <b>(4.5)</b>--}}
+{{--                                            </span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="listing_2_text">--}}
+{{--                            <a href="listing_details.html">Roman Chuijhal Hotel</a>--}}
+{{--                            <p>Lorem ipsum dolor sit amet, consectetu--}}
+{{--                                nadipiscing elit. Nam placerat elit ac nulla nec.</p>--}}
+{{--                            <ul>--}}
+{{--                                <li><i class="fas fa-map-marker-alt"></i>Chukoi Hotel & Restaurant</li>--}}
+{{--                                <li><i class="fas fa-phone-alt"></i>+088 45 398 7855</li>--}}
+{{--                            </ul>--}}
+{{--                            <div class="listing_2_bottom">--}}
+{{--                                <h6>Price: $200</h6>--}}
+{{--                                <ul class="d-flex flex-wrap">--}}
+{{--                                    <li><span><img src="{{ asset('frontend/images/eye.png') }}" alt="img"--}}
+{{--                                                   class="img-fluid w-100"></span>798+</li>--}}
+{{--                                    <li><span><img src="{{ asset('frontend/images/comment.png') }}" alt="img"--}}
+{{--                                                   class="img-fluid w-100"></span>24</li>--}}
+{{--                                </ul>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="col-xl-4 wow fadeInUp" data-wow-duration="1.5s">--}}
+{{--                    <div class="listing_2_item">--}}
+{{--                        <div class="listing_2_img">--}}
+{{--                            <img src="{{ asset('frontend/images/listing_7.jpg') }}" alt="img" class="img-fluid w-100">--}}
+{{--                            <div class="listing_2_overly">--}}
+{{--                                <a href="#" class="category"><i class="fas fa-star"></i>Resorts</a>--}}
+{{--                                <a href="#" class="love"><i class="fas fa-heart"></i></a>--}}
+{{--                                <div class="listing_owner">--}}
+{{--                                        <span class="img"><img src="{{ asset('frontend/images/person_1.png') }}" alt="img"--}}
+{{--                                                               class="img-fluid w-100"></span>--}}
+{{--                                    <div class="name">--}}
+{{--                                        <h6>Dominic L. Emen</h6>--}}
+{{--                                        <span>--}}
+{{--                                                <i class="fas fa-star"></i>--}}
+{{--                                                <i class="fas fa-star"></i>--}}
+{{--                                                <i class="fas fa-star"></i>--}}
+{{--                                                <i class="fas fa-star"></i>--}}
+{{--                                                <i class="fas fa-star"></i>--}}
+{{--                                                <b>(4.5)</b>--}}
+{{--                                            </span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="listing_2_text">--}}
+{{--                            <a href="listing_details.html">School And Education </a>--}}
+{{--                            <p>Lorem ipsum dolor sit amet, consectetu--}}
+{{--                                nadipiscing elit. Nam placerat elit ac nulla nec.</p>--}}
+{{--                            <ul>--}}
+{{--                                <li><i class="fas fa-map-marker-alt"></i>Chontaduro Barcelona</li>--}}
+{{--                                <li><i class="fas fa-phone-alt"></i>+088 45 398 7855</li>--}}
+{{--                            </ul>--}}
+{{--                            <div class="listing_2_bottom">--}}
+{{--                                <h6>Price: $300</h6>--}}
+{{--                                <ul class="d-flex flex-wrap">--}}
+{{--                                    <li><span><img src="{{ asset('frontend/images/eye.png') }}" alt="img"--}}
+{{--                                                   class="img-fluid w-100"></span>798+</li>--}}
+{{--                                    <li><span><img src="{{ asset('frontend/images/comment.png') }}" alt="img"--}}
+{{--                                                   class="img-fluid w-100"></span>24</li>--}}
+{{--                                </ul>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="col-xl-4 wow fadeInUp" data-wow-duration="1.5s">--}}
+{{--                    <div class="listing_2_item">--}}
+{{--                        <div class="listing_2_img">--}}
+{{--                            <img src="{{ asset('frontend/images/listing_9.jpg') }}" alt="img" class="img-fluid w-100">--}}
+{{--                            <div class="listing_2_overly">--}}
+{{--                                <a href="#" class="category"><i class="fas fa-star"></i>Houses</a>--}}
+{{--                                <a href="#" class="love"><i class="fas fa-heart"></i></a>--}}
+{{--                                <div class="listing_owner">--}}
+{{--                                        <span class="img"><img src="{{ asset('frontend/images/person_1.png') }}" alt="img"--}}
+{{--                                                               class="img-fluid w-100"></span>--}}
+{{--                                    <div class="name">--}}
+{{--                                        <h6>Dominic L. Emen</h6>--}}
+{{--                                        <span>--}}
+{{--                                                <i class="fas fa-star"></i>--}}
+{{--                                                <i class="fas fa-star"></i>--}}
+{{--                                                <i class="fas fa-star"></i>--}}
+{{--                                                <i class="fas fa-star"></i>--}}
+{{--                                                <i class="fas fa-star"></i>--}}
+{{--                                                <b>(4.5)</b>--}}
+{{--                                            </span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="listing_2_text">--}}
+{{--                            <a href="listing_details.html">Transport & Logistics Service</a>--}}
+{{--                            <p>Lorem ipsum dolor sit amet, consectetu--}}
+{{--                                nadipiscing elit. Nam placerat elit ac nulla nec.</p>--}}
+{{--                            <ul>--}}
+{{--                                <li><i class="fas fa-map-marker-alt"></i>EC4M Road, United London</li>--}}
+{{--                                <li><i class="fas fa-phone-alt"></i>+088 45 398 7855</li>--}}
+{{--                            </ul>--}}
+{{--                            <div class="listing_2_bottom">--}}
+{{--                                <h6>Price: $100</h6>--}}
+{{--                                <ul class="d-flex flex-wrap">--}}
+{{--                                    <li><span><img src="{{ asset('frontend/images/eye.png') }}" alt="img"--}}
+{{--                                                   class="img-fluid w-100"></span>798+</li>--}}
+{{--                                    <li><span><img src="{{ asset('frontend/images/comment.png') }}" alt="img"--}}
+{{--                                                   class="img-fluid w-100"></span>24</li>--}}
+{{--                                </ul>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </section>--}}
+    <!--=============================
+        LISTING 2 END
+    ==============================-->
+    <!--=============================
+        POPULAR LISTING START
+    ==============================-->
+    <section class="polular_listing" style="background: {{ url('frontend/images/popular_listing_bg.jpg') }};">
+        <div class="popular_listing_overly pt_115 xs_pt_95 pb_120 xs_pb_100">
+            <div class="container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-xl-6 col-lg-7 wow fadeInUp" data-wow-duration="1.5s">
+                        <div class="popular_listing_content">
+                            <div class="section_title_2 section_title_left_2">
+                                <h4>Providers/Businesses</h4>
+                                <h2>Why Should You <span>Join</span> Diverrx?</h2>
+                            </div>
+                            <p>Lorem ipsum dolor sit amet, consectetu adipiscing elit. Nam placerat elit ac nulla nec
+                                ullamcorper risus dignissim.</p>
+                            <a href="{{ route('about') }}" class="common_btn_2">explore the community<span><i
+                                        class="far fa-plus"></i></span></a>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-5 wow fadeInUp" data-wow-duration="1.5s">
+                        <div class="polular_listing_img">
+                            <img src="{{ asset('frontend/images/crowd_favorite.jpg') }}" alt="img" class="img-fluid w-100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--=============================
+        POPULAR LISTING END
+    ==============================-->
+
 
 
     <!--=============================
@@ -370,94 +372,65 @@
 
 
     <!--=============================
-        TESTIMONIAL 2 START
+        TESTIMONIAL START
     ==============================-->
-    <section class="testimonial_2 pt_95 xs_pt_70 pb_70 xs_pb_50">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-5 col-md-6 wow fadeInLeft" data-wow-duration="1.5s">
-                    <div class="testimonial_2_img">
-                        <img src="{{ asset('frontend/images/crowd_favorite.jpg') }}" alt="img" class="img-fluid w-100">
+    <section class="testimonial" style="background: url({{ 'frontend/images/Testimonial_bg.jpg' }});">
+        <div class="testimonial_overly pt_115 xs_pt_95 pb_120 xs_pb_100">
+            <div class="container">
+                <div class="row">
+                    <div class="row justify-content-center">
+                        <div class="col-xl-6 wow fadeInUp" data-wow-duration="1.5s">
+                            <div class="section_title mb_40">
+                                <h4>Client Testimonials</h4>
+                                <h2>What Say Our Customers</h2>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-lg-7 wow fadeInRight" data-wow-duration="1.5s">
-                    <div class="testimonial_2_contant">
-                        <div class="section_title_2 section_title_left_2 mb_50">
-                            <h4>Client Testimonials</h4>
-                            <h2>Customer <span>Testimonies</span> From Recent Interactions.</h2>
-                        </div>
-                        <div class="row testimonial_slider">
-                            <div class="col-xl-12">
-                                <div class="testimonial_2_item">
-                                        <span>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                        </span>
-                                    <p>“Diverrx is a game-changer for our family! Finding reliable private duty nursing providers used to be a daunting task, but with Diverrx, it's become super easy. Their platform streamlined the entire process, connecting us with highly qualified nurses who provide exceptional care for our loved one. We couldn't be happier!”</p>
-{{--                                    <h4>Dominic L. Emen</h4>--}}
-{{--                                    <h6>Product Designer</h6>--}}
+                <div class="row testimonial_slider justify-content-center">
+                    <div class="col-12">
+                        <div class="row wow fadeInUp" data-wow-duration="1.5s">
+                            <div class="col-xl-7 col-md-9 m-auto">
+                                <div class="testimonial_item">
+                                    <span>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </span>
+                                    <p>“Diverrx is a game-changer for our family! Finding reliable private duty nursing
+                                        providers used to be a daunting task, but with Diverrx, it's become super easy.
+                                        Their platform streamlined the entire process, connecting us with highly
+                                        qualified nurses who provide exceptional care for our loved one. We couldn't
+                                        be happier!”</p>
+
                                 </div>
                             </div>
-                            <div class="col-xl-12">
-                                <div class="testimonial_2_item">
-                                        <span>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                        </span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="row wow fadeInUp" data-wow-duration="1.5s">
+                            <div class="col-xl-7 col-md-9 m-auto">
+                                <div class="testimonial_item">
+                                    <span>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </span>
                                     <p>“As a music therapist, I've struggled to find clients who are the right fit
                                         for my services. Thanks to Diverrx, that's a thing of the past! Their platform
                                         not only makes it incredibly easy for me to showcase my skills and expertise,
                                         but it also helps clients find the perfect music therapist for their needs.
                                         It's a win-win for everyone involved!”</p>
-{{--                                    <h4>Dominic L. Emen</h4>--}}
-{{--                                    <h6>Product Designer</h6>--}}
+{{--                                    <div class="name">--}}
+{{--                                        <h5>Dominic L. Emen</h5>--}}
+{{--                                        <h6>Product Designer</h6>--}}
+{{--                                    </div>--}}
                                 </div>
                             </div>
-
-                            <div class="col-xl-12">
-                                <div class="testimonial_2_item">
-                                        <span>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                        </span>
-                                    <p>“Finding the right speech therapist for my child was overwhelming until we
-                                        discovered Diverrx. With their user-friendly platform, we were able to browse
-                                        through a diverse range of qualified speech therapists and easily find one who
-                                        resonated with our needs. Diverrx made the entire process hassle-free, and now
-                                        our child is making great progress thanks to their amazing speech therapist!”</p>
-{{--                                    <h4>Dominic L. Emen</h4>--}}
-{{--                                    <h6>Product Designer</h6>--}}
-                                </div>
-                            </div>
-
-                            <div class="col-xl-12">
-                                <div class="testimonial_2_item">
-                                        <span>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                        </span>
-                                    <p>“Diverrx has revolutionized the way we procure DME supplies for our clinic.
-                                        Gone are the days of tedious searches and unreliable suppliers. With Diverrx,
-                                        we can easily find high-quality DME supplies from trusted providers with just
-                                        a few clicks. Their platform has simplified our procurement process and ensured
-                                        that we always have the supplies we need to provide the best care for our patients.”</p>
-{{--                                    <h4>Dominic L. Emen</h4>--}}
-{{--                                    <h6>Product Designer</h6>--}}
-                                </div>
-                            </div>
-
                         </div>
                     </div>
                 </div>
@@ -465,7 +438,7 @@
         </div>
     </section>
     <!--=============================
-        TESTIMONIAL 2 END
+        TESTIMONIAL END
     ==============================-->
 
 
@@ -477,8 +450,8 @@
             <div class="row justify-content-center">
                 <div class="col-xl-6 wow fadeInUp" data-wow-duration="1.5s">
                     <div class="section_title_2 mb_25">
-                        <h4>Our Latest Articles</h4>
-                        <h2>Explore Our <span>Recent</span> Updates & Posts</h2>
+                        <h4> Learn more about Diverrx</h4>
+                        <h2>So what is the <span>story</span> behind Diverrx?</h2>
                     </div>
                 </div>
             </div>
@@ -487,92 +460,42 @@
                     <div class="blog_2_item">
                         <div class="blog_2_item_img">
                             <img src="{{ asset('frontend/images/blog_8.jpg') }}" alt="img" class="img-fluid w-100">
-                            <p><span><img src="{{ asset('frontend/images/calender_2.png') }}" alt="icon"
-                                          class="img-fluid w-100"></span>June 24, 2023
-                            </p>
                         </div>
                         <div class="blog_2_text">
-                            <a href="#" class="category">Restaurant</a>
-                            <a href="blog_details.html" class="title">Supreme Shopping Facility at The Central
-                                Branch.</a>
-                            <ul class="d-flex flex-wrap">
-                                <li>
-                                        <span>
-                                            <img src="{{ asset('frontend/images/user.png') }}" alt="icon" class="img-fluid w-100">
-                                        </span>
-                                    By Dominic L. Emen
-                                </li>
-                                <li>
-                                        <span>
-                                            <img src="{{ asset('frontend/images/massage_2.png') }}" alt="icon" class="img-fluid w-100">
-                                        </span>
-                                    3
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1.5s">
-                    <div class="blog_2_item">
-                        <div class="blog_2_item_img">
-                            <img src="{{ asset('frontend/images/blog_1.jpg') }}" alt="img" class="img-fluid w-100">
-                            <p><span><img src="{{ asset('frontend/images/calender_2.png') }}" alt="icon"
-                                          class="img-fluid w-100"></span>June 24, 2023
-                            </p>
-                        </div>
-                        <div class="blog_2_text">
-                            <a href="#" class="category">Hotels</a>
-                            <a href="blog_details.html" class="title">The Pinnacle of Street 50 Great Pieces in
-                                London.</a>
-                            <ul class="d-flex flex-wrap">
-                                <li>
-                                        <span>
-                                            <img src="{{ asset('frontend/images/user.png') }}" alt="icon" class="img-fluid w-100">
-                                        </span>
-                                    By Dominic L. Emen
-                                </li>
-                                <li>
-                                        <span>
-                                            <img src="{{ asset('frontend/images/massage_2.png') }}" alt="icon" class="img-fluid w-100">
-                                        </span>
-                                    7
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1.5s">
-                    <div class="blog_2_item">
-                        <div class="blog_2_item_img">
-                            <img src="{{ asset('frontend/images/blog_9.jpg') }}" alt="img" class="img-fluid w-100">
-                            <p><span><img src="{{ asset('frontend/images/calender_2.png') }}" alt="icon"
-                                          class="img-fluid w-100"></span>April 16, 2023
-                            </p>
-                        </div>
-                        <div class="blog_2_text">
-                            <a href="#" class="category">Shopping Mall</a>
-                            <a href="blog_details.html" class="title">The Hotel is Filled with Enchantment &
-                                uniqueness.</a>
-                            <ul class="d-flex flex-wrap">
-                                <li>
-                                        <span>
-                                            <img src="{{ asset('frontend/images/user.png') }}" alt="icon" class="img-fluid w-100">
-                                        </span>
-                                    By Dominic L. Emen
-                                </li>
-                                <li>
-                                        <span>
-                                            <img src="{{ asset('frontend/images/massage_2.png') }}" alt="icon" class="img-fluid w-100">
-                                        </span>
-                                    3
-                                </li>
-                            </ul>
+                            <a href="#" class="category">our story</a>
+                            <a href="blog_details.html" class="title">It all began with a mother's journey to find the
+                                right resources for her child, navigating challenges and recognizing the need for a
+                                more comprehensive solution.
+
+                                Faced with gaps in access to support services, she envisioned a platform where families
+                                like hers could easily access a wide array of products and services tailored to their
+                                specific needs. This vision became Diverrx- a place where caregivers, families, and
+                                individuals navigating neurodiversity, different abilities and/or special needs can
+                                discover resources, connect with service/product providers, feel empowered and thrive.
+
+                                Diverrx was founded with a deep commitment to bridging gaps and enhancing accessibility
+                                for individuals with neuro-diverse, different abilities and/or special needs. </a>
+{{--                            <ul class="d-flex flex-wrap">--}}
+{{--                                <li>--}}
+{{--                                        <span>--}}
+{{--                                            <img src="{{ asset('frontend/images/user.png') }}" alt="icon" class="img-fluid w-100">--}}
+{{--                                        </span>--}}
+{{--                                    By Dominic L. Emen--}}
+{{--                                </li>--}}
+{{--                                <li>--}}
+{{--                                        <span>--}}
+{{--                                            <img src="{{ asset('frontend/images/massage_2.png') }}" alt="icon" class="img-fluid w-100">--}}
+{{--                                        </span>--}}
+{{--                                    3--}}
+{{--                                </li>--}}
+{{--                            </ul>--}}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
     <!--=============================
         BLOG 2 END
     ==============================-->

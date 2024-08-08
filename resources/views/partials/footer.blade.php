@@ -1,6 +1,39 @@
 <footer class="footer footer_2 pt_120 xs_pt_100">
+{{--    <div class="container">--}}
+{{--    --}}{{--        keeping it here so that menu is not affected while scrolling down --}}
+{{--    </div>--}}
     <div class="container">
-    {{--        keeping it here so that menu is not affected while scrolling down --}}
+        <div class="footer_apps">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-xxl-3 col-lg-3 col-xl-3 wow fadeInUp" data-wow-duration="1.5s">
+                    <div class="footer_apps_img">
+                        <img src="{{ asset('frontend/images/phone.png') }}" alt="App" class="img-fluid">
+                    </div>
+                </div>
+                <div class="col-xxl-9 col-lg-5 col-xl-5 wow fadeInUp" data-wow-duration="1.5s">
+                    <div class="section_title_2 section_title_left_2">
+                        <h2>Our mission</h2>
+                        <p>Our mission is to enhance quality of life for individuals with neuro-diversity and special
+                            needs by offering innovative products, services, and a supportive community through an
+                            inclusive marketplace.</p>
+                    </div>
+
+                </div>
+                {{--<div class="col-xxl-5 col-lg-4 col-xl-4 wow fadeInUp" data-wow-duration="1.5s">
+                    <ul class="d-flex flex-wrap justify-content-end">
+                        <li><a href="#" class="ios">
+                                <span><img src="{{ asset('frontend/images/apple.png') }}" alt="apps" class="img-fluid w-100"></span>
+                                Download iOS</a>
+                        </li>
+                        <li><a href="#" class="android">
+                                    <span><img src="{{ asset('frontend/images/android.png') }}" alt="apps"
+                                               class="img-fluid w-100"></span>
+                                Download Android</a>
+                        </li>
+                    </ul>
+                </div>--}}
+            </div>
+        </div>
     </div>
     <div class="footer_area pt_120 xs_pt_100 pb_115 xs_pb_95">
         <div class="container">
@@ -10,23 +43,24 @@
                         <div class="footer_logo">
                             <img src="{{ asset('frontend/images/logo_diverrx.png') }}" alt="logo" class="img-fluid w-100">
                         </div>
-                        <p>Morbi pharetra, eros sed euismod pellentesque, nulla risus lobortis purus quis maximus.
+                        <p>A Diverse, Inclusive, Versatile & Compassionate online marketplace that serves the needs
+                            of individuals with different abilities and/or special needs.
                         </p>
                         <ul>
                             <li>
-                                <a href="callto:1234567890">
+                                <a href="callto:+12024151578">
                                         <span>
                                             <img src="{{ asset('frontend/images/mobail.png') }}" alt="icon" class="img-fluid w-100">
                                         </span>
-                                    +873 698 749 88
+                                    +1 (202) 415-1578
                                 </a>
                             </li>
                             <li>
-                                <a href="mailto:example@gmail.com">
+                                <a href="mailto:info@diverrx.com">
                                         <span>
                                             <img src="{{ asset('frontend/images/massage.png') }}" alt="icon" class="img-fluid w-100">
                                         </span>
-                                    example@gmail.com
+                                    info@diverrx.com
                                 </a>
                             </li>
                         </ul>
@@ -37,6 +71,7 @@
                         <h4>Useful Links</h4>
                         <ul>
                             <li><a href="{{ route('home') }}">home</a></li>
+                            <li><a href="{{ route('about') }}">providers/businesses</a></li>
                             <li><a href="{{ route('search') }}">services/products</a></li>
                             <li><a href="privacy_policy.html">Privacy Policy</a></li>
                             <li><a href="{{ route('contact') }}">contact</a></li>
@@ -50,8 +85,6 @@
                             <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
                             <li><a href="dashboard_profile.html">Profile</a></li>
                             <li><a href="dashboard_listing.html">My Listing</a></li>
-                            <li><a href="dashboard_review.html">Favorites</a></li>
-                            <li><a href="faq.html">Faq's</a></li>
                         </ul>
                     </div>
                 </div>
@@ -68,8 +101,6 @@
                                     <a href="{{ route('login') }}">Add A Product/Service</a>
                                 @endauth
                             </li>
-                            <li><a href="{{ route('pricing') }}">Pricing</a></li>
-                            <li><a href="{{ route('contact') }}">contuct us</a></li>
                         </ul>
                     </div>
                 </div>
@@ -77,7 +108,7 @@
                     <div class="footer_right footer_right_2">
                         <h4>Get in Touch</h4>
                         <form action="#">
-                            <input type="text" placeholder="example@gmail.com">
+                            <input type="text" placeholder="info@diverrx.com">
                             <button><i class="far fa-arrow-right"></i></button>
                         </form>
                         <h5>Follow Us</h5>
