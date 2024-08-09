@@ -214,4 +214,17 @@ class ListingController extends Controller
 
         return true;
     }
+
+    public function additionalProductPartial(Request $request): string
+    {
+        $index = $request->query('index');
+        $categories = $request->query('categories');
+
+        return view('listing.partials._additional_product', [
+            'index' => $index,
+            'item' => [],
+            'categories' => json_decode($categories)
+        ])->render();
+    }
+
 }
