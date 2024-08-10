@@ -70,8 +70,10 @@
             let newProductHTML = `
 
         <div class="row mt-4 border-1">
-            <div class="col-xxl-12">
+            <div class="col-xxl-12 d-flex justify-content-between align-items-center">
                 <h4>Product/Service ${productCount}</h4>
+
+                <button type="button" class="btn btn-danger delete-product-btn">Delete</button>
             </div>
             <div class="col-xxl-4 col-md-6">
                 <div class="add_property_input">
