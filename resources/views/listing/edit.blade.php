@@ -137,21 +137,21 @@
 
 <!-- Product/Services Information Section -->
 <div class="add_property_info add_property_aminities wow fadeInUp" data-wow-duration="1.5s">
+    <h3>Product/Services Information</h3>
 
+    @foreach ($listing->productService as $index => $productService)
+        @include('listing.partials._additional_product', [
+            'index' => $index + 1,
+            'item' => $productService,
+            'categories' => $categories
+        ])
+    @endforeach
 
     <div id="additional_products">
-        @foreach ($listing->productService as $index => $productService)
-            @include('listing.partials._additional_product', [
-                'index' => $index,
-                'item' => $productService,
-                'categories' => $categories
-            ])
-        @endforeach
+
     </div>
 
     <button type="button" class="common_btn mt-4" id="add_product_btn">Add Another Product/Service</button>
-
-
 </div>
 
 <div class="add_property_info add_property_aminities wow fadeInUp" data-wow-duration="1.5s">

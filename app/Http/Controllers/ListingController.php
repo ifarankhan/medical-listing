@@ -9,6 +9,7 @@ use App\Rules\WordCount;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -44,7 +45,9 @@ class ListingController extends Controller
     public function create(): Factory|View|Application
     {
         $categories = Category::all();
-        return view('listing.create', compact('categories'));
+        $listing = new Listing();
+
+        return view('listing.create', compact('categories', 'listing'));
     }
 
     /**
@@ -215,16 +218,26 @@ class ListingController extends Controller
         return true;
     }
 
-    public function additionalProductPartial(Request $request): string
+    public function additionalProductPartial(Request $request): JsonResponse|string
     {
+        if (!Auth::check()) {
+            return response()->json(['redirect' => route('login')], 401);
+        }
+
         $index = $request->query('index');
-        $categories = $request->query('categories');
+
+        $maxProducts = 5;
+
+        if ($index > $maxProducts) {
+            return response()->json(['error' => 'Only 5 products are allowed.'], 400);
+        }
+
+        $categories = Category::all();
 
         return view('listing.partials._additional_product', [
             'index' => $index,
-            'item' => [],
-            'categories' => json_decode($categories)
+            'item' => new \stdClass(),
+            'categories' => $categories
         ])->render();
     }
-
 }
