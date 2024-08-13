@@ -122,8 +122,8 @@
 <!-- Product/Services Information Section -->
 <div class="add_property_info add_property_aminities wow fadeInUp" data-wow-duration="1.5s">
     <h3>Product/Services Information</h3>
-
-    <div class="row">
+    <div id="additional_products">
+        <div class="row product-row" data-index="1">
         <div class="col-xxl-12">
             <h4>Product/Service 1</h4>
         </div>
@@ -193,7 +193,65 @@
             </div>
         </div>
     </div>
-    <div id="additional_products"></div>
+    </div>
+    <!-- Template Row (Hidden) -->
+    <div id="product_template" class="row" style="display:none;">
+        <div class="row mt-4 border-1 product-row" data-index="{index}">
+            <div class="col-xxl-12 d-flex justify-content-between align-items-center">
+                <h4>Product/Service {index}</h4>
+                <button type="button" class="btn btn-danger delete-product-btn">Delete</button>
+            </div>
+            <div class="col-xxl-4 col-md-6">
+                <div class="add_property_input">
+                    <label for="product_service_{index}">Choose the Name of the product/service {index}:</label>
+                    <select class="select_2" id="product_service_{index}" name="products[{index}][category_id]" required>
+
+                    </select>
+                </div>
+            </div>
+            <div class="col-xxl-4 col-md-6">
+                <label>Click all options below that apply:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="virtual_{index}" name="products[{index}][virtual]" value="1">
+                    <label class="form-check-label" for="virtual_{index}">Virtual</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="in_person_{index}" name="products[{index}][in_person]" value="1">
+                    <label class="form-check-label" for="in_person_{index}">In person</label>
+                </div>
+            </div>
+            <div class="col-xxl-4 col-md-6">
+                <div class="add_property_input">
+                    <label for="description_{index}">Brief description (150 word limit):</label>
+                    <textarea id="description_{index}" name="products[{index}][description]" placeholder="Description" maxlength="150" required></textarea>
+                </div>
+            </div>
+            <div class="col-xxl-4 col-md-6">
+                <label>Do you accept insurance for this product?</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="accept_insurance_yes_{index}" name="products[{index}][accept_insurance]" value="1" required>
+                    <label class="form-check-label" for="accept_insurance_yes_{index}">Yes</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="accept_insurance_no_{index}" name="products[{index}][accept_insurance]" value="0" required>
+                    <label class="form-check-label" for="accept_insurance_no_{index}">No</label>
+                </div>
+            </div>
+            <div class="col-xxl-4 col-md-6" id="insurance_list_{index}" style="display:none;">
+                <div class="add_property_input">
+                    <label>If you accept insurance for this product, please list down all the insurances you are currently accepting:</label>
+                    <input type="text" id="insurance_{index}" name="products[{index}][insurance_list]" placeholder="Insurance List">
+                </div>
+            </div>
+            <div class="col-xxl-4 col-md-6" id="price_{index}" style="display:none;">
+                <div class="add_property_input">
+                    <label>If you do not accept insurance, please enter price for the product:</label>
+                    <input type="text" id="price_input_{index}" name="products[{index}][price]" placeholder="Price">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <button type="button" class="common_btn mt-4" id="add_product_btn">Add Another Product/Service</button>
 
 

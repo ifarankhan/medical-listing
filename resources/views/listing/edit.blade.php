@@ -139,7 +139,7 @@
 <div class="add_property_info add_property_aminities wow fadeInUp" data-wow-duration="1.5s">
     <h3>Product/Services Information</h3>
     @foreach($listing->productService as $index => $item)
-        <div class="row">
+        <div class="row product-row">
             <div class="col-xxl-12">
                 <h4>Product/Service {{ $index + 1 }}</h4>
             </div>

@@ -755,4 +755,235 @@ $(function () {
             });
         });
     });
+
+    /*$(document).ready(function() {
+
+        function reindexProducts() {
+            $('.product-row').each(function(index) {
+                $(this).data('index', index); // Store the index as a data attribute
+                $(this).find('h4').text('Product/Service ' + (index + 1));
+                $(this).find('select').attr('id', 'product_service_' + index).attr('name', 'products[' + index + '][category_id]');
+                $(this).find('textarea').attr('id', 'description_' + index).attr('name', 'products[' + index + '][description]');
+                $(this).find('.form-check-input').each(function() {
+                    const inputName = $(this).attr('name');
+                    const inputId = $(this).attr('id');
+                    $(this).attr('id', inputId.replace(/\d+/, index));
+                    $(this).attr('name', inputName.replace(/\[\d+\]/, '[' + index + ']'));
+                });
+                $(this).find('.form-check-label').each(function() {
+                    const labelFor = $(this).attr('for');
+                    $(this).attr('for', labelFor.replace(/\d+/, index));
+                });
+                $(this).find('[id^="insurance_list_"]').attr('id', 'insurance_list_' + index);
+                $(this).find('[id^="price_"]').attr('id', 'price_' + index);
+                $(this).find('[id^="price_input_"]').attr('id', 'price_input_' + index).attr('name', 'products[' + index + '][price]');
+            });
+        }
+
+        // Add Product
+        $('#add_product_btn').click(function() {
+            let productIndex = $('#additional_products .product-row').length+1;
+            let newProductHtml = `<div class="row mt-4 border-1 product-row" data-index="${productIndex}">
+            <div class="col-xxl-12 d-flex justify-content-between align-items-center">
+                <h4>Product/Service ${productIndex + 1}</h4>
+                <button type="button" class="btn btn-danger delete-product-btn">Delete</button>
+            </div>
+            <div class="col-xxl-4 col-md-6">
+                <div class="add_property_input">
+                    <label for="product_service_${productIndex}">Enter the Name of the product/service ${productIndex + 1}:</label>
+                    <select class="select_2" id="product_service_${productIndex}" name="products[${productIndex}][category_id]" required>
+                        ${categoryOptions}
+                    </select>
+                </div>
+            </div>
+            <div class="col-xxl-4 col-md-6">
+                <div class="add_property_input">
+                    <label>Click all options below that apply:</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="virtual_${productIndex}" name="products[${productIndex}][virtual]" value="virtual">
+                        <label class="form-check-label" for="virtual_${productIndex}">Virtual</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="in_person_${productIndex}" name="products[${productIndex}][in_person]" value="in_person">
+                        <label class="form-check-label" for="in_person_${productIndex}">In person</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-4 col-md-6">
+                <div class="add_property_input">
+                    <label for="description_${productIndex}">Brief description (150 word limit):</label>
+                    <div class="note-editor note-frame panel panel-default">
+                        <textarea id="description_${productIndex}" name="products[${productIndex}][description]" placeholder="Description" maxlength="150" required></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-4 col-md-6">
+                <div class="add_property_input">
+                    <label>Do you accept insurance for this product?</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="accept_insurance_yes_${productIndex}" name="products[${productIndex}][accept_insurance]" value="1">
+                        <label class="form-check-label" for="accept_insurance_yes_${productIndex}">Yes</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="accept_insurance_no_${productIndex}" name="products[${productIndex}][accept_insurance]" value="0">
+                        <label class="form-check-label" for="accept_insurance_no_${productIndex}">No</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-4 col-md-6" id="insurance_list_${productIndex}" style="display:none;">
+                <div class="add_property_input">
+                    <label>If you accept insurance for this product, please list down all the insurances you are currently accepting:</label>
+                    <input type="text" id="insurance_${productIndex}" name="products[${productIndex}][insurance_list]" placeholder="Insurance List">
+                </div>
+            </div>
+            <div class="col-xxl-4 col-md-6" id="price_${productIndex}" style="display:none;">
+                <div class="add_property_input">
+                    <label>If you do not accept insurance, please enter price for the product:</label>
+                    <input type="text" id="price_input_${productIndex}" name="products[${productIndex}][price]" placeholder="Price">
+                </div>
+            </div>
+        </div>`;
+            $('#additional_products').append(newProductHtml);
+
+            // Reinitialize select2 for new elements
+            $('#product_service_' + productIndex).select2();
+        });
+
+        // Delete Product
+        $(document).on('click', '.delete-product-btn', function() {
+            $(this).closest('.product-row').remove();
+            reindexProducts(); // Reindex after deletion
+        });
+
+        // Event delegation for insurance acceptance change
+        $('#additional_products').on('change', '[name^="products"][name$="[accept_insurance]"]', function() {
+            let parentRow = $(this).closest('.product-row');
+            let index = parentRow.data('index'); // Get the index from the data attribute
+
+            let insuranceList = $('#insurance_list_' + index);
+            let priceInput = $('#price_' + index);
+
+            if ($(this).val() === '1') {
+                insuranceList.show();
+                priceInput.hide();
+            } else {
+                insuranceList.hide();
+                priceInput.show();
+            }
+        });
+    });*/
+
+
+    $(document).ready(function() {
+
+        const additionalProductsDivId = '#additional_products';
+        let productIndex = 1;
+
+        // Function to initialize select2 for a specific select element
+        function initializeSelect2(selectElement) {
+            /*if (selectElement.hasClass('select2-hidden-accessible')) {
+                selectElement.select2('destroy'); // Destroy existing select2 instance
+            }*/
+            selectElement.select2(); // Initialize select2
+        }
+
+        $('#add_product_btn').click(function() {
+            productIndex = $(additionalProductsDivId + ' .product-row').length + 1; // Start index based on existing rows
+            // Clone the template row
+            let newRow = $('#product_template').html();
+
+            // Update the index
+            newRow = newRow.replace(/{index}/g, productIndex);
+
+            // Append the new row
+            $(additionalProductsDivId).append(newRow);
+            $('#product_service_' + productIndex).html(categoryOptions);
+            // Initialize select2 for the newly added select element
+            initializeSelect2($('#product_service_' + productIndex));
+
+            // Increment the index for the next row
+            productIndex++;
+        });
+
+        // Delegate delete button event
+        $(additionalProductsDivId).on('click', '.delete-product-btn', function() {
+
+            // Find and destroy existing select2 instances
+           // $(additionalProductsDivId + ' .product-row').find('select.select_2').select2('destroy');
+
+            $(this).closest('.product-row').remove();
+
+            // Update indices for remaining rows
+            $(additionalProductsDivId + ' .product-row').each(function(index) {
+                index++;
+                // Update the index attribute
+                $(this).attr('data-index', index);
+
+                // Update the header text
+                $(this).find('h4').text('Product/Service ' + index);
+
+                // Update name and id attributes for all inputs, selects, etc.
+                $(this).find('input, select, textarea, div, label').each(function() {
+                    let name = $(this).attr('name');
+                    if (name) {
+                        $(this).attr('name', name.replace(/\[\d+\]/, '[' + index + ']')); // Update name attributes
+                    }
+                    let id = $(this).attr('id');
+                    if (id) {
+                        $(this).attr('id', id.replace(/\d+/, index)); // Update id attributes
+
+                        /*// Handle special cases like data-select2-id and aria attributes
+                        let dataSelect2Id = $(this).attr('data-select2-id');
+                        if (dataSelect2Id) {
+                            $(this).attr('data-select2-id', dataSelect2Id.replace(/\d+/, index)); // Update data-select2-id
+                        }*/
+                    }
+                    let forAttr = $(this).attr('for');
+                    if (forAttr) {
+                        $(this).attr('for', forAttr.replace(/\d+/, index)); // Update for attributes for labels
+
+                        // Update the text inside the label, if necessary
+                        if ($(this).text().includes('Name of the product/service')) {
+                            $(this).text('Choose the Name of the product/service ' + index + ':');
+                        }
+                    }
+                });
+
+                // Update IDs for dependent elements like insurance lists and price inputs
+                let insuranceList = $(this).find('[id^="insurance_list_"]');
+                if (insuranceList.length) {
+                    insuranceList.attr('id', 'insurance_list_' + index);
+                }
+
+                let priceInput = $(this).find('[id^="price_"]');
+                if (priceInput.length) {
+                    priceInput.attr('id', 'price_' + index);
+                }
+            });
+            // Update the index based on the remaining rows
+            productIndex = $(additionalProductsDivId + ' .product-row').length + 1;
+        });
+
+        // Event delegation for insurance acceptance change
+        $(additionalProductsDivId).on('change', '[name^="products"][name$="[accept_insurance]"]', function() {
+            let parentRow = $(this).closest('.product-row');
+            let index = parentRow.data('index'); // Get the index from the data attribute
+
+            // Handle the static element with index 0 separately
+            if (index === 1) {
+                index = 0; // Adjust to match the original index 0 for the first element
+            }
+
+            let insuranceList = $('#insurance_list_' + index);
+            let priceInput = $('#price_' + index);
+
+            if ($(this).val() === '1') {
+                insuranceList.show();
+                priceInput.hide();
+            } else {
+                insuranceList.hide();
+                priceInput.show();
+            }
+        });
+    });
 });
