@@ -40,13 +40,4 @@
         </div>
     </section>
 
-    <script>
-        // Initialize the categories dropdown options
-        let categories = @json($categories);
-        let categoryOptions = '<option value="">Select a product/service</option>';
-        categories.forEach(category => {
-            categoryOptions += `<option value="${category.id}">${category.name}</option>`;
-        });
-
-    </script>
 @endsection

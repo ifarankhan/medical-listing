@@ -31,7 +31,7 @@ class ListingController extends Controller
             ->exists();
         // Show only listings that are paid for.
         $listings = $currentUser->listings()
-            ->where('listing_status', self::STATUS_SUBSCRIBED)
+            //->where('listing_status', self::STATUS_SUBSCRIBED)
             ->get();
 
         return view('listing.index', compact('listings', 'hasListing'));

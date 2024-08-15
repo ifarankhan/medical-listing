@@ -139,9 +139,10 @@
 <div class="add_property_info add_property_aminities wow fadeInUp" data-wow-duration="1.5s">
     <h3>Product/Services Information</h3>
     @foreach($listing->productService as $index => $item)
-        <div class="row product-row">
-            <div class="col-xxl-12">
+        <div class="row mt-4 border-1 product-row" data-index="{{ $index }}">
+            <div class="col-xxl-12 d-flex justify-content-between align-items-center">
                 <h4>Product/Service {{ $index + 1 }}</h4>
+                @if($index > 0) <button type="button" class="btn btn-danger delete-product-btn delete-btn-ajx">Delete</button> @endif
             </div>
             <div class="col-xxl-4 col-md-6">
                 <div class="add_property_input">
@@ -161,12 +162,9 @@
                 <label>Click all options below that apply:</label>
 
                 <div class="form-check">
-
                     <input class="form-check-input" type="checkbox" id="virtual_{{ $index }}" name="products[{{ $index }}][virtual]"
                            value="1" {{ old('products.' . $index . '.virtual', $item->virtual) ? 'checked' : '' }}>
                     <label class="form-check-label" for="virtual_0">Virtual</label>
-
-
                 </div>
 
                 <div class="form-check">
@@ -220,10 +218,9 @@
             </div>
         </div>
     @endforeach
-    <div id="additional_products"></div>
+
+
     <button type="button" class="common_btn mt-4" id="add_product_btn">Add Another Product/Service</button>
-
-
 </div>
 
 <div class="add_property_info add_property_aminities wow fadeInUp" data-wow-duration="1.5s">

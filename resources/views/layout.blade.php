@@ -23,6 +23,30 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/venobox.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/responsive.css') }}">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // Use Blade conditional to handle undefined variable
+            @php
+                $categoriesJson = isset($categories) ? json_encode($categories) : '[]';
+            @endphp
+
+            let categories = @json($categoriesJson);
+
+            // Ensure categories is an array
+            if (!Array.isArray(categories)) {
+                categories = [];
+            }
+
+            // Initialize the categories dropdown options
+            window.categoryOptions = '<option value="">Select a product/service</option>';
+            categories.forEach(category => {
+                window.categoryOptions += `<option value="${category.id}">${category.name}</option>`;
+            });
+        });
+    </script>
+
 </head>
 <body class="home_2">
 <header>
