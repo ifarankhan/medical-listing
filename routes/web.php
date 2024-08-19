@@ -77,6 +77,8 @@ Route::group(['middleware' => ['role:insurance_provider']], function () {
 
     Route::post('/subscription/process', [SubscriptionController::class, 'processPayment'])->name('subscription.process');
 
+    Route::delete('/delete-product/{id}', [ListingController::class, 'deleteProductService'])->name('product.destroy');
+
 });
 
 Route::group(['middleware' => ['role:customer']], function () {

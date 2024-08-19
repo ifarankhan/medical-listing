@@ -9,6 +9,7 @@ use App\Rules\WordCount;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -213,5 +214,20 @@ class ListingController extends Controller
         $listing->delete();
 
         return true;
+    }
+
+    public function deleteProductService($id): JsonResponse
+    {
+        try {
+            // Find the product by ID
+            $product = ProductService::findOrFail($id);
+            // Delete the product
+            $product->delete();
+            // Return a success response
+            return response()->json(['success' => true, 'message' => 'Product deleted successfully.']);
+        } catch (\Exception $e) {
+            // If there's an error, return a failure response
+            return response()->json(['success' => false, 'message' => 'Failed to delete the product.'], 500);
+        }
     }
 }

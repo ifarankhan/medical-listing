@@ -27,18 +27,11 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            // Use Blade conditional to handle undefined variable
-            @php
-                $categoriesJson = isset($categories) ? json_encode($categories) : '[]';
-            @endphp
-
-            let categories = @json($categoriesJson);
-
+            let categories = @json($categories ?? []);
             // Ensure categories is an array
             if (!Array.isArray(categories)) {
                 categories = [];
             }
-
             // Initialize the categories dropdown options
             window.categoryOptions = '<option value="">Select a product/service</option>';
             categories.forEach(category => {

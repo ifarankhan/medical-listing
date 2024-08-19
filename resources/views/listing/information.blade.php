@@ -124,74 +124,74 @@
     <h3>Product/Services Information</h3>
     <div id="additional_products">
         <div class="row product-row" data-index="1">
-        <div class="col-xxl-12">
-            <h4>Product/Service 1</h4>
-        </div>
-        <div class="col-xxl-4 col-md-6">
-            <div class="add_property_input">
-                <label>Choose the Name of the product/service 1:</label>
+            <div class="col-xxl-12">
+                <h4>Product/Service 1</h4>
+            </div>
+            <div class="col-xxl-4 col-md-6">
+                <div class="add_property_input">
+                    <label>Choose the Name of the product/service 1:</label>
 
-                <select class="select_2" id="product_service_0" name="products[0][category_id]" required>
-                    <option value="">Select a product/service</option>
-                    @foreach($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                    @endforeach
-                </select>
+                    <select class="select_2" id="product_service_0" name="products[0][category_id]" required>
+                        <option value="">Select a product/service</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+
+                </div>
+            </div>
+            <div class="col-xxl-4 col-md-6">
+
+                <label>Click all options below that apply:</label>
+
+                <div class="form-check">
+
+                    <input class="form-check-input" type="checkbox" id="virtual_0" name="products[0][virtual]" value="1">
+                    <label class="form-check-label" for="virtual_0">Virtual</label>
+
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="in_person_0" name="products[0][in_person]" value="1">
+                    <label class="form-check-label" for="in_person_0">In person</label>
+                </div>
 
             </div>
-        </div>
-        <div class="col-xxl-4 col-md-6">
+            <div class="col-xxl-4 col-md-6">
+                <div class="add_property_input">
+                    <label for="description_0">Brief description (150 word limit):</label>
+                    <div class="note-editor note-frame panel panel-default">
 
-            <label>Click all options below that apply:</label>
+                        <textarea id="description_0" name="products[0][description]" placeholder="Description" maxlength="150" required></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-4 col-md-6">
 
-            <div class="form-check">
-
-                <input class="form-check-input" type="checkbox" id="virtual_0" name="products[0][virtual]" value="1">
-                <label class="form-check-label" for="virtual_0">Virtual</label>
+                <label>Do you accept insurance for this product?</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="accept_insurance_yes_0" name="products[0][accept_insurance]" value="1" required>
+                    <label for="accept_insurance_yes_0">Yes</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="accept_insurance_no_0" name="products[0][accept_insurance]" value="0" required>
+                    <label class="form-check-label" for="accept_insurance_no_0">No</label>
+                </div>
 
             </div>
-
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="in_person_0" name="products[0][in_person]" value="1">
-                <label class="form-check-label" for="in_person_0">In person</label>
+            <div class="col-xxl-4 col-md-6" id="insurance_list_0" style="display:none;">
+                <div class="add_property_input">
+                    <label>If you accept insurance for this product, please list down all the insurances you are currently accepting:</label>
+                    <input type="text" id="insurance_0" name="products[0][insurance_list]" placeholder="Insurance List">
+                </div>
             </div>
-
-        </div>
-        <div class="col-xxl-4 col-md-6">
-            <div class="add_property_input">
-                <label for="description_0">Brief description (150 word limit):</label>
-                <div class="note-editor note-frame panel panel-default">
-
-                    <textarea id="description_0" name="products[0][description]" placeholder="Description" maxlength="150" required></textarea>
+            <div class="col-xxl-4 col-md-6" id="price_0" style="display:none;">
+                <div class="add_property_input">
+                    <label>If you do not accept insurance, please enter price for the product:</label>
+                    <input type="text" id="price_input_0" name="products[0][price]" placeholder="Price">
                 </div>
             </div>
         </div>
-        <div class="col-xxl-4 col-md-6">
-
-            <label>Do you accept insurance for this product?</label>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" id="accept_insurance_yes_0" name="products[0][accept_insurance]" value="1" required>
-                <label for="accept_insurance_yes_0">Yes</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" id="accept_insurance_no_0" name="products[0][accept_insurance]" value="0" required>
-                <label class="form-check-label" for="accept_insurance_no_0">No</label>
-            </div>
-
-        </div>
-        <div class="col-xxl-4 col-md-6" id="insurance_list_0" style="display:none;">
-            <div class="add_property_input">
-                <label>If you accept insurance for this product, please list down all the insurances you are currently accepting:</label>
-                <input type="text" id="insurance_0" name="products[0][insurance_list]" placeholder="Insurance List">
-            </div>
-        </div>
-        <div class="col-xxl-4 col-md-6" id="price_0" style="display:none;">
-            <div class="add_property_input">
-                <label>If you do not accept insurance, please enter price for the product:</label>
-                <input type="text" id="price_input_0" name="products[0][price]" placeholder="Price">
-            </div>
-        </div>
-    </div>
     </div>
 
     <button type="button" class="common_btn mt-4" id="add_product_btn">Add Another Product/Service</button>

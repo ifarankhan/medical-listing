@@ -759,7 +759,7 @@ $(function () {
     $(document).ready(function() {
 
         const templateHtml = `
-<div class="row">
+
     <div class="row mt-4 border-1 product-row" data-index="{index}">
         <div class="col-xxl-12 d-flex justify-content-between align-items-center">
             <h4>Product/Service {index}</h4>
@@ -769,7 +769,7 @@ $(function () {
             <div class="add_property_input">
                 <label for="product_service_{index}">Choose the Name of the product/service {index}:</label>
                 <select class="select_2" id="select_product_service_{index}" name="products[{index}][category_id]" required>
-                    ${categoryOptions}
+                    categoryOptions
                 </select>
             </div>
         </div>
@@ -814,7 +814,7 @@ $(function () {
             </div>
         </div>
     </div>
-</div>`;
+`;
 
         const additionalProductsDivId = '#additional_products';
         let productIndex = 1;
@@ -823,7 +823,8 @@ $(function () {
 
             productIndex = $(additionalProductsDivId + ' .product-row').length + 1; // Start index based on existing rows
             // Clone the template row
-            let newRow = templateHtml.replace(/{index}/g, productIndex);
+            let newRow = templateHtml.replace(/{index}/g, productIndex)
+                .replace('categoryOptions', categoryOptions);
 
             // Convert the HTML string to a jQuery object
             let $newRow = $(newRow);
@@ -831,8 +832,6 @@ $(function () {
             $(additionalProductsDivId).append($newRow);
             // Initialize select2 only on the newly added select element
             $newRow.find('#select_product_service_' + productIndex).select2();
-            // Reinitialize select2 on the newly added element
-            $('#select_product_service_' + productIndex).select2();
             // Increment the index for the next row
             productIndex++;
         });
@@ -909,5 +908,41 @@ $(function () {
                 priceInput.show();
             }
         });
+
+
+        $(additionalProductsDivId).on('click', '.delete-btn-ajx', function(e) {
+            e.preventDefault(); // Prevent default form submission or link action
+
+            let $button = $(this); // Store the button that was clicked
+            let productRow = $button.closest('.product-row'); // Get the closest product-row
+
+            // Assuming the product has an ID associated with it, retrieve it from a data attribute
+            let productId = productRow.data('id'); // Make sure you have a data-id attribute in your HTML
+
+            // Make an AJAX request to delete the record
+            $.ajax({
+                url: `/delete-product/${productId}`, // Adjust the URL as needed
+                type: 'DELETE', // Use the appropriate HTTP method
+                success: function(response) {
+                    if(response.success) {
+                        // Remove the product row from the frontend
+                        productRow.remove();
+                    } else {
+                        alert('An error occurred while deleting the product.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Handle any errors
+                    alert('An error occurred: ' + error);
+                }
+            });
+            // Set up AJAX to include the CSRF token in the headers
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        });
+
     });
 });
