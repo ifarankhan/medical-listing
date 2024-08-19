@@ -7,7 +7,7 @@
             <div class="row justify-content-between align-items-center">
                 <div class="col-xxl-3 col-lg-3 col-xl-3 wow fadeInUp" data-wow-duration="1.5s">
                     <div class="footer_apps_img">
-                        <img src="{{ asset('frontend/images/phone.png') }}" alt="App" class="img-fluid">
+                        <img src="{{ asset('frontend/images/our_mission.jpg') }}" alt="App" class="img-fluid">
                     </div>
                 </div>
                 <div class="col-xxl-9 col-lg-5 col-xl-5 wow fadeInUp" data-wow-duration="1.5s">

@@ -101,12 +101,12 @@
                     <div class="row align-items-center">
                         <div class="col-xl-6 col-sm-6">
                             <div class="about_area_img_2 wow fadeInUp" data-wow-duration="1.5s">
-                                <img src="{{ asset('frontend/images/about_2.jpg') }}" alt="img" class="img-fluid w-100">
+                                <img src="{{ asset('frontend/images/about_us_1.jpg') }}" alt="img" class="img-fluid w-100">
                             </div>
                         </div>
                         <div class="col-xl-6 col-sm-6 wow fadeInRight" data-wow-duration="1.5s">
                             <div class="about_area_img_1">
-                                <img src="{{ asset('frontend/images/about_1.jpg') }}" alt="img" class="img-fluid w-100">
+                                <img src="{{ asset('frontend/images/about_us_2.jpg') }}" alt="img" class="img-fluid w-100">
                             </div>
                         </div>
                     </div>
