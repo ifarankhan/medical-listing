@@ -337,10 +337,8 @@
                         <div class="popular_listing_content">
                             <div class="section_title_2 section_title_left_2">
                                 <h4>Providers/Businesses</h4>
-                                <h2>Why Should You <span>Join</span> Diverrx?</h2>
+                                <h2>Why Join?</h2>
                             </div>
-                            <p>Lorem ipsum dolor sit amet, consectetu adipiscing elit. Nam placerat elit ac nulla nec
-                                ullamcorper risus dignissim.</p>
                             <a href="{{ route('about') }}" class="common_btn_2">explore the community<span><i
                                         class="far fa-plus"></i></span></a>
                         </div>
@@ -357,24 +355,10 @@
     <!--=============================
         POPULAR LISTING END
     ==============================-->
-
-
-
-    <!--=============================
-        COUNTER 2 START
-    ==============================-->
-    <section class="counter_area pb_120 xs_pb_100">
-
-    </section>
-    <!--=============================
-        COUNTER 2 END
-    ==============================-->
-
-
     <!--=============================
         TESTIMONIAL START
     ==============================-->
-    <section class="testimonial" style="background: url({{ 'frontend/images/Testimonial_bg.jpg' }});">
+    <section class="testimonial" style="background: url({{ 'frontend/images/testimonial-bg.png' }});">
         <div class="testimonial_overly pt_115 xs_pt_95 pb_120 xs_pb_100">
             <div class="container">
                 <div class="row">
@@ -382,7 +366,7 @@
                         <div class="col-xl-6 wow fadeInUp" data-wow-duration="1.5s">
                             <div class="section_title mb_40">
                                 <h4>Client Testimonials</h4>
-                                <h2>What Say Our Customers</h2>
+                                <h2>What Our Customers Say</h2>
                             </div>
                         </div>
                     </div>
@@ -445,55 +429,9 @@
     <!--=============================
         BLOG 2 START
     ==============================-->
-    <section class="blog_2 pt_115 xs_pt_95 pb_120 xs_pb_100">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-xl-6 wow fadeInUp" data-wow-duration="1.5s">
-                    <div class="section_title_2 mb_25">
-                        <h4> Learn more about Diverrx</h4>
-                        <h2>So what is the <span>story</span> behind Diverrx?</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1.5s">
-                    <div class="blog_2_item">
-                        <div class="blog_2_item_img">
-                            <img src="{{ asset('frontend/images/blog_8.jpg') }}" alt="img" class="img-fluid w-100">
-                        </div>
-                        <div class="blog_2_text">
-                            <a href="#" class="category">our story</a>
-                            <a href="blog_details.html" class="title">It all began with a mother's journey to find the
-                                right resources for her child, navigating challenges and recognizing the need for a
-                                more comprehensive solution.
+    <section class="blog_2 d-flex justify-content-center align-items-center"
+             style="background: url({{ 'frontend/images/story.png' }}) no-repeat center center; background-size: cover; height: 100vh;">
 
-                                Faced with gaps in access to support services, she envisioned a platform where families
-                                like hers could easily access a wide array of products and services tailored to their
-                                specific needs. This vision became Diverrx- a place where caregivers, families, and
-                                individuals navigating neurodiversity, different abilities and/or special needs can
-                                discover resources, connect with service/product providers, feel empowered and thrive.
-
-                                Diverrx was founded with a deep commitment to bridging gaps and enhancing accessibility
-                                for individuals with neuro-diverse, different abilities and/or special needs. </a>
-{{--                            <ul class="d-flex flex-wrap">--}}
-{{--                                <li>--}}
-{{--                                        <span>--}}
-{{--                                            <img src="{{ asset('frontend/images/user.png') }}" alt="icon" class="img-fluid w-100">--}}
-{{--                                        </span>--}}
-{{--                                    By Dominic L. Emen--}}
-{{--                                </li>--}}
-{{--                                <li>--}}
-{{--                                        <span>--}}
-{{--                                            <img src="{{ asset('frontend/images/massage_2.png') }}" alt="icon" class="img-fluid w-100">--}}
-{{--                                        </span>--}}
-{{--                                    3--}}
-{{--                                </li>--}}
-{{--                            </ul>--}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </section>
 
     <!--=============================
