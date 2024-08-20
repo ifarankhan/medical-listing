@@ -8,7 +8,7 @@
     <!--=============================
             BREADCRUMBS START
         ==============================-->
-    <section class="breadcrumbs" style="background: url({{ './frontend/images/breadcrumbs_bg.jpg' }});">
+    <section class="breadcrumbs" style="background: url({{ './frontend/images/banner_diverrx2.jpg' }});">
         <div class="breadcrumbs_overly">
             <div class="container">
                 <div class="row">
@@ -97,7 +97,7 @@
                             </div>
                             <div class="col-xl-6 d-none d-xl-block wow fadeInRight" data-wow-duration="1.5s">
                                 <div class=" login_img">
-                                    <img src="{{ asset('frontend/images/login_bg.jpg') }}" alt="img" class="img-fluid w-100">
+                                    <img src="{{ asset('frontend/images/about_us_1.jpg') }}" alt="img" class="img-fluid w-100">
                                 </div>
                             </div>
                         </div>
