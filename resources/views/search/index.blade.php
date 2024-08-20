@@ -10,7 +10,7 @@
 <!--=============================
         BREADCRUMBS START
     ==============================-->
-<section class="breadcrumbs" style="background: url({{ asset('./frontend/images/breadcrumbs_bg.jpg') }});">
+<section class="breadcrumbs" style="background: url({{ asset('./frontend/images/banner_diverrx2.jpg') }});">
     <div class="breadcrumbs_overly">
         <div class="container">
             <div class="row">
