@@ -9,7 +9,7 @@
     <!--=============================
         BREADCRUMBS START
     ==============================-->
-    <section class="breadcrumbs" style="background: url({{ asset('./frontend/images/breadcrumbs_bg.jpg') }});">
+    <section class="breadcrumbs" style="background: url({{ asset('./frontend/images/banner_diverrx2.jpg') }});">
         <div class="breadcrumbs_overly">
             <div class="container">
                 <div class="row">
@@ -17,7 +17,7 @@
                         <div class="breadcrumb_text wow fadeInUp" data-wow-duration="1.5s">
                             <h1>contact multiple providers</h1>
                             <ul class=" d-flex flex-wrap justify-content-center">
-                                <li><a href="#"><i class="fas fa-home"></i>Home</a></li>
+                                <li><a href="/"><i class="fas fa-home"></i>Home</a></li>
                                 <li><a href="#">review request</a></li>
                             </ul>
                         </div>
@@ -79,7 +79,7 @@
                             <label for="message">Message</label>
                             <br/>
                             <textarea class="form-control" id="Message" name="message" rows="3"
-                                  placeholder="Enter your message"></textarea>
+                                  placeholder="I am interested in learning more about your listed products/services: ( Enter the name of product/services )"></textarea>
                         @endif
                     </div>
                     <div class="d-flex justify-content-between mt-3">

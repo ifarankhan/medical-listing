@@ -18,7 +18,7 @@
                     <div class="breadcrumb_text wow fadeInUp" data-wow-duration="1.5s">
                         <h1>search result</h1>
                         <ul class=" d-flex flex-wrap justify-content-center">
-                            <li><a href="#"><i class="fas fa-home"></i>Home</a></li>
+                            <li><a href="/"><i class="fas fa-home"></i>Home</a></li>
                             <li><a href="#">search result</a></li>
                         </ul>
                     </div>
