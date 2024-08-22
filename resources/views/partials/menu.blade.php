@@ -28,7 +28,7 @@
             </ul>
             <ul class="menu_right d-flex align-items-center">
                 <li>
-                    <a class="user_login" href="{{ Auth::check() ? route('dashboard') : route('login') }}">
+                    <a class="user_login" href="{{ Auth::check() ? route('message') : route('login') }}">
                         <span>
                             <img src="{{ asset('frontend/images/login_icon.png') }}" alt="user" class="img-fluid w-100">
                         </span>

@@ -35,6 +35,7 @@ class MessageController extends Controller
             $request->validated();
             // Array of listing ids.
             $listingIds = $request->listing_id;
+            $serviceProviderName = '';
             // Prepare and store the message in message table and send email.
             foreach($listingIds as $listingId) {
 
@@ -53,13 +54,21 @@ class MessageController extends Controller
                 $message->save();
                 // Send email to service provider
                 $this->sendMail($serviceProvider->email, $message);
+                $serviceProviderName = $serviceProvider->name;
+            }
+
+            $message = 'Your message was successfully sent to your selected providers. You can view the messages sent in Messaging Center';
+
+            if (count($listingIds) == 1) {
+
+                $message = sprintf('Your message was successfully sent to %s. You can view the message sent in Messaging Center', $serviceProviderName);
             }
             // Clear the session after processing.
             session()->forget('selectedValues');
             // Show success message.
             return response()->json([
                 'success' => true,
-                'message' => 'Message sent successfully!'
+                'message' => $message
             ]);
         } catch (ModelNotFoundException $exception) {
             // Handle the case where the listing with the provided ID is not found.
