@@ -945,4 +945,34 @@ $(function () {
         });
 
     });
+
+    $(document).ready(function() {
+
+        // Handle file selection and upload
+        $('#profile_photo').on('change', function() {
+            let file = this.files[0];
+            let formData = new FormData();
+            formData.append('profile_picture', file);
+            formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
+
+            $.ajax({
+                url: '/profile/upload', // Adjust URL if necessary
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    if (data.success) {
+                        $('#profilePicture').attr('src', data.path);
+                    } else {
+                        console.error('Upload failed');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+    });
+
 });

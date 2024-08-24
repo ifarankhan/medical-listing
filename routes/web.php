@@ -10,6 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PricingController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
 
 use App\Http\Controllers\SubscriptionController;
@@ -55,6 +56,10 @@ Route::group(['middleware' => ['role:customer,insurance_provider']], function ()
     Route::delete('/logout', [LogoutController::class, 'logout'])->name('logout');
 
     Route::get('/dashboard/message', [MessageController::class, 'index'])->name('message');
+
+    // Route to handle the file upload via AJAX
+    Route::post('/profile/upload', [ProfileController::class, 'upload'])->name('profile.upload');
+
 });
 
 Route::group(['middleware' => ['role:insurance_provider']], function () {

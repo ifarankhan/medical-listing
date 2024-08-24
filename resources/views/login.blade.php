@@ -73,7 +73,7 @@
                                             </div>
                                             <a class="forget_password" href="{{ route('password.request') }}">Forgot password ?</a>
                                         </div>
-                                        <button class="common_btn" type="submit">Login</button>
+                                        <button class="common_btn common_btn_2" type="submit">Login</button>
                                     </form>
 {{--                                    <span>Or login with</span>--}}
 {{--                                    <ul class="other_login_option d-flex flex-wrap justify-content-center">--}}

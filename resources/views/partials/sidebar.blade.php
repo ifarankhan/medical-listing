@@ -10,8 +10,14 @@
     </a>
     <div class="dashboard_sidebar_user">
         <div class="img">
-            <img src="{{ asset('frontend/images/agent_8.jpg') }}" alt="dashboard" class="img-fluid w-100">
-            <label for="profile_photo"><i class="far fa-camera"></i></label>
+            @if(Auth::user()->profile_picture)
+                <!-- Display the user's profile picture if it exists -->
+                <img id="profilePicture" src="{{ asset('storage/profile_pictures/' . Auth::user()->profile_picture) }}" alt="dashboard" class="img-fluid w-100" style="cursor: pointer;">
+            @else
+                <!-- Display a default image if the user does not have a profile picture -->
+                <img id="profilePicture" src="{{ asset('frontend/images/agent_8.jpg') }}" alt="dashboard" class="img-fluid w-100" style="cursor: pointer;">
+            @endif
+            <label for="profile_photo" style="cursor: pointer;"><i class="far fa-camera"></i></label>
             <input type="file" id="profile_photo" hidden>
         </div>
         <h3>{{ Auth::user()->name }}</h3>
