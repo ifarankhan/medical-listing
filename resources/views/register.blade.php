@@ -99,7 +99,7 @@
                                             <div class="invalid-feedback" style="display: block" role="alert">{{ $message }}</div>
                                         @enderror
 
-                                        <button class="common_btn">Create an account</button>
+                                        <button class="common_btn common_btn_2">Create an account</button>
                                     </form>
 
                                     <p>Already have an account? <a href="{{ route('login') }}">login</a></p>
