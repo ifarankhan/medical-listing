@@ -48,7 +48,7 @@
                                         </div>
                                     @endif
 
-                                    <h4>Registration</h4>
+                                    <h4>Create an account</h4>
                                     <form action="{{ route('register') }}" method="POST">
                                         @csrf
                                         <div class="single_input">
@@ -99,7 +99,7 @@
                                             <div class="invalid-feedback" style="display: block" role="alert">{{ $message }}</div>
                                         @enderror
 
-                                        <button class="common_btn">Registration </button>
+                                        <button class="common_btn">Create an account</button>
                                     </form>
 
                                     <p>Already have an account? <a href="{{ route('login') }}">login</a></p>
@@ -119,5 +119,40 @@
     <!--=============================
         REGISTRATION END
     ==============================-->
+
+    <!--=============================
+        REGISTRATION Success Modal
+    ==============================-->
+    <div class="modal fade" id="registrationSuccessModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Registration Successful</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    You have successfully created an account with Diverrx. Continue to log in to your account.
+                </div>
+                <div class="modal-footer">
+                    <a href="{{ route('login') }}" class="btn common_btn_2">Continue<span><i
+                                class="far fa-forward"></i></span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            @if(session('success'))
+            var successModal = new bootstrap.Modal(document.getElementById('registrationSuccessModal'), {});
+            successModal.show();
+            @endif
+        });
+    </script>
+
+    <!--=============================
+        REGISTRATION Success Modal END
+    ==============================-->
+
     @include('partials.footer')
 @endsection
