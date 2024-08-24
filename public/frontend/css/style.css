@@ -7404,9 +7404,14 @@ form .sidebar_search input {
 
     top: 100px; /* Adjust this value based on your layout */
 }
+
 /* Custom width for the modal */
 .sendMessageModal .modal-dialog {
-    max-width: 50%; /* Adjust this value as needed */
+    max-width: 75%; /* Adjust this value as needed */
+}
+
+.sendMessageModal .modal-body {
+    overflow-y: auto;
 }
 
 @media (max-width: 768px) {
