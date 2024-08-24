@@ -339,7 +339,7 @@
                                 <h4>Providers/Businesses</h4>
                                 <h2>Why Join?</h2>
                             </div>
-                            <a href="{{ route('about') }}" class="common_btn_2">explore the community<span><i
+                            <a href="{{ route('about') }}" class="common_btn_2">Why Join?<span><i
                                         class="far fa-plus"></i></span></a>
                         </div>
                     </div>
