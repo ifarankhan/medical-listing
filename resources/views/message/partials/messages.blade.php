@@ -28,6 +28,8 @@
 
             <div id="collapse-{{ $message->id }}" class="collapse" aria-labelledby="heading-{{ $message->id }}" data-parent="#messages-container">
                 <div class="card-body">
+
+{{--                    <p><b>Subject:</b> {{ $message->subject }}</p>--}}
                     <p><b>From:</b> {{ $message->user->name }} &lt;{{ $message->user->email }}&gt;</p>
                     @if (auth()->user()->isCustomer())
                         <p><b>To Name of the Provider:</b>

@@ -51,6 +51,8 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <input type="hidden" id="successRedirect" value="{{ route('message') }}"/>
                         </form>
                     </div>
 
