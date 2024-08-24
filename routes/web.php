@@ -14,6 +14,7 @@ use App\Http\Controllers\SearchController;
 
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\WebhookController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\AuthController;
@@ -89,3 +90,13 @@ Route::group(['middleware' => ['role:customer']], function () {
     Route::get('/review-request', [ContactProviderController::class, 'reviewRequest'])
          ->name('review.request');
 });
+
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+
+Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
+
