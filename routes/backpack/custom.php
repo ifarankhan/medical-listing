@@ -19,3 +19,8 @@ Route::group([
     Route::crud('user', 'UserCrudController');
     Route::crud('category', 'CategoryCrudController');
 }); // this should be the absolute last line of this file
+
+use App\Http\Controllers\Admin\CategoryCrudController;
+
+Route::post('import', [CategoryCrudController::class, 'import'])->name('import');
+Route::get('export', [CategoryCrudController::class, 'export'])->name('export');

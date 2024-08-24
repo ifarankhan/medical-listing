@@ -1,6 +1,6 @@
 {{-- resources/views/listings/create.blade.php --}}
 @extends('layout')
-
+{{--<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>--}}
 @section('title', 'Listing Information')
 
 @section('content')

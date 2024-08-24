@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\CategoryRequest;
+use App\Imports\InsuranceDataImport;
 use App\Models\Category;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Excel;
 
 /**
  * Class CategoryCrudController
@@ -30,6 +33,9 @@ class CategoryCrudController extends CrudController
         CRUD::setModel(Category::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/category');
         CRUD::setEntityNameStrings('category', 'categories');
+
+        // Add the import button
+        $this->crud->addButtonFromView('top', 'import', 'import_button', 'end');
     }
 
     /**
@@ -80,4 +86,17 @@ class CategoryCrudController extends CrudController
     {
         $this->setupCreateOperation();
     }
+
+    public function import(Request $request)
+    {
+        $import = new InsuranceDataImport();
+        $import->import($request->file('file'));
+
+        return back()->with('success', 'Data Imported Successfully');
+    }
+
+    /*public function export()
+    {
+        return Excel::download(new InsuranceDataExport, 'insurance_data.xlsx');
+    }*/
 }
