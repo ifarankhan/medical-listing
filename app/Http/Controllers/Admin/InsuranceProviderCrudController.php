@@ -2,39 +2,44 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\CategoryRequest;
-use App\Imports\InsuranceDataImport;
-use App\Models\Category;
+use App\Http\Requests\InsuranceProviderRequest;
+use App\Imports\InsuranceProviderDataImport;
+use App\Models\InsuranceProvider;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Excel;
 
 /**
- * Class CategoryCrudController
+ * Class InsuranceProviderCrudController
  * @package App\Http\Controllers\Admin
- * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
+ * @property-read CrudPanel $crud
  */
-class CategoryCrudController extends CrudController
+class InsuranceProviderCrudController extends CrudController
 {
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use ListOperation;
+    use CreateOperation;
+    use UpdateOperation;
+    use DeleteOperation;
+    use ShowOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      *
      * @return void
      */
-    public function setup()
+    public function setup(): void
     {
-        CRUD::setModel(Category::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/category');
-        CRUD::setEntityNameStrings('category', 'categories');
+        CRUD::setModel(InsuranceProvider::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/insurance-provider');
+        CRUD::setEntityNameStrings('insurance provider', 'insurance providers');
 
-        // Add the import button
         $this->crud->addButtonFromView('top', 'import', 'import_button', 'end');
     }
 
@@ -46,7 +51,6 @@ class CategoryCrudController extends CrudController
      */
     protected function setupListOperation(): void
     {
-
         $this->crud->setColumns(['name', 'slug']);
     }
 
@@ -59,14 +63,14 @@ class CategoryCrudController extends CrudController
     protected function setupCreateOperation(): void
     {
         $this->crud->setValidation([
-             'name' => 'required|string|max:255|unique:categories,name,'. $this->crud->getCurrentEntryId(),
-             'slug' => 'required|string|max:255|unique:categories,slug,'. $this->crud->getCurrentEntryId(),
+            'name' => 'required|string|max:255|unique:insurance_providers,name,'. $this->crud->getCurrentEntryId(),
+            'slug' => 'required|string|max:255|unique:insurance_providers,slug,'. $this->crud->getCurrentEntryId(),
         ]);
 
         $this->crud->addField([
             'name' => 'name',
             'type' => 'text',
-            'label' => 'Category Name',
+            'label' => 'Insurance Provider Name',
         ]);
 
         $this->crud->addField([
@@ -87,16 +91,12 @@ class CategoryCrudController extends CrudController
         $this->setupCreateOperation();
     }
 
-    public function import(Request $request)
+    public function import(InsuranceProviderRequest $request): RedirectResponse
     {
-        $import = new InsuranceDataImport();
-        $import->import($request->file('file'));
+        $file = $request->file('file');
+        $import = new InsuranceProviderDataImport();
+        $import->import($file);
 
         return back()->with('success', 'Data Imported Successfully');
     }
-
-    /*public function export()
-    {
-        return Excel::download(new InsuranceDataExport, 'insurance_data.xlsx');
-    }*/
 }
