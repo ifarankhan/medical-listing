@@ -13,7 +13,7 @@ class CreateInsuranceProviderTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('insurance_provider', function (Blueprint $table) {
+        Schema::create('insurance_providers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name')->unique();
             $table->string('slug')->unique();
