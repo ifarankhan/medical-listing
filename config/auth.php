@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'backpack' => [
+            'driver' => 'session',
+            'provider' => 'backpack_users',
+        ],
     ],
 
     /*
@@ -61,6 +65,11 @@ return [
 
     'providers' => [
         'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
+
+        'backpack_users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
