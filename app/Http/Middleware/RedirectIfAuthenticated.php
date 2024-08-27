@@ -28,6 +28,11 @@ class RedirectIfAuthenticated
 
             if (Auth::guard($guard)->check()) {
 
+                $user = Auth::user();
+                // Redirect Insurance Provider to Listing page.
+                if ($user->userRole->contains('name', 'insurance_provider')) {
+                    return redirect('dashboard/listing');
+                }
                 return redirect(RouteServiceProvider::HOME);
             }
         }
