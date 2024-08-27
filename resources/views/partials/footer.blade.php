@@ -113,10 +113,10 @@
                         </form>
                         <h5>Follow Us</h5>
                         <ul class="d-flex flex-wrap">
-                            <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                            <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
-                            <li><a href="#"><i class="fab fa-pinterest"></i></a></li>
+{{--                            <li><a href="#"><i class="fab fa-twitter"></i></a></li>--}}
+                            <li><a href="https://www.facebook.com/profile.php?id=61562261805765"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="https://www.linkedin.com/company/diverrx-inc/"><i class="fab fa-linkedin-in"></i></a></li>
+                            <li><a href="https://www.instagram.com/diverrx_inc?igsh=MXdyemkyOWYzeGN5aQ%3D%3D&utm_source=qr"><i class="fab fa-instagram"></i></a></li>
                         </ul>
                     </div>
                 </div>
