@@ -24,6 +24,7 @@ class ListingController extends Controller
 
     const STATUS_CANCELLED = 'cancelled';
     CONST STATUS_SUBSCRIBED = 'subscribed';
+    CONST STATUS_REFUNDED = 'refunded';
 
     public function index(): Factory|View|Application
     {

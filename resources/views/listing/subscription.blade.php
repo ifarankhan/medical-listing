@@ -39,6 +39,22 @@
                     @csrf
                     <div class="dashboard_pricing">
                         <div class="row">
+                            @if (env('STRIPE_DAILY_TEST', false))
+                                <div class="col-xl-3 col-md-6 col-lg-4 wow fadeInUp" data-wow-duration="1.5s">
+                                    <div class="pricing_item">
+                                        <h5>Daily Subscription (TEST)</h5>
+
+                                        <h3>$1 <span>/daily</span></h3>
+
+                                        <a href="{{ route('subscription.form', [
+                                            'listing' => $listing->id,
+                                             'amount' => 1,
+                                              'interval' => 'daily'
+                                           ]) }}" class="register-link">Register Now
+                                        </a>
+                                    </div>
+                                </div>
+                            @endif
                             <div class="col-xl-3 col-md-6 col-lg-4 wow fadeInUp" data-wow-duration="1.5s">
                                 <div class="pricing_item">
                                     <h5>Monthly Subscription</h5>
@@ -77,7 +93,7 @@
         </div>
     </section>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        /*document.addEventListener('DOMContentLoaded', function () {
             var registerLinks = document.querySelectorAll('.register-link');
 
             registerLinks.forEach(function (link) {
@@ -90,7 +106,7 @@
                     }
                 });
             });
-        });
+        });*/
     </script>
 @endsection
 

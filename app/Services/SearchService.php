@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Controllers\ListingController;
 use App\Models\Listing;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -17,7 +18,7 @@ class SearchService
     public function search(array $filters, $paginate = self::RESULT_THRESHOLD): LengthAwarePaginator
     {
         $query = Listing::query();
-
+        $query->where('listing_status', ListingController::STATUS_SUBSCRIBED);
         foreach ($filters as $filter => $value) {
 
             if (!empty($value) && isset($this->filters[$filter])) {

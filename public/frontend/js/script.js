@@ -975,4 +975,15 @@ $(function () {
         });
     });
 
+    $(document).ready(function () {
+        $('.register-link').on('click', function (e) {
+            e.preventDefault(); // Prevent the default action of the <a> tag
+            if ($('#terms').is(':checked')) {
+                window.location.href = $(this).attr('href'); // Redirect to the URL in the anchor tag
+            } else {
+                alert('You must agree to the Terms and Conditions.');
+            }
+        });
+    });
+
 });
