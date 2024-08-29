@@ -51,6 +51,10 @@ class WebhookController extends Controller
 
                 $this->handleCustomerSubscriptionDeleted($data);
                 break;
+
+            case 'charge.refunded':
+                $this->handleChargeRefunded($data);
+                break;
             // Handle other event types as needed
             default:
                 // Unexpected event type
@@ -122,6 +126,29 @@ class WebhookController extends Controller
             if ($listing) {
                 $listing->update(['listing_status' => 'unsubscribed']);
             }
+        }
+    }
+
+    protected function handleChargeRefunded($charge): void
+    {
+        $subscriptionId = $charge->subscription;
+        $refundAmount = $charge->amount_refunded;
+
+        // Find the subscription in your database
+        $subscription = Subscription::where('stripe_subscription_id', $subscriptionId)->first();
+
+        if ($subscription) {
+            $listing = Listing::find($subscription->listing_id);
+            if ($listing) {
+                $listing->update(['listing_status' => 'unsubscribed']); // or any relevant status
+            }
+            // Update subscription details
+            $subscription->update([
+                'status' => 'refunded',
+                'last_refund_amount' => $refundAmount / 100, // convert to dollars
+            ]);
+
+            Log::info('Charge refunded for subscription ID: ' . $subscriptionId);
         }
     }
 }

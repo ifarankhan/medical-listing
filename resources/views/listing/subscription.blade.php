@@ -39,6 +39,22 @@
                     @csrf
                     <div class="dashboard_pricing">
                         <div class="row">
+                            @if (env('STRIPE_DAILY_TEST', false))
+                                <div class="col-xl-3 col-md-6 col-lg-4 wow fadeInUp" data-wow-duration="1.5s">
+                                    <div class="pricing_item">
+                                        <h5>Daily Subscription (TEST)</h5>
+
+                                        <h3>$1 <span>/daily</span></h3>
+
+                                        <a href="{{ route('subscription.form', [
+                                            'listing' => $listing->id,
+                                             'amount' => 1,
+                                              'interval' => 'daily'
+                                           ]) }}" class="register-link">Register Now
+                                        </a>
+                                    </div>
+                                </div>
+                            @endif
                             <div class="col-xl-3 col-md-6 col-lg-4 wow fadeInUp" data-wow-duration="1.5s">
                                 <div class="pricing_item">
                                     <h5>Monthly Subscription</h5>
@@ -49,7 +65,7 @@
                                         'listing' => $listing->id,
                                          'amount' => 29,
                                           'interval' => 'month'
-                                       ]) }}">Register Now
+                                       ]) }}" class="register-link">Register Now
                                     </a>
                                 </div>
                             </div>
@@ -59,14 +75,17 @@
 
                                     <h3>$300 <span>/year</span></h3>
 
-                                    <a href="#" class="register-link">Register Now</a>
+                                    <a href="{{ route('subscription.form', [
+                                        'listing' => $listing->id,
+                                         'amount' => 300,
+                                          'interval' => 'year'
+                                       ]) }}" class="register-link">Register Now</a>
                                 </div>
                             </div>
-
-                            <div class="form-group">
-                                <input type="checkbox" name="terms" id="terms" required>
-                                <label for="terms">I agree to the <a href="#">Terms and Conditions</a></label>
-                            </div>
+                        </div>
+                        <div class="d-flex align-items-center" style="margin-top:20px;">
+                            <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
+                            <label for="terms" class="ms-2">I agree to the <a href="#">Terms and Conditions</a></label>
                         </div>
                     </div>
                 </form>
@@ -74,16 +93,20 @@
         </div>
     </section>
     <script>
-        $(document).ready(function () {
-            $('.register-link').on('click', function (e) {
-                e.preventDefault(); // Prevent the default action of the <a> tag
-                if ($('#terms').is(':checked')) {
-                    $('#multiStepForm').submit();
-                } else {
-                    alert('You must agree to the Terms and Conditions.');
-                }
+        /*document.addEventListener('DOMContentLoaded', function () {
+            var registerLinks = document.querySelectorAll('.register-link');
+
+            registerLinks.forEach(function (link) {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault(); // Prevent the default action of the <a> tag
+                    if (document.querySelector('#terms').checked) {
+                        window.location.href = this.href; // Redirect to the URL in the anchor tag
+                    } else {
+                        alert('You must agree to the Terms and Conditions.');
+                    }
+                });
             });
-        });
+        });*/
     </script>
 @endsection
 

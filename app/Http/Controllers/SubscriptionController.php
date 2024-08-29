@@ -17,6 +17,8 @@ class SubscriptionController extends Controller
 {
     const BASIC_PRODUCT = 'prod_QbuPEDi4VgX5x2';
     CONST YEARLY_PRODUCT = 'prod_QbuPerPo3q22fm';
+
+    const STRIPE_DAILY_TEST = 'prod_QkcaG8TzYcCzLv';
     public function showSubscriptionForm(Request $request)
     {
         /** @var User $user */
@@ -38,7 +40,7 @@ class SubscriptionController extends Controller
             // Validate the request data
             $request->validate([
                 'amount'   => 'required|numeric|min:1',
-                'interval' => 'required|in:month,year',
+                'interval' => 'required|in:month,year,daily',
                 //  'payment_method_id' => 'required|string', // Payment method ID from the frontend
             ]);
 
@@ -124,7 +126,15 @@ class SubscriptionController extends Controller
     private function createStripePrice(StripeClient $stripe, $amount, $interval, $listing)
     {
         // Fetch stripe product.
-        $product = $interval == 'month'? self::BASIC_PRODUCT: self::YEARLY_PRODUCT;
+        if ($interval == 'month') {
+            $product = self::BASIC_PRODUCT;
+        } elseif ($interval == 'year') {
+            $product = self::YEARLY_PRODUCT;
+        } else {
+            // Handle other cases or assign a default value
+            $product = self::STRIPE_DAILY_TEST; // For testing.
+        }
+
         $productData = $stripe->products->retrieve($product);
 
         // Check if the price exists for this product
