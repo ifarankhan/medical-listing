@@ -92,7 +92,7 @@
 {{--                                            </a>--}}
 {{--                                        </li>--}}
 {{--                                    </ul>--}}
-                                    <p>Don’t you have an account? <a href="{{ route('register') }}">Join Now</a></p>
+                                    <p>Don’t you have an account? Create an account with Diverrx today.<a href="{{ route('register') }}">Join Now</a></p>
                                 </div>
                             </div>
                             <div class="col-xl-6 d-none d-xl-block wow fadeInRight" data-wow-duration="1.5s">

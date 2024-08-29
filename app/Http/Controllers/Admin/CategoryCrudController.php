@@ -33,9 +33,6 @@ class CategoryCrudController extends CrudController
         CRUD::setModel(Category::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/category');
         CRUD::setEntityNameStrings('category', 'categories');
-
-        // Add the import button
-        $this->crud->addButtonFromView('top', 'import', 'import_button', 'end');
     }
 
     /**
