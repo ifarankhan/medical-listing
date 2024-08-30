@@ -81,7 +81,7 @@ Route::group(['middleware' => ['role:insurance_provider']], function () {
     Route::get('/callback-subscription', [SubscriptionController::class, 'processCallback'])
          ->name('subscription.callback');
 
-    Route::post('/subscription/process', [SubscriptionController::class, 'processPayment'])->name('subscription.process');
+    //Route::post('/subscription/process', [SubscriptionController::class, 'processPayment'])->name('subscription.process');
 
     Route::delete('/delete-product/{id}', [ListingController::class, 'deleteProductService'])->name('product.destroy');
 

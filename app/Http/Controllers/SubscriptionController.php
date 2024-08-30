@@ -19,6 +19,8 @@ class SubscriptionController extends Controller
     CONST YEARLY_PRODUCT = 'prod_QbuPerPo3q22fm';
 
     const STRIPE_DAILY_TEST = 'prod_QkcaG8TzYcCzLv';
+
+    public function __construct(protected Subscription $subscription) {}
     public function showSubscriptionForm(Request $request)
     {
         /** @var User $user */
@@ -46,12 +48,18 @@ class SubscriptionController extends Controller
 
             // Create a Stripe customer
             $customer = $this->createStripeCustomer($stripe, $user->email);
-
             $paymentIntent = $this->createStripePaymentIntent(
                 $stripe,
                 $request->amount,
                 $customer->id,
                 $listing->id,
+                $request->interval
+            );
+            // Store payment intent in local database.
+            $this->subscription->storeSubscription(
+                $listing->id,
+                $paymentIntent->id,
+                $paymentIntent->status,
                 $request->interval
             );
 
@@ -63,50 +71,6 @@ class SubscriptionController extends Controller
                 ->with('error', 'Subscription creation failed.');
         }
     }
-
-    public function processPayment(Request $request)
-    {
-        $stripe = $this->getStripe();
-
-        try {
-            $paymentMethodId  = $request->input('payment_method_id');
-            $subscriptionData = json_decode($request->input('subscription_data'), true);
-
-            // Attach the payment method to the customer
-            $stripe->paymentMethods->attach(
-                $paymentMethodId,
-                ['customer' => $subscriptionData['stripe_customer_id']]
-            );
-
-            // Set the default payment method
-            $stripe->customers->update($subscriptionData['stripe_customer_id'], [
-                'invoice_settings' => ['default_payment_method' => $paymentMethodId],
-            ]);
-
-            // Create the subscription
-            $subscription = $stripe->subscriptions->create([
-                'customer'               => $subscriptionData['stripe_customer_id'],
-                'items'                  => [['price' => $subscriptionData['price_id']]],
-                'default_payment_method' => $paymentMethodId,
-            ]);
-
-            // Save subscription ID in your database for reference
-            Subscription::updateOrCreate(
-                ['listing_id' => $subscriptionData['listing_id']],
-                [
-                    'stripe_subscription_id' => $subscription->id,
-                    'status'                 => 'pending',
-                ]
-            );
-
-            return response()->json(['redirect_url' => route('listing.index')]);
-        } catch (\Exception $e) {
-            Log::error('Payment processing failed: ' . $e->getMessage());
-
-            return response()->json(['error' => 'Payment processing failed. Please try again.']);
-        }
-    }
-
     /**
      * @throws ApiErrorException
      */
@@ -203,6 +167,7 @@ class SubscriptionController extends Controller
                 $listingId = $paymentIntent->metadata->listing_id;
                 $interval  = $paymentIntent->metadata->interval;
                 $amount    = $paymentIntent->amount;
+
                 // Find the listing
                 $listing      = Auth::user()->listings()->findOrFail($listingId);
 
@@ -218,12 +183,13 @@ class SubscriptionController extends Controller
                 ]);
 
                 $listing->update(['listing_status' => 'subscribed']);
-                Subscription::create([
-                    'listing_id'             => $listing->id,
-                    'stripe_subscription_id' => $paymentIntent->id,
-                    'status'                 => $paymentIntent->status,
-                    'interval'               => $interval,
-                ]);
+
+                $this->subscription->storeSubscription(
+                    $listing->id,
+                    $paymentIntent->id,
+                    $paymentIntent->status,
+                    $interval
+                );
 
                 $amount = $amount / 100; // Amount in cents.
                 DB::commit();
