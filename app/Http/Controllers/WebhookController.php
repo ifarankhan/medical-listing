@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Stripe\Invoice;
 use Stripe\Stripe;
 use Stripe\Webhook;
 use App\Models\Subscription;
@@ -11,19 +12,22 @@ use Illuminate\Support\Facades\Log;
 
 class WebhookController extends Controller
 {
+    public function __construct(protected Subscription $subscription)
+    {
+    }
+
     public function handleWebhook(Request $request): JsonResponse
     {
-        Log::info(json_encode($request->all()));
         // Set your Stripe secret key
         Stripe::setApiKey(config('stripe.secret'));
-
-        // Retrieve the request's body and signature
+        // Retrieve the request's body and signature.
         $payload = $request->getContent();
-        $sig_header = $request->header('Stripe-Signature');
-        $endpoint_secret = config('stripe.webhook_secret');
+        $sigHeader = $request->header('Stripe-Signature');
+        // Use this for testing with CLI.
+        $endpointSecret = config('stripe.webhook_secret');
 
         try {
-            $event = Webhook::constructEvent($payload, $sig_header, $endpoint_secret);
+            $event = Webhook::constructEvent($payload, $sigHeader, $endpointSecret);
         } catch (\UnexpectedValueException $e) {
             // Invalid payload
             return response()->json(['error' => 'Invalid payload'], 400);
@@ -33,10 +37,9 @@ class WebhookController extends Controller
         }
 
         $data = $event->data->object;
-
         // Handle the event
         switch ($event->type) {
-
+            // For recurring payment callback.
             case 'invoice.payment_succeeded':
 
                 $this->handleInvoicePaymentSucceeded($data);
@@ -65,12 +68,12 @@ class WebhookController extends Controller
         return response()->json(['success' => 'Webhook handled']);
     }
 
-    protected function handleInvoicePaymentSucceeded($invoice): void
+    protected function handleInvoicePaymentSucceeded(Invoice $invoice): void
     {
         // You can update your subscription status or perform other actions
-        $subscriptionId = $invoice->subscription;
+        $subscriptionId = $invoice->payment_intent;
         $amountPaid = $invoice->amount_paid;
-
+        $status = $invoice->status;
         // Find the subscription in your database
         $subscription = Subscription::where('stripe_subscription_id', $subscriptionId)->first();
 
@@ -81,10 +84,12 @@ class WebhookController extends Controller
                 $listing->update(['listing_status' => 'subscribed']);
             }
             // Update subscription details or perform other actions
-            $subscription->update([
-                'status' => 'active', // or any other relevant field
-                'last_payment_amount' => $amountPaid / 100, // convert to dollars
-            ]);
+            $this->subscription->storeSubscription(
+                $listing->id,
+                $subscriptionId,
+                $status,
+                lastPaymentAmount: $amountPaid / 100
+            );
 
             Log::info('Subscription payment succeeded for subscription ID: ' . $subscriptionId);
         }

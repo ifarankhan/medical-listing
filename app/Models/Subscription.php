@@ -13,11 +13,36 @@ class Subscription extends Model
     protected $fillable = [
         'listing_id',
         'stripe_subscription_id',
+        'payment_intent_status',
         'interval',
     ];
 
     public function listing(): BelongsTo
     {
         return $this->belongsTo(Listing::class);
+    }
+
+    public function storeSubscription(
+        $listingId,
+        $stripeSubscriptionId,
+        $paymentIntentStatus,
+        $interval = null,
+        $lastPaymentAmount = null
+    ): void
+    {
+        $data = [
+            'listing_id'             => $listingId,
+            'payment_intent_status'  => $paymentIntentStatus,
+            'interval'               => $interval ?? null,
+            'last_payment_amount'    => $lastPaymentAmount ?? null,
+        ];
+        // Remove null.
+        $data = array_filter($data, function ($value) {
+            return !is_null($value);
+        });
+
+        self::updateOrCreate([
+            'stripe_subscription_id' => $stripeSubscriptionId,
+        ], $data);
     }
 }
