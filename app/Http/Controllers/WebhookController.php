@@ -24,7 +24,6 @@ class WebhookController extends Controller
         $payload = $request->getContent();
         $sigHeader = $request->header('Stripe-Signature');
         // Use this for testing with CLI.
-        $endpointSecretCLI = 'whsec_00af51a788444a81d89eebaf8f3089e8c376aa771bc8b6dfbd4bfa585fd1a923';
         $endpointSecret = config('stripe.webhook_secret');
 
         try {
