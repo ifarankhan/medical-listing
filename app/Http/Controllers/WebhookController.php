@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Stripe\Exception\SignatureVerificationException;
 use Stripe\Invoice;
 use Stripe\Stripe;
 use Stripe\Webhook;
@@ -12,9 +13,7 @@ use Illuminate\Support\Facades\Log;
 
 class WebhookController extends Controller
 {
-    public function __construct(protected Subscription $subscription)
-    {
-    }
+    public function __construct(protected Subscription $subscription) {}
 
     public function handleWebhook(Request $request): JsonResponse
     {
@@ -31,7 +30,7 @@ class WebhookController extends Controller
         } catch (\UnexpectedValueException $e) {
             // Invalid payload
             return response()->json(['error' => 'Invalid payload'], 400);
-        } catch (\Stripe\Exception\SignatureVerificationException $e) {
+        } catch (SignatureVerificationException $e) {
             // Invalid signature
             return response()->json(['error' => 'Invalid signature'], 400);
         }
@@ -136,7 +135,7 @@ class WebhookController extends Controller
 
     protected function handleChargeRefunded($charge): void
     {
-        $subscriptionId = $charge->subscription;
+        $subscriptionId = $charge->payment_intent;
         $refundAmount = $charge->amount_refunded;
 
         // Find the subscription in your database
