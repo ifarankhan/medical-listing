@@ -136,9 +136,7 @@ class WebhookController extends Controller
     protected function handleChargeRefunded($charge): void
     {
         $subscriptionId = $charge->payment_intent;
-        $refundAmount = $charge->amount_refunded;
-
-        // Find the subscription in your database
+        // Find the subscription in database
         $subscription = Subscription::where('stripe_subscription_id', $subscriptionId)->first();
 
         if ($subscription) {
@@ -147,10 +145,11 @@ class WebhookController extends Controller
                 $listing->update(['listing_status' => 'unsubscribed']); // or any relevant status
             }
             // Update subscription details
-            $subscription->update([
-                'status' => 'refunded',
-                'last_refund_amount' => $refundAmount / 100, // convert to dollars
-            ]);
+            $this->subscription->storeSubscription(
+                $listing->id,
+                $subscriptionId,
+                $charge->status == 'succeeded'? 'refunded' : $charge->status,
+            );
 
             Log::info('Charge refunded for subscription ID: ' . $subscriptionId);
         }
