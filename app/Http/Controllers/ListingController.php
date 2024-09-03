@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Listing;
 use App\Models\ProductService;
+use App\Models\Subscription;
 use App\Rules\WordCount;
+use App\Services\PaymentService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -26,6 +28,7 @@ class ListingController extends Controller
     CONST STATUS_SUBSCRIBED = 'subscribed';
     CONST STATUS_REFUNDED = 'refunded';
 
+    public function __construct(protected PaymentService $paymentService){}
     public function index(): Factory|View|Application
     {
         $currentUser = Auth::user();
@@ -190,7 +193,8 @@ class ListingController extends Controller
     public function delete(Listing $listing): RedirectResponse
     {
         $delete = $this->deleteListing($listing);
-
+        // Send subscription cancel call to stripe.
+        $this->paymentService->cancelPayment($listing);
         if (!$delete) {
             return redirect()->route('listing.index')
                 ->with('error', 'Listing with id ${$listingId} not found.');

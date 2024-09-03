@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Services\PaymentService;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Stripe\StripeClient;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -12,9 +14,11 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        //
+        $this->app->singleton(PaymentService::class, function ($app) {
+            return new PaymentService(new StripeClient(env('STRIPE_SECRET')));
+        });
     }
 
     /**
