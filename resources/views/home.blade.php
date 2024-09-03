@@ -337,7 +337,7 @@
                         <div class="popular_listing_content">
                             <div class="section_title_2 section_title_left_2">
                                 <h4>Providers/Businesses</h4>
-                                <h2>Join Diverrx to help you connect to your local community & expand your local business like never before!</h2>
+                                <h2 style="font-size: 28px; line-height: 45px;">Join <span style="font-size: 48px;">Diverrx</span> to connect to your local community & expand your business like never before!</h2>
                             </div>
                             <a href="{{ route('about') }}" class="common_btn_2">Why Join?<span><i
                                         class="far fa-plus"></i></span></a>
