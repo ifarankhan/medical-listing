@@ -16,8 +16,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Nette\Schema\ValidationException;
+use Stripe\Exception\ApiErrorException;
 
 class ListingController extends Controller
 {
@@ -28,7 +30,10 @@ class ListingController extends Controller
     CONST STATUS_SUBSCRIBED = 'subscribed';
     CONST STATUS_REFUNDED = 'refunded';
 
-    public function __construct(protected PaymentService $paymentService){}
+    public function __construct(
+        protected PaymentService $paymentService,
+        protected Subscription $subscription
+    ){}
     public function index(): Factory|View|Application
     {
         $currentUser = Auth::user();
@@ -190,18 +195,31 @@ class ListingController extends Controller
         return view('listing.subscription', compact('listing'));
     }
 
+    /**
+     * @throws ApiErrorException
+     */
     public function delete(Listing $listing): RedirectResponse
     {
-        $delete = $this->deleteListing($listing);
-        // Send subscription cancel call to stripe.
-        $this->paymentService->cancelPayment($listing);
-        if (!$delete) {
+        try {
+            DB::beginTransaction();
+            $this->deleteListing($listing);
+            // Send subscription cancel call to stripe.
+            $result = $this->paymentService->cancel($listing);
+            Log::info(json_encode($result));
+            // Update listing subscription status to archive
+            //$this->subscription->update()
+            DB::commit();
             return redirect()->route('listing.index')
-                ->with('error', 'Listing with id ${$listingId} not found.');
-        }
+                ->with('success', 'Listing deleted successfully.');
 
-        return redirect()->route('listing.index')
-            ->with('success', 'Listing deleted successfully.');
+        } catch (\Exception $exception) {
+
+            DB::rollBack();
+            Log::error($exception->getMessage());
+
+            return redirect()->route('listing.index')
+                ->with('error', $exception->getMessage());
+        }
     }
 
     /**
@@ -210,7 +228,7 @@ class ListingController extends Controller
      * @return bool
      */
     private function deleteListing(Listing $listing): bool
-    {
+    { return true;
         if ($listing->user_id !== Auth::id()) {
             abort(403, 'Unauthorized'); // Or redirect to a different page
         }

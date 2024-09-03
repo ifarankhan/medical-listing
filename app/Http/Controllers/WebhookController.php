@@ -1,8 +1,10 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Stripe\Checkout\Session;
 use Stripe\Exception\SignatureVerificationException;
 use Stripe\Invoice;
 use Stripe\Stripe;
@@ -13,7 +15,10 @@ use Illuminate\Support\Facades\Log;
 
 class WebhookController extends Controller
 {
-    public function __construct(protected Subscription $subscription) {}
+    public function __construct(
+        protected Subscription $subscription,
+        protected Listing $listing,
+    ) {}
 
     public function handleWebhook(Request $request): JsonResponse
     {
@@ -35,9 +40,14 @@ class WebhookController extends Controller
             return response()->json(['error' => 'Invalid signature'], 400);
         }
 
-        $data = $event->data->object;
+        $data = $event->data->object; Log::info($event->type);
         // Handle the event
         switch ($event->type) {
+
+            case 'checkout.session.completed':
+
+                $this->handleCheckoutSessionCompleted($data);
+                break;
             // For recurring payment callback.
             case 'invoice.payment_succeeded':
 
@@ -67,6 +77,32 @@ class WebhookController extends Controller
         return response()->json(['success' => 'Webhook handled']);
     }
 
+    protected function handleCheckoutSessionCompleted(Session $session): void
+    {
+        $userId = $session->client_reference_id; // Use the client_reference_id (reference to actual user id in system) to find the user
+        $stripeSubscriptionId = $session->subscription;
+        $listingId = $session->metadata->listing_id;
+        $interval = $session->metadata->interval;
+        // Retrieve user and create or update subscription record
+        $user = User::find($userId);
+        if ($user) {
+
+            $this->subscription->create([
+                'user_id' => $user->id,
+                'listing_id' => $listingId,
+                'interval' => $interval,
+                'stripe_price_id' => '',
+                'stripe_subscription_id' => $stripeSubscriptionId,
+                'status' => $session->status,
+                'started_at' => $session->created,
+            ]);
+
+            $this->listing->update([
+                'listing_id' => $listingId,
+                'listing_status' => ListingController::STATUS_SUBSCRIBED
+            ]);
+        }
+    }
     protected function handleInvoicePaymentSucceeded(Invoice $invoice): void
     {
         // You can update your subscription status or perform other actions
@@ -97,7 +133,6 @@ class WebhookController extends Controller
     protected function handleInvoicePaymentFailed($invoice): void
     {
         $subscriptionId = $invoice->subscription;
-
         // Find the subscription in your database
         $subscription = Subscription::where('stripe_subscription_id', $subscriptionId)->first();
 

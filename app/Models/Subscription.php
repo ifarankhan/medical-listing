@@ -13,10 +13,16 @@ class Subscription extends Model
     protected $fillable = [
         'listing_id',
         'stripe_subscription_id',
-        'payment_intent_status',
+        'status',
         'interval',
+        'stripe_price_id',
+        'started_at',
+        'canceled_at',
     ];
-
+    // Cast `started_at` to a date to ensure it's treated as a Carbon instance.
+    protected $casts = [
+        'started_at' => 'datetime',
+    ];
     public function listing(): BelongsTo
     {
         return $this->belongsTo(Listing::class);

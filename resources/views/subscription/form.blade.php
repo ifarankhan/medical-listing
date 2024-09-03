@@ -99,14 +99,12 @@
             <form id="payment-form">
 
                 <label for="payment-element">Payment details</label>
-                <div id="payment-element">
-                    <!-- Elements will create input elements here -->
+                <div id="checkout">
+                    <!-- Checkout will insert the payment form here -->
                 </div>
 
                 <!-- We'll put the error messages in this element -->
                 <div id="payment-errors" role="alert"></div>
-
-                <button id="submit">Subscribe</button>
             </form>
 
             <div id="messages" role="alert" style="display: none;"></div>
@@ -115,7 +113,27 @@
             <script src="https://js.stripe.com/v3/"></script>
             <script src="{{ asset('frontend/js/utils.js') }}"></script>
             <script>
-                document.addEventListener('DOMContentLoaded', async () => {
+                const stripe = Stripe('{{ config('stripe.key') }}');
+                initialize();
+
+                // Create a Checkout Session
+                async function initialize() {
+                    const fetchClientSecret = async () => {
+                       /* const response = await fetch("/checkout.php", {
+                            method: "POST",
+                        });*/
+                       return @json($checkoutSession->client_secret);
+                    };
+
+                    const checkout = await stripe.initEmbeddedCheckout({
+                        fetchClientSecret,
+                    });
+
+                    // Mount Checkout
+                    checkout.mount('#checkout');
+                }
+
+                {{--/*document.addEventListener('DOMContentLoaded', async () => {
                     const stripe = Stripe('{{ config('stripe.key') }}');
 
                     const elements = stripe.elements({
@@ -142,10 +160,10 @@
                             paymentForm.querySelector('button').disabled = true;
                         }
                     });
-                });
+                });*/
+
+--}}
             </script>
-
-
             {{--<form id="subscription-form">
                 <input type="email" name="email" id="email" placeholder="Your email">
                 <p>{{ $listing->business_name }}</p>
