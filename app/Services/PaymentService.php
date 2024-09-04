@@ -5,20 +5,24 @@ namespace App\Services;
 use App\Models\Listing;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
 use Stripe\PaymentIntent;
 use Stripe\StripeClient;
 use Stripe\Subscription;
 use \App\Models\Subscription as SubscriptionModel;
+
 class PaymentService
 {
     const BASIC_PRODUCT = 'prod_QbuPEDi4VgX5x2';
-    CONST YEARLY_PRODUCT = 'prod_QbuPerPo3q22fm';
+    const YEARLY_PRODUCT = 'prod_QbuPerPo3q22fm';
 
     const STRIPE_DAILY_TEST = 'prod_QkcaG8TzYcCzLv';
 
-    public function __construct(protected StripeClient $stripeClient, protected SubscriptionModel $subscriptionModel) {}
+    public function __construct(protected StripeClient $stripeClient, protected SubscriptionModel $subscriptionModel)
+    {
+    }
 
     /**
      * @throws ApiErrorException
@@ -26,23 +30,23 @@ class PaymentService
     public function checkoutSession($userId, $listingId, $interval, $priceId, $returnUrl, $quantity = 1): Session
     {
         return $this->stripeClient->checkout->sessions->create([
-            'ui_mode' => 'embedded',
-            'line_items' => [[
-                # Provide the exact Price ID (e.g. pr_1234) of the product you want to sell
-                'price' => $priceId,
-                'quantity' => $quantity,
-            ]],
-            'mode' => 'subscription',
-            'return_url' => $returnUrl . '?session_id={CHECKOUT_SESSION_ID}',
+            'ui_mode'             => 'embedded',
+            'line_items'          => [
+                [
+                    # Provide the exact Price ID (e.g. pr_1234) of the product you want to sell
+                    'price'    => $priceId,
+                    'quantity' => $quantity,
+                ]
+            ],
+            'mode'                => 'subscription',
+            'return_url'          => $returnUrl . '?session_id={CHECKOUT_SESSION_ID}',
             'client_reference_id' => $userId,
-            'automatic_tax' => [
+            'automatic_tax'       => [
                 'enabled' => true,
             ],
-            'metadata'=> [
+            'metadata'            => [
                 'listing_id' => $listingId,
-                'interval' => $interval,
-                // Add any other custom attributes you need
-                'custom_attribute' => 'custom_value',
+                'interval'   => $interval,
             ],
         ]);
     }
@@ -54,15 +58,16 @@ class PaymentService
     {
         try {
             $session = $this->stripeClient->checkout->sessions->retrieve($sessionId);
+
             return [
-                'status' => $session->status,
+                'status'         => $session->status,
                 'customer_email' => $session->customer_details->email,
             ];
         } catch (ApiErrorException $e) {
-
             throw new Exception('Error retrieving session status: ' . $e->getMessage());
         }
     }
+
     /**
      * Create or retrieve a Stripe customer.
      *
@@ -80,7 +85,7 @@ class PaymentService
                 'email' => $email
             ])->data;
 
-            if (!empty($customer)) {
+            if ( ! empty($customer)) {
                 return $customer[0]->id; // Return existing customer ID.
             }
 
@@ -111,13 +116,11 @@ class PaymentService
         try {
             $prices = $this->stripeClient->prices->all([
                 'product' => $productId,
-                'limit' => 1,
+                'limit'   => 1,
             ]);
 
             foreach ($prices->data as $price) {
-
                 if ($price->recurring->interval === $interval) {
-
                     return $price->id;
                 }
             }
@@ -129,6 +132,7 @@ class PaymentService
             throw new Exception('Error retrieving price from Stripe: ' . $e->getMessage());
         }
     }
+
     /**
      * @throws ApiErrorException
      */
@@ -138,30 +142,40 @@ class PaymentService
 
         return $this->stripeClient->subscriptions->create([
             'customer' => $stripeCustomerId,
-            'items' => [
+            'items'    => [
                 ['price' => $priceId],
             ],
-            'expand' => ['latest_invoice.payment_intent'],
+            'expand'   => ['latest_invoice.payment_intent'],
         ]);
     }
+
     /**
      * @throws ApiErrorException
      * @throws Exception
      */
-    public function cancel(Listing $listing): Subscription
+    public function cancel(Listing $listing, string $status = 'active'): Subscription
     {
-        $paymentIntentId = $listing->subscription()
-            ->where('status', 'succeeded') // Fetch active subscription for cancellation.
-            ->first()->stripe_subscription_id;
+        try {
+            $stripeSubscriptionId = $listing->subscription()
+                //->where('status', $status) // Fetch active subscription for cancellation.
+                ->first()
+                ->stripe_subscription_id;
 
-        if (!$paymentIntentId) {
-            throw new Exception('No payment intent found for this listing.');
+            if (!$stripeSubscriptionId) {
+                throw new Exception('No stripe subscription found for this listing.');
+            }
+
+            $stripeSubscription = $this->stripeClient->subscriptions->retrieve($stripeSubscriptionId);
+
+            if (!$stripeSubscription) {
+                throw new Exception('No stripe subscription found.');
+            }
+
+            return $this->stripeClient->subscriptions->cancel($stripeSubscription->id, []);
+
+        } catch (Exception $e) {
+            throw new Exception('Error retrieving subscription: ' . $e->getMessage());
         }
-
-        $subscription = $this->getSubscription($paymentIntentId);
-        $subscription->cancel();
-
-        return $subscription;
     }
 
     /**
@@ -186,6 +200,7 @@ class PaymentService
             throw new Exception('Error retrieving payment intent: ' . $e->getMessage());
         }
     }
+
     /**
      * @throws ApiErrorException
      * @throws Exception
@@ -194,14 +209,19 @@ class PaymentService
     {
         $paymentIntent = $this->stripeClient->paymentIntents->retrieve($paymentIntentId);
 
-        if (!isset($paymentIntent->invoice)) {
-
+        if ( ! isset($paymentIntent->invoice)) {
             throw new Exception('No invoice associated with this PaymentIntent.');
         }
 
-        $invoice = $paymentIntent->invoice->retrieve($paymentIntent->invoice);
+        // Retrieve the Invoice object using its ID
+        $invoice = $this->stripeClient->invoices->retrieve($paymentIntent->invoice);
 
-        return $invoice->subscription->retrieve($invoice->subscription);
+        if ( ! isset($invoice->subscription)) {
+            throw new Exception('No subscription associated with this Invoice.');
+        }
+
+        // Retrieve the Subscription object using its ID
+        return $this->stripeClient->subscriptions->retrieve($invoice->subscription);
     }
 
     public function getProductIdByIntervalRequest($interval): string

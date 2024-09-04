@@ -13,6 +13,7 @@ class Subscription extends Model
     protected $fillable = [
         'listing_id',
         'stripe_subscription_id',
+        'payment_intent_id',
         'status',
         'interval',
         'stripe_price_id',
@@ -22,7 +23,9 @@ class Subscription extends Model
     // Cast `started_at` to a date to ensure it's treated as a Carbon instance.
     protected $casts = [
         'started_at' => 'datetime',
+        'canceled_at' => 'datetime',
     ];
+
     public function listing(): BelongsTo
     {
         return $this->belongsTo(Listing::class);
@@ -31,20 +34,23 @@ class Subscription extends Model
     public function storeSubscription(
         $listingId,
         $stripeSubscriptionId,
-        $paymentIntentStatus,
+        $status,
         $interval = null,
-        $lastPaymentAmount = null
-    ): void
-    {
+        $lastPaymentAmount = null,
+        $paymentIntentId = null,
+        $canceledAt = null
+    ): void {
         $data = [
-            'listing_id'             => $listingId,
-            'payment_intent_status'  => $paymentIntentStatus,
-            'interval'               => $interval ?? null,
-            'last_payment_amount'    => $lastPaymentAmount ?? null,
+            'listing_id'          => $listingId,
+            'status'              => $status,
+            'interval'            => $interval ?? null,
+            'last_payment_amount' => $lastPaymentAmount ?? null,
+            'payment_intent_id' => $paymentIntentId ?? null,
+            'canceled_at'         => $canceledAt ?? null,
         ];
         // Remove null.
         $data = array_filter($data, function ($value) {
-            return !is_null($value);
+            return ! is_null($value);
         });
 
         self::updateOrCreate([

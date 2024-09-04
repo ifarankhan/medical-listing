@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Nette\Schema\ValidationException;
 use Stripe\Exception\ApiErrorException;
+use Stripe\Exception\InvalidRequestException;
 
 class ListingController extends Controller
 {
@@ -195,31 +196,49 @@ class ListingController extends Controller
         return view('listing.subscription', compact('listing'));
     }
 
-    /**
-     * @throws ApiErrorException
-     */
     public function delete(Listing $listing): RedirectResponse
     {
+        $listingId = $listing->id;
+
         try {
             DB::beginTransaction();
+            // Step 1: Delete the listing from the database
             $this->deleteListing($listing);
-            // Send subscription cancel call to stripe.
-            $result = $this->paymentService->cancel($listing);
-            Log::info(json_encode($result));
-            // Update listing subscription status to archive
-            //$this->subscription->update()
+            // Step 2: Cancel the associated subscription in Stripe
+            $stripeSubscription = $this->paymentService->cancel($listing);
+            // Step 3: Update the listing's subscription status in your database
+            $this->updateSubscriptionStatus($listingId, $stripeSubscription);
+
             DB::commit();
+            // Step 4: Redirect with success message
             return redirect()->route('listing.index')
                 ->with('success', 'Listing deleted successfully.');
-
-        } catch (\Exception $exception) {
-
+        } catch (ApiErrorException $e) {
             DB::rollBack();
-            Log::error($exception->getMessage());
+            Log::error('Stripe API error for listing ID ' . $listingId . ': ' . $e->getMessage());
 
             return redirect()->route('listing.index')
-                ->with('error', $exception->getMessage());
+                             ->with('error', 'Stripe API error: ' . $e->getMessage());
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error('Error deleting listing ID ' . $listingId . ': ' . $exception->getMessage());
+
+            return redirect()->route('listing.index')
+                ->with('error', 'An error occurred while deleting the listing.');
         }
+    }
+
+    /**
+     * Update the subscription status for the given listing.
+     */
+    private function updateSubscriptionStatus($listingId, $stripeSubscription): void
+    {
+        $this->subscription->storeSubscription(
+            $listingId,
+            $stripeSubscription->id,
+            $stripeSubscription->status,
+            canceledAt: $stripeSubscription->canceled_at
+        );
     }
 
     /**
@@ -228,7 +247,7 @@ class ListingController extends Controller
      * @return bool
      */
     private function deleteListing(Listing $listing): bool
-    { return true;
+    {
         if ($listing->user_id !== Auth::id()) {
             abort(403, 'Unauthorized'); // Or redirect to a different page
         }
