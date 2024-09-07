@@ -42,7 +42,7 @@ class SubscriptionController extends Controller
             // Validate the request data
             $request->validate([
                 'amount'   => 'required|numeric|min:1',
-                'interval' => 'required|in:month,year,daily',
+                'interval' => 'required|in:month,year,day',
                 //  'payment_method_id' => 'required|string', // Payment method ID from the frontend
             ]);
             $interval = $request->input('interval');

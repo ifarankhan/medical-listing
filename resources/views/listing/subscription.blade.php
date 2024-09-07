@@ -49,7 +49,7 @@
                                         <a href="{{ route('subscription.form', [
                                             'listing' => $listing->id,
                                              'amount' => 1,
-                                              'interval' => 'daily'
+                                              'interval' => 'day'
                                            ]) }}" class="register-link">Register Now
                                         </a>
                                     </div>
