@@ -358,7 +358,7 @@
     <!--=============================
         TESTIMONIAL START
     ==============================-->
-    <section class="testimonial" style="background: url({{ 'frontend/images/testimonial-bg.png' }});">
+    <section class="testimonial" style="background: var(--colorRed)">
         <div class="testimonial_overly pt_115 xs_pt_95 pb_120 xs_pb_100">
             <div class="container">
                 <div class="row">
@@ -429,9 +429,38 @@
     <!--=============================
         BLOG 2 START
     ==============================-->
-    <section class="blog_2 d-flex justify-content-center align-items-center"
-             style="background: url({{ 'frontend/images/story.png' }}) no-repeat center center; background-size: cover; height: 100vh;">
+    <section class="polular_listing" style="background: {{asset('frontend/images/breadcrumbs_bg.jpg') }};">
+        <div class="popular_listing_overly pt_115 xs_pt_95 pb_120 xs_pb_100">
+            <div class="container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-xl-6 col-lg-7 wow fadeInUp" data-wow-duration="1.5s" style="visibility: visible; animation-duration: 1.5s; animation-name: fadeInUp;">
+                        <div class="popular_listing_content">
+                            <div class="section_title_2 section_title_left_2">
+                                <h2>Our <span>Story</span> </h2>
+                            </div>
+                            <p>
+                                It all began with a mother's journey to find the right resources for her child, navigating challenges and recognizing the need for a more comprehensive solution. Faced with gaps in support services, she envisioned a platform where families like hers could easily access a wide array of products and services tailored to their specific needs. This vision became Diverrx- a place where caregivers, families, and individuals navigating neurodiversity, different abilities and/or special needs can discover resources, connect with service/product providers, feel empowered and thrive. Diverrx was founded with a deep commitment to bridging gaps and enhancing accessibility for individuals with neuro-diverse, different abilities and/or special needs.
+                            </p>
 
+                        </div>
+                    </div>
+                    <div class="col-xxl-6 col-lg-6">
+                        <div class="row align-items-center">
+                            <div class="col-xl-6 col-sm-6">
+                                <div class="about_area_img_2 wow fadeInUp" data-wow-duration="1.5s" style="visibility: visible; animation-duration: 1.5s; animation-name: fadeInUp;">
+                                    <img src="{{ asset('frontend/images/7719.webp') }}" alt="img" class="img-fluid w-100">
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-sm-6 wow fadeInRight" data-wow-duration="1.5s" style="visibility: visible; animation-duration: 1.5s; animation-name: fadeInRight;">
+                                <div class="about_area_img_1">
+                                    <img src="{{ asset('frontend/images/HomePage-1.jpg') }}" alt="img" class="img-fluid w-100">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!--=============================
