@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Subscription;
 use App\Services\PaymentService;
+use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Stripe\StripeClient;
@@ -20,11 +21,19 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(PaymentService::class, function ($app) {
 
             $stripeSecret = config('stripe.secret');
+
+            $httpClientOptions = [
+                'verify' => !app()->environment('staging'),
+            ];
+
             if (empty($stripeSecret)) {
                 throw new \InvalidArgumentException('Stripe secret key is not configured.');
             }
 
-            return new PaymentService(new StripeClient($stripeSecret), new Subscription());
+            return new PaymentService(new StripeClient([
+                'api_key' => config('stripe.secret'),
+                'http_client' => new GuzzleClient($httpClientOptions),
+            ]), new Subscription());
         });
     }
 

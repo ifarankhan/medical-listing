@@ -20,9 +20,10 @@ class PaymentService
 
     const STRIPE_DAILY_TEST = 'prod_QkcaG8TzYcCzLv';
 
-    public function __construct(protected StripeClient $stripeClient, protected SubscriptionModel $subscriptionModel)
-    {
-    }
+    public function __construct(
+        protected StripeClient $stripeClient,
+        protected SubscriptionModel $subscriptionModel
+    ) {}
 
     /**
      * @throws ApiErrorException
