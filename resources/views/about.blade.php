@@ -34,7 +34,7 @@
     <section class="about_area pt_120 xs_pt_85">
         <div class="container">
             <div class="row justify-content-between">
-                <div class="col-xxl-6 col-lg-7 wow fadeInLeft" data-wow-duration="1.5s">
+                <div class="col-xxl-7 col-lg-7 wow fadeInLeft" data-wow-duration="1.5s">
                     <div class="about_text">
                         <div class="section_title section_title_left">
                             <h2>Why Should You Join?</h2>
@@ -101,16 +101,11 @@
                         <a href="mailto: info@diverrx.com" class="common_btn">Get in touch</a>
                     </div>
                 </div>
-                <div class="col-xxl-6 col-lg-6">
+                <div class="col-xxl-5 col-lg-6">
                     <div class="row align-items-center">
-                        <div class="col-xl-6 col-sm-6">
-                            <div class="about_area_img_2 wow fadeInUp" data-wow-duration="1.5s">
-                                <img src="{{ asset('frontend/images/about_us_1.jpg') }}" alt="img" class="img-fluid w-100">
-                            </div>
-                        </div>
                         <div class="col-xl-6 col-sm-6 wow fadeInRight" data-wow-duration="1.5s">
-                            <div class="about_area_img_1">
-                                <img src="{{ asset('frontend/images/about_us_2.jpg') }}" alt="img" class="img-fluid w-100">
+                            <div class="about_area_img_1" >
+                                <img src="{{ asset('frontend/images/about_us_1.jpg') }}" alt="img" class="img-fluid w-100">
                             </div>
                         </div>
                     </div>
