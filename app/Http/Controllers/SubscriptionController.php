@@ -3,24 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\PaymentService;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use App\Models\Subscription;
+use App\Models\Subscription as SubscriptionModel;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Stripe\Exception\ApiErrorException;
 use Stripe\StripeClient;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class SubscriptionController extends Controller
 {
-    const BASIC_PRODUCT = 'prod_QbuPEDi4VgX5x2';
-    CONST YEARLY_PRODUCT = 'prod_QbuPerPo3q22fm';
-
-    const STRIPE_DAILY_TEST = 'prod_QkcaG8TzYcCzLv';
-
-    public function __construct(protected Subscription $subscription) {}
+    public function __construct(
+        protected SubscriptionModel $subscriptionModel,
+        protected PaymentService $paymentService
+    ) {}
     public function showSubscriptionForm(Request $request)
     {
         /** @var User $user */
@@ -37,33 +39,25 @@ class SubscriptionController extends Controller
         }
 
         try {
-            $stripe = $this->getStripe();
-
             // Validate the request data
             $request->validate([
                 'amount'   => 'required|numeric|min:1',
                 'interval' => 'required|in:month,year,daily',
                 //  'payment_method_id' => 'required|string', // Payment method ID from the frontend
             ]);
+            $interval = $request->input('interval');
+            $productId = $this->paymentService->getProductIdByIntervalRequest($interval);
+            $priceId = $this->paymentService->getPriceId($productId, $interval);
 
-            // Create a Stripe customer
-            $customer = $this->createStripeCustomer($stripe, $user->email);
-            $paymentIntent = $this->createStripePaymentIntent(
-                $stripe,
-                $request->amount,
-                $customer->id,
+            $checkoutSession = $this->paymentService->checkoutSession(
+                $user->id,
                 $listing->id,
-                $request->interval
-            );
-            // Store payment intent in local database.
-            $this->subscription->storeSubscription(
-                $listing->id,
-                $paymentIntent->id,
-                $paymentIntent->status,
-                $request->interval
+                $interval,
+                $priceId,
+                route('subscription.callback')
             );
 
-            return view('subscription.form', compact('listing', 'paymentIntent', 'customer'));
+            return view('subscription.form', compact('listing', 'checkoutSession'));
         } catch (Exception $e) {
             Log::error('Subscription creation failed: ' . $e->getMessage());
 
@@ -71,148 +65,27 @@ class SubscriptionController extends Controller
                 ->with('error', 'Subscription creation failed.');
         }
     }
-    /**
-     * @throws ApiErrorException
-     */
-    private function createStripeCustomer($stripe, $email)
+
+    public function sessionStatus(Request $request): JsonResponse
     {
-        $customers = $stripe->customers;
-
-        $customerData = ['email' => $email];
-        return ! $customers->all($customerData)->count()
-            ? $customers->create($customerData)
-            : $customers->all($customerData)->first();
-    }
-
-    /**
-     * @throws ApiErrorException
-     */
-    private function createStripePrice(StripeClient $stripe, $amount, $interval, $listing)
-    {
-        // Fetch stripe product.
-        if ($interval == 'month') {
-            $product = self::BASIC_PRODUCT;
-        } elseif ($interval == 'year') {
-            $product = self::YEARLY_PRODUCT;
-        } else {
-            // Handle other cases or assign a default value
-            $product = self::STRIPE_DAILY_TEST; // For testing.
-        }
-
-        $productData = $stripe->products->retrieve($product);
-
-        // Check if the price exists for this product
-        $prices = $stripe->prices->all(['product' => $productData->id, 'limit' => 1]);
-
-        foreach ($prices->data as $price) {
-            if ($price->unit_amount == $amount && $price->recurring->interval == $interval) {
-                return $price;
-            }
-        }
-        // Create a price dynamically
-        return $stripe->prices->create([
-            'unit_amount' => $amount, // Already in cents
-            'currency' => 'usd',
-            'recurring' => ['interval' => $interval],
-            'product' => $productData->id,
-        ]);
-    }
-
-    private function createStripeSubscription($stripe, $paymentIntent, $price)
-    {
-        return $stripe->subscriptions->create([
-            'customer' => $paymentIntent->customer,
-            'items'    => [
-                ['price' => $price->id],
-            ],
-            'default_payment_method' => $paymentIntent->payment_method,
-        ]);
-    }
-
-    private function createStripePaymentIntent($stripe, $amount, $customerId, $listingId, $interval)
-    {
-        $data = [
-            'amount'               => $amount * 100,
-            'setup_future_usage' => 'off_session',
-            'currency'             => 'usd',
-            'customer'             => $customerId,
-            // 'automatic_payment_methods' => ['enabled' => true],
-            'payment_method_types' => ['card'],
-            'metadata'             => [
-                'listing_id' => $listingId,
-                'interval'   => $interval,
-            ],
-        ];
-
-        return $stripe->paymentIntents->create($data);
-    }
-
-
-    /**
-     * @throws ApiErrorException
-     */
-    public function processCallback(Request $request): RedirectResponse
-    {
-        $stripe = $this->getStripe();
-        $listing = Auth::user()->listings()->first();
-
         try {
-            // Start a transaction
-            DB::beginTransaction();
-            // Retrieve the payment intent
-            $paymentIntent = $stripe->paymentIntents->retrieve($request->get('payment_intent'));
+            // Retrieve the session ID from the request
+            $sessionId = $request->input('session_id');
 
-            if ($paymentIntent->status == 'succeeded') {
-                // Get the listing ID and subscription ID from the metadata
-                $listingId = $paymentIntent->metadata->listing_id;
-                $interval  = $paymentIntent->metadata->interval;
-                $amount    = $paymentIntent->amount;
+            // Call the service method to get session status
+            $status = $this->paymentService->getSessionStatus($sessionId);
 
-                // Find the listing
-                $listing      = Auth::user()->listings()->findOrFail($listingId);
-
-                // Attach the payment method to the customer
-                $stripe->paymentMethods->attach(
-                    $paymentIntent->payment_method,
-                    ['customer' => $paymentIntent->customer]
-                );
-
-                // Set the default payment method on the customer
-                $stripe->customers->update($paymentIntent->customer, [
-                    'invoice_settings' => ['default_payment_method' => $paymentIntent->payment_method]
-                ]);
-
-                $listing->update(['listing_status' => 'subscribed']);
-
-                $this->subscription->storeSubscription(
-                    $listing->id,
-                    $paymentIntent->id,
-                    $paymentIntent->status,
-                    $interval
-                );
-
-                $amount = $amount / 100; // Amount in cents.
-                DB::commit();
-                return redirect()->route('listing.index', $listing)
-                    ->with('success', "You have successfully subscribed to this listing for $$amount/$interval.");
-            }
-
-            return redirect()->route('listing.step.subscription', $listing)
-                ->with('error', 'Subscription creation failed. Please try again.');
+            // Respond with the session status and customer email
+            return response()->json($status, ResponseAlias::HTTP_OK);
         } catch (\Exception $e) {
-
-            // Rollback the transaction
-            DB::rollBack();
-
-            Log::error('Payment processing failed: ' . $e->getMessage());
-
-            return redirect()->route('listing.step.subscription', $listing)
-                ->with('error', 'Subscription creation failed. Please try again.');
+            // Respond with an error message
+            return response()->json(['error' => $e->getMessage()], ResponseAlias::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
-    private function getStripe(): StripeClient
+    public function processCallback()
     {
-        return new StripeClient(config('stripe.secret'));
+        $sessionStatusUrl = route('subscription.session.status');
+
+        return view('subscription.return', compact('sessionStatusUrl'));
     }
 }

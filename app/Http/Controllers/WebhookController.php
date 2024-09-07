@@ -1,10 +1,16 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Services\PaymentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Stripe\Charge;
+use Stripe\Checkout\Session;
+use Stripe\Exception\ApiErrorException;
 use Stripe\Exception\SignatureVerificationException;
 use Stripe\Invoice;
+use Stripe\Refund;
 use Stripe\Stripe;
 use Stripe\Webhook;
 use App\Models\Subscription;
@@ -13,8 +19,15 @@ use Illuminate\Support\Facades\Log;
 
 class WebhookController extends Controller
 {
-    public function __construct(protected Subscription $subscription) {}
+    public function __construct(
+        protected Subscription $subscription,
+        protected Listing $listing,
+        protected PaymentService $paymentService,
+    ) {}
 
+    /**
+     * @throws ApiErrorException
+     */
     public function handleWebhook(Request $request): JsonResponse
     {
         // Set your Stripe secret key
@@ -38,6 +51,11 @@ class WebhookController extends Controller
         $data = $event->data->object;
         // Handle the event
         switch ($event->type) {
+
+            case 'checkout.session.completed':
+
+                $this->handleCheckoutSessionCompleted($data);
+                break;
             // For recurring payment callback.
             case 'invoice.payment_succeeded':
 
@@ -57,6 +75,9 @@ class WebhookController extends Controller
             case 'charge.refunded':
                 $this->handleChargeRefunded($data);
                 break;
+            case 'charge.refund.updated':
+                $this->handleChargeRefundUpdated($data);
+                break;
             // Handle other event types as needed
             default:
                 // Unexpected event type
@@ -67,10 +88,38 @@ class WebhookController extends Controller
         return response()->json(['success' => 'Webhook handled']);
     }
 
+    protected function handleCheckoutSessionCompleted(Session $session): void
+    {
+        $userId = $session->client_reference_id; // Use the client_reference_id (reference to actual user id in system) to find the user
+        $stripeSubscriptionId = $session->subscription;
+        $listingId = $session->metadata->listing_id;
+        $interval = $session->metadata->interval;
+        $paymentIntentId = $session->payment_intent;
+        // Retrieve user and create or update subscription record
+        $user = User::find($userId);
+        if ($user) {
+
+            $this->subscription->create([
+                'user_id' => $user->id,
+                'listing_id' => $listingId,
+                'interval' => $interval,
+                'stripe_price_id' => '',
+                'stripe_subscription_id' => $stripeSubscriptionId,
+                'payment_intent_id' => $paymentIntentId,
+                'status' => $session->status,
+                'started_at' => $session->created,
+            ]);
+
+            $this->listing->update([
+                'listing_id' => $listingId,
+                'listing_status' => ListingController::STATUS_SUBSCRIBED
+            ]);
+        }
+    }
     protected function handleInvoicePaymentSucceeded(Invoice $invoice): void
     {
         // You can update your subscription status or perform other actions
-        $subscriptionId = $invoice->payment_intent;
+        $subscriptionId = $invoice->subscription;
         $amountPaid = $invoice->amount_paid;
         $status = $invoice->status;
         // Find the subscription in your database
@@ -80,7 +129,7 @@ class WebhookController extends Controller
 
             $listing = Listing::find($subscription->listing_id);
             if ($listing) {
-                $listing->update(['listing_status' => 'subscribed']);
+                $listing->update(['listing_status' => ListingController::STATUS_SUBSCRIBED]);
             }
             // Update subscription details or perform other actions
             $this->subscription->storeSubscription(
@@ -97,7 +146,6 @@ class WebhookController extends Controller
     protected function handleInvoicePaymentFailed($invoice): void
     {
         $subscriptionId = $invoice->subscription;
-
         // Find the subscription in your database
         $subscription = Subscription::where('stripe_subscription_id', $subscriptionId)->first();
 
@@ -119,6 +167,8 @@ class WebhookController extends Controller
 
     protected function handleCustomerSubscriptionDeleted($customer): void
     {
+        Log::info($customer);
+
         $subscriptionId = $customer->id;
         // Handle subscription deletion
         $subscription = Subscription::where('stripe_subscription_id', $subscriptionId)->first();
@@ -133,25 +183,83 @@ class WebhookController extends Controller
         }
     }
 
-    protected function handleChargeRefunded($charge): void
+    /**
+     * @throws ApiErrorException
+     */
+    protected function handleChargeRefunded(Charge $charge): void
     {
-        $subscriptionId = $charge->payment_intent;
-        // Find the subscription in database
-        $subscription = Subscription::where('stripe_subscription_id', $subscriptionId)->first();
+        try {
+            $refundTime = now();
+            $paymentIntentId = $charge->payment_intent;
+            $subscription = $this->paymentService->getSubscription($paymentIntentId);
+            $subscriptionId = $subscription->id;
+            $status = $charge->refunded ? ListingController::STATUS_REFUNDED: 'unknown';
 
-        if ($subscription) {
-            $listing = Listing::find($subscription->listing_id);
-            if ($listing) {
-                $listing->update(['listing_status' => 'unsubscribed']); // or any relevant status
+            // Find the subscription in database
+            $subscriptionModel = Subscription::where('stripe_subscription_id', $subscriptionId)->first();
+
+            if ($subscriptionModel) {
+
+                $listing = Listing::find($subscriptionModel->listing_id);
+                if ($listing) {
+                    $listing->update(['listing_status' => 'unsubscribed']); // or any relevant status
+                }
+                // Update subscription details
+                $this->subscription->storeSubscription(
+                    $listing->id,
+                    $subscriptionId,
+                    $status,
+                    paymentIntentId: $paymentIntentId,
+                    canceledAt: $refundTime
+                );
+
+                Log::info('Charge refunded for subscription ID: ' . $subscriptionId);
             }
+        } catch (\Exception $ex) {
+            Log::error($ex->getMessage());
+        }
+    }
+
+    /**
+     * @throws ApiErrorException
+     */
+    protected function handleChargeRefundUpdated(Refund $data): void
+    {
+        try {
+            // Refund cancel.
+            $status = ($data->status == 'canceled') ? 'active': $data->status;
+
+            $paymentIntentId = $data->payment_intent;
+            $subscription = $this->paymentService->getSubscription($paymentIntentId);
+            $subscriptionId = $subscription->id;
+
+            $subscriptionModel = $this->subscription->where('stripe_subscription_id', $subscriptionId)
+                ->first();
+
+            if (!$subscriptionModel) {
+                throw new \Exception('Subscription not found');
+            }
+
             // Update subscription details
             $this->subscription->storeSubscription(
-                $listing->id,
+                $subscriptionModel->listing_id,
                 $subscriptionId,
-                $charge->status == 'succeeded'? 'refunded' : $charge->status,
+                $status,
+                paymentIntentId: $paymentIntentId,
             );
 
-            Log::info('Charge refunded for subscription ID: ' . $subscriptionId);
+            $listing = $this->listing->find($subscriptionModel->listing_id);
+            if (!$listing) {
+                throw new \Exception('Listing not found');
+            }
+
+            $listingStatus = $status == 'active'?
+                ListingController::STATUS_SUBSCRIBED:
+                ListingController::STATUS_CANCELLED;
+
+            $listing->update(['listing_status' => $listingStatus]);
+        } catch (\Exception $ex) {
+            Log::error($ex->getMessage());
         }
     }
 }

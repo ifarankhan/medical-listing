@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Subscription;
+use App\Services\PaymentService;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Stripe\StripeClient;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -12,9 +15,17 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        //
+        $this->app->singleton(PaymentService::class, function ($app) {
+
+            $stripeSecret = config('stripe.secret');
+            if (empty($stripeSecret)) {
+                throw new \InvalidArgumentException('Stripe secret key is not configured.');
+            }
+
+            return new PaymentService(new StripeClient($stripeSecret), new Subscription());
+        });
     }
 
     /**
