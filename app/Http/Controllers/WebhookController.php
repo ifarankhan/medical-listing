@@ -119,7 +119,7 @@ class WebhookController extends Controller
     protected function handleInvoicePaymentSucceeded(Invoice $invoice): void
     {
         // You can update your subscription status or perform other actions
-        $subscriptionId = $invoice->payment_intent;
+        $subscriptionId = $invoice->subscription;
         $amountPaid = $invoice->amount_paid;
         $status = $invoice->status;
         // Find the subscription in your database
@@ -129,7 +129,7 @@ class WebhookController extends Controller
 
             $listing = Listing::find($subscription->listing_id);
             if ($listing) {
-                $listing->update(['listing_status' => 'subscribed']);
+                $listing->update(['listing_status' => ListingController::STATUS_SUBSCRIBED]);
             }
             // Update subscription details or perform other actions
             $this->subscription->storeSubscription(
@@ -167,7 +167,7 @@ class WebhookController extends Controller
 
     protected function handleCustomerSubscriptionDeleted($customer): void
     {
-        Log::info(json_encode($customer));
+        Log::info($customer);
 
         $subscriptionId = $customer->id;
         // Handle subscription deletion
@@ -252,6 +252,7 @@ class WebhookController extends Controller
             if (!$listing) {
                 throw new \Exception('Listing not found');
             }
+
             $listingStatus = $status == 'active'?
                 ListingController::STATUS_SUBSCRIBED:
                 ListingController::STATUS_CANCELLED;
