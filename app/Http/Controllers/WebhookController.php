@@ -30,8 +30,6 @@ class WebhookController extends Controller
      */
     public function handleWebhook(Request $request): JsonResponse
     {
-        // Set your Stripe secret key
-        Stripe::setApiKey(config('stripe.secret'));
         // Retrieve the request's body and signature.
         $payload = $request->getContent();
         $sigHeader = $request->header('Stripe-Signature');
@@ -167,8 +165,6 @@ class WebhookController extends Controller
 
     protected function handleCustomerSubscriptionDeleted($customer): void
     {
-        Log::info($customer);
-
         $subscriptionId = $customer->id;
         // Handle subscription deletion
         $subscription = Subscription::where('stripe_subscription_id', $subscriptionId)->first();
