@@ -31,8 +31,92 @@
     <!--=============================
         ABOUT US PAGE START
     ==============================-->
-    <section class="about_area d-flex justify-content-center align-items-center"
-             style="background: url({{ 'frontend/images/whyjoin.png' }}) no-repeat center center; background-size: contain; min-height: 100vh;">
+    <section class="about_area pt_120 xs_pt_85">
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-xxl-6 col-lg-7 wow fadeInLeft" data-wow-duration="1.5s">
+                    <div class="about_text">
+                        <div class="section_title section_title_left">
+                            <h2>Why Should You Join?</h2>
+                        </div>
+                        <p>By joining , you will become a part of the first & only online marketplace that consolidates services and products tailored for neuro-diverse, differently-abled and/or special needs populations.</p>
+                        <ul class="d-flex flex-wrap pt_15">
+                            <li>
+                                <div class="about_icon">
+                                    <img src="{{ asset('frontend/images/about_icon_1.png') }}" alt="icon" class="img-fluid w-100">
+                                </div>
+                                <div class="about_description">
+                                    <h6>Unique Market Positioning</h6>
+                                    <span>Access to a niche market with specific needs, enhancing targeted marketing
+                                        efforts.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="about_icon">
+                                    <img src="{{ asset('frontend/images/about_icon_2.png') }}" alt="icon" class="img-fluid w-100">
+                                </div>
+                                <div class="about_description">
+                                    <h6>Instant User Connection</h6>
+                                    <span>Instantly connect to thousands of users on a daily basis through our
+                                        messaging center.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="about_icon">
+                                    <img src="{{ asset('frontend/images/about_icon_3.png') }}" alt="icon" class="img-fluid w-100">
+                                </div>
+                                <div class="about_description">
+                                    <h6>Cost Savings on Marketing</h6>
+                                    <span>Cost Savings on Marketing Leverage Diverrx's established platform  to reach a broader audience for only $300 per year (or $29.99 per month).</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="about_icon">
+                                    <img src="{{ asset('frontend/images/user_icon_3.png') }}" alt="icon" class="img-fluid w-100">
+                                </div>
+                                <div class="about_description">
+                                    <h6>User Trust , Credibility & Goodwill</h6>
+                                    <span>Enhance customer trust by enabling easier access, transparency, and accountability. If you offer quality services or products, Diverrx is the perfect fit for you!</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="about_icon">
+                                    <img src="{{ asset('frontend/images/about_icon_4.png') }}" alt="icon" class="img-fluid w-100">
+                                </div>
+                                <div class="about_description">
+                                    <h6>Business Expansion Opportunities</h6>
+                                    <span>Expand business like never before, across the US, tap into a national customer base, increasing visibility and potential sales.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="about_icon">
+                                    <img src="{{ asset('frontend/images/about_icon_4.png') }}" alt="icon" class="img-fluid w-100">
+                                </div>
+                                <div class="about_description">
+                                    <h6>Community Engagement</h6>
+                                    <span>Engage with the community through Diverrx Community Engagement Events throughout the year.</span>
+                                </div>
+                            </li>
+                        </ul>
+                        <a href="mailto: info@diverrx.com" class="common_btn">Get in touch</a>
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-lg-6">
+                    <div class="row align-items-center">
+                        <div class="col-xl-6 col-sm-6">
+                            <div class="about_area_img_2 wow fadeInUp" data-wow-duration="1.5s">
+                                <img src="{{ asset('frontend/images/about_us_1.jpg') }}" alt="img" class="img-fluid w-100">
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-sm-6 wow fadeInRight" data-wow-duration="1.5s">
+                            <div class="about_area_img_1">
+                                <img src="{{ asset('frontend/images/about_us_2.jpg') }}" alt="img" class="img-fluid w-100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!--=============================
