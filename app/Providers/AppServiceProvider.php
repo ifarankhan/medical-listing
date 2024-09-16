@@ -19,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(PaymentService::class, function ($app) {
 
-            $stripeSecret = config('stripe.secret');
+            $stripeSecret = config('services.stripe.secret');
             if (empty($stripeSecret)) {
                 throw new \InvalidArgumentException('Stripe secret key is not configured.');
             }

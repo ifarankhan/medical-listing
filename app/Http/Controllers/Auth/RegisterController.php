@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\RegisterUserMail;
 use App\Models\User;
 use App\Models\UserRole;
 use Illuminate\Contracts\Foundation\Application;
@@ -12,6 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -55,6 +57,7 @@ class RegisterController extends Controller
             $roleId = $request->input('role');
             // Attach the role to the user
             $user->userRole()->attach($roleId);
+            Mail::to($user->email)->send(new RegisterUserMail($user));
 
             DB::commit();
             return back()->with('success', 'User registered successfully');

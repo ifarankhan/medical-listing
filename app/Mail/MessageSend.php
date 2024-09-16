@@ -33,19 +33,6 @@ class MessageSend extends Mailable
             subject: 'Message Sent',
         );
     }
-
-    /**
-     * Get the message content definition.
-     *
-     * @return Content
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'view.name',
-        );
-    }
-
     /**
      * Get the attachments for the message.
      *

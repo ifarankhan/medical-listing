@@ -113,7 +113,7 @@
             <script src="https://js.stripe.com/v3/"></script>
             <script src="{{ asset('frontend/js/utils.js') }}"></script>
             <script>
-                const stripe = Stripe('{{ config('stripe.key') }}');
+                const stripe = Stripe('{{ config('services.stripe.public') }}');
                 initialize();
 
                 // Create a Checkout Session

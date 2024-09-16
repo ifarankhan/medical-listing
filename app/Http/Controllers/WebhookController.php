@@ -1,10 +1,13 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Mail\SubscriptionCanceledMail;
+use App\Mail\SubscriptionConfirmationMail;
 use App\Models\User;
 use App\Services\PaymentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Stripe\Charge;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
@@ -34,7 +37,7 @@ class WebhookController extends Controller
         $payload = $request->getContent();
         $sigHeader = $request->header('Stripe-Signature');
         // Use this for testing with CLI.
-        $endpointSecret = config('stripe.webhook_secret');
+        $endpointSecret = config('services.stripe.webhook_secret');
 
         try {
             $event = Webhook::constructEvent($payload, $sigHeader, $endpointSecret);
@@ -95,7 +98,9 @@ class WebhookController extends Controller
         $paymentIntentId = $session->payment_intent;
         // Retrieve user and create or update subscription record
         $user = User::find($userId);
-        if ($user) {
+        $listing = Listing::find($listingId);
+
+        if ($user && $listing) {
 
             $this->subscription->create([
                 'user_id' => $user->id,
@@ -112,6 +117,9 @@ class WebhookController extends Controller
                 'listing_id' => $listingId,
                 'listing_status' => ListingController::STATUS_SUBSCRIBED
             ]);
+
+            // Send the subscription confirmation email
+            Mail::to($user->email)->send(new SubscriptionConfirmationMail($user, $listing, $interval));
         }
     }
     protected function handleInvoicePaymentSucceeded(Invoice $invoice): void
@@ -176,6 +184,11 @@ class WebhookController extends Controller
             if ($listing) {
                 $listing->update(['listing_status' => 'unsubscribed']);
             }
+
+            $user = $subscription->listing->user;
+            $interval = $subscription->interval;
+            // Send the subscription confirmation email
+            Mail::to($user->email)->send(new SubscriptionCanceledMail($user, $listing, $interval));
         }
     }
 
