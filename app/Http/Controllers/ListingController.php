@@ -202,12 +202,13 @@ class ListingController extends Controller
 
         try {
             DB::beginTransaction();
-            // Step 1: Delete the listing from the database
-            $this->deleteListing($listing);
-            // Step 2: Cancel the associated subscription in Stripe
+
+            // Step 1: Cancel the associated subscription in Stripe
             $stripeSubscription = $this->paymentService->cancel($listing);
-            // Step 3: Update the listing's subscription status in your database
+            // Step 2: Update the listing's subscription status in your database
             $this->updateSubscriptionStatus($listingId, $stripeSubscription);
+            // Step 3: Delete the listing from the database
+            $this->deleteListing($listing);
 
             DB::commit();
             // Step 4: Redirect with success message

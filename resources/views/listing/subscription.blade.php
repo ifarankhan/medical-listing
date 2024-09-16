@@ -39,7 +39,7 @@
                     @csrf
                     <div class="dashboard_pricing">
                         <div class="row">
-                            @if (config('stripe.daily_sub_test'))
+                            @if (config('services.stripe.daily_sub_test'))
                                 <div class="col-xl-3 col-md-6 col-lg-4 wow fadeInUp" data-wow-duration="1.5s">
                                     <div class="pricing_item">
                                         <h5>Daily Subscription (TEST)</h5>

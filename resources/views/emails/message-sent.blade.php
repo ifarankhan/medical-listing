@@ -1,9 +1,11 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>New Message Received</title>
-    </head>
-    <body>
+@extends('layouts.email')
+
+@section('header')
+    <h2>New Message Received</h2>
+@endsection
+
+@section('content')
+
         <h2>New Message Received</h2>
         <p>
             Hello {{ $message->user->name }},
@@ -14,5 +16,4 @@
             <br>
             <strong>Message:</strong> {{ $message->body }}
         </p>
-    </body>
-</html>
+@endsection
