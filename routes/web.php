@@ -113,16 +113,16 @@ Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEm
 Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
 
-use Illuminate\Support\Facades\Mail;
+/*use Illuminate\Support\Facades\Mail;
 
 Route::get('/test-email', function () {
     try {
         Mail::raw('This is a test email from Mailgun!', function ($message) {
-            $message->to('recipient@example.com')
+            $message->to('raoraafe@gmail.com')
                     ->subject('Mailgun Test Email');
         });
         return 'Test email sent!';
     } catch (\Exception $e) {
         return 'Failed to send email. Error: ' . $e->getMessage();
     }
-});
+});*/
