@@ -66,11 +66,12 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-2 col-sm-6 wow fadeInRight" data-wow-duration="1.3s">
+                <div class="col-lg-3 col-sm-6 wow fadeInRight" data-wow-duration="1.3s">
                     <div class="footer_menu">
                         <h4>Useful Links</h4>
                         <ul>
                             <li><a href="{{ route('home') }}">home</a></li>
+                            <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
                             <li><a href="{{ route('about') }}">providers/businesses</a></li>
                             <li><a href="{{ route('search') }}">services/products</a></li>
                             <li><a href="privacy_policy.html">Privacy Policy</a></li>
@@ -78,7 +79,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-2 col-sm-6 wow fadeInRight" data-wow-duration="1.6s">
+                {{--<div class="col-lg-2 col-sm-6 wow fadeInRight" data-wow-duration="1.6s">
                     <div class="footer_menu">
                         <h4>Navigation</h4>
                         <ul>
@@ -87,8 +88,8 @@
                             <li><a href="dashboard_listing.html">My Listing</a></li>
                         </ul>
                     </div>
-                </div>
-                <div class="col-lg-2 col-sm-6 wow fadeInRight" data-wow-duration="1.9s">
+                </div>--}}
+                <div class="col-lg-3 col-sm-6 wow fadeInRight" data-wow-duration="1.9s">
                     <div class="footer_menu">
                         <h4>Help</h4>
                         <ul>

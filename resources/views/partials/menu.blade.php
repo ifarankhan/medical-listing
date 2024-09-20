@@ -14,13 +14,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav m-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/">Home</a>
+                    <a class="nav-link {{ Route::is('home') ? 'active' : '' }}" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('about') }}">Providers/Businesses</a>
+                    <a class="nav-link {{ Route::is('about') ? 'active' : '' }}" href="{{ route('about') }}">Providers/Businesses</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('search') }}">Services/Products</a>
+                    <a class="nav-link {{ Route::is('search') ? 'active' : '' }}" href="{{ route('search') }}">Services/Products</a>
                 </li>
 {{--                <li class="nav-item">--}}
 {{--                    <a class="nav-link" href="{{ route('contact') }}">Contact Us</a>--}}
