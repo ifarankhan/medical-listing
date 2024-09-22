@@ -30,6 +30,7 @@ class PaymentService
      */
     public function checkoutSession($userId, $listingId, $interval, $priceId, $returnUrl, $quantity = 1): Session
     {
+        // Create checkout session with stripe.
         return $this->stripeClient->checkout->sessions->create([
             'ui_mode'             => 'embedded',
             'line_items'          => [
@@ -48,6 +49,7 @@ class PaymentService
             'metadata'            => [
                 'listing_id' => $listingId,
                 'interval'   => $interval,
+                'user_id' => $userId
             ],
         ]);
     }

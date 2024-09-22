@@ -67,7 +67,6 @@ class WebhookController extends Controller
 
                 $this->handleInvoicePaymentFailed($data);
                 break;
-
             case 'customer.subscription.deleted':
 
                 $this->handleCustomerSubscriptionDeleted($data);
@@ -91,39 +90,38 @@ class WebhookController extends Controller
 
     protected function handleCheckoutSessionCompleted(Session $session): void
     {
+        Log::info('checkout.session.completed');
         $userId = $session->client_reference_id; // Use the client_reference_id (reference to actual user id in system) to find the user
         $stripeSubscriptionId = $session->subscription;
+        $stripeCustomerId = $session->customer;
         $listingId = $session->metadata->listing_id;
         $interval = $session->metadata->interval;
-        $paymentIntentId = $session->payment_intent;
-        // Retrieve user and create or update subscription record
-        $user = User::find($userId);
-        $listing = Listing::find($listingId);
 
-        if ($user && $listing) {
+        try {
+            $user = User::find($userId);
+            $listing = Listing::find($listingId);
+            $subscriptionModel = $this->subscription->where('listing_id', $listingId)->first();
 
-            $this->subscription->create([
-                'user_id' => $user->id,
-                'listing_id' => $listingId,
-                'interval' => $interval,
-                'stripe_price_id' => '',
-                'stripe_subscription_id' => $stripeSubscriptionId,
-                'payment_intent_id' => $paymentIntentId,
-                'status' => $session->status,
-                'started_at' => $session->created,
-            ]);
+            if ($subscriptionModel) {
+                $subscriptionModel->stripe_subscription_id = $stripeSubscriptionId;
+                $subscriptionModel->stripe_customer_id = $stripeCustomerId;
+                $subscriptionModel->start_date = now();
+                $subscriptionModel->status = 'active';
+                $subscriptionModel->save();
 
-            $this->listing->update([
-                'listing_id' => $listingId,
-                'listing_status' => ListingController::STATUS_SUBSCRIBED
-            ]);
+                $listing->listing_status = ListingController::STATUS_SUBSCRIBED;
+                $listing->save();
+                // Send the subscription confirmation email
+                Mail::to($user->email)->send(new SubscriptionConfirmationMail($user, $listing, $interval));
+            }
+        } catch (\Exception $ex) {
 
-            // Send the subscription confirmation email
-            Mail::to($user->email)->send(new SubscriptionConfirmationMail($user, $listing, $interval));
+            Log::error($ex->getMessage());
         }
     }
     protected function handleInvoicePaymentSucceeded(Invoice $invoice): void
     {
+        Log::info('invoice.payment.succeeded');
         // You can update your subscription status or perform other actions
         $subscriptionId = $invoice->subscription;
         $amountPaid = $invoice->amount_paid;
@@ -151,6 +149,7 @@ class WebhookController extends Controller
 
     protected function handleInvoicePaymentFailed($invoice): void
     {
+        Log::info('invoice.payment.failed');
         $subscriptionId = $invoice->subscription;
         // Find the subscription in your database
         $subscription = Subscription::where('stripe_subscription_id', $subscriptionId)->first();
@@ -159,12 +158,11 @@ class WebhookController extends Controller
 
             $listing = Listing::find($subscription->listing_id);
             if ($listing) {
-                $listing->update(['listing_status' => 'unsubscribed']);
+                $listing->update(['listing_status' => 'failed']);
             }
             // Update subscription details
             $subscription->update([
-                'status' => 'past_due',
-                'payment_intent_status' => 'failed',
+                'status' => 'pending',
             ]);
 
             Log::warning('Subscription payment failed for subscription ID: ' . $subscriptionId);
@@ -182,7 +180,7 @@ class WebhookController extends Controller
 
             $listing = Listing::find($subscription->listing_id);
             if ($listing) {
-                $listing->update(['listing_status' => 'unsubscribed']);
+                $listing->update(['listing_status' => 'deleted']);
             }
 
             $user = $subscription->listing->user;
@@ -211,7 +209,7 @@ class WebhookController extends Controller
 
                 $listing = Listing::find($subscriptionModel->listing_id);
                 if ($listing) {
-                    $listing->update(['listing_status' => 'unsubscribed']); // or any relevant status
+                    $listing->update(['listing_status' => 'refunded']); // or any relevant status
                 }
                 // Update subscription details
                 $this->subscription->storeSubscription(

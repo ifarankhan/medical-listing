@@ -14,16 +14,22 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('subscriptions', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('listing_id');
-            $table->string('stripe_subscription_id');
-            $table->string('interval'); // 'month' or 'year'
-            $table->timestamps();
 
-            // Add foreign key constraint
-            $table->foreign('listing_id')->references('id')
-                ->on('listings')
-                ->onDelete('cascade');
+            $table->id(); // Primary key
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Reference to the users table
+            $table->foreignId('listing_id')->unique()->constrained()->onDelete('cascade'); // Reference to the listings table
+            $table->string('stripe_subscription_id')->unique()->nullable(); // Stripe subscription ID
+            $table->string('stripe_customer_id')->nullable(); // Stripe customer ID
+            $table->string('stripe_price_id'); // Stripe price ID
+            $table->enum('status', ['pending', 'active', 'trialing', 'canceled', 'expired'])->default('pending'); // Subscription status
+            $table->timestamp('start_date')->nullable(); // Subscription start date
+            $table->timestamp('end_date')->nullable(); // Subscription end date or trial end date
+            $table->softDeletes(); // Adds a deleted_at column for soft deletion
+            $table->timestamps(); // Created at and updated at timestamps
+
+            // Ensure only one active subscription per listing
+            /*$table->unique(['listing_id', 'status'], 'unique_active_subscription')
+                  ->where('status', 'active');*/
         });
     }
 
