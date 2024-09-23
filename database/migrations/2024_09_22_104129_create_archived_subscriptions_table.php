@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('archived_subscriptions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('listing_id')->unique()->constrained()->onDelete('cascade'); // Reference to the listings table
             $table->string('stripe_subscription_id')->nullable();
             $table->string('stripe_customer_id')->nullable();
             $table->string('stripe_price_id');

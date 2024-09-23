@@ -24,7 +24,6 @@ return new class extends Migration
             $table->enum('status', ['pending', 'active', 'trialing', 'canceled', 'expired'])->default('pending'); // Subscription status
             $table->timestamp('start_date')->nullable(); // Subscription start date
             $table->timestamp('end_date')->nullable(); // Subscription end date or trial end date
-            $table->softDeletes(); // Adds a deleted_at column for soft deletion
             $table->timestamps(); // Created at and updated at timestamps
 
             // Ensure only one active subscription per listing

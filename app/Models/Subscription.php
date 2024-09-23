@@ -10,7 +10,10 @@ use Illuminate\Support\Facades\DB;
 
 class Subscription extends Model
 {
-    use HasFactory, SoftDeletes;
+    const STATUS_ACTIVE = 'active';
+    const STATUS_CANCELED = 'canceled';
+
+    use HasFactory;
 
     protected $dates = ['deleted_at'];
     protected $fillable = [
@@ -22,16 +25,14 @@ class Subscription extends Model
         'status',
         'started_date',
         'end_date',
-        'deleted_at',
         'created_at',
         'updated_at',
 
     ];
     // Cast `started_at` to a date to ensure it's treated as a Carbon instance.
-    /*protected $casts = [
-        'started_at' => 'datetime',
-        'canceled_at' => 'datetime',
-    ];*/
+    protected $casts = [
+        'end_date' => 'datetime',
+    ];
 
     public function listing(): BelongsTo
     {
@@ -65,21 +66,15 @@ class Subscription extends Model
         ], $data);
     }
 
-    public function archive(): void
+    public function archive(array $data): void
     {
+        $data['end_date'] = date('Y-m-d H:i:s', strtotime($data['end_date']));
+        $data['deleted_at'] = now();
+        $data['created_at'] = date('Y-m-d H:i:s', strtotime($data['created_at']));
+        $data['updated_at'] = date('Y-m-d H:i:s', strtotime($data['updated_at']));
+        $data['start_date'] = date('Y-m-d H:i:s', strtotime($data['start_date']));
         // Copy the current subscription data to the archived_subscriptions table
-        DB::table('archived_subscriptions')->insert([
-            'user_id' => $this->user_id,
-            'stripe_subscription_id' => $this->stripe_subscription_id,
-            'stripe_customer_id' => $this->stripe_customer_id,
-            'stripe_price_id' => $this->stripe_price_id,
-            'status' => $this->status,
-            'start_date' => $this->start_date,
-            'end_date' => $this->end_date,
-            'deleted_at' => now(),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-        ]);
+        DB::table('archived_subscriptions')->insert($data);
     }
 
     public function pendingSubscriptionExists($userId, $listingId)

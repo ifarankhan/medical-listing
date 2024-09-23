@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Services\PaymentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Stripe\Charge;
 use Stripe\Checkout\Session;
@@ -106,7 +107,7 @@ class WebhookController extends Controller
                 $subscriptionModel->stripe_subscription_id = $stripeSubscriptionId;
                 $subscriptionModel->stripe_customer_id = $stripeCustomerId;
                 $subscriptionModel->start_date = now();
-                $subscriptionModel->status = 'active';
+                $subscriptionModel->status = Subscription::STATUS_ACTIVE;
                 $subscriptionModel->save();
 
                 $listing->listing_status = ListingController::STATUS_SUBSCRIBED;
@@ -121,29 +122,25 @@ class WebhookController extends Controller
     }
     protected function handleInvoicePaymentSucceeded(Invoice $invoice): void
     {
-        Log::info('invoice.payment.succeeded');
+        Log::info('invoice.payment_succeeded');
         // You can update your subscription status or perform other actions
         $subscriptionId = $invoice->subscription;
-        $amountPaid = $invoice->amount_paid;
-        $status = $invoice->status;
         // Find the subscription in your database
-        $subscription = Subscription::where('stripe_subscription_id', $subscriptionId)->first();
+        $subscriptionModel = $this->subscription->where('stripe_subscription_id', $subscriptionId)->first();
 
-        if ($subscription) {
+        if ($subscriptionModel) {
 
-            $listing = Listing::find($subscription->listing_id);
-            if ($listing) {
-                $listing->update(['listing_status' => ListingController::STATUS_SUBSCRIBED]);
-            }
-            // Update subscription details or perform other actions
-            $this->subscription->storeSubscription(
-                $listing->id,
-                $subscriptionId,
-                $status,
-                lastPaymentAmount: $amountPaid / 100
-            );
+            $subscriptionModel->updated_at = now();
+            $subscriptionModel->status = Subscription::STATUS_ACTIVE;
+            $subscriptionModel->save();
+
+            $listing = Listing::find($subscriptionModel->listing_id);
+            $listing->listing_status = ListingController::STATUS_SUBSCRIBED;
+            $listing->save();
 
             Log::info('Subscription payment succeeded for subscription ID: ' . $subscriptionId);
+            // Send the subscription confirmation email
+            //Mail::to($user->email)->send(new SubscriptionConfirmationMail($user, $listing, $interval));
         }
     }
 
@@ -169,23 +166,41 @@ class WebhookController extends Controller
         }
     }
 
-    protected function handleCustomerSubscriptionDeleted($customer): void
+    protected function handleCustomerSubscriptionDeleted(\Stripe\Subscription $subscription): void
     {
-        $subscriptionId = $customer->id;
-        // Handle subscription deletion
-        $subscription = Subscription::where('stripe_subscription_id', $subscriptionId)->first();
-        if ($subscription) {
-            $subscription->status = 'cancelled';
-            $subscription->save();
+        Log::info('customer.subscription.deleted');
 
-            $listing = Listing::find($subscription->listing_id);
+        $subscriptionId = $subscription->id;
+        // Handle subscription deletion
+        $subscriptionModel = $this->subscription->where('stripe_subscription_id', $subscriptionId)->first();
+
+        if ($subscriptionModel) {
+
+            $subscriptionModel->status = Subscription::STATUS_CANCELED;
+            $subscriptionModel->end_date = $subscription->canceled_at;
+
+            $subscriptionModel->save();
+
+           $archivedData = $subscriptionModel->toArray();
+            // Insert the subscription data into the archive_subscriptions table
+            $this->subscription->archive($archivedData);
+            $subscriptionModel->delete();
+
+            $listing = Listing::find($subscriptionModel->listing_id);
             if ($listing) {
                 $listing->update(['listing_status' => 'deleted']);
             }
 
-            $user = $subscription->listing->user;
-            $interval = $subscription->interval;
-            // Send the subscription confirmation email
+            $user = $subscriptionModel->listing->user;
+            $interval = '';
+            // Retrieve the subscription interval.
+            if (!empty($subscription->items->data)) {
+                $subscriptionItem = $subscription->items->data[0];
+                if (isset($subscriptionItem->plan->interval)) {
+                    $interval = $subscriptionItem->plan->interval;
+                }
+            }
+            // Send the subscription cancel confirmation email
             Mail::to($user->email)->send(new SubscriptionCanceledMail($user, $listing, $interval));
         }
     }
