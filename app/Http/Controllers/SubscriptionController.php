@@ -30,8 +30,7 @@ class SubscriptionController extends Controller
         // Only one business profile per user for listing.
         $listing = $user->listings()->firstOrFail();
         // Check if user is already subscribed.
-        $existingSubscription = $listing->subscription()
-            ->where('status', ListingController::STATUS_SUBSCRIBED)
+        $existingSubscription = $listing->activeSubscription()
             ->first();
 
         if ($existingSubscription) {
@@ -50,6 +49,18 @@ class SubscriptionController extends Controller
             $interval = $request->input('interval');
             $productId = $this->paymentService->getProductIdByIntervalRequest($interval);
             $priceId = $this->paymentService->getPriceId($productId, $interval);
+
+            // Create subscription, only if no pending one exists for the user.
+            if (!$this->subscriptionModel->pendingSubscriptionExists($user->id, $listing->id)) {
+                // Create pending subscription transaction in database.
+                $this->subscriptionModel->create([
+                    'user_id'         => $user->id,
+                    'listing_id'      => $listing->id,
+                    'stripe_price_id' => $priceId,
+                    'status'          => 'pending',
+                    'start_date'      => now(),
+                ]);
+            }
 
             $checkoutSession = $this->paymentService->checkoutSession(
                 $user->id,

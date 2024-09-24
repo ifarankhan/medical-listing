@@ -30,6 +30,7 @@ class PaymentService
      */
     public function checkoutSession($userId, $listingId, $interval, $priceId, $returnUrl, $quantity = 1): Session
     {
+        // Create checkout session with stripe.
         return $this->stripeClient->checkout->sessions->create([
             'ui_mode'             => 'embedded',
             'line_items'          => [
@@ -48,6 +49,7 @@ class PaymentService
             'metadata'            => [
                 'listing_id' => $listingId,
                 'interval'   => $interval,
+                'user_id' => $userId
             ],
         ]);
     }
@@ -237,5 +239,12 @@ class PaymentService
         }
 
         return $product;
+    }
+
+    public function getProductIntervalByStripeSubscriptionId(string $stripeSubscriptionId): string
+    {
+        $subscription = $this->stripeClient->subscriptions->retrieve($stripeSubscriptionId);
+        // Get the interval from the subscription's plan (e.g., 'monthly', 'yearly').
+        return $subscription->items->data[0]->price->recurring->interval;
     }
 }

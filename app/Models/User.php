@@ -96,7 +96,14 @@ class User extends Authenticatable
     }
     public function setPasswordAttribute($value): void
     {
-        $this->attributes['password'] = Hash::make($value);
+        // Check if the request is coming from a Backpack route
+        if (!request()->routeIs('backpack.*')) { // Adjust the URL pattern as needed
+            // Hash the password if it's not a Backpack route
+            $this->attributes['password'] = Hash::make($value);
+        } else {
+            // Directly set the password if it is a Backpack route
+            $this->attributes['password'] = $value;
+        }
     }
     public function listings(): HasMany
     {
