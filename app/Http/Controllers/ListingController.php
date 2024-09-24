@@ -205,6 +205,7 @@ class ListingController extends Controller
 
             // Step 1: Cancel the associated subscription in Stripe
             $stripeSubscription = $this->paymentService->cancel($listing);
+
             // Step 2: Update the listing's subscription status in your database
             $this->archiveSubscription($stripeSubscription);
             // Step 3: Delete the listing from the database
@@ -237,7 +238,7 @@ class ListingController extends Controller
         $subscriptionModel = $this->subscription->where('stripe_subscription_id', $stripeSubscription->id)->first();
 
         if ($subscriptionModel) {
-            
+
             $subscriptionModel->status   = Subscription::STATUS_CANCELED;
             $subscriptionModel->end_date = now();
 
