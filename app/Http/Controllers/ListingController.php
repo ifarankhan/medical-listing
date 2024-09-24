@@ -27,7 +27,7 @@ class ListingController extends Controller
     const STATUS_PAID = 'paid';
     const STATUS_PENDING = 'pending';
 
-    const STATUS_CANCELLED = 'cancelled';
+    const STATUS_CANCELLED = 'canceled';
     CONST STATUS_SUBSCRIBED = 'subscribed';
     CONST STATUS_REFUNDED = 'refunded';
 
@@ -206,7 +206,7 @@ class ListingController extends Controller
             // Step 1: Cancel the associated subscription in Stripe
             $stripeSubscription = $this->paymentService->cancel($listing);
             // Step 2: Update the listing's subscription status in your database
-            $this->updateSubscriptionStatus($listingId, $stripeSubscription);
+            $this->archiveSubscription($stripeSubscription);
             // Step 3: Delete the listing from the database
             $this->deleteListing($listing);
 
@@ -232,14 +232,22 @@ class ListingController extends Controller
     /**
      * Update the subscription status for the given listing.
      */
-    private function updateSubscriptionStatus($listingId, $stripeSubscription): void
+    private function archiveSubscription($stripeSubscription): void
     {
-        $this->subscription->storeSubscription(
-            $listingId,
-            $stripeSubscription->id,
-            $stripeSubscription->status,
-            canceledAt: $stripeSubscription->canceled_at
-        );
+        $subscriptionModel = $this->subscription->where('stripe_subscription_id', $stripeSubscription->id)->first();
+
+        if ($subscriptionModel) {
+            
+            $subscriptionModel->status   = Subscription::STATUS_CANCELED;
+            $subscriptionModel->end_date = now();
+
+            $subscriptionModel->save();
+
+            $archivedData = $subscriptionModel->toArray();
+            // Insert the subscription data into the archive_subscriptions table.
+            $this->subscription->archive($archivedData);
+            $subscriptionModel->delete();
+        }
     }
 
     /**

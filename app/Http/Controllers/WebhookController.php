@@ -143,7 +143,7 @@ class WebhookController extends Controller
             $listing = Listing::find($subscriptionModel->listing_id);
             $listing->listing_status = ListingController::STATUS_SUBSCRIBED;
             $listing->save();
-            $user = $listing->user();
+            $user = $listing->user;
             Log::info('Subscription payment succeeded for subscription ID: ' . $subscriptionId);
             // Send the subscription confirmation email
             Mail::to($user->email)->send(new SubscriptionConfirmationMail($user, $listing, $interval));
@@ -254,6 +254,8 @@ class WebhookController extends Controller
      */
     protected function handleChargeRefundUpdated(Refund $data): void
     {
+        Log::info('charge.refund.updated');
+        Log::info($data);
         try {
             // Refund cancel.
             if ($data->status == 'canceled') {
