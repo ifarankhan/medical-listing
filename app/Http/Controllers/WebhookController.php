@@ -74,9 +74,11 @@ class WebhookController extends Controller
                 break;
 
             case 'charge.refunded':
+
                 $this->handleChargeRefunded($data);
                 break;
             case 'charge.refund.updated':
+
                 $this->handleChargeRefundUpdated($data);
                 break;
             // Handle other event types as needed
@@ -125,6 +127,9 @@ class WebhookController extends Controller
         Log::info('invoice.payment_succeeded');
         // You can update your subscription status or perform other actions
         $subscriptionId = $invoice->subscription;
+        $paymentIntentId = $invoice->payment_intent;
+        $interval = $this->paymentService->getProductIntervalByStripeSubscriptionId($subscriptionId);
+        Log::info($interval);
         // Find the subscription in your database
         $subscriptionModel = $this->subscription->where('stripe_subscription_id', $subscriptionId)->first();
 
@@ -132,15 +137,16 @@ class WebhookController extends Controller
 
             $subscriptionModel->updated_at = now();
             $subscriptionModel->status = Subscription::STATUS_ACTIVE;
+            $subscriptionModel->payment_intent_id = $paymentIntentId;
             $subscriptionModel->save();
 
             $listing = Listing::find($subscriptionModel->listing_id);
             $listing->listing_status = ListingController::STATUS_SUBSCRIBED;
             $listing->save();
-
+            $user = $listing->user();
             Log::info('Subscription payment succeeded for subscription ID: ' . $subscriptionId);
             // Send the subscription confirmation email
-            //Mail::to($user->email)->send(new SubscriptionConfirmationMail($user, $listing, $interval));
+            Mail::to($user->email)->send(new SubscriptionConfirmationMail($user, $listing, $interval));
         }
     }
 
@@ -182,7 +188,7 @@ class WebhookController extends Controller
             $subscriptionModel->save();
 
            $archivedData = $subscriptionModel->toArray();
-            // Insert the subscription data into the archive_subscriptions table
+            // Insert the subscription data into the archive_subscriptions table.
             $this->subscription->archive($archivedData);
             $subscriptionModel->delete();
 
@@ -210,32 +216,33 @@ class WebhookController extends Controller
      */
     protected function handleChargeRefunded(Charge $charge): void
     {
+        Log::info('charge.refunded');
+
         try {
             $refundTime = now();
             $paymentIntentId = $charge->payment_intent;
             $subscription = $this->paymentService->getSubscription($paymentIntentId);
             $subscriptionId = $subscription->id;
-            $status = $charge->refunded ? ListingController::STATUS_REFUNDED: 'unknown';
 
-            // Find the subscription in database
-            $subscriptionModel = Subscription::where('stripe_subscription_id', $subscriptionId)->first();
+            if ($charge->refunded) {
+                // Find the subscription in database
+                $subscriptionModel = Subscription::where('stripe_subscription_id', $subscriptionId)->first();
+                if ($subscriptionModel) {
+                    $listing = Listing::find($subscriptionModel->listing_id);
 
-            if ($subscriptionModel) {
+                    if ($listing) {
+                        $listing->update(['listing_status' => Subscription::STATUS_REFUNDED]); // or any relevant status
+                    }
+                    // Update subscription details
+                    $subscriptionModel->status = Subscription::STATUS_REFUNDED;
+                    $subscriptionModel->end_date = $refundTime;
+                    $subscriptionModel->save();
+                    /*$archivedData = $subscriptionModel->toArray();
+                    $subscriptionModel->archive($archivedData);
+                    $subscriptionModel->delete();*/
 
-                $listing = Listing::find($subscriptionModel->listing_id);
-                if ($listing) {
-                    $listing->update(['listing_status' => 'refunded']); // or any relevant status
+                    Log::info('Charge refunded for subscription ID: ' . $subscriptionId);
                 }
-                // Update subscription details
-                $this->subscription->storeSubscription(
-                    $listing->id,
-                    $subscriptionId,
-                    $status,
-                    paymentIntentId: $paymentIntentId,
-                    canceledAt: $refundTime
-                );
-
-                Log::info('Charge refunded for subscription ID: ' . $subscriptionId);
             }
         } catch (\Exception $ex) {
             Log::error($ex->getMessage());
@@ -249,37 +256,35 @@ class WebhookController extends Controller
     {
         try {
             // Refund cancel.
-            $status = ($data->status == 'canceled') ? 'active': $data->status;
+            if ($data->status == 'canceled') {
 
-            $paymentIntentId = $data->payment_intent;
-            $subscription = $this->paymentService->getSubscription($paymentIntentId);
-            $subscriptionId = $subscription->id;
+                $paymentIntentId = $data->payment_intent;
+                $subscription = $this->paymentService->getSubscription($paymentIntentId);
+                $subscriptionId = $subscription->id;
 
-            $subscriptionModel = $this->subscription->where('stripe_subscription_id', $subscriptionId)
-                ->first();
+                $subscriptionModel = $this->subscription->where('stripe_subscription_id', $subscriptionId)
+                                                        ->first();
 
-            if (!$subscriptionModel) {
-                throw new \Exception('Subscription not found');
+                if (!$subscriptionModel) {
+                    throw new \Exception('Subscription not found');
+                }
+
+                // Update subscription details
+                $subscriptionModel->status = Subscription::STATUS_ACTIVE;
+                $subscriptionModel->start_date = now();
+                $subscriptionModel->save();
+
+                $listing = $this->listing->find($subscriptionModel->listing_id);
+                if (!$listing) {
+                    throw new \Exception('Listing not found');
+                }
+
+                $listingStatus = $data->status == 'canceled'?
+                    ListingController::STATUS_SUBSCRIBED:
+                    ListingController::STATUS_CANCELLED;
+
+                $listing->update(['listing_status' => $listingStatus]);
             }
-
-            // Update subscription details
-            $this->subscription->storeSubscription(
-                $subscriptionModel->listing_id,
-                $subscriptionId,
-                $status,
-                paymentIntentId: $paymentIntentId,
-            );
-
-            $listing = $this->listing->find($subscriptionModel->listing_id);
-            if (!$listing) {
-                throw new \Exception('Listing not found');
-            }
-
-            $listingStatus = $status == 'active'?
-                ListingController::STATUS_SUBSCRIBED:
-                ListingController::STATUS_CANCELLED;
-
-            $listing->update(['listing_status' => $listingStatus]);
         } catch (\Exception $ex) {
             Log::error($ex->getMessage());
         }

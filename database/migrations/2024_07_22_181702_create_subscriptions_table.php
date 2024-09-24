@@ -20,8 +20,11 @@ return new class extends Migration
             $table->foreignId('listing_id')->unique()->constrained()->onDelete('cascade'); // Reference to the listings table
             $table->string('stripe_subscription_id')->unique()->nullable(); // Stripe subscription ID
             $table->string('stripe_customer_id')->nullable(); // Stripe customer ID
-            $table->string('stripe_price_id'); // Stripe price ID
-            $table->enum('status', ['pending', 'active', 'trialing', 'canceled', 'expired'])->default('pending'); // Subscription status
+            $table->string('stripe_price_id')->nullable(); // Stripe price ID
+            // Payment intent ID (stripe generates new payment intent for each recurring payment)
+            $table->string('payment_intent_id')->nullable();
+
+            $table->enum('status', ['refunded','pending', 'active', 'trialing', 'canceled', 'expired'])->default('pending'); // Subscription status
             $table->timestamp('start_date')->nullable(); // Subscription start date
             $table->timestamp('end_date')->nullable(); // Subscription end date or trial end date
             $table->timestamps(); // Created at and updated at timestamps

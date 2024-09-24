@@ -49,7 +49,6 @@ class Listing extends Model
     public function activeSubscription(): HasOne|Builder
     {
         return $this->hasOne(Subscription::class)
-            ->where('status', self::STATUS_SUBSCRIBED)
             ->whereHas('listing', function ($query) {
                 $query->where('status', Subscription::STATUS_ACTIVE);
             });

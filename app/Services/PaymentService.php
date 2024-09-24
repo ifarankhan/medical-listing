@@ -240,4 +240,11 @@ class PaymentService
 
         return $product;
     }
+
+    public function getProductIntervalByStripeSubscriptionId(string $stripeSubscriptionId): string
+    {
+        $subscription = $this->stripeClient->subscriptions->retrieve($stripeSubscriptionId);
+        // Get the interval from the subscription's plan (e.g., 'monthly', 'yearly').
+        return $subscription->items->data[0]->price->recurring->interval;
+    }
 }

@@ -12,6 +12,7 @@ class Subscription extends Model
 {
     const STATUS_ACTIVE = 'active';
     const STATUS_CANCELED = 'canceled';
+    const STATUS_REFUNDED = 'refunded';
 
     use HasFactory;
 
@@ -22,6 +23,7 @@ class Subscription extends Model
         'stripe_subscription_id',
         'stripe_price_id',
         'stripe_customer_id',
+        'payment_intent_id',
         'status',
         'started_date',
         'end_date',
