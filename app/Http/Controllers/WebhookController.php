@@ -255,7 +255,7 @@ class WebhookController extends Controller
     protected function handleChargeRefundUpdated(Refund $data): void
     {
         Log::info('charge.refund.updated');
-        Log::info($data);
+
         try {
             // Refund cancel.
             if ($data->status == 'canceled') {
