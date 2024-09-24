@@ -176,6 +176,8 @@ class PaymentService
             return $this->stripeClient->subscriptions->cancel($stripeSubscription->id, []);
 
         } catch (Exception $e) {
+
+            Log::error($e->getMessage());
             throw new Exception('Error retrieving subscription: ' . $e->getMessage());
         }
     }
