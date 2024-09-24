@@ -76,7 +76,11 @@ class Subscription extends Model
         $data['updated_at'] = date('Y-m-d H:i:s', strtotime($data['updated_at']));
         $data['start_date'] = date('Y-m-d H:i:s', strtotime($data['start_date']));
         // Copy the current subscription data to the archived_subscriptions table
-        DB::table('archived_subscriptions')->insert($data);
+        // Use updateOrInsert to update if listing_id exists or insert if it doesn't
+        DB::table('archived_subscriptions')->updateOrInsert(
+            ['listing_id' => $data['listing_id']], // The condition to check
+            $data // The data to update or insert
+        );
     }
 
     public function pendingSubscriptionExists($userId, $listingId)

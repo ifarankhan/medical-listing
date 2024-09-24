@@ -161,8 +161,7 @@ class PaymentService
         try {
             $stripeSubscriptionId = $listing->subscription()
                 //->where('status', $status) // Fetch active subscription for cancellation.
-                ->first()
-                ->stripe_subscription_id;
+                ->first();
 
             if (!$stripeSubscriptionId) {
                 throw new Exception('No stripe subscription found for this listing.');
