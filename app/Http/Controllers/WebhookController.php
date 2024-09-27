@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\SubscriptionCanceledMail;
 use App\Mail\SubscriptionConfirmationMail;
+use App\Mail\SubscriptionRenewalEmail;
 use App\Models\User;
 use App\Services\PaymentService;
 use Illuminate\Http\JsonResponse;
@@ -129,24 +130,29 @@ class WebhookController extends Controller
         $subscriptionId = $invoice->subscription;
         $paymentIntentId = $invoice->payment_intent;
         $interval = $this->paymentService->getProductIntervalByStripeSubscriptionId($subscriptionId);
-        Log::info($interval);
         // Find the subscription in your database
         $subscriptionModel = $this->subscription->where('stripe_subscription_id', $subscriptionId)->first();
 
         if ($subscriptionModel) {
+            // Check if this is a recurring payment (i.e., not the first payment)
+            // We'll assume that if more than 1 day has passed since the start_date, it's a renewal.
+            $isRecurring = now()->diffInDays($subscriptionModel->start_date) > 1;
 
-            $subscriptionModel->updated_at = now();
-            $subscriptionModel->status = Subscription::STATUS_ACTIVE;
-            $subscriptionModel->payment_intent_id = $paymentIntentId;
-            $subscriptionModel->save();
+            if ($isRecurring) {
 
-            $listing = Listing::find($subscriptionModel->listing_id);
-            $listing->listing_status = ListingController::STATUS_SUBSCRIBED;
-            $listing->save();
-            $user = $listing->user;
-            Log::info('Subscription payment succeeded for subscription ID: ' . $subscriptionId);
-            // Send the subscription confirmation email
-            Mail::to($user->email)->send(new SubscriptionConfirmationMail($user, $listing, $interval));
+                $subscriptionModel->updated_at = now();
+                $subscriptionModel->status = Subscription::STATUS_ACTIVE;
+                $subscriptionModel->payment_intent_id = $paymentIntentId;
+                $subscriptionModel->save();
+
+                $listing = Listing::find($subscriptionModel->listing_id);
+                $listing->listing_status = ListingController::STATUS_SUBSCRIBED;
+                $listing->save();
+                $user = $listing->user;
+                Log::info('Subscription renewal succeeded for subscription ID: ' . $subscriptionId);
+                // Send the subscription confirmation email
+                Mail::to($user->email)->send(new SubscriptionRenewalEmail($user, $listing, $invoice));
+            }
         }
     }
 
@@ -182,6 +188,7 @@ class WebhookController extends Controller
 
         if ($subscriptionModel) {
 
+            $user = $subscriptionModel->listing->user;
             $subscriptionModel->status = Subscription::STATUS_CANCELED;
             $subscriptionModel->end_date = $subscription->canceled_at;
 
@@ -192,12 +199,9 @@ class WebhookController extends Controller
             $this->subscription->archive($archivedData);
             $subscriptionModel->delete();
 
-            $listing = Listing::find($subscriptionModel->listing_id);
-            if ($listing) {
-                $listing->update(['listing_status' => 'deleted']);
-            }
+            $listing = $this->listing->find($subscriptionModel->listing_id);
+            $listing->delete();
 
-            $user = $subscriptionModel->listing->user;
             $interval = '';
             // Retrieve the subscription interval.
             if (!empty($subscription->items->data)) {

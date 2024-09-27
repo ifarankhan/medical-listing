@@ -50,7 +50,10 @@ class Listing extends Model
     {
         return $this->hasOne(Subscription::class)
             ->whereHas('listing', function ($query) {
-                $query->where('status', Subscription::STATUS_ACTIVE);
+                $query->whereIn('status', [
+                    Subscription::STATUS_ACTIVE,
+                    Subscription::STATUS_PENDING
+                ]);
             });
     }
 }

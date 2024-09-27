@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 class Subscription extends Model
 {
     const STATUS_ACTIVE = 'active';
+    const STATUS_PENDING = 'pending';
     const STATUS_CANCELED = 'canceled';
     const STATUS_REFUNDED = 'refunded';
 
@@ -70,6 +71,8 @@ class Subscription extends Model
 
     public function archive(array $data): void
     {
+        // Remove the 'listing' relationship if it's included
+        unset($data['listing']);
         $data['end_date'] = date('Y-m-d H:i:s', strtotime($data['end_date']));
         $data['deleted_at'] = now();
         $data['created_at'] = date('Y-m-d H:i:s', strtotime($data['created_at']));

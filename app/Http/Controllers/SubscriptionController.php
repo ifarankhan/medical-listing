@@ -29,7 +29,7 @@ class SubscriptionController extends Controller
         $user = Auth::user();
         // Only one business profile per user for listing.
         $listing = $user->listings()->firstOrFail();
-        // Check if user is already subscribed.
+        // Check if user is already subscribed (active or pending).
         $existingSubscription = $listing->activeSubscription()
             ->first();
 
