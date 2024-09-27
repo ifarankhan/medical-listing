@@ -54,6 +54,7 @@ class Listing extends Model
                     Subscription::STATUS_ACTIVE,
                     Subscription::STATUS_PENDING
                 ]);
+                $query->where('stripe_subscription_id', '!=', null);
             });
     }
 }
