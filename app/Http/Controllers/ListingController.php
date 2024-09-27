@@ -201,31 +201,26 @@ class ListingController extends Controller
         $listingId = $listing->id;
 
         try {
-            DB::beginTransaction();
-
+            // Get the subscription associated with the listing
             $subscriptionModel = $listing->subscription()->latest()->first();
+
             if ($subscriptionModel != null) {
                 // Step 1: Cancel the associated subscription in Stripe
-                $stripeSubscription = $this->paymentService->cancel($listing);
-
-                // Step 2: Update the listing's subscription status in your database
-                $this->archiveSubscription($stripeSubscription);
+                // This will trigger customer.subscription.deleted from stripe
+                // And it's best to perform deletion and archiving there.
+                $this->paymentService->cancel($listing);
+                // Step 2: Update Listing status to "Deleted".
+                $listing->update(['listing_status' => 'deleted']);
             }
-            // Step 3: Delete the listing from the database
-            $this->deleteListing($listing);
-
-            DB::commit();
             // Step 4: Redirect with success message
             return redirect()->route('listing.index')
-                ->with('success', 'Listing deleted successfully.');
+                ->with('success', 'Listing deletion is in process. You will be notified once the cancellation is confirmed.');
         } catch (ApiErrorException $e) {
-            DB::rollBack();
             Log::error('Stripe API error for listing ID ' . $listingId . ': ' . $e->getMessage());
 
             return redirect()->route('listing.index')
-                             ->with('error', 'Stripe API error: ' . $e->getMessage());
+                ->with('error', 'Stripe API error: ' . $e->getMessage());
         } catch (\Exception $exception) {
-            DB::rollBack();
             Log::error('Error deleting listing ID ' . $listingId . ': ' . $exception->getMessage());
 
             return redirect()->route('listing.index')
@@ -233,26 +228,6 @@ class ListingController extends Controller
         }
     }
 
-    /**
-     * Update the subscription status for the given listing.
-     */
-    private function archiveSubscription($stripeSubscription): void
-    {
-        $subscriptionModel = $this->subscription->where('stripe_subscription_id', $stripeSubscription->id)->first();
-
-        if ($subscriptionModel) {
-
-            $subscriptionModel->status   = Subscription::STATUS_CANCELED;
-            $subscriptionModel->end_date = now();
-
-            $subscriptionModel->save();
-
-            $archivedData = $subscriptionModel->toArray();
-            // Insert the subscription data into the archive_subscriptions table.
-            $this->subscription->archive($archivedData);
-            $subscriptionModel->delete();
-        }
-    }
 
     /**
      * @param Listing $listing

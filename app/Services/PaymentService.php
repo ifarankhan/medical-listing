@@ -159,14 +159,14 @@ class PaymentService
     public function cancel(Listing $listing, string $status = 'active'): Subscription
     {
         try {
-            $stripeSubscriptionId = $listing->subscription()
-                //->where('status', $status) // Fetch active subscription for cancellation.
+            $subscriptionModel = $listing->subscription()
                 ->first();
 
-            if (!$stripeSubscriptionId) {
-                throw new Exception('No stripe subscription found for this listing.');
+            if (!$subscriptionModel) {
+                throw new Exception('No subscription found for this listing.');
             }
 
+            $stripeSubscriptionId = $subscriptionModel->stripe_subscription_id;
             $stripeSubscription = $this->stripeClient->subscriptions->retrieve($stripeSubscriptionId);
 
             if (!$stripeSubscription) {
