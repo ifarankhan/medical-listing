@@ -28,7 +28,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('listing.store') }}" method="POST" id="multiStepForm">
+                <form action="{{ route('listing.store') }}" method="POST" id="multiStepForm" enctype="multipart/form-data">
                     @csrf
                     @if(isset($listing))
                         @include('listing.edit')

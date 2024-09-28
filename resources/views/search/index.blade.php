@@ -238,7 +238,7 @@
                             <div class="col-xl-6 col-lg-4 col-md-6 wow fadeInUp" data-wow-duration="1.5s">
                                 <div class="listing_item" data-listing-id="{{ $listings[$i]->id }}">
                                     <div class="listing_img">
-                                        <img src="{{ asset('frontend/images/listing_1.jpg') }}" alt="img" class="img-fluid w-100">
+                                        <img src="{{ asset( 'storage/'. $listings[$i]->profile_picture ?? 'frontend/images/listing_1.jpg') }}" alt="img" class="img-fluid w-100">
         {{--                                <a href="#" class="category"><i class="fas fa-star"></i>Featured</a>--}}
         {{--                                <a class="love" href="#"><i class="fas fa-heart"></i></a>--}}
                                     </div>
@@ -266,8 +266,6 @@
                                                     /></p>
                                             </div>
                                         @endnotUserRole
-                                        <span class="person"><img src="{{ asset('frontend/images/person_1.png') }}" alt="person"
-                                                                  class="img-fluid w-100"></span>
                                     </div>
                                 </div>
                             </div>
