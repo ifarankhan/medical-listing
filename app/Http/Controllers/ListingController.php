@@ -17,7 +17,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Laravel\Facades\Image;
 use Nette\Schema\ValidationException;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Exception\InvalidRequestException;
@@ -73,6 +76,43 @@ class ListingController extends Controller
 
         return view('listing.create', compact('listing', 'categories'));
     }
+
+    public function uploadProfilePicture($image, ?Listing $listing): string
+    {
+        // Get the original file name and create a unique name
+        $fileName = pathinfo(
+            $image->getClientOriginalName(),
+            PATHINFO_FILENAME
+        ) . '_' . time() . '.' . $image->getClientOriginalExtension();
+
+        // Define the directory
+        $directory = storage_path('app/public/listings/profile_picture');
+
+        // Ensure the directory exists
+        if (!File::exists($directory)) {
+            File::makeDirectory($directory, 0755, true); // Create the directory with proper permissions
+        }
+
+        // Resize the image using Intervention Image.
+        $resizedImage = Image::read($image);
+
+        // Resize the image to 300x300 and save it.
+        $resizedImage->resize(410, 280)
+            ->save($directory . '/' . $fileName);
+
+        // Check if the listing already has a profile picture.
+        if ($listing->profile_picture) {
+            // Delete the old profile picture from the directory
+            $oldFilePath = public_path($listing->profile_picture);
+            if (File::exists($oldFilePath)) {
+                File::delete($oldFilePath);
+            }
+        }
+
+        // Return the saved image path
+        return 'listings/profile_picture/' . $fileName;
+    }
+
     /**
      * Store a newly created listing in storage.
      *
@@ -90,6 +130,15 @@ class ListingController extends Controller
             if ($listingId) {
 
                 $listing = Listing::findOrFail($listingId);
+
+                // Check if an image is uploaded
+                if ($request->hasFile('profile_picture')) {
+                    $validatedData['profile_picture'] = $this->uploadProfilePicture(
+                        $request->file('profile_picture'),
+                        $listing
+                    );
+                }
+
                 $this->updateListing($listing, $validatedData);
                 $message = 'Listing updated successfully.';
             } else {
@@ -132,6 +181,7 @@ class ListingController extends Controller
             'business_address' => 'required|string',
             'business_contact' => 'required|string',
             'business_email' => 'required|email',
+            'profile_picture' => 'mimes:jpeg,png,jpg|image|max:2048',
             // Validation rules for product/services - upto 5
             'products' => 'required|array|max:5', // Maximum 5 products allowed
             'products.*.category_id' => 'required|exists:categories,id', // Ensure category_id is required and exists.
@@ -159,6 +209,7 @@ class ListingController extends Controller
         $listing->business_address = $data['business_address'];
         $listing->business_contact = $data['business_contact'];
         $listing->business_email = $data['business_email'];
+        $listing->profile_picture =
 
         $listing->save();
 

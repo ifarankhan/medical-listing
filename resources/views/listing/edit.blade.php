@@ -131,8 +131,22 @@
                        value="{{ old('business_email', $listing->business_email) }}" required>
             </div>
         </div>
-    </div>
 
+        <div class="col-xxl-4 col-md-6">
+            <div class="add_property_input">
+                <label>Profile Picture</label>
+                <!-- Show the uploaded image if it exists. -->
+                @if(!empty($listing->profile_picture))
+                    <div class="mb-3">
+                        <img src="{{ asset('storage/'.$listing->profile_picture) }}" alt="Profile Picture" style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                    </div>
+                @endif
+
+                <input type="file" name="profile_picture" accept="image/*">
+            </div>
+        </div>
+
+    </div>
 </div>
 
 <!-- Product/Services Information Section -->
