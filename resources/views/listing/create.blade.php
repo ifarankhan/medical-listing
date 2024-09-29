@@ -30,11 +30,9 @@
 
                 <form action="{{ route('listing.store') }}" method="POST" id="multiStepForm" enctype="multipart/form-data">
                     @csrf
-                    @if(isset($listing))
-                        @include('listing.edit')
-                    @else
-                        @include('listing.information')
-                    @endif
+
+                    @include('listing.edit')
+
                 </form>
             </div>
         </div>

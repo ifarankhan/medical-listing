@@ -58,7 +58,8 @@ class ListingController extends Controller
     public function create(): Factory|View|Application
     {
         $categories = Category::all();
-        return view('listing.create', compact('categories'));
+        $listing = new Listing();
+        return view('listing.create', compact('listing', 'categories'));
     }
 
     /**
@@ -130,21 +131,22 @@ class ListingController extends Controller
             if ($listingId) {
 
                 $listing = Listing::findOrFail($listingId);
-
-                // Check if an image is uploaded
-                if ($request->hasFile('profile_picture')) {
-                    $validatedData['profile_picture'] = $this->uploadProfilePicture(
-                        $request->file('profile_picture'),
-                        $listing
-                    );
-                }
-
                 $this->updateListing($listing, $validatedData);
                 $message = 'Listing updated successfully.';
             } else {
 
                 $listing = $this->createListing($validatedData);
                 $message = 'Listing created successfully. Please choose the plan.';
+            }
+            // Check if an image is uploaded
+            if ($request->hasFile('profile_picture')) {
+
+                $listing->profile_picture = $this->uploadProfilePicture(
+                    $request->file('profile_picture'),
+                    $listing
+                );
+
+                $listing->save();
             }
             // Save product/services associated with the listing.
             $this->saveProductServices($listing, $validatedData['products']);
