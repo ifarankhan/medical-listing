@@ -27,49 +27,54 @@
             </h2>
 
             <div class="overview_listing wow fadeInUp" data-wow-duration="1.5s">
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                        <tr>
-{{--                            <th class="images">images</th>--}}
-                            <th class="details">details</th>
-{{--                            <th class="price">price</th>--}}
-                            <th class="status">status</th>
-                            <th class="action">action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($listings as $listing)
-                                <tr>
-        {{--                            <td class="images">--}}
-        {{--                                <img src="{{ asset('frontend/images/listing_1.jpg') }}" alt="property" class="img-fluid w-100">--}}
-        {{--                            </td>--}}
 
-                                    <td class="details">
-                                        <a class="item_title" href="{{ route('listing.edit', $listing ) }}">{{ $listing->business_name }}</a>
-                                        <p>Posting date: {{ $listing->created_at->format('F j, Y') }}</p>
-                                        {{--<span>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <b>(24 Reviews)</b>
-                                            </span>--}}
-                                    </td>
+                @if ($hasListing)
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                            <tr>
+    {{--                            <th class="images">images</th>--}}
+                                <th class="details">details</th>
+    {{--                            <th class="price">price</th>--}}
+                                <th class="status">status</th>
+                                <th class="action">action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($listings as $listing)
+                                    <tr>
+            {{--                            <td class="images">--}}
+            {{--                                <img src="{{ asset('frontend/images/listing_1.jpg') }}" alt="property" class="img-fluid w-100">--}}
+            {{--                            </td>--}}
 
-                                    <td class="status">
-                                        <span class="sold">{{ $listing->listing_status }}</span>
-                                    </td>
-                                    <td class="action">
-                                        <a href="{{ route('listing.edit', $listing) }}"><i class="far fa-pen"></i> Edit</a>
-                                        <a href="{{ route('listing.delete', $listing) }}"><i class="far fa-trash"></i> Delete</a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                                        <td class="details">
+                                            <a class="item_title" href="{{ route('listing.edit', $listing ) }}">{{ $listing->business_name }}</a>
+                                            <p>Posting date: {{ $listing->created_at->format('F j, Y') }}</p>
+                                            {{--<span>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <b>(24 Reviews)</b>
+                                                </span>--}}
+                                        </td>
+
+                                        <td class="status">
+                                            <span class="sold">{{ $listing->listing_status }}</span>
+                                        </td>
+                                        <td class="action">
+                                            <a href="{{ route('listing.edit', $listing) }}"><i class="far fa-pen"></i> Edit</a>
+                                            <a href="{{ route('listing.delete', $listing) }}"><i class="far fa-trash"></i> Delete</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    Currently no Product/Service exists. Please create a new Product/Service.
+                @endif
                 {{--<div class="row mt_25">
                     <div class="col-12">
                         <div id="pagination_area">

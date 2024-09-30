@@ -8,6 +8,11 @@
         <div class="dashboard_content">
             <h2 class="dashboard_title">Messages</h2>
 
+            @if ($messages->isEmpty())
+                <p style="font-size: 1.2rem; color: #555; text-align: center; margin-top: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">
+                    No messages found. Please check back later or start a conversation with your insurance provider.
+                </p>
+            @else
             <div class="container" style="margin-top: 25px;">
                 <div id="messages-container">
                     @include('message.partials.messages', ['messages' => $messages])
@@ -25,6 +30,8 @@
 
                 </div>
             </div>
+            @endif
+
         </div>
     </section>
 @endsection

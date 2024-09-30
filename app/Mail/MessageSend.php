@@ -19,7 +19,7 @@ class MessageSend extends Mailable
      *
      * @return void
      */
-    public function __construct(public Message $message)
+    public function __construct(public Message $myMessage, public string $serviceProviderName)
     {}
 
     /**
@@ -48,7 +48,8 @@ class MessageSend extends Mailable
         return $this->subject('New Message Received')
             ->view('emails.message-sent')
             ->with([
-                'message' => $this->message,
+                'myMessage' => $this->myMessage,
+                'serviceProviderName' => $this->serviceProviderName,
             ]);
     }
 }

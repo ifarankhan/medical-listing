@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
 use Stripe\PaymentIntent;
+use Stripe\Refund;
 use Stripe\StripeClient;
 use Stripe\Subscription;
 use \App\Models\Subscription as SubscriptionModel;
@@ -173,6 +174,8 @@ class PaymentService
                 throw new Exception('No stripe subscription found.');
             }
 
+            $this->refundByPaymentIntent($subscriptionModel->payment_intent_id);
+
             return $this->stripeClient->subscriptions->cancel($stripeSubscription->id, []);
 
         } catch (Exception $e) {
@@ -182,6 +185,15 @@ class PaymentService
         }
     }
 
+    /**
+     * @throws ApiErrorException
+     */
+    public function refundByPaymentIntent($paymentIntentId): Refund
+    {
+        return $this->stripeClient->refunds->create([
+            'payment_intent' => $paymentIntentId,
+        ]);
+    }
     /**
      * @throws ApiErrorException
      * @throws Exception
