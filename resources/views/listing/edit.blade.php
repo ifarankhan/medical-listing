@@ -220,7 +220,7 @@
                 <div class="col-xxl-4 col-md-6" id="price_0" style="display:none;">
                     <div class="add_property_input">
                         <label>If you do not accept insurance, please enter price for the product:</label>
-                        <input type="text" id="price_input_0" name="products[0][price]" placeholder="Price">
+                        <input type="number" id="price_input_0" name="products[0][price]" placeholder="Price" step="0.01" min="0">
                     </div>
                 </div>
             </div>
@@ -299,8 +299,8 @@
                 <div class="col-xxl-4 col-md-6" id="price_{{ $index }}" style="display: {{ old('products.' . $index . '.accept_insurance', $item->accept_insurance) == '0' ? 'block' : 'none' }};">
                     <div class="add_property_input">
                         <label>If you do not accept insurance, please enter price for the product:</label>
-                        <input type="text" id="price_input_{{ $index }}" name="products[{{ $index }}][price]" placeholder="Price"
-                               value="{{ old('products.' . $index . '.price', $item->price) }}">
+                        <input type="number" id="price_input_{{ $index }}" name="products[{{ $index }}][price]" placeholder="Price"
+                               value="{{ old('products.' . $index . '.price', $item->price) }}" step="0.01" min="0">
                     </div>
                 </div>
             </div>

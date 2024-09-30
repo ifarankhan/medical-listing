@@ -810,7 +810,7 @@ $(function () {
         <div class="col-xxl-4 col-md-6" id="price_{index}" style="display:none;">
             <div class="add_property_input">
                 <label>If you do not accept insurance, please enter price for the product:</label>
-                <input type="text" id="price_input_{index}" name="products[{index}][price]" placeholder="Price">
+                <input type="number" id="price_input_{index}" name="products[{index}][price]" placeholder="Price" step="0.01" min="0">
             </div>
         </div>
     </div>

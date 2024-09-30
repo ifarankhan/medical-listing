@@ -261,7 +261,9 @@ class ListingController extends Controller
                 // Step 1: Cancel the associated subscription in Stripe
                 // This will trigger customer.subscription.deleted from stripe
                 // And it's best to perform deletion and archiving there.
+                // On charge.refund, the related payment is also gets refunded.
                 $this->paymentService->cancel($listing);
+                Log::info('Listing ID: '. $listingId .' Subscription: '. $subscriptionModel->stripe_subscription_id . ' Deleted');
                 // Step 2: Update Listing status to "Deleted".
                 $listing->update(['listing_status' => 'deleted']);
             }

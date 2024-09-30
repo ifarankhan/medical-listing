@@ -134,21 +134,22 @@ class WebhookController extends Controller
         $subscriptionModel = $this->subscription->where('stripe_subscription_id', $subscriptionId)->first();
 
         if ($subscriptionModel) {
+
+            $subscriptionModel->updated_at = now();
+            $subscriptionModel->status = Subscription::STATUS_ACTIVE;
+            $subscriptionModel->payment_intent_id = $paymentIntentId;
+            $subscriptionModel->save();
+
+            $listing = Listing::find($subscriptionModel->listing_id);
+            $listing->listing_status = ListingController::STATUS_SUBSCRIBED;
+            $listing->save();
+            $user = $listing->user;
+
             // Check if this is a recurring payment (i.e., not the first payment)
             // We'll assume that if more than 1 day has passed since the start_date, it's a renewal.
             $isRecurring = now()->diffInDays($subscriptionModel->start_date) > 1;
 
             if ($isRecurring) {
-
-                $subscriptionModel->updated_at = now();
-                $subscriptionModel->status = Subscription::STATUS_ACTIVE;
-                $subscriptionModel->payment_intent_id = $paymentIntentId;
-                $subscriptionModel->save();
-
-                $listing = Listing::find($subscriptionModel->listing_id);
-                $listing->listing_status = ListingController::STATUS_SUBSCRIBED;
-                $listing->save();
-                $user = $listing->user;
                 Log::info('Subscription renewal succeeded for subscription ID: ' . $subscriptionId);
                 // Send the subscription confirmation email
                 Mail::to($user->email)->send(new SubscriptionRenewalEmail($user, $listing, $invoice));
