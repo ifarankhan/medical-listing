@@ -985,5 +985,11 @@ $(function () {
             }
         });
     });
-
+    // Open terms and condition for payment.
+    $(document).ready(function(){
+        $('#openTerms').click(function(e) {
+            e.preventDefault();  // Prevent default anchor click behavior
+            $('#termsModal').modal('show'); // Show the Bootstrap modal
+        });
+    });
 });

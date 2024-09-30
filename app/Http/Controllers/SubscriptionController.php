@@ -35,7 +35,7 @@ class SubscriptionController extends Controller
 
         if ($existingSubscription) {
 
-            return redirect()->route('listing.step.subscription', $listing)
+            return redirect()->route('listing.index', $listing)
                 ->with('error', 'Subscription already exist.');
         }
 

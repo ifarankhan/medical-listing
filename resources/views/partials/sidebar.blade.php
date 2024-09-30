@@ -25,6 +25,15 @@
     </div>
     <div class="dashboard_sidebar_menu">
         <ul>
+            <li>
+                <a href="{{ route('home') }}">
+                            <span>
+                                <img src="{{ asset('frontend/images/home-icon.png') }}" alt="icon"
+                                     class="img-fluid w-100">
+                            </span>
+                    home
+                </a>
+            </li>
             <!-- Menu items for insurance_provider role -->
             @userRole(UserRole::ROLE_INSURANCE_PROVIDER)
             <li>

@@ -52,9 +52,10 @@ class MessageController extends Controller
                 $message->listing_id = $listingId;
                 // Save the message
                 $message->save();
-                // Send email to service provider
-                $this->sendMail($serviceProvider->email, $message);
                 $serviceProviderName = $serviceProvider->name;
+                // Send email to service provider.
+                $this->sendMail($serviceProvider->email, $message, $serviceProviderName);
+
             }
 
             $message = 'Your message was successfully sent to your selected providers. You can view the messages sent in Messaging Center';
@@ -106,10 +107,11 @@ class MessageController extends Controller
         return $listing->user()->first();
     }
 
-    private function sendMail(string $email, $message): void
+    private function sendMail(string $email, $message, $serviceProviderName): void
     {
         try {
-            Mail::to($email)->send(new MessageSend($message));
+
+            Mail::to($email)->send(new MessageSend($message, $serviceProviderName));
         } catch (Exception $e) {
 
             Log::error('Error sending email: ' . $e->getMessage());
