@@ -8,12 +8,12 @@
 
         <h2>New Message Received</h2>
         <p>
-            Hello {{ $message->user->name }},
+            Hello {{ $serviceProviderName }},
             <br>
             You have received a new message:
             <br><br>
-            <strong>Subject:</strong> {{ $message->subject }}
+            <strong>Subject:</strong> {{ $myMessage->subject }}
             <br>
-            <strong>Message:</strong> {{ $message->body }}
+            <strong>Message:</strong> {{ $myMessage->body }}
         </p>
 @endsection
