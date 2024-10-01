@@ -80,7 +80,7 @@ class ListingController extends Controller
 
     public function uploadProfilePicture($image, ?Listing $listing): string
     {
-        // Get the original file name and create a unique name
+        // Get the original file name and create a unique name.
         $fileName = pathinfo(
             $image->getClientOriginalName(),
             PATHINFO_FILENAME
@@ -91,26 +91,26 @@ class ListingController extends Controller
 
         // Ensure the directory exists
         if (!File::exists($directory)) {
-            File::makeDirectory($directory, 0755, true); // Create the directory with proper permissions
+            File::makeDirectory($directory, 0755, true); // Create the directory with proper permissions.
         }
 
         // Resize the image using Intervention Image.
         $resizedImage = Image::read($image);
 
-        // Resize the image to 300x300 and save it.
+        // Resize the image to 410x280 and save it.
         $resizedImage->resize(410, 280)
             ->save($directory . '/' . $fileName);
 
         // Check if the listing already has a profile picture.
         if ($listing->profile_picture) {
-            // Delete the old profile picture from the directory
+            // Delete the old profile picture from the directory.
             $oldFilePath = public_path($listing->profile_picture);
             if (File::exists($oldFilePath)) {
                 File::delete($oldFilePath);
             }
         }
 
-        // Return the saved image path
+        // Return the saved image path.
         return 'listings/profile_picture/' . $fileName;
     }
 
@@ -120,6 +120,7 @@ class ListingController extends Controller
      * @param Request $request
      *
      * @return RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): RedirectResponse
     {
@@ -161,7 +162,7 @@ class ListingController extends Controller
                                  ->with('success', $message);
             }
         } catch (ValidationException $exception) {
-            // If validation fails, redirect back with validation errors
+            // If validation fails, redirect back with validation errors.
             return redirect()->back()->withErrors($exception->errors())->withInput();
         }
     }
@@ -194,7 +195,7 @@ class ListingController extends Controller
             'business_address' => 'required|string',
             'business_contact' => 'required|string',
             'business_email' => 'required|email',
-            'profile_picture' => 'mimes:jpeg,png,jpg|image|max:2048',
+            'profile_picture' => 'mimes:jpeg,png,jpg|image|max:4096',
 
             // Validation rules for products/services - up to 5.
             'products' => 'required|array|max:5', // Maximum 5 products allowed.
@@ -209,6 +210,9 @@ class ListingController extends Controller
             // Custom error messages.
             'products.*.category_id.required' => 'The Product/Service is required for each product.',
             'products.*.category_id.exists'   => 'The selected Product/Service does not exist.',
+            'profile_picture.mimes' => 'The profile picture must be a file of type: jpeg, png, jpg.',
+            'profile_picture.image' => 'The profile picture must be an image.',
+            'profile_picture.max' => 'The profile picture may not be greater than 4 MB.',
         ], [
             // Custom attributes for friendly error messages.
             'products.0.category_id' => 'Product/Service for Product 1',
