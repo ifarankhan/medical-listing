@@ -759,22 +759,27 @@ $(function () {
     $(document).ready(function() {
 
         const templateHtml = `
+<div class="border-top my-3"></div>
 
     <div class="row mt-4 border-1 product-row" data-index="{index}">
-        <div class="col-xxl-12 d-flex justify-content-between align-items-center">
+        <div class="col-xxl-12 mb-3 d-flex justify-content-between align-items-center">
             <h4>Product/Service {index}</h4>
             <button type="button" class="btn btn-danger delete-product-btn">Delete</button>
         </div>
-        <div class="col-xxl-4 col-md-6">
+        <div class="col-xxl-4 mb-3 col-md-6">
             <div class="add_property_input">
-                <label for="product_service_{index}">Choose the Name of the product/service {index}:</label>
+                <label for="product_service_{index}">Choose the Name of the product/service {index}: <span class="text-danger">*</span></label>
                 <select class="select_2" id="select_product_service_{index}" name="products[{index}][category_id]" required>
                     categoryOptions
                 </select>
+
+                <span class="form-text text-muted">
+                    <b>Note:</b> If your service/product category isn’t listed, please contact <a href="mailto:info@diverrx.com">info@diverrx.com</a>
+                </span>
             </div>
         </div>
-        <div class="col-xxl-4 col-md-6">
-            <label>Click all options below that apply:</label>
+        <div class="col-xxl-4 mb-3 col-md-6">
+            <label>Click all options below that apply: <span class="text-danger">*</span></label>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="virtual_{index}" name="products[{index}][virtual]" value="1">
                 <label class="form-check-label" for="virtual_{index}">Virtual</label>
@@ -784,14 +789,14 @@ $(function () {
                 <label class="form-check-label" for="in_person_{index}">In person</label>
             </div>
         </div>
-        <div class="col-xxl-4 col-md-6">
+        <div class="col-xxl-4 mb-3 col-md-6">
             <div class="add_property_input">
-                <label for="description_{index}">Brief description (150 word limit):</label>
+                <label for="description_{index}">Brief description (150 word limit): <span class="text-danger">*</span></label>
                 <textarea id="description_{index}" name="products[{index}][description]" placeholder="Description" maxlength="150" required></textarea>
             </div>
         </div>
-        <div class="col-xxl-4 col-md-6">
-            <label>Do you accept insurance for this product?</label>
+        <div class="col-xxl-4 mb-3 col-md-6">
+            <label>Do you accept insurance for this product? <span class="text-danger">*</span></label>
             <div class="form-check">
                 <input class="form-check-input" type="radio" id="accept_insurance_yes_{index}" name="products[{index}][accept_insurance]" value="1" required>
                 <label class="form-check-label" for="accept_insurance_yes_{index}">Yes</label>
@@ -801,15 +806,15 @@ $(function () {
                 <label class="form-check-label" for="accept_insurance_no_{index}">No</label>
             </div>
         </div>
-        <div class="col-xxl-4 col-md-6" id="insurance_list_{index}" style="display:none;">
+        <div class="col-xxl-4 mb-3 col-md-6" id="insurance_list_{index}" style="display:none;">
             <div class="add_property_input">
-                <label>If you accept insurance for this product, please list down all the insurances you are currently accepting:</label>
+                <label>If you accept insurance for this product, please list down all the insurances you are currently accepting: <span class="text-danger">*</span></label>
                 <input type="text" id="insurance_{index}" name="products[{index}][insurance_list]" placeholder="Insurance List">
             </div>
         </div>
         <div class="col-xxl-4 col-md-6" id="price_{index}" style="display:none;">
             <div class="add_property_input">
-                <label>If you do not accept insurance, please enter price for the product:</label>
+                <label>If you do not accept insurance, please enter price for the product: <span class="text-danger">*</span></label>
                 <input type="number" id="price_input_{index}" name="products[{index}][price]" placeholder="Price" step="0.01" min="0">
             </div>
         </div>

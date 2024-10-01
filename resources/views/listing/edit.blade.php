@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-xxl-6 col-md-2">
             <div class="add_property_input">
-                <label>Are you legally authorized to promote products and services that you wish to list on diverrx?</label>
+                <label>Are you legally authorized to promote products and services that you wish to list on diverrx? <span class="text-danger">*</span></label>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" id="authorized_yes" name="authorized" value="1"
                            {{ old('authorized', $listing->authorized) == 1 ? 'checked' : '' }} required>
@@ -23,7 +23,7 @@
         </div>
         <div class="col-xxl-6 col-md-2">
             <div class="add_property_input">
-                <label>Is the business you wish to promote on diverrx a legally registered entity? (Proof of registration will be required in subsequent steps)</label>
+                <label>Is the business you wish to promote on diverrx a legally registered entity? (Proof of registration will be required in subsequent steps) <span class="text-danger">*</span></label>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" id="registered_yes" name="registered" value="1"
                            {{ old('registered', $listing->registered) == 1 ? 'checked' : '' }} required>
@@ -48,7 +48,7 @@
     <div class="row">
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
-                <label for="first_name">First Name:</label>
+                <label for="first_name">First Name: <span class="text-danger">*</span></label>
                 <input type="text" id="first_name" name="first_name" placeholder="First Name"
                        value="{{ old('first_name', $listing->first_name) }}" required>
                 @error('first_name')
@@ -58,28 +58,28 @@
         </div>
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
-                <label for="last_name">Last Name:</label>
+                <label for="last_name">Last Name: <span class="text-danger">*</span></label>
                 <input type="text" id="last_name" name="last_name" placeholder="Last Name"
                        value="{{ old('last_name', $listing->last_name) }}" required>
             </div>
         </div>
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
-                <label for="email">Email Address:</label>
+                <label for="email">Email Address: <span class="text-danger">*</span></label>
                 <input type="email" id="email" name="email" placeholder="Email Address"
                        value="{{ old('email', $listing->email) }}" required>
             </div>
         </div>
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
-                <label for="contact_number">Contact Number:</label>
+                <label for="contact_number">Contact Number: <span class="text-danger">*</span></label>
                 <input type="text" id="contact_number" name="contact_number" placeholder="Contact Number"
                        value="{{ old('contact_number', $listing->contact_number) }}" required>
             </div>
         </div>
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
-                <label for="address">Address:</label>
+                <label for="address">Address: <span class="text-danger">*</span></label>
                 <input type="text" id="address" name="address" placeholder="Address"
                        value="{{ old('address', $listing->address) }}" required>
             </div>
@@ -95,7 +95,7 @@
     <div class="row">
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
-                <label for="business_name">Legal Business Name:</label>
+                <label for="business_name">Legal Business Name: <span class="text-danger">*</span></label>
                 <input type="text" id="business_name" name="business_name" placeholder="Business Name"
                        value="{{ old('business_name', $listing->business_name) }}" required>
                 <small class="text-muted">(Write as it appears on your registration document)</small>
@@ -103,7 +103,7 @@
         </div>
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
-                <label for="ein">EIN:</label>
+                <label for="ein">EIN: <span class="text-danger">*</span></label>
                 <input type="text" id="ein" name="ein" placeholder="XX-XXXXXXX"
                        pattern="\d{2}-\d{7}"
                        value="{{ old('ein', $listing->ein) }}" required>
@@ -112,21 +112,21 @@
         </div>
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
-                <label for="business_address">Address:</label>
+                <label for="business_address">Address: <span class="text-danger">*</span></label>
                 <input type="text" id="business_address" name="business_address" placeholder="Business Address"
                        value="{{ old('business_address', $listing->business_address) }}" required>
             </div>
         </div>
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
-                <label for="business_contact">Contact:</label>
+                <label for="business_contact">Contact: <span class="text-danger">*</span></label>
                 <input type="text" id="business_contact" name="business_contact" placeholder="Business Contact"
                        value="{{ old('business_contact', $listing->business_contact) }}" required>
             </div>
         </div>
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
-                <label for="business_email">Email Address:</label>
+                <label for="business_email">Email Address: <span class="text-danger">*</span></label>
                 <input type="email" id="business_email" name="business_email" placeholder="Business Email"
                        value="{{ old('business_email', $listing->business_email) }}" required>
             </div>
@@ -134,7 +134,7 @@
 
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
-                <label>Profile Picture</label>
+                <label>Profile Picture <span class="text-danger">*</span></label>
                 <!-- Show the uploaded image if it exists. -->
                 @if(!empty($listing->profile_picture))
                     <div class="mb-3">
@@ -159,9 +159,9 @@
                 <div class="col-xxl-12">
                     <h4>Product/Service 1</h4>
                 </div>
-                <div class="col-xxl-4 col-md-6">
+                <div class="col-xxl-4 mb-3 col-md-6">
                     <div class="add_property_input">
-                        <label>Choose the Name of the product/service 1:</label>
+                        <label>Choose the Name of the product/service 1: <span class="text-danger">*</span></label>
 
                         <select class="select_2" id="product_service_0" name="products[0][category_id]" required>
                             <option value="">Select a product/service</option>
@@ -170,11 +170,14 @@
                             @endforeach
                         </select>
 
+                        <span class="form-text text-muted">
+                            <b>Note:</b> If your service/product category isn’t listed, please contact <a href="mailto:info@diverrx.com">info@diverrx.com</a>
+                        </span>
                     </div>
                 </div>
                 <div class="col-xxl-4 col-md-6">
 
-                    <label>Click all options below that apply:</label>
+                    <label>Click all options below that apply: <span class="text-danger">*</span></label>
 
                     <div class="form-check">
 
@@ -191,7 +194,7 @@
                 </div>
                 <div class="col-xxl-4 col-md-6">
                     <div class="add_property_input">
-                        <label for="description_0">Brief description (150 word limit):</label>
+                        <label for="description_0">Brief description (150 word limit): <span class="text-danger">*</span></label>
                         <div class="note-editor note-frame panel panel-default">
 
                             <textarea id="description_0" name="products[0][description]" placeholder="Description" maxlength="150" required></textarea>
@@ -200,7 +203,7 @@
                 </div>
                 <div class="col-xxl-4 col-md-6">
 
-                    <label>Do you accept insurance for this product?</label>
+                    <label>Do you accept insurance for this product? <span class="text-danger">*</span></label>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="accept_insurance_yes_0" name="products[0][accept_insurance]" value="1" required>
                         <label for="accept_insurance_yes_0">Yes</label>
@@ -213,13 +216,13 @@
                 </div>
                 <div class="col-xxl-4 col-md-6" id="insurance_list_0" style="display:none;">
                     <div class="add_property_input">
-                        <label>If you accept insurance for this product, please list down all the insurances you are currently accepting:</label>
+                        <label>If you accept insurance for this product, please list down all the insurances you are currently accepting: <span class="text-danger">*</span></label>
                         <input type="text" id="insurance_0" name="products[0][insurance_list]" placeholder="Insurance List">
                     </div>
                 </div>
                 <div class="col-xxl-4 col-md-6" id="price_0" style="display:none;">
                     <div class="add_property_input">
-                        <label>If you do not accept insurance, please enter price for the product:</label>
+                        <label>If you do not accept insurance, please enter price for the product: <span class="text-danger">*</span></label>
                         <input type="number" id="price_input_0" name="products[0][price]" placeholder="Price" step="0.01" min="0">
                     </div>
                 </div>
@@ -227,13 +230,13 @@
         @endif
         @foreach($listing->productService as $index => $item)
             <div class="row mt-4 border-1 product-row" data-index="{{ $index }}" data-id="{{ $item->id }}">
-                <div class="col-xxl-12 d-flex justify-content-between align-items-center">
+                <div class="col-xxl-12 mb-3 d-flex justify-content-between align-items-center">
                     <h4>Product/Service {{ $index + 1 }}</h4>
                     @if($index > 0) <button type="button" class="btn btn-danger delete-btn-ajx">Delete</button> @endif
                 </div>
-                <div class="col-xxl-4 col-md-6">
+                <div class="col-xxl-4 mb-3 col-md-6">
                     <div class="add_property_input">
-                        <label>Choose the Name of the product/service {{ $index + 1 }}:</label>
+                        <label>Choose the Name of the product/service {{ $index + 1 }}: <span class="text-danger">*</span></label>
 
                         <select class="select_2" id="product_service_{{ $index }}" name="products[{{ $index }}][category_id]" required>
                             <option value="">Select a product/service</option>
@@ -242,11 +245,16 @@
                             @endforeach
                         </select>
 
+                        <span class="form-text text-muted">
+                            <b>Note:</b> If your service/product category isn’t listed, please contact <a href="mailto:info@diverrx.com">info@diverrx.com</a>
+                        </span>
                     </div>
-                </div>
-                <div class="col-xxl-4 col-md-6">
 
-                    <label>Click all options below that apply:</label>
+
+                </div>
+                <div class="col-xxl-4 mb-3 col-md-6">
+
+                    <label>Click all options below that apply: <span class="text-danger">*</span></label>
 
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="virtual_{{ $index }}" name="products[{{ $index }}][virtual]"
@@ -261,9 +269,9 @@
                     </div>
 
                 </div>
-                <div class="col-xxl-4 col-md-6">
+                <div class="col-xxl-4 mb-3 col-md-6">
                     <div class="add_property_input">
-                        <label for="description_{{ $index }}">Brief description (150 word limit):</label>
+                        <label for="description_{{ $index }}">Brief description (150 word limit): <span class="text-danger">*</span></label>
                         <div class="note-editor note-frame panel panel-default">
 
                             <textarea id="description_{{ $index }}"
@@ -274,9 +282,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xxl-4 col-md-6">
+                <div class="col-xxl-4 mb-3 col-md-6">
 
-                    <label>Do you accept insurance for this product?</label>
+                    <label>Do you accept insurance for this product? <span class="text-danger">*</span></label>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="accept_insurance_yes_{{ $index }}" name="products[{{ $index }}][accept_insurance]" value="1"
                                {{ old('products.' . $index . '.accept_insurance', $item->accept_insurance) == '1' ? 'checked' : '' }} required>
@@ -289,16 +297,16 @@
                     </div>
 
                 </div>
-                <div class="col-xxl-4 col-md-6" id="insurance_list_{{ $index }}" style="display: {{ old('products.' . $index . '.accept_insurance', $item->accept_insurance) == '1' ? 'block' : 'none' }};">
+                <div class="col-xxl-4 mb-3 col-md-6" id="insurance_list_{{ $index }}" style="display: {{ old('products.' . $index . '.accept_insurance', $item->accept_insurance) == '1' ? 'block' : 'none' }};">
                     <div class="add_property_input">
-                        <label>If you accept insurance for this product, please list down all the insurances you are currently accepting:</label>
+                        <label>If you accept insurance for this product, please list down all the insurances you are currently accepting: <span class="text-danger">*</span></label>
                         <input type="text" id="insurance_{{ $index }}" name="products[{{ $index }}][insurance_list]" placeholder="Insurance List"
                                value="{{ old('products.' . $index . '.insurance_list', $item->insurance_list) }}">
                     </div>
                 </div>
-                <div class="col-xxl-4 col-md-6" id="price_{{ $index }}" style="display: {{ old('products.' . $index . '.accept_insurance', $item->accept_insurance) == '0' ? 'block' : 'none' }};">
+                <div class="col-xxl-4 mb-3 col-md-6" id="price_{{ $index }}" style="display: {{ old('products.' . $index . '.accept_insurance', $item->accept_insurance) == '0' ? 'block' : 'none' }};">
                     <div class="add_property_input">
-                        <label>If you do not accept insurance, please enter price for the product:</label>
+                        <label>If you do not accept insurance, please enter price for the product: <span class="text-danger">*</span></label>
                         <input type="number" id="price_input_{{ $index }}" name="products[{{ $index }}][price]" placeholder="Price"
                                value="{{ old('products.' . $index . '.price', $item->price) }}" step="0.01" min="0">
                     </div>
