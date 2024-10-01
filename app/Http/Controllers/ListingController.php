@@ -80,7 +80,7 @@ class ListingController extends Controller
 
     public function uploadProfilePicture($image, ?Listing $listing): string
     {
-        // Get the original file name and create a unique name
+        // Get the original file name and create a unique name.
         $fileName = pathinfo(
             $image->getClientOriginalName(),
             PATHINFO_FILENAME
@@ -91,26 +91,26 @@ class ListingController extends Controller
 
         // Ensure the directory exists
         if (!File::exists($directory)) {
-            File::makeDirectory($directory, 0755, true); // Create the directory with proper permissions
+            File::makeDirectory($directory, 0755, true); // Create the directory with proper permissions.
         }
 
         // Resize the image using Intervention Image.
         $resizedImage = Image::read($image);
 
-        // Resize the image to 300x300 and save it.
+        // Resize the image to 410x280 and save it.
         $resizedImage->resize(410, 280)
             ->save($directory . '/' . $fileName);
 
         // Check if the listing already has a profile picture.
         if ($listing->profile_picture) {
-            // Delete the old profile picture from the directory
+            // Delete the old profile picture from the directory.
             $oldFilePath = public_path($listing->profile_picture);
             if (File::exists($oldFilePath)) {
                 File::delete($oldFilePath);
             }
         }
 
-        // Return the saved image path
+        // Return the saved image path.
         return 'listings/profile_picture/' . $fileName;
     }
 
@@ -120,6 +120,7 @@ class ListingController extends Controller
      * @param Request $request
      *
      * @return RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): RedirectResponse
     {
@@ -151,10 +152,17 @@ class ListingController extends Controller
             // Save product/services associated with the listing.
             $this->saveProductServices($listing, $validatedData['products']);
 
-            return redirect()->route('listing.step.subscription', $listing)
-                             ->with('success', $message);
+            if ($request->input('action') == 'save') {
+
+                // Redirect back to the form with a success message.
+                return back()->with('success', $message);
+            } else {
+
+                return redirect()->route('listing.step.subscription', $listing)
+                                 ->with('success', $message);
+            }
         } catch (ValidationException $exception) {
-            // If validation fails, redirect back with validation errors
+            // If validation fails, redirect back with validation errors.
             return redirect()->back()->withErrors($exception->errors())->withInput();
         }
     }
@@ -163,14 +171,18 @@ class ListingController extends Controller
         $listing->update($data);
         $listing->productService()->delete();
     }
+
     /**
      * @param Request $request
      *
      * @return array
+     * @throws \Illuminate\Validation\ValidationException
      */
     private function validateListingData(Request $request): array
     {
-        return $request->validate([
+        // Validate the request data
+        $validatedData = $request->validate([
+            // Main information
             'authorized' => 'required|boolean',
             'registered' => 'required|boolean',
             'first_name' => 'required|string',
@@ -183,18 +195,50 @@ class ListingController extends Controller
             'business_address' => 'required|string',
             'business_contact' => 'required|string',
             'business_email' => 'required|email',
-            'profile_picture' => 'mimes:jpeg,png,jpg|image|max:2048',
-            // Validation rules for product/services - upto 5
-            'products' => 'required|array|max:5', // Maximum 5 products allowed
-            'products.*.category_id' => 'required|exists:categories,id', // Ensure category_id is required and exists.
-            'products.*.description' => ['required', 'string', new WordCount(150)], // Validate each product description
-            'products.*.virtual' => 'nullable|boolean', // Validate each product virtual attribute
-            'products.*.in_person' => 'nullable|boolean', // Validate each product in_person attribute
-            'products.*.accept_insurance' => 'nullable|boolean', // Validate each product accept_insurance attribute
-            'products.*.insurance_list' => 'nullable|string', // Validate each product insurance_list attribute
-            'products.*.price' => 'nullable|numeric|min:0', // Validate each product price
+            'profile_picture' => 'mimes:jpeg,png,jpg|image|max:4096',
+
+            // Validation rules for products/services - up to 5.
+            'products' => 'required|array|max:5', // Maximum 5 products allowed.
+            'products.*.category_id' => 'bail|required|exists:categories,id', // Using bail to stop after first failure.
+            'products.*.description' => ['required', 'string', new WordCount(150)], // Validate each product description.
+            'products.*.virtual' => 'nullable|boolean', // Validate each product virtual attribute.
+            'products.*.in_person' => 'nullable|boolean', // Validate each product in_person attribute.
+            'products.*.accept_insurance' => 'nullable|boolean', // Validate each product accept_insurance attribute.
+            'products.*.insurance_list' => 'nullable|string', // Validate each product insurance_list attribute.
+            'products.*.price' => 'nullable|numeric|min:0', // Validate each product price.
+        ], [
+            // Custom error messages.
+            'products.*.category_id.required' => 'The Product/Service is required for each product.',
+            'products.*.category_id.exists'   => 'The selected Product/Service does not exist.',
+            'profile_picture.mimes' => 'The profile picture must be a file of type: jpeg, png, jpg.',
+            'profile_picture.image' => 'The profile picture must be an image.',
+            'profile_picture.max' => 'The profile picture may not be greater than 4 MB.',
+        ], [
+            // Custom attributes for friendly error messages.
+            'products.0.category_id' => 'Product/Service for Product 1',
+            'products.1.category_id' => 'Product/Service for Product 2',
+            'products.2.category_id' => 'Product/Service for Product 3',
+            'products.3.category_id' => 'Product/Service for Product 4',
+            'products.4.category_id' => 'Product/Service for Product 5',
         ]);
+
+        // Check for duplicate category_ids
+        $categoryIds = collect($validatedData['products'])->pluck('category_id');
+        $duplicates = $categoryIds->duplicates()->unique();
+
+        // If duplicates are found, throw a validation exception
+        if ($duplicates->isNotEmpty()) {
+            $duplicateCategoryIds = implode(', ', $duplicates->toArray());
+
+            // Add a custom error message for duplicates
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'products' => ['Each product must have a unique Product/Service.'],
+            ]);
+        }
+
+        return $validatedData;
     }
+
     private function createListing(array $data): Listing
     {
         $listing = new Listing();
