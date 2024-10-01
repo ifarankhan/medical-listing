@@ -155,6 +155,7 @@
     <div id="additional_products">
 
         @if($listing->productService->isEmpty())
+            <div class="border-top my-3"></div>
             <div class="row product-row" data-index="1">
                 <div class="col-xxl-12">
                     <h4>Product/Service 1</h4>
@@ -229,6 +230,7 @@
             </div>
         @endif
         @foreach($listing->productService as $index => $item)
+                <div class="border-top my-3"></div>
             <div class="row mt-4 border-1 product-row" data-index="{{ $index }}" data-id="{{ $item->id }}">
                 <div class="col-xxl-12 mb-3 d-flex justify-content-between align-items-center">
                     <h4>Product/Service {{ $index + 1 }}</h4>
@@ -312,6 +314,7 @@
                     </div>
                 </div>
             </div>
+
         @endforeach
     </div>
 
@@ -319,10 +322,16 @@
 </div>
 
 <div class="add_property_info add_property_aminities wow fadeInUp" data-wow-duration="1.5s">
-    <div class="col-12">
-        <button type="submit" class="common_btn nextStep">Save & Continue</button>
+    <div class="row">
+        <div class="col-6 text-start">
+            <button type="submit" name="action" value="save" class="common_btn nextStep">Save</button>
+        </div>
+        <div class="col-6 text-end">
+            <button type="submit" name="action" value="save_continue" class="common_btn nextStep">Save & Continue</button>
+        </div>
     </div>
 </div>
+
 
 
 {{--

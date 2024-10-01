@@ -151,8 +151,15 @@ class ListingController extends Controller
             // Save product/services associated with the listing.
             $this->saveProductServices($listing, $validatedData['products']);
 
-            return redirect()->route('listing.step.subscription', $listing)
-                             ->with('success', $message);
+            if ($request->input('action') == 'save') {
+
+                // Redirect back to the form with a success message.
+                return back()->with('success', $message);
+            } else {
+
+                return redirect()->route('listing.step.subscription', $listing)
+                                 ->with('success', $message);
+            }
         } catch (ValidationException $exception) {
             // If validation fails, redirect back with validation errors
             return redirect()->back()->withErrors($exception->errors())->withInput();
@@ -163,14 +170,18 @@ class ListingController extends Controller
         $listing->update($data);
         $listing->productService()->delete();
     }
+
     /**
      * @param Request $request
      *
      * @return array
+     * @throws \Illuminate\Validation\ValidationException
      */
     private function validateListingData(Request $request): array
     {
-        return $request->validate([
+        // Validate the request data
+        $validatedData = $request->validate([
+            // Main information
             'authorized' => 'required|boolean',
             'registered' => 'required|boolean',
             'first_name' => 'required|string',
@@ -184,17 +195,46 @@ class ListingController extends Controller
             'business_contact' => 'required|string',
             'business_email' => 'required|email',
             'profile_picture' => 'mimes:jpeg,png,jpg|image|max:2048',
-            // Validation rules for product/services - upto 5
-            'products' => 'required|array|max:5', // Maximum 5 products allowed
-            'products.*.category_id' => 'required|exists:categories,id', // Ensure category_id is required and exists.
-            'products.*.description' => ['required', 'string', new WordCount(150)], // Validate each product description
-            'products.*.virtual' => 'nullable|boolean', // Validate each product virtual attribute
-            'products.*.in_person' => 'nullable|boolean', // Validate each product in_person attribute
-            'products.*.accept_insurance' => 'nullable|boolean', // Validate each product accept_insurance attribute
-            'products.*.insurance_list' => 'nullable|string', // Validate each product insurance_list attribute
-            'products.*.price' => 'nullable|numeric|min:0', // Validate each product price
+
+            // Validation rules for products/services - up to 5.
+            'products' => 'required|array|max:5', // Maximum 5 products allowed.
+            'products.*.category_id' => 'bail|required|exists:categories,id', // Using bail to stop after first failure.
+            'products.*.description' => ['required', 'string', new WordCount(150)], // Validate each product description.
+            'products.*.virtual' => 'nullable|boolean', // Validate each product virtual attribute.
+            'products.*.in_person' => 'nullable|boolean', // Validate each product in_person attribute.
+            'products.*.accept_insurance' => 'nullable|boolean', // Validate each product accept_insurance attribute.
+            'products.*.insurance_list' => 'nullable|string', // Validate each product insurance_list attribute.
+            'products.*.price' => 'nullable|numeric|min:0', // Validate each product price.
+        ], [
+            // Custom error messages.
+            'products.*.category_id.required' => 'The Product/Service is required for each product.',
+            'products.*.category_id.exists'   => 'The selected Product/Service does not exist.',
+        ], [
+            // Custom attributes for friendly error messages.
+            'products.0.category_id' => 'Product/Service for Product 1',
+            'products.1.category_id' => 'Product/Service for Product 2',
+            'products.2.category_id' => 'Product/Service for Product 3',
+            'products.3.category_id' => 'Product/Service for Product 4',
+            'products.4.category_id' => 'Product/Service for Product 5',
         ]);
+
+        // Check for duplicate category_ids
+        $categoryIds = collect($validatedData['products'])->pluck('category_id');
+        $duplicates = $categoryIds->duplicates()->unique();
+
+        // If duplicates are found, throw a validation exception
+        if ($duplicates->isNotEmpty()) {
+            $duplicateCategoryIds = implode(', ', $duplicates->toArray());
+
+            // Add a custom error message for duplicates
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'products' => ['Each product must have a unique Product/Service.'],
+            ]);
+        }
+
+        return $validatedData;
     }
+
     private function createListing(array $data): Listing
     {
         $listing = new Listing();
