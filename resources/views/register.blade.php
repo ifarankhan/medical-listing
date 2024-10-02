@@ -10,12 +10,33 @@
         /* Increase specificity */
         label .text-danger {
             position: static;
-
+            color: red !important;
 
             margin-left: 2px;
             text-align: right;
             display: inline;
         }
+
+
+        /* Modal to ensure it is below the navbar */
+        .modal {
+            margin-top: 10%; /* Adjust according to the height of your navbar */
+            z-index: 1055; /* Higher than the modal backdrop */
+        }
+
+        /* Ensure modal backdrop doesn't cover the header */
+        .modal-backdrop {
+            z-index: 1050; /* Below the navbar */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .modal {
+                margin-top: 60px; /* Smaller margin for mobile */
+            }
+        }
+
+
     </style>
 
     <!--=============================
@@ -73,7 +94,7 @@
                                         @enderror
 
                                         <div class="single_input">
-                                            <label>Email</label>
+                                            <label>Email <span class="text-danger">*</span></label>
                                             <input type="email" name="email" placeholder="Email" value="{{ old('email') }}" required>
                                         </div>
                                         @error('email')
@@ -81,11 +102,13 @@
                                         @enderror
 
                                         <div class="single_input">
-                                            <label>Role</label>
+                                            <label>Role <span class="text-danger">*</span></label>
                                             <select class="form-select" id="role" name="role" required>
                                                 <option value="">Select Role</option>
                                                 @foreach ($userRoles as $role)
-                                                    <option value="{{ $role->id }}">{{ $role->title }}</option>
+                                                    <option value="{{ $role->id }}" {{ old('role') == $role->id ? 'selected' : '' }}>
+                                                        {{ $role->title }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -94,8 +117,13 @@
                                         @enderror
 
                                         <div class="single_input">
-                                            <label>Password</label>
+                                            <label>Password <span class="text-danger">*</span></label>
                                             <input type="password" name="password" placeholder="********" required>
+
+                                            <!-- Password requirements note -->
+                                            <small class="text-muted d-block mt-1">
+                                                Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character (e.g., @, $, !, %, *, ?).
+                                            </small>
 
                                         </div>
                                         @error('password')
@@ -103,7 +131,7 @@
                                         @enderror
 
                                         <div class="single_input">
-                                            <label>Confirm password</label>
+                                            <label>Confirm password <span class="text-danger">*</span></label>
                                             <input
                                                 type="password"
                                                 name="password_confirmation" placeholder="********" required>
@@ -116,15 +144,15 @@
                                         <div class="single_input d-flex align-items-center">
                                             <input type="checkbox" id="terms" name="terms" required class="me-1" style="width: auto; height: auto;">
                                             <label for="terms" class="mb-0">
-                                                I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal" class="link-primary">Terms and Conditions</a>
+                                                I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal" class="link-primary">Terms and Conditions</a> <span class="text-danger">*</span>
                                             </label>
                                         </div>
                                         @error('terms')
-                                        <div class="invalid-feedback" style="display: block" role="alert">{{ $message }}</div>
+                                            <div class="invalid-feedback" style="display: block" role="alert">{{ $message }}</div>
                                         @enderror
 
 
-                                        <button class="common_btn common_btn_2">Create an account</button>
+                                        <button id="submitBtn" class="common_btn common_btn_2">Create an account</button>
                                     </form>
 
                                     <p>Already have an account? <a href="{{ route('login') }}">login</a></p>
@@ -142,8 +170,6 @@
         </div>
 
         <!-- Terms and Conditions Modal -->
-
-        <!-- Modal -->
         <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -151,7 +177,7 @@
                         <h5 class="modal-title" id="termsModalLabel">Diverrx Inc. Terms of Service</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body" style="padding: 30px; max-height: 70vh; overflow-y: auto;">
+                    <div class="modal-body" style="padding: 30px; max-height: 40vh; overflow-y: auto;">
                         <style>
                             .modal-body {
                                 line-height: 1.6;
@@ -250,11 +276,6 @@
             </div>
         </div>
 
-
-
-
-
-
     </section>
     <!--=============================
         REGISTRATION END
@@ -282,9 +303,21 @@
     </div>
 
     <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the terms checkbox and submit button
+            const termsCheckbox = document.getElementById('terms');
+            const submitBtn = document.getElementById('submitBtn');
+
+            // Enable or disable the submit button based on checkbox state
+            termsCheckbox.addEventListener('change', function() {
+                submitBtn.disabled = !this.checked;
+            });
+        });
+
         document.addEventListener("DOMContentLoaded", function () {
             @if(session('success'))
-            var successModal = new bootstrap.Modal(document.getElementById('registrationSuccessModal'), {});
+            const successModal = new bootstrap.Modal(document.getElementById('registrationSuccessModal'), {});
             successModal.show();
             @endif
         });

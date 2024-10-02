@@ -30,19 +30,31 @@ class RegisterController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|required_with:password_confirmation|same:password_confirmation',
-            'password_confirmation' => 'min:6',
+            'password' => [
+                'required',
+                'min:8',
+                'regex:/[A-Z]/',      // Must contain at least one uppercase letter
+                'regex:/[a-z]/',      // Must contain at least one lowercase letter
+                'regex:/[0-9]/',      // Must contain at least one number
+                'regex:/[@$!%*?&]/',  // Must contain a special character
+                'required_with:password_confirmation',
+                'same:password_confirmation'
+            ],
+            'password_confirmation' => 'min:8',
             'role' => 'required',
         ], [
             'name.required' => 'Name is required',
             'email.required' => 'Email is required',
             'email.email' => 'Please enter a valid email address',
-            'email.unique' => 'This email address has already been taken',
-            'password.required' => 'Password is required',
-            'password.min' => 'Password must be at least 5 characters long',
+            'email.unique' => 'This email address has already been taken.',
+            'password.required' => 'Password is required.',
+            'password.min' => 'Password must be at least 8 characters long.',
+            'password.regex' => 'Password must be at least 8 character long and contain at least one uppercase letter,
+            one number and one special character.',
             'password.confirmed' => 'Password confirmation does not match',
             'role.required' => 'Role is required',
         ]);
+
         try {
             DB::beginTransaction();
 
