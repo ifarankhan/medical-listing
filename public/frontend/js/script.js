@@ -1,17 +1,18 @@
 $(function () {
 
     "use strict";
-
+    const mainmenu = $('.main_menu');
     //=======menu fix js======
-    if ($('.main_menu').offset() !== undefined) {
-        var navoff = $('.main_menu').offset().top;
+    if (mainmenu.offset() !== undefined) {
+
+        const navoff = mainmenu.offset().top;
         $(window).on("scroll", function () {
-            var scrolling = $(this).scrollTop();
+            const scrolling = $(this).scrollTop();
 
             if (scrolling > navoff) {
-                $('.main_menu').addClass('menu_fix');
+                mainmenu.addClass('menu_fix');
             } else {
-                $('.main_menu').removeClass('menu_fix');
+                mainmenu.removeClass('menu_fix');
             }
         });
     }

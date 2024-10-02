@@ -73,7 +73,9 @@
                         </table>
                     </div>
                 @else
-                    Currently no Product/Service exists. Please create a new Product/Service.
+                    <p style="font-size: 1.2rem; color: #555; text-align: center; margin-top: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">
+                        Currently no Product/Service exists. Please create a new Product/Service.
+                    </p>
                 @endif
                 {{--<div class="row mt_25">
                     <div class="col-12">
