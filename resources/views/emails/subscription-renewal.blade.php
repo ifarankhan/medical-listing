@@ -19,7 +19,7 @@
         <li><strong>Payment Reference:</strong> {{ $paymentReference }}</li>
     </ul>
 
-    <p>If you have any questions or wish to update your subscription, feel free to reach out to us at <a href="mailto:support@example.com">support@example.com</a>.</p>
+    <p>If you have any questions or wish to update your subscription, feel free to reach out to us at <a href="mailto:info@diverrx.com">info@diverrx.com</a>.</p>
 
     <p>Thank you for your continued support! We look forward to serving you in the coming months.</p>
 

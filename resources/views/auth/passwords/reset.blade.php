@@ -60,14 +60,15 @@
                                         </div>
 
                                         @error('email')
-                                            <span class="invalid-feedback">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
+                                            <div class="invalid-feedback" style="display: block" role="alert">{{ $message }}</div>
                                         @enderror
 
                                         <div class="single_input">
                                             <label for="password">{{ __('Password') }}</label>
                                             <input id="password" type="password" class="@error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                            <small class="text-muted d-block mt-1">
+                                                Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character (e.g., @, $, !, %, *, ?).
+                                            </small>
                                         </div>
 
                                         <div class="single_input">
@@ -76,9 +77,7 @@
                                         </div>
 
                                         @error('password')
-                                        <span class="invalid-feedback">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
+                                        <div class="invalid-feedback" style="display: block" role="alert">{{ $message }}</div>
                                         @enderror
 
                                         <button class="common_btn common_btn_2" type="submit">Reset Password</button>

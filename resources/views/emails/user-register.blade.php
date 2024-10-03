@@ -7,7 +7,7 @@
 
     <p>Thank you for registering with {{ config('app.name') }}. We are thrilled to have you onboard.</p>
 
-    <p>If you have any questions or need assistance, feel free to contact us at any time.</p>
+    <p>If you have any questions or need assistance, feel free to <a href="{{ route('contact') }}">contact us</a>  at any time.</p>
 
     <p>Best regards,</p>
     <p>The {{ config('app.name') }} Team</p>

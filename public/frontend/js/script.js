@@ -386,7 +386,18 @@ $(function () {
 
     //=====LOGIN PASSWORD========
     $(".show_password").on("click", function () {
-        $(".show_password").toggleClass("show");
+        const passwordField = $('#password-field');
+        const passwordFieldType = passwordField.attr('type');
+
+        if (passwordFieldType === 'password') {
+            passwordField.attr('type', 'text');
+            $('.open_eye').hide();
+            $('.close_eye').show();
+        } else {
+            passwordField.attr('type', 'password');
+            $('.close_eye').hide();
+            $('.open_eye').show();
+        }
     });
 
     $(".show_confirm_password").on("click", function () {
