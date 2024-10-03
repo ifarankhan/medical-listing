@@ -35,6 +35,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
 Route::get('/contact', [ContactUsController::class, 'index'])->name('contact');
+Route::post('/contact/submit', [ContactUsController::class, 'submit'])->name('contact.submit');
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 Route::get('/check-auth', [AuthController::class, 'checkAuth'])->name('check-auth');
@@ -125,4 +126,17 @@ Route::get('/test-email', function () {
     } catch (\Exception $e) {
         return 'Failed to send email. Error: ' . $e->getMessage();
     }
+});*/
+
+/*Route::get('/email-preview', function () {
+    $data = [
+        'title' => 'Test Email',
+        'header' => 'Welcome to Our Service',
+        'name' => 'test',
+        'email' => 'test',
+        'messageBody' => 'test'
+        // Add any other necessary data here
+    ];
+
+    return view('emails.contact_to_user', $data);
 });*/

@@ -19,9 +19,12 @@
             margin: 0 auto;
         }
         .header {
-            text-align: center;
-            padding-bottom: 20px;
+            background-color: #000000; /* Change background color to black */
+            text-align: left;
             border-bottom: 1px solid #dddddd;
+        }
+        .header img {
+            max-width: 200px; /* Adjust the logo size */
         }
         .footer {
             text-align: center;
@@ -30,12 +33,17 @@
             padding-top: 20px;
             border-top: 1px solid #dddddd;
         }
+        .content {
+            margin: 30px 0;
+        }
     </style>
 </head>
 <body>
 <div class="email-container">
     <div class="header">
-        <h1>{{ $header ?? config('app.name') }}</h1>
+        <a href="{{ config('app.url') }}">
+            <img src="{{ asset('frontend/images/logo_diverrx.png') }}" alt="{{ config('app.name') }} Logo">
+        </a>
     </div>
 
     <div class="content">
