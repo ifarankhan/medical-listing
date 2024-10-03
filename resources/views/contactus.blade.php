@@ -66,7 +66,7 @@
                         <div class="row">
                             <div class="col-md-6 col-lg-12 col-xl-6">
                                 <div class="contact_input">
-                                    <input type="text" name="name" placeholder="Your Name" value="{{ old('name') }}" required>
+                                    <input type="text" name="name" placeholder="Your Name *" value="{{ old('name') }}" required>
                                     <span class="contact_input_icon">
                                         <img src="{{ asset('frontend/images/user_icon_3.png') }}" alt="icon" class="img-fluid w-100">
                                     </span>
@@ -78,7 +78,7 @@
                             </div>
                             <div class="col-md-6 col-lg-12 col-xl-6">
                                 <div class="contact_input">
-                                    <input type="email" name="email" placeholder="Your Email" value="{{ old('email') }}" required>
+                                    <input type="email" name="email" placeholder="Your Email *" value="{{ old('email') }}" required>
                                     <span class="contact_input_icon">
                                         <img src="{{ asset('frontend/images/massage_4.png') }}" alt="icon" class="img-fluid w-100">
                                     </span>
@@ -90,7 +90,7 @@
                             </div>
                             <div class="col-md-6 col-lg-12 col-xl-6">
                                 <div class="contact_input">
-                                    <input type="text" name="phone" placeholder="Phone Number" value="{{ old('phone') }}" required>
+                                    <input type="text" name="phone" placeholder="Phone Number *" value="{{ old('phone') }}" required>
                                     <span class="contact_input_icon">
                                         <img src="{{ asset('frontend/images/call_2.png') }}" alt="icon" class="img-fluid w-100">
                                     </span>
@@ -102,7 +102,7 @@
                             </div>
                             <div class="col-md-6 col-lg-12 col-xl-6">
                                 <div class="contact_input">
-                                    <input type="text" name="subject" placeholder="Subject" value="{{ old('subject') }}" required>
+                                    <input type="text" name="subject" placeholder="Subject *" value="{{ old('subject') }}" required>
                                 </div>
 
                                 @error('subject')
@@ -111,7 +111,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="contact_input">
-                                    <textarea rows="6" name="message" placeholder="Write Message..." required>{{ old('message') }}</textarea>
+                                    <textarea rows="6" name="message" placeholder="Write Message... *" required>{{ old('message') }}</textarea>
                                     @error('message')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
