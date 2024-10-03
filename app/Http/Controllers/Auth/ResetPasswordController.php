@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 
 class ResetPasswordController extends Controller
 {
@@ -18,7 +21,7 @@ class ResetPasswordController extends Controller
      * Display the password reset view for the given token.
      *
      * @param  string|null  $token
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function showResetForm(Request $request, $token = null)
     {
@@ -30,15 +33,36 @@ class ResetPasswordController extends Controller
     /**
      * Reset the given user's password.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     * @param Request $request
+     *
+     * @return RedirectResponse
      */
     public function reset(Request $request)
     {
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
+            'password' => [
+                'required',
+                'min:8',
+                'regex:/[A-Z]/',      // Must contain at least one uppercase letter
+                'regex:/[a-z]/',      // Must contain at least one lowercase letter
+                'regex:/[0-9]/',      // Must contain at least one number
+                'regex:/[@$!%*?&]/',  // Must contain a special character
+                'required_with:password_confirmation',
+                'same:password_confirmation'
+            ],
+            'password_confirmation' => 'min:8',
+
+        ], [
+            'email.required' => 'Email is required',
+            'email.email' => 'Please enter a valid email address',
+            'email.unique' => 'This email address has already been taken.',
+            'password.required' => 'Password is required.',
+            'password.min' => 'Password must be at least 8 characters long.',
+            'password.regex' => 'Password must be at least 8 character long and contain at least one uppercase letter,
+            one number and one special character.',
+            'password.confirmed' => 'Password confirmation does not match',
         ]);
 
         // Here we will attempt to reset the user's password. If it is successful we
