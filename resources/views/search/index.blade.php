@@ -43,31 +43,34 @@
 
                     <form action="{{ route('search') }}" method="GET">
 
-                        <div id="ContactOptions"
-                             class="sidebar_amenities sidebar_wizerd sidebar_multiple_contact"
-                             style="display: none;">
 
-                            <div class="col-12">
-                                <button id="AllowContactMultiple" type="submit" class="common_btn">
-                                    allow providers to contact you
-                                </button>
-                            </div>
-                            <div class="col-12">
-                                <button id="ContactMultiple" type="submit" class="common_btn">
-                                    contact multiple providers
-                                </button>
-                            </div>
-                        </div>
                         <div class="sidebar_search sidebar_wizerd">
                             <h3>search</h3>
-                            <input name="q" type="text" placeholder="Search">
+                            <input name="q" type="text" placeholder="Search" value="{{ old('q', $filters['q']  ?? '') }}">
                         </div>
-                        <div class="sidebar_dropdown sidebar_wizerd">
+                        <div class="sidebar_dropdown ">
+                            <div id="ContactOptions"
+                                 class="sidebar_amenities sidebar_wizerd sidebar_multiple_contact"
+                                 style="display: none;">
+
+                                <div class="col-12">
+                                    <button id="AllowContactMultiple" type="submit" class="common_btn">
+                                        allow providers to contact you
+                                    </button>
+                                </div>
+                                <div class="col-12">
+                                    <button id="ContactMultiple" type="submit" class="common_btn">
+                                        contact multiple providers
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        {{--<div class="sidebar_dropdown sidebar_wizerd">
                             <h3>insurances</h3>
                             <select class="select_2" name="insurance">
                                 <option value="">Select Insurance</option>
                             </select>
-                        </div>
+                        </div>--}}
                         <div class="sidebar_dropdown sidebar_wizerd">
                             <h3>zip code</h3>
                             <select class="select_2" name="zip_code">
@@ -75,11 +78,13 @@
                             </select>
                         </div>
                         <div class="sidebar_dropdown sidebar_wizerd">
-                            <h3>service category</h3>
+                            <h3>service/products</h3>
                             <select class="select_2" name="category">
-                                <option value="">Select Category</option>
+                                <option value="">Select Service/Products</option>
                                 @foreach($serviceCategories as $category)
-                                    <option value="{{ $category->slug }}">{{ $category->name }}</option>
+                                    <option value="{{ $category->slug }}"
+                                        {{ isset($filters['category']) && $filters['category'] === $category->slug ? 'selected' : '' }}
+                                    >{{ $category->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -243,10 +248,13 @@
         {{--                                <a class="love" href="#"><i class="fas fa-heart"></i></a>--}}
                                     </div>
                                     <div class="listing_text">
-                                        <a href="#">{{ $listings[$i]->business_name }}</a>
+                                        <h5>{{ $listings[$i]->business_name }}</h5>
                                         <ul>
                                             <li><i class="fas fa-map-marker-alt"></i>{{ $listings[$i]->business_address }}</li>
                                             <li><i class="fas fa-phone-alt"></i>{{ $listings[$i]->business_contact }}</li>
+                                            @if($listings[$i]->getProductServicesInsuranceList() != '')
+                                                <li><i class="fas fa-list-alt"></i>{{ $listings[$i]->getProductServicesInsuranceList() }}</li>
+                                            @endif
                                         </ul>
                                         @notUserRole(UserRole::ROLE_INSURANCE_PROVIDER)
                                             <div class="listing_bottom">
@@ -258,11 +266,16 @@
                                                         id="sendMessageBtn"
                                                         class="btn sendMessageBtn">Send Message</button>
                                                 </p>
+
+                                                @php
+                                                    // Get the selected values from the session, defaulting to an empty array if not set
+                                                    $selectedValues = session('selectedValues', []) ?? [];
+                                                @endphp
                                                 <p class="small"><input type="checkbox"
                                                                         name="selectToContact[]"
                                                                         value="{{ $listings[$i]->id }}"
                                                                         class="select-to-contact"
-                                                        {{ in_array($listings[$i]->id, session('selectedValues', [])) ? 'checked' : '' }}
+                                                        {{ in_array($listings[$i]->id, $selectedValues) ? 'checked' : '' }}
                                                     /></p>
                                             </div>
                                         @endnotUserRole

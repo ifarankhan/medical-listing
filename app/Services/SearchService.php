@@ -30,7 +30,11 @@ class SearchService
                 }
             }
         }
-        // echo $query->getQuery()->toSql();exit;
+         //echo $query->getQuery()->toSql();exit;
+        $sql = $query->toSql();
+        $bindings = $query->getBindings();
+        $fullQuery = vsprintf(str_replace('?', "'%s'", $sql), $bindings);
+        //dd($fullQuery);
         return $query->paginate($paginate);
     }
 
@@ -46,7 +50,16 @@ class SearchService
     protected function filterByString($query, string $term): void
     {
         $query->where(function($q) use ($term) {
-            $q->where('business_name', 'like', '%' . $term . '%');
+
+            $q->where('business_name', 'like', '%' . $term . '%')
+                ->orWhere('business_name', 'like', '%,' . $term)        // Match at the end
+                ->orWhere('business_name', 'like', $term . ',%')        // Match at the beginning
+                ->orWhere('business_name', 'like', '%' . $term . '%');
+            // Search in the 'insurance_list' of related 'productService'.
+        })->orWhereHas('productService', function ($q) use ($term) {
+           // $q->whereRaw("FIND_IN_SET(?, insurance_list)", [$term]);
+            // this allows partial string to get matched.
+            $q->where('insurance_list', 'like', '%' . $term . '%');
         });
     }
 

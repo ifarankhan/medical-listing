@@ -4,11 +4,15 @@ namespace App\Models;
 
 use App\Http\Controllers\ListingController;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * @property Collection $productService
+ */
 class Listing extends Model
 {
     const STATUS_SUBSCRIBED = 'subscribed';
@@ -57,5 +61,13 @@ class Listing extends Model
                 ]);
                 $query->where('stripe_subscription_id', '!=', null);
             });
+    }
+
+    public function getProductServicesInsuranceList(): string
+    {
+        $insuranceList = $this->productService->pluck('insurance_list');
+        // Fetch related product services and format them into a string.
+        return ($insuranceList->isNotEmpty()) ?
+            $this->productService->pluck('insurance_list')->implode(', ') : '';
     }
 }

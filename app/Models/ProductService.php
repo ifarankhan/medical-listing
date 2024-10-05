@@ -21,6 +21,12 @@ class ProductService extends Model
         'price',
     ];
 
+    // This mutator will automatically remove spaces around commas before saving
+    public function setInsuranceListAttribute($value): void
+    {
+        $this->attributes['insurance_list'] = preg_replace('/\s*,\s*/', ',', $value);
+    }
+
     public function listing(): BelongsTo
     {
         return $this->belongsTo(Listing::class);
