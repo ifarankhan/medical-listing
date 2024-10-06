@@ -1168,6 +1168,7 @@ button {
     padding: 22px 30px 18px 30px;
     background: var(--colorWhite);
     filter: drop-shadow(0px 2px 5px rgba(3, 26, 38, 0.10));
+    min-height: 170px;
 }
 
 .listing_text a {

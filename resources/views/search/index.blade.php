@@ -73,10 +73,28 @@
                         </div>--}}
                         <div class="sidebar_dropdown sidebar_wizerd">
                             <h3>zip code</h3>
-                            <select class="select_2" name="zip_code">
+                            <select class="select_2" name="zip_code" id="zip_code">
                                 <option value="">Select Zip Code</option>
+                                @if(isset($filters['zip_code']))
+                                    <option value="{{ $filters['zip_code'] }}" {{ old('zip_code', request('zip_code')) == $filters['zip_code'] ? 'selected' : '' }}>
+                                        {{ $filters['zip_code'] }}
+                                    </option>
+                                @endif
                             </select>
                         </div>
+
+                        <div class="sidebar_dropdown sidebar_wizerd">
+                            <h3>city</h3>
+                            <select class="select_2" name="city" id="city">
+                                <option value="">Select City</option>
+                                    @if(isset($filters['city']))
+                                        <option value="{{ $filters['city'] }}" {{ old('city', request('city')) == $filters['city'] ? 'selected' : '' }}>
+                                            {{ $filters['city'] }}
+                                        </option>
+                                    @endif
+                            </select>
+                        </div>
+
                         <div class="sidebar_dropdown sidebar_wizerd">
                             <h3>service/products</h3>
                             <select class="select_2" name="category">
@@ -253,7 +271,7 @@
                                             <li><i class="fas fa-map-marker-alt"></i>{{ $listings[$i]->business_address }}</li>
                                             <li><i class="fas fa-phone-alt"></i>{{ $listings[$i]->business_contact }}</li>
                                             @if($listings[$i]->getProductServicesInsuranceList() != '')
-                                                <li><i class="fas fa-list-alt"></i>{{ $listings[$i]->getProductServicesInsuranceList() }}</li>
+                                                <li><i class="fas fa-list-alt"></i>{{ trim($listings[$i]->getProductServicesInsuranceList(), ', ') }}</li>
                                             @endif
                                         </ul>
                                         @notUserRole(UserRole::ROLE_INSURANCE_PROVIDER)

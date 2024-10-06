@@ -29,6 +29,8 @@ class Listing extends Model
         'business_name',
         'ein',
         'business_address',
+        'business_zipcode',
+        'business_city',
         'business_contact',
         'business_email',
         'listing_status',

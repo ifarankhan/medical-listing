@@ -1037,4 +1037,55 @@ $(function () {
             $('#termsModal').modal('show'); // Show the Bootstrap modal
         });
     });
+
+    $(document).ready(function() {
+
+        $('#zip_code').select2({
+            ajax: {
+                url: '/zipcodes', // URL to fetch zip codes
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term // Search term
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data // The response is expected in { id, text } format
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 1, // Minimum characters to start searching
+            placeholder: 'Select Zip Code',
+            allowClear: false // Allow clearing the selection
+        });
+    });
+
+    $(document).ready(function() {
+
+        $('#city').select2({
+            ajax: {
+                url: '/city', // URL to fetch zip codes
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term // Search term
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data // The response is expected in { id, text } format
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 1, // Minimum characters to start searching
+            placeholder: 'Select City',
+            allowClear: false // Allow clearing the selection
+        });
+    });
 });
+

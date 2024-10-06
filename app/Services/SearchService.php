@@ -14,6 +14,7 @@ class SearchService
         'category' => 'filterByCategory',
         'q' => 'filterByString',
         'zip_code' => 'filterByZipCode',
+        'city' => 'filterByCity',
     ];
     public function search(array $filters, $paginate = self::RESULT_THRESHOLD): LengthAwarePaginator
     {
@@ -30,11 +31,11 @@ class SearchService
                 }
             }
         }
-         //echo $query->getQuery()->toSql();exit;
-        $sql = $query->toSql();
+
+        /*$sql = $query->toSql();
         $bindings = $query->getBindings();
         $fullQuery = vsprintf(str_replace('?', "'%s'", $sql), $bindings);
-        //dd($fullQuery);
+       // dd($fullQuery);*/
         return $query->paginate($paginate);
     }
 
@@ -50,20 +51,32 @@ class SearchService
     protected function filterByString($query, string $term): void
     {
         $query->where(function($q) use ($term) {
-
-            $q->where('business_name', 'like', '%' . $term . '%')
-                ->orWhere('business_name', 'like', '%,' . $term)        // Match at the end
-                ->orWhere('business_name', 'like', $term . ',%')        // Match at the beginning
-                ->orWhere('business_name', 'like', '%' . $term . '%');
-            // Search in the 'insurance_list' of related 'productService'.
-        })->orWhereHas('productService', function ($q) use ($term) {
-           // $q->whereRaw("FIND_IN_SET(?, insurance_list)", [$term]);
-            // this allows partial string to get matched.
-            $q->where('insurance_list', 'like', '%' . $term . '%');
+            // Enclose all business name conditions within a single WHERE clause.
+            $q->where(function($q) use ($term) {
+                $q->where('business_name', 'like', '%' . $term . '%')
+                  ->orWhere('business_name', 'like', '%,' . $term)        // Match at the end
+                  ->orWhere('business_name', 'like', $term . ',%')        // Match at the beginning
+                  ->orWhere('business_name', 'like', '%' . $term . '%');
+            })->orWhereHas('productService', function ($q) use ($term) {
+                // This allows partial string to get matched in insurance_list
+                $q->where('insurance_list', 'like', '%' . $term . '%');
+            });
         });
     }
 
-    protected function filterByZipCode(string $zipCode)
+    protected function filterByZipCode($query, string $zipCode): void
     {
+        $query->where(function($q) use ($zipCode) {
+
+            $q->where('business_zipcode', $zipCode);
+        });
+    }
+
+    protected function filterByCity($query, string $city): void
+    {
+        $query->where(function($q) use ($city) {
+
+            $q->where('business_city', $city);
+        });
     }
 }
