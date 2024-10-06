@@ -193,6 +193,8 @@ class ListingController extends Controller
             'business_name' => 'required|string',
             'ein' => 'required|regex:/^\d{2}-\d{7}$/',
             'business_address' => 'required|string',
+            'business_city' => 'string',
+            'business_zipcode' => 'string|regex:/^\d{5}(-\d{4})?$/',
             'business_contact' => 'required|string',
             'business_email' => 'required|email',
             'profile_picture' => 'mimes:jpeg,png,jpg|image|max:4096',
@@ -253,6 +255,15 @@ class ListingController extends Controller
         $listing->business_name = $data['business_name'];
         $listing->ein = $data['ein'];
         $listing->business_address = $data['business_address'];
+        $listing->business_zipcode = $data['business_zipcode'];
+        $listing->business_city = $data['business_city'];
+        /*// Extract the ZIP code using a regex pattern for US ZIP codes.
+        $zipCodePattern = '/\b\d{5}(?:-\d{4})?\b/';
+        preg_match($zipCodePattern, $data['business_address'], $matches);
+
+        // If a ZIP code is found, store it, else handle the absence.
+        $listing->business_zipcode = !empty($matches) ? $matches[0] : null;*/
+
         $listing->business_contact = $data['business_contact'];
         $listing->business_email = $data['business_email'];
         $listing->profile_picture =

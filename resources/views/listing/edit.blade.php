@@ -73,7 +73,8 @@
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
                 <label for="contact_number">Contact Number: <span class="text-danger">*</span></label>
-                <input type="text" id="contact_number" name="contact_number" placeholder="Contact Number"
+                <input type="text" id="contact_number" name="contact_number" placeholder="+1XXXXXXXXXX"
+                       pattern="\+1\d{10}" title="Please enter a valid phone number in the format +12345678900"
                        value="{{ old('contact_number', $listing->contact_number) }}" required>
             </div>
         </div>
@@ -114,13 +115,28 @@
             <div class="add_property_input">
                 <label for="business_address">Address: <span class="text-danger">*</span></label>
                 <input type="text" id="business_address" name="business_address" placeholder="Business Address"
-                       value="{{ old('business_address', $listing->business_address) }}" required>
+                       value="{{ old('business_address', $listing->business_address) }}" required autocomplete="off">
             </div>
+
+            <div class="add_property_input">
+                <label for="city">City: <span class="text-danger">*</span></label>
+                <input readonly type="text" id="city" name="business_city" placeholder="City"
+                       value="{{ old('business_city', $listing->business_city) }}">
+            </div>
+
+            <div class="add_property_input">
+                <label for="zipcode">ZIP Code: <span class="text-danger">*</span></label>
+                <input readonly type="text" id="zipcode" name="business_zipcode" placeholder="ZIP Code"
+                       value="{{ old('business_zipcode', $listing->business_zipcode) }}"
+                       pattern="\d{5}(-\d{4})?" title="Format: 12345 or 12345-6789">
+            </div>
+
         </div>
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
                 <label for="business_contact">Contact: <span class="text-danger">*</span></label>
-                <input type="text" id="business_contact" name="business_contact" placeholder="Business Contact"
+                <input type="text" id="business_contact" name="business_contact" placeholder="+1XXXXXXXXXX"
+                       pattern="\+1\d{10}" title="Please enter a valid phone number in the format +12345678900"
                        value="{{ old('business_contact', $listing->business_contact) }}" required>
             </div>
         </div>
@@ -331,41 +347,3 @@
         </div>
     </div>
 </div>
-
-
-
-{{--
-<script>
-    let map;
-    let geocoder;
-
-    function initMap() {
-        map = new google.maps.Map(document.getElementById("map"), {
-            center: { lat: -34.397, lng: 150.644 },
-            zoom: 8,
-        });
-        geocoder = new google.maps.Geocoder();
-    }
-
-    function geocodeZipCode(zipCode) {
-        geocoder.geocode({ 'address': zipCode }, function(results, status) {
-            if (status === 'OK') {
-                map.setCenter(results[0].geometry.location);
-                new google.maps.Marker({
-                    map: map,
-                    position: results[0].geometry.location,
-                });
-            } else {
-                alert('Geocode was not successful for the following reason: ' + status);
-            }
-        });
-    }
-
-    document.getElementById('address').addEventListener('change', function () {
-        const zipCode = this.value;
-        geocodeZipCode(zipCode);
-    });
-
-    window.onload = initMap;
-</script>
---}}
