@@ -26,7 +26,7 @@
                                                    class="img-fluid w-100"></span>
                                     </li>
                                     <li class="banner_selector">
-                                        <select class="select_2" name="zip_code">
+                                        <select class="select_2" name="zip_code" id="zip_code">
                                             <option value="">Zip Code</option>
                                         </select>
                                     </li>
