@@ -63,7 +63,19 @@ class SearchService
         });
     }
 
-    protected function filterByZipCode(string $zipCode)
+    protected function filterByZipCode($query, string $zipCode): void
     {
+        $query->where(function($q) use ($zipCode) {
+
+            $q->where('business_zipcode', $zipCode);
+        });
+    }
+
+    protected function filterByCity($query, string $city): void
+    {
+        $query->where(function($q) use ($city) {
+
+            $q->where('business_city', $city);
+        });
     }
 }

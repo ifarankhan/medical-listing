@@ -99,89 +99,90 @@
 <script src="{{ asset('frontend/js/jquery.animatedheadline.min.js') }}"></script>
 <!--script/custom js-->
 <script src="{{ asset('frontend/js/script.js') }}"></script>
+@if(request()->routeIs('listing.edit'))
+    <script
+        async
+        src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_API_KEY') }}&&callback=initAutocomplete&libraries=places&v=weekly"></script>
+    <script>
+        let autocomplete;
+        let address1Field;
+        let addressZipcode;
+        let addressCity;
 
-<script
-    async
-    src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_API_KEY') }}&&callback=initAutocomplete&libraries=places&v=weekly"></script>
-<script>
-    let autocomplete;
-    let address1Field;
-    let addressZipcode;
-    let addressCity;
+        function initAutocomplete() {
+            console.log('Initializing autocomplete...'); // Log for debugging
+            address1Field = document.querySelector("#business_address");
 
-    function initAutocomplete() {
-        console.log('Initializing autocomplete...'); // Log for debugging
-        address1Field = document.querySelector("#business_address");
+            addressZipcode = document.querySelector('#zipcode')
+            addressCity = document.querySelector('#city')
 
-        addressZipcode = document.querySelector('#zipcode')
-        addressCity = document.querySelector('#city')
+            // Create the autocomplete object, restricting the search predictions to addresses in the US.
+            autocomplete = new google.maps.places.Autocomplete(address1Field, {
+                componentRestrictions: { country: ["us"] },
+                fields: ["address_components", "geometry"],
+                types: ["address"],
+            });
 
-        // Create the autocomplete object, restricting the search predictions to addresses in the US.
-        autocomplete = new google.maps.places.Autocomplete(address1Field, {
-            componentRestrictions: { country: ["us"] },
-            fields: ["address_components", "geometry"],
-            types: ["address"],
-        });
-
-        // When the user selects an address from the drop-down, populate the address field.
-        autocomplete.addListener("place_changed", fillInAddress);
-    }
-
-    function fillInAddress() {
-        // Get the place details from the autocomplete object.
-        const place = autocomplete.getPlace();
-        let streetNumber = "";
-        let streetName = "";
-        let city = "";
-        let state = "";
-        let postcode = "";
-        let country = "";
-
-        // Get each component of the address from the place details.
-        for (const component of place.address_components) {
-            const componentType = component.types[0];
-
-            switch (componentType) {
-                case "street_number":
-                    streetNumber = component.long_name; // Capture street number
-                    break;
-                case "route":
-                    streetName = component.short_name; // Capture street name
-                    break;
-                case "locality":
-                    city = component.long_name; // Capture city
-                    break;
-                case "administrative_area_level_1":
-                    state = component.short_name; // Capture state (short form)
-                    break;
-                case "postal_code":
-                    postcode = component.long_name; // Capture postal code
-                    break;
-                case "country":
-                    country = component.long_name; // Capture country
-                    break;
-                case "administrative_area_level_2": // Check for additional city information
-                    if (!city) {
-                        city = component.long_name; // Use if city is not already set
-                    }
-                    break;
-            }
+            // When the user selects an address from the drop-down, populate the address field.
+            autocomplete.addListener("place_changed", fillInAddress);
         }
 
-        // Format the full address in US style.
-        const fullAddress = `${streetNumber} ${streetName}\n${city}, ${state} ${postcode}, ${country}`;
+        function fillInAddress() {
+            // Get the place details from the autocomplete object.
+            const place = autocomplete.getPlace();
+            let streetNumber = "";
+            let streetName = "";
+            let city = "";
+            let state = "";
+            let postcode = "";
+            let country = "";
+
+            // Get each component of the address from the place details.
+            for (const component of place.address_components) {
+                const componentType = component.types[0];
+
+                switch (componentType) {
+                    case "street_number":
+                        streetNumber = component.long_name; // Capture street number
+                        break;
+                    case "route":
+                        streetName = component.short_name; // Capture street name
+                        break;
+                    case "locality":
+                        city = component.long_name; // Capture city
+                        break;
+                    case "administrative_area_level_1":
+                        state = component.short_name; // Capture state (short form)
+                        break;
+                    case "postal_code":
+                        postcode = component.long_name; // Capture postal code
+                        break;
+                    case "country":
+                        country = component.long_name; // Capture country
+                        break;
+                    case "administrative_area_level_2": // Check for additional city information
+                        if (!city) {
+                            city = component.long_name; // Use if city is not already set
+                        }
+                        break;
+                }
+            }
+
+            // Format the full address in US style.
+            const fullAddress = `${streetNumber} ${streetName}\n${city}, ${state} ${postcode}, ${country}`;
 
 
-        // Set the business address field.
-        address1Field.value = fullAddress.trim(); // Use trim to remove extra spaces
-        addressZipcode.value = postcode;
-        addressCity.value = city;
+            // Set the business address field.
+            address1Field.value = fullAddress.trim(); // Use trim to remove extra spaces
+            addressZipcode.value = postcode;
+            addressCity.value = city;
 
-        address1Field.focus();
-    }
+            address1Field.focus();
+        }
 
-    window.initAutocomplete = initAutocomplete;
+        window.initAutocomplete = initAutocomplete;
 
-</script>
+    </script>
+@endif
 </body>
 </html>
