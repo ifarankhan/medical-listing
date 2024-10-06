@@ -113,8 +113,8 @@
             console.log('Initializing autocomplete...'); // Log for debugging
             address1Field = document.querySelector("#business_address");
 
-            addressZipcode = document.querySelector('#zipcode')
-            addressCity = document.querySelector('#city')
+            addressZipcode = document.querySelector('#business_zipcode')
+            addressCity = document.querySelector('#business_city')
 
             // Create the autocomplete object, restricting the search predictions to addresses in the US.
             autocomplete = new google.maps.places.Autocomplete(address1Field, {
@@ -169,7 +169,7 @@
             }
 
             // Format the full address in US style.
-            const fullAddress = `${streetNumber} ${streetName}\n${city}, ${state} ${postcode}, ${country}`;
+            const fullAddress = `${streetNumber} ${streetName} ${city}, ${state} ${postcode}, ${country}`;
 
 
             // Set the business address field.

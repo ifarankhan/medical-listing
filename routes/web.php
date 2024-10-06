@@ -4,6 +4,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\CityController;
 use App\Http\Controllers\ContactProviderController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\DashboardController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\SearchController;
 
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\WebhookController;
+use App\Http\Controllers\ZipcodeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ListingController;
@@ -41,6 +43,9 @@ Route::get('/search', [SearchController::class, 'search'])->name('search');
 Route::get('/check-auth', [AuthController::class, 'checkAuth'])->name('check-auth');
 
 Route::post('/webhook/stripe', [WebhookController::class, 'handleWebhook']);
+
+Route::get('/zipcodes', ZipCodeController::class);
+Route::get('/city', CityController::class);
 
 Route::group(['middleware' => 'guest'], function () {
 

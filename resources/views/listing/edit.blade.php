@@ -120,13 +120,13 @@
 
             <div class="add_property_input">
                 <label for="city">City: <span class="text-danger">*</span></label>
-                <input readonly type="text" id="city" name="business_city" placeholder="City"
+                <input readonly type="text" id="business_city" name="business_city" placeholder="City"
                        value="{{ old('business_city', $listing->business_city) }}">
             </div>
 
             <div class="add_property_input">
                 <label for="zipcode">ZIP Code: <span class="text-danger">*</span></label>
-                <input readonly type="text" id="zipcode" name="business_zipcode" placeholder="ZIP Code"
+                <input readonly type="text" id="business_zipcode" name="business_zipcode" placeholder="ZIP Code"
                        value="{{ old('business_zipcode', $listing->business_zipcode) }}"
                        pattern="\d{5}(-\d{4})?" title="Format: 12345 or 12345-6789">
             </div>
