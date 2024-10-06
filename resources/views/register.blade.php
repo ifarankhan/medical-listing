@@ -316,9 +316,10 @@
         });
 
         document.addEventListener("DOMContentLoaded", function () {
+
             @if(session('success'))
-            const successModal = new bootstrap.Modal(document.getElementById('registrationSuccessModal'), {});
-            successModal.show();
+                const successModal = new bootstrap.Modal(document.getElementById('registrationSuccessModal'), {});
+                successModal.show();
             @endif
         });
     </script>

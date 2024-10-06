@@ -568,7 +568,7 @@ $(function () {
     <!-- JavaScript to auto-dismiss the alert -->
     $(document).ready(function(){
         setTimeout(function(){
-            $(".alert").alert('close');
+            $(".alert:not(#persistentAlert)").alert('close');
         }, 7000); // 5000 milliseconds = 5 seconds
     });
 

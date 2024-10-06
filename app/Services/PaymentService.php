@@ -175,7 +175,7 @@ class PaymentService
             }
 
             $this->refundByPaymentIntent($subscriptionModel->payment_intent_id);
-
+            Log::info('Payment refunded for payment_intent_id: '. $subscriptionModel->payment_intent_id);
             return $this->stripeClient->subscriptions->cancel($stripeSubscription->id, []);
 
         } catch (Exception $e) {

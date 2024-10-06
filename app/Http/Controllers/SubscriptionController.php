@@ -99,6 +99,8 @@ class SubscriptionController extends Controller
     {
         $sessionStatusUrl = route('subscription.session.status');
 
-        return view('subscription.return', compact('sessionStatusUrl'));
+        $userListing = Auth::user()
+            ->listings()->first();
+        return view('subscription.return', compact('sessionStatusUrl', 'userListing'));
     }
 }

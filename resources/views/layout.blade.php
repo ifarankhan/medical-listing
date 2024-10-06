@@ -99,7 +99,7 @@
 <script src="{{ asset('frontend/js/jquery.animatedheadline.min.js') }}"></script>
 <!--script/custom js-->
 <script src="{{ asset('frontend/js/script.js') }}"></script>
-@if(request()->routeIs('listing.edit'))
+@if(request()->routeIs('listing.edit') || request()->routeIs('listing.create'))
     <script
         async
         src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_API_KEY') }}&&callback=initAutocomplete&libraries=places&v=weekly"></script>
