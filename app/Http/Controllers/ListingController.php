@@ -125,17 +125,18 @@ class ListingController extends Controller
     public function store(Request $request): RedirectResponse
     {
         try {
-            // Validate the request data
-            $validatedData = $this->validateListingData($request);
+
             $listingId = $request->input('listing_id');
             // Create a new listing instance and save the data
             if ($listingId) {
-
+                // Validate the request data
+                $validatedData = $this->validateListingData($request, true);
                 $listing = Listing::findOrFail($listingId);
                 $this->updateListing($listing, $validatedData);
                 $message = 'Listing updated successfully.';
             } else {
-
+                // Validate the request data
+                $validatedData = $this->validateListingData($request);
                 $listing = $this->createListing($validatedData);
                 $message = 'Listing created successfully. Please choose the plan.';
             }
@@ -155,7 +156,9 @@ class ListingController extends Controller
             if ($request->input('action') == 'save') {
 
                 // Redirect back to the form with a success message.
-                return back()->with('success', $message);
+                return redirect()
+                    ->route('listing.edit', $listing->id)
+                    ->with('success', 'The listing was updated successfully!');
             } else {
 
                 return redirect()->route('listing.step.subscription', $listing)
@@ -174,32 +177,16 @@ class ListingController extends Controller
 
     /**
      * @param Request $request
+     * @param bool $isEdit
      *
      * @return array
      * @throws \Illuminate\Validation\ValidationException
      */
-    private function validateListingData(Request $request): array
+    private function validateListingData(Request $request, bool $isEdit = false): array
     {
-        // Validate the request data
-        $validatedData = $request->validate([
-            // Main information
-            'authorized' => 'required|boolean',
-            'registered' => 'required|boolean',
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'email' => 'required|email',
-            'contact_number' => 'required|string',
-            'address' => 'required|string',
-            'business_name' => 'required|string',
-            'ein' => 'required|regex:/^\d{2}-\d{7}$/',
-            'business_address' => 'required|string',
-            'business_city' => 'string',
-            'business_zipcode' => 'string|regex:/^\d{5}(-\d{4})?$/',
-            'business_contact' => 'required|string',
-            'business_email' => 'required|email',
-            'profile_picture' => 'mimes:jpeg,png,jpg|image|max:4096',
-
-            // Validation rules for products/services - up to 5.
+        // Define validation rules
+        $rules = [
+            // Common rules
             'products' => 'required|array|max:5', // Maximum 5 products allowed.
             'products.*.category_id' => 'bail|required|exists:categories,id', // Using bail to stop after first failure.
             'products.*.description' => ['required', 'string', new WordCount(150)], // Validate each product description.
@@ -208,10 +195,34 @@ class ListingController extends Controller
             'products.*.accept_insurance' => 'nullable|boolean', // Validate each product accept_insurance attribute.
             'products.*.insurance_list' => 'nullable|string', // Validate each product insurance_list attribute.
             'products.*.price' => 'nullable|numeric|min:0', // Validate each product price.
-        ], [
+        ];
+
+        // Add rules only for create action
+        if (!$isEdit) {
+            $rules = array_merge($rules, [
+                'authorized' => 'required|boolean',
+                'registered' => 'required|boolean',
+                'first_name' => 'required|string',
+                'last_name' => 'required|string',
+                'email' => 'required|email',
+                'contact_number' => 'required|string',
+                'address' => 'required|string',
+                'business_name' => 'required|string',
+                'ein' => 'required|regex:/^\d{2}-\d{7}$/',
+                'business_address' => 'required|string',
+                'business_city' => 'string',
+                'business_zipcode' => 'string|regex:/^\d{5}(-\d{4})?$/',
+                'business_contact' => 'required|string',
+                'business_email' => 'required|email',
+                'profile_picture' => 'mimes:jpeg,png,jpg|image|max:4096',
+            ]);
+        }
+
+        // Validate the request data
+        $validatedData = $request->validate($rules, [
             // Custom error messages.
             'products.*.category_id.required' => 'The Product/Service is required for each product.',
-            'products.*.category_id.exists'   => 'The selected Product/Service does not exist.',
+            'products.*.category_id.exists' => 'The selected Product/Service does not exist.',
             'profile_picture.mimes' => 'The profile picture must be a file of type: jpeg, png, jpg.',
             'profile_picture.image' => 'The profile picture must be an image.',
             'profile_picture.max' => 'The profile picture may not be greater than 4 MB.',
@@ -240,6 +251,7 @@ class ListingController extends Controller
 
         return $validatedData;
     }
+
 
     private function createListing(array $data): Listing
     {
