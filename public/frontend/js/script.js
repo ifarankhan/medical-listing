@@ -575,6 +575,18 @@ $(function () {
     // Handle message modal form submit.
     $(document).ready(function (){
 
+        // Listen for keydown event on the search input
+        $('input[name="q"]').on('keydown', function(e) {
+            // Check if the pressed key is Enter (key code 13)
+            if (e.key === 'Enter') {
+                // Prevent the default action
+                e.preventDefault();
+
+                // Trigger the form submission (if needed)
+                $(this).closest('form').submit();
+            }
+        });
+
         const sendMessageModal = $('#sendMessageModal');
         const sendMessageForm = $('#sendMessageForm');
         // Handle click on Send Message button
@@ -673,19 +685,34 @@ $(function () {
                 }
             });
         });
-        // Multiple select listing for contact.
-        let selectedValues = [];
-        $('.select-to-contact').on('change', function() {
-
-            selectedValues = []; // Reset the array
-            let counter = 0;
+        // Function to show/hide the ContactOptions div based on checked checkboxes
+        function toggleContactOptions() {
             let isAnyChecked = false;
 
-            // Check the number of checked checkboxes and whether any checkbox is checked
+            // Check if any checkbox is checked
             $('.select-to-contact').each(function() {
-
                 if ($(this).is(':checked')) {
                     isAnyChecked = true;
+                }
+            });
+
+            // Show or hide the ContactOptions div based on the checkbox state
+            if (isAnyChecked) {
+                $('#ContactOptions').show();
+            } else {
+                $('#ContactOptions').hide();
+            }
+        }
+
+        let selectedValues = []; // Reset the array
+        // Event listener for checkbox changes
+        $('.select-to-contact').on('change', function() {
+
+            let counter = 0;
+
+            // Check the number of checked checkboxes
+            $('.select-to-contact').each(function() {
+                if ($(this).is(':checked')) {
                     selectedValues.push($(this).val());
                     counter++;
                 }
@@ -699,13 +726,12 @@ $(function () {
                 selectedValues.pop(); // Remove the last value
             }
 
-            // Enable or disable the div based on whether any checkbox is checked
-            if (isAnyChecked) {
-                $('#ContactOptions').show();
-            } else {
-                $('#ContactOptions').hide();
-            }
+            // Toggle the visibility of the ContactOptions div
+            toggleContactOptions();
         });
+
+        // Initial check on page load to show/hide the ContactOptions div
+        toggleContactOptions();
         // Contact multiple providers
         $('#ContactMultiple').click(function (e){
 

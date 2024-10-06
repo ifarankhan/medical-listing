@@ -264,6 +264,7 @@ class ListingController extends Controller
     private function saveProductServices(Listing $listing, array $products): void
     {
         foreach ($products as $product) {
+
             $productService = new ProductService([
                 'listing_id' => $listing->id,
                 'category_id' => $product['category_id'],

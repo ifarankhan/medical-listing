@@ -31,7 +31,7 @@ class SearchController extends Controller
             'listings',
             'serviceCategories',
             'filters',
-            'resultThreshold'
+            'resultThreshold',
         ));
     }
 }
