@@ -48,11 +48,11 @@
                         </p>
                         <ul>
                             <li>
-                                <a href="callto:+12024151578">
+                                <a href="callto:+15712973111">
                                         <span>
                                             <img src="{{ asset('frontend/images/mobail.png') }}" alt="icon" class="img-fluid w-100">
                                         </span>
-                                    +1 (202) 415-1578
+                                    +1 (571) 297 3111
                                 </a>
                             </li>
                             <li>
@@ -74,7 +74,7 @@
                             <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
                             <li><a href="{{ route('about') }}">providers/businesses</a></li>
                             <li><a href="{{ route('search') }}">services/products</a></li>
-                            <li><a href="privacy_policy.html">Privacy Policy</a></li>
+{{--                            <li><a href="privacy_policy.html">Privacy Policy</a></li>--}}
                             <li><a href="{{ route('contact') }}">contact</a></li>
                         </ul>
                     </div>
