@@ -47,11 +47,8 @@
                 <div class="row">
                     <div class="col-xxl-9 col-xl-8">
                         <div class="row">
-                            <div class="col-xxl-6 col-xl-12 wow fadeInLeft" data-wow-duration="1.5s">
-                                <div class="overview_chart">
-                                    <div class="example-two"></div>
-                                </div>
-                            </div>
+                            <x-customer-leads-per-month-chart :title="'Customer Leads Per Month'" :data="['News 1', 'News 2', 'News 3']"/>
+
                             <div class="col-xxl-6 col-xl-12 wow fadeInRight" data-wow-duration="1.5s">
                                 {{--<div class="review_progressbar mt_25">
                                     <h3>Summary</h3>
@@ -144,7 +141,7 @@
                             <h2>Recent Reviews</h2>
                             <div class="single_review">
                                 <div class="single_review_img">
-                                    <img src="assets/images/comment_1.png" alt="img" class="img-fluid w-100">
+                                    <img src="{{ asset('frontend/images/comment_1.png') }}" alt="img" class="img-fluid w-100">
                                 </div>
                                 <div class="single_review_text">
                                     <h3>Elon Gated
@@ -164,7 +161,7 @@
                             </div>
                             <div class="single_review">
                                 <div class="single_review_img">
-                                    <img src="assets/images/comment_2.png" alt="img" class="img-fluid w-100">
+                                    <img src="{{ asset('frontend/images/comment_2.png') }}" alt="img" class="img-fluid w-100">
                                 </div>
                                 <div class="single_review_text">
                                     <h3>Elon Gated
@@ -184,7 +181,7 @@
                             </div>
                             <div class="single_review">
                                 <div class="single_review_img">
-                                    <img src="assets/images/comment_3.png" alt="img" class="img-fluid w-100">
+                                    <img src="{{ asset('frontend/images/comment_3.png') }}" alt="img" class="img-fluid w-100">
                                 </div>
                                 <div class="single_review_text">
                                     <h3>Elon Gated

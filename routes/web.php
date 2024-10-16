@@ -4,6 +4,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\BarChartWidgetController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\ContactProviderController;
 use App\Http\Controllers\ContactUsController;
@@ -99,6 +100,7 @@ Route::group(['middleware' => ['role:insurance_provider']], function () {
         'deleteProductService'
     ])->name('product.destroy');
 
+    Route::get('/leads-per-month', [BarChartWidgetController::class, 'index']);
 });
 
 Route::group(['middleware' => ['role:customer']], function () {
