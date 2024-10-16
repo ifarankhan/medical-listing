@@ -67,7 +67,7 @@
                                 </div>
                                 <div class="about_description">
                                     <h6>Cost Savings on Marketing</h6>
-                                    <span>Cost Savings on Marketing Leverage Diverrx's established platform  to reach a broader audience for only $300 per year (or $29.99 per month).</span>
+                                    <span>Leverage Diverrx's established platform  to reach a broader audience for only $300 per year (or $29.99 per month).</span>
                                 </div>
                             </li>
                             <li>

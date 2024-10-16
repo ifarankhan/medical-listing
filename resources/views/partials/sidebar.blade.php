@@ -34,6 +34,15 @@
                     home
                 </a>
             </li>
+            <li>
+                <a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+                            <span>
+                                <img src="{{ asset('frontend/images/dashboard_icon_1.png') }}" alt="icon"
+                                     class="img-fluid w-100">
+                            </span>
+                    dashboard
+                </a>
+            </li>
             <!-- Menu items for insurance_provider role -->
             @userRole(UserRole::ROLE_INSURANCE_PROVIDER)
             <li>
@@ -46,15 +55,7 @@
                 </a>
             </li>
             @enduserRole
-{{--            <li>--}}
-{{--                <a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">--}}
-{{--                            <span>--}}
-{{--                                <img src="{{ asset('frontend/images/dashboard_icon_1.png') }}" alt="icon"--}}
-{{--                                     class="img-fluid w-100">--}}
-{{--                            </span>--}}
-{{--                    dashboard--}}
-{{--                </a>--}}
-{{--            </li>--}}
+
 
             <li>
                 <a class="{{request()->routeIs('message') ? 'active' : '' }}" href="{{ route('message') }}">

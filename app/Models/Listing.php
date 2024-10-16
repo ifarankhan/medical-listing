@@ -53,6 +53,11 @@ class Listing extends Model
         return $this->hasOne(Subscription::class);
     }
 
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'listing_id');
+    }
+
     public function activeSubscription(): HasOne|Builder
     {
         return $this->hasOne(Subscription::class)
@@ -71,5 +76,19 @@ class Listing extends Model
         // Fetch related product services and format them into a string.
         return ($insuranceList->isNotEmpty()) ?
             $this->productService->pluck('insurance_list')->implode(', ') : '';
+    }
+
+    /**
+     * Get messages count against the listing.
+     *
+     * @return int
+     */
+    public function getCustomerLeadsCount(): int
+    {
+        return $this->hasMany(Message::class, 'listing_id')
+            ->select('email')
+            ->groupBy('user_id')
+            ->distinct()
+            ->count('email');
     }
 }

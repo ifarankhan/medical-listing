@@ -21,10 +21,44 @@ class DashboardController extends Controller
         // Access user roles
         $userRoles = $user->userRole->first()->title;
 
-        return view('dashboard', [
-            'user' => $user,
-            'userName' => $userName,
-            'userRoles' => $userRoles
-        ]);
+        $numberOfProductServicesInListing = $this->getNumberOfProductServicesInList($user);
+        $customerLeads = $this->getCustomerMessagesForListing($user);
+        $listing = $this->getProductServicesInListing($user);
+        // Each listing must have one product/service
+        $listing = $listing->first();
+
+        return view('dashboard', compact(
+            'user',
+            'numberOfProductServicesInListing',
+            'customerLeads',
+            'listing',
+        ));
+    }
+
+    private function getNumberOfProductServicesInList($user)
+    {
+        /**
+         * product_service_count: This is the automatically
+         * generated attribute by withCount('productService').
+         * It stores the count of productService relationships for each listing.
+         */
+        return $user->listings()
+            ->withCount('productService')
+            ->get()
+            ->sum('product_service_count');
+    }
+
+    private function getCustomerMessagesForListing($user)
+    {
+        return $user->listings->sum(function ($listing) {
+            return $listing->getCustomerLeadsCount();
+        });
+    }
+
+    private function getProductServicesInListing($user)
+    {
+        return $user->listings()
+            ->with('productService')
+            ->get();
     }
 }
