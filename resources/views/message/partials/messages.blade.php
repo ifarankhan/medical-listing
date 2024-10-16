@@ -4,7 +4,7 @@
         <div class="card mb-3">
             <div class="card-header" id="heading-{{ $message->id }}">
                 <h5 class="mb-0">
-                    <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#collapse-{{ $message->id }}" aria-expanded="true" aria-controls="collapse-{{ $message->id }}">
+                    <button style="text-align: left;" class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#collapse-{{ $message->id }}" aria-expanded="true" aria-controls="collapse-{{ $message->id }}">
 
                         @php
                             $providerName = '';

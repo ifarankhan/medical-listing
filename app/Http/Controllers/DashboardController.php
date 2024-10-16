@@ -23,11 +23,15 @@ class DashboardController extends Controller
 
         $numberOfProductServicesInListing = $this->getNumberOfProductServicesInList($user);
         $customerLeads = $this->getCustomerMessagesForListing($user);
+        $listing = $this->getProductServicesInListing($user);
+        // Each listing must have one product/service
+        $listing = $listing->first();
 
         return view('dashboard', compact(
             'user',
             'numberOfProductServicesInListing',
-            'customerLeads'
+            'customerLeads',
+            'listing',
         ));
     }
 
@@ -49,5 +53,12 @@ class DashboardController extends Controller
         return $user->listings->sum(function ($listing) {
             return $listing->getCustomerLeadsCount();
         });
+    }
+
+    private function getProductServicesInListing($user)
+    {
+        return $user->listings()
+            ->with('productService')
+            ->get();
     }
 }

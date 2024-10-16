@@ -92,126 +92,32 @@
                                     <tr>
                                         <th class="images">images</th>
                                         <th class="details">details</th>
-                                        <th class="price">price</th>
-                                        <th class="status">status</th>
                                         <th class="action">action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td class="images">
-                                            <img src="assets/images/listing_1.jpg" alt="property"
-                                                 class="img-fluid w-100">
-                                        </td>
-                                        <td class="details">
-                                            <a class="item_title" href="listing_details.html">Leisure Beautiful
-                                                Health</a>
-                                            <p>Posting date: March 22, 2024</p>
-                                        </td>
-                                        <td class="price">
-                                            <h3>$599.00</h3>
-                                        </td>
-                                        <td class="status">
-                                            <span class="approved">approved</span>
-                                        </td>
-                                        <td class="action">
-                                            <a href="dashboard_edit_property.html"><i class="far fa-pen"></i>
-                                                Edit</a>
-                                            <a href="#"><i class="far fa-trash"></i> Delete</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="images">
-                                            <img src="assets/images/listing_2.jpg" alt="property"
-                                                 class="img-fluid w-100">
-                                        </td>
-                                        <td class="details">
-                                            <a class="item_title" href="listing_details.html">Hermosa Casa al
-                                                Norte</a>
-                                            <p>Posting date: March 22, 2024</p>
-                                        </td>
-                                        <td class="price">
-                                            <h3>$455.00</h3>
-                                        </td>
-                                        <td class="status">
-                                            <span class="pending">pending</span>
-                                        </td>
-                                        <td class="action">
-                                            <a href="dashboard_edit_property.html"><i class="far fa-pen"></i>
-                                                Edit</a>
-                                            <a href="#"><i class="far fa-trash"></i> Delete</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="images">
-                                            <img src="assets/images/listing_3.jpg" alt="property"
-                                                 class="img-fluid w-100">
-                                        </td>
-                                        <td class="details">
-                                            <a class="item_title" href="listing_details.html">South Side Garden
-                                                House</a>
-                                            <p>Posting date: March 22, 2024</p>
-                                        </td>
-                                        <td class="price">
-                                            <h3>$599.00</h3>
-                                        </td>
-                                        <td class="status">
-                                            <span class="sold">sold</span>
-                                        </td>
-                                        <td class="action">
-                                            <a href="dashboard_edit_property.html"><i class="far fa-pen"></i>
-                                                Edit</a>
-                                            <a href="#"><i class="far fa-trash"></i> Delete</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="images">
-                                            <img src="assets/images/listing_4.jpg" alt="property"
-                                                 class="img-fluid w-100">
-                                        </td>
-                                        <td class="details">
-                                            <a class="item_title" href="listing_details.html">Leisure Beautiful
-                                                Health</a>
-                                            <p>Posting date: March 22, 2024</p>
-                                        </td>
-                                        <td class="price">
-                                            <h3>$599.00</h3>
-                                        </td>
-                                        <td class="status">
-                                            <span class="approved">approved</span>
-                                        </td>
-                                        <td class="action">
-                                            <a href="dashboard_edit_property.html"><i class="far fa-pen"></i>
-                                                Edit</a>
-                                            <a href="#"><i class="far fa-trash"></i> Delete</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="images">
-                                            <img src="assets/images/listing_5.jpg" alt="property"
-                                                 class="img-fluid w-100">
-                                        </td>
-                                        <td class="details">
-                                            <a class="item_title" href="listing_details.html">Hermosa Casa al
-                                                Norte</a>
-                                            <p>Posting date: March 22, 2024</p>
-                                        </td>
-                                        <td class="price">
-                                            <h3>$455.00</h3>
-                                        </td>
-                                        <td class="status">
-                                            <span class="pending">pending</span>
-                                        </td>
-                                        <td class="action">
-                                            <a href="dashboard_edit_property.html"><i class="far fa-pen"></i>
-                                                Edit</a>
-                                            <a href="#"><i class="far fa-trash"></i> Delete</a>
-                                        </td>
-                                    </tr>
+                                    @foreach($listing->productService as $item)
+                                        <tr>
+                                            <td class="images">
+                                                <img src="{{ asset($listing->profile_picture ? 'storage/' . $listing->profile_picture : 'frontend/images/listing_1.jpg') }}" alt="property"
+                                                     class="img-fluid w-100">
+                                            </td>
+                                            <td class="details">
+                                                <a class="item_title" href="{{ route('listing.edit', $listing->id) }}">{{ $item->category()->first()->name }}</a>
+                                                <p>Posting date: {{ $listing->created_at->format('F j, Y') }}</p>
+                                            </td>
+                                            <td class="action">
+                                                <a href="{{ route('listing.edit', $listing->id) }}"><i class="far fa-pen"></i>
+                                                    Edit</a>
+                                                <a href="{{ route('listing.delete', $listing->id) }}"><i class="far fa-trash"></i> Delete</a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="row mt_25 wow fadeInUp" data-wow-duration="1.5s">
+                            {{--<div class="row mt_25 wow fadeInUp" data-wow-duration="1.5s">
                                 <div class="col-12">
                                     <div id="pagination_area">
                                         <nav aria-label="...">
@@ -230,7 +136,7 @@
                                         </nav>
                                     </div>
                                 </div>
-                            </div>
+                            </div>--}}
                         </div>
                     </div>
                     <div class="col-xxl-3 col-xl-4 wow fadeInRight" data-wow-duration="1.5s">
