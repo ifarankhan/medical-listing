@@ -83,7 +83,8 @@
                                 </div>--}}
                             </div>
                         </div>
-                        <div class="overview_listing">
+                        @if($listing && $listing->productService)
+                            <div class="overview_listing">
                             <div class="table-responsive wow fadeInUp" data-wow-duration="1.5s">
                                 <table>
                                     <thead>
@@ -94,6 +95,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+
                                     @foreach($listing->productService as $item)
                                         <tr>
                                             <td class="images">
@@ -136,6 +138,7 @@
                                 </div>
                             </div>--}}
                         </div>
+                        @endif
                     </div>
                     <div class="col-xxl-3 col-xl-4 wow fadeInRight" data-wow-duration="1.5s">
                         <div class="dashboard_overview_review">
