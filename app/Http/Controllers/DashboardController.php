@@ -5,15 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class DashboardController extends Controller
 {
-    public function index(): Factory|View|Application
+    public function index(): Application|Factory|View|RedirectResponse
     {
         // Get the authenticated user
         $user = Auth::user();
+        if ($user->isCustomer()) {
+            // For now customer gets to redirect to message instead of dashboard.
+            return redirect()->route('message');
+        }
         // Load the user's roles
         $user->load('userRole');
         // Access user information
@@ -26,12 +32,13 @@ class DashboardController extends Controller
         $listing = $this->getProductServicesInListing($user);
         // Each listing must have one product/service
         $listing = $listing->first();
-
+        $loadBarChart = true;
         return view('dashboard', compact(
             'user',
             'numberOfProductServicesInListing',
             'customerLeads',
             'listing',
+            'loadBarChart'
         ));
     }
 

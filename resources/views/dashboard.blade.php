@@ -47,6 +47,7 @@
                 <div class="row">
                     <div class="col-xxl-9 col-xl-8">
                         <div class="row">
+
                             <x-customer-leads-per-month-chart :title="'Customer Leads Per Month'" :data="['News 1', 'News 2', 'News 3']"/>
 
                             <div class="col-xxl-6 col-xl-12 wow fadeInRight" data-wow-duration="1.5s">

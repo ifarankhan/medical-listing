@@ -83,7 +83,9 @@
 <!--animated barfiller js-->
 <script src="{{ asset('frontend/js/animated_barfiller.js') }}"></script>
 <!--simple-bar-graph js-->
-<script src="{{ asset('frontend/js/jquery.simple-bar-graph.min.js') }}"></script>
+@if(isset($loadBarChart) && $loadBarChart)
+    <script src="{{ asset('frontend/js/jquery.simple-bar-graph.min.js') }}"></script>
+@endif
 <!--sticky sidebar js-->
 <script src="{{ asset('frontend/js/sticky_sidebar.js') }}"></script>
 <!--summernote js-->

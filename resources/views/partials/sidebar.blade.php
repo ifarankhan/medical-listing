@@ -34,6 +34,8 @@
                     home
                 </a>
             </li>
+            <!-- Menu items for insurance_provider role -->
+            @userRole(UserRole::ROLE_INSURANCE_PROVIDER)
             <li>
                 <a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
                             <span>
@@ -43,8 +45,7 @@
                     dashboard
                 </a>
             </li>
-            <!-- Menu items for insurance_provider role -->
-            @userRole(UserRole::ROLE_INSURANCE_PROVIDER)
+
             <li>
                 <a class="{{ request()->routeIs('listing.*') ? 'active' : '' }}" href="{{ route('listing.index') }}">
                                 <span>

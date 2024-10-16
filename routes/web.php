@@ -59,14 +59,12 @@ Route::group(['middleware' => 'guest'], function () {
 Route::group(['middleware' => ['role:customer,insurance_provider']], function () {
 
     Route::get('/account', [DashboardController::class, 'index'])->name('account');
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
     Route::delete('/logout', [LogoutController::class, 'logout'])->name('logout');
-
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/message', [MessageController::class, 'index'])->name('message');
-
     // Route to handle the file upload via AJAX
     Route::post('/profile/upload', [ProfileController::class, 'upload'])->name('profile.upload');
-
 });
 
 Route::group(['middleware' => ['role:insurance_provider']], function () {
