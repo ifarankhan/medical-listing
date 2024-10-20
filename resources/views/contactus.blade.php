@@ -42,7 +42,7 @@
                                 <span><img src="{{ asset('frontend/images/call.png') }}" alt="icon" class="img-fluid w-100"></span>
                                 <div class="contact_address_text">
                                     <p>Request a call back</p>
-                                    <a class="item_title" href="#">+1 (202) 415-1578</a>
+                                    <a class="item_title" href="tel:+15712973111">+1 (571) 297-311</a>
                                 </div>
                             </li>
                             <li>
@@ -90,7 +90,7 @@
                             </div>
                             <div class="col-md-6 col-lg-12 col-xl-6">
                                 <div class="contact_input">
-                                    <input type="text" name="phone" placeholder="Phone Number *" value="{{ old('phone') }}" required>
+                                    <input type="text" name="phone" placeholder="Phone Number (e.g. +1234567890) *" value="{{ old('phone') }}" required>
                                     <span class="contact_input_icon">
                                         <img src="{{ asset('frontend/images/call_2.png') }}" alt="icon" class="img-fluid w-100">
                                     </span>
