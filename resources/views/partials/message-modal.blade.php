@@ -30,24 +30,24 @@
                                 </div>
                                 <div class="col-md-6 col-lg-12 col-xl-6">
                                     <div class="contact_input">
-                                        <input type="text" placeholder="Phone Number" id="Phone">
+                                        <input type="text" placeholder="Phone Number (e.g. +1234567890) *" id="Phone">
                                         <span class="contact_input_icon"><img src="{{ asset('frontend/images/call_2.png') }}" alt="icon" class="img-fluid w-100"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-lg-12 col-xl-6">
                                     <div class="contact_input">
-                                        <input type="text" id="Subject" placeholder="Subject">
+                                        <input type="text" id="Subject" placeholder="Subject *">
                                         <span class="contact_input_icon"><img src="{{ asset('frontend/images/about_2_icon_1.png') }}" alt="icon" class="img-fluid w-100"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="contact_input">
-                                        <textarea rows="6" placeholder="Write Message..." id="Message"></textarea>
+                                        <textarea rows="6" placeholder="Write Message... *" id="Message"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="contact_input">
-                                        <button class="common_btn">Send Message</button>
+                                        <button class="common_btn" id="sendMessageBtn">Send Message</button>
                                     </div>
                                 </div>
                             </div>

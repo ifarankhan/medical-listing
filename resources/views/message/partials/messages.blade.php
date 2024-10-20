@@ -36,7 +36,7 @@
                     @else
                         <p><b>To:</b>
                     @endif {{ $message->provider->name }} &lt;{{ $message->provider->email }}&gt;</p>
-                    <p><b>Sent On:</b> {{ $message->created_at->format('F d, Y h:i A') }}</p>
+                    <p><b>Sent On:</b> {{ $message->created_at->timezone('America/New_York')->format('F d, Y h:i A') }}</p>
                     <p><b>Phone:</b> {{ $message->phone }}</p>
                     <br/>
                     <p><b>Message:</b></p>

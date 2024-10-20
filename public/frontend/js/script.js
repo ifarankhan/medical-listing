@@ -593,6 +593,7 @@ $(function () {
         $('.sendMessageBtn').click(function(e) {
 
             e.preventDefault(); // Prevent default behavior (if any)
+
             let button = $(this);
             // Check if user is authenticated
             $.ajax({
@@ -629,6 +630,14 @@ $(function () {
         sendMessageForm.submit(function(e) {
 
             e.preventDefault();
+
+            /*let btn = $('#sendMessageBtn'); // Store reference to the send button
+            btn.prop('disabled', true); // Disable the button to prevent further clicks
+
+            // Optional: Change button text to indicate it's processing
+            const originalText = btn.text(); // Save original text
+            btn.text('Sending...'); // Change button text*/
+
             const fullName = $('#FullName').val();
             const email = $('#Email').val();
             const phone = $('#Phone').val();
@@ -682,7 +691,12 @@ $(function () {
                     }
 
                     alert('Validation error(s):\n' + errorMessages);
-                }
+                },
+                /*complete: function() {
+                    // Re-enable the button after the AJAX call is complete
+                    btn.prop('disabled', false); // Enable the button
+                    btn.text(originalText); // Restore original button text
+                }*/
             });
         });
         // Function to show/hide the ContactOptions div based on checked checkboxes
