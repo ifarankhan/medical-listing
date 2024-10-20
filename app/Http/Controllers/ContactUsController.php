@@ -25,7 +25,7 @@ class ContactUsController extends Controller
             'email' => 'required|email',
             'message' => 'required|string',
             'subject' => 'required',
-            'phone' => 'required',
+            'phone' => ['required', 'regex:/^\+1[0-9]{10}$/'],
         ]);
 
         // Get individual fields
@@ -42,6 +42,7 @@ class ContactUsController extends Controller
             'subject',
             'phone'
         ), function ($message) use ($name, $email) {
+
             $message->to(env('INO_EMAIL'))  // Recipient email
                     ->subject('New Contact Us Message')
                     ->from($email, $name);

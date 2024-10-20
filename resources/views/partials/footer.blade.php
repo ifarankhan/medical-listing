@@ -48,7 +48,7 @@
                         </p>
                         <ul>
                             <li>
-                                <a href="callto:+15712973111">
+                                <a href="tel:+15712973111">
                                         <span>
                                             <img src="{{ asset('frontend/images/mobail.png') }}" alt="icon" class="img-fluid w-100">
                                         </span>
