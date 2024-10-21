@@ -26,7 +26,7 @@ class SendMessageRequest extends FormRequest
         return [
             'fullName' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'phone' => ['required', 'regex:/^\+?[1-9]\d{1,14}$/'],
+            'phone' => ['nullable', 'regex:/^\+?1\d{10}$/'],
             'subject' => 'required|string|max:255',
             'message' => 'required|string',
             'listing_id' => 'required|array',

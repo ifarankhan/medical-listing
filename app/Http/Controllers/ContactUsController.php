@@ -25,7 +25,7 @@ class ContactUsController extends Controller
             'email' => 'required|email',
             'message' => 'required|string',
             'subject' => 'required',
-            'phone' => ['required', 'regex:/^\+?[1-9]\d{1,14}$/'],
+            'phone' => ['required', 'regex:/^(?:\+1)?\d{10}$/'],
         ]);
 
         // Get individual fields

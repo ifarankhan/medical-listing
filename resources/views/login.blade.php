@@ -65,7 +65,7 @@
                                         @csrf
                                         <div class="single_input">
                                             <label>Email <span class="text-danger">*</span></label>
-                                            <input type="text" name="email" placeholder="Email" required>
+                                            <input type="text" name="email" value="{{ old('email') }}" placeholder="Email" required>
                                         </div>
                                         <div class="single_input">
                                             <label>Password <span class="text-danger">*</span></label>
