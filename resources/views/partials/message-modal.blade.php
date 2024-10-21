@@ -30,7 +30,7 @@
                                 </div>
                                 <div class="col-md-6 col-lg-12 col-xl-6">
                                     <div class="contact_input">
-                                        <input type="text" placeholder="Phone Number (e.g. +1234567890) *" id="Phone">
+                                        <input type="text" placeholder="Phone Number (e.g. +1234567890)" id="Phone">
                                         <span class="contact_input_icon"><img src="{{ asset('frontend/images/call_2.png') }}" alt="icon" class="img-fluid w-100"></span>
                                     </div>
                                 </div>
