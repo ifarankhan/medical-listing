@@ -29,10 +29,19 @@ class RedirectIfAuthenticated
             if (Auth::guard($guard)->check()) {
 
                 $user = Auth::user();
+
+                if ($user->isAdmin()) {
+
+                    Auth::logout();
+                    return redirect()->route('login')
+                              ->with('error', 'You are not authorized to access this resource.');
+                }
+
                 // Redirect Insurance Provider to Listing page.
                 if ($user->userRole->contains('name', 'insurance_provider')) {
                     return redirect('dashboard/listing');
                 }
+
                 return redirect(RouteServiceProvider::HOME);
             }
         }

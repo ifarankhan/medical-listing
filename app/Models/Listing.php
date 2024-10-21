@@ -87,7 +87,6 @@ class Listing extends Model
     {
         return $this->hasMany(Message::class, 'listing_id')
             ->select('email')
-            ->groupBy('user_id')
             ->distinct()
             ->count('email');
     }
