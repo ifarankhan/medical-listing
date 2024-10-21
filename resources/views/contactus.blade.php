@@ -42,7 +42,7 @@
                                 <span><img src="{{ asset('frontend/images/call.png') }}" alt="icon" class="img-fluid w-100"></span>
                                 <div class="contact_address_text">
                                     <p>Request a call back</p>
-                                    <a class="item_title" href="tel:+15712973111">+1 (571) 297-311</a>
+                                    <a class="item_title" href="tel:+15712973111">+1 (571) 297-3111</a>
                                 </div>
                             </li>
                             <li>

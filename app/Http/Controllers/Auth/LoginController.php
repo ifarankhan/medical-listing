@@ -28,7 +28,7 @@ class LoginController extends Controller
             return redirect()->back();
         }
 
-        return back()->with('error', 'Error: Email or Password not correct.');
+        return back()->withInput()->with('error', 'Email or Password not correct.');
     }
 
 }

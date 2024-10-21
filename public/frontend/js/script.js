@@ -718,11 +718,25 @@ $(function () {
             }
         }
 
-        let selectedValues = []; // Reset the array
-        // Event listener for checkbox changes
-        $('.select-to-contact').on('change', function() {
+        const selectedValuesKey = 'selectedValues';
 
+        // Load selected values from local storage
+        let selectedValues = JSON.parse(localStorage.getItem(selectedValuesKey)) || [];
+
+        // Restore the checkbox states based on stored values
+        $('.select-to-contact').each(function() {
+            if (selectedValues.includes($(this).val())) {
+                $(this).prop('checked', true);
+            }
+        });
+
+        // Toggle the visibility of the ContactOptions div
+        toggleContactOptions();
+
+        // Update local storage when checkboxes change
+        $('.select-to-contact').on('change', function() {
             let counter = 0;
+            selectedValues = []; // Reset selected values array
 
             // Check the number of checked checkboxes
             $('.select-to-contact').each(function() {
@@ -740,15 +754,15 @@ $(function () {
                 selectedValues.pop(); // Remove the last value
             }
 
+            // Update local storage with the selected values
+            localStorage.setItem(selectedValuesKey, JSON.stringify(selectedValues));
+
             // Toggle the visibility of the ContactOptions div
             toggleContactOptions();
         });
 
-        // Initial check on page load to show/hide the ContactOptions div
-        toggleContactOptions();
         // Contact multiple providers
-        $('#ContactMultiple').click(function (e){
-
+        $('#ContactMultiple').click(function(e) {
             e.preventDefault();
 
             // Proceed with AJAX request
@@ -761,6 +775,9 @@ $(function () {
                 },
                 success: function(response) {
                     if (response.error === false) {
+                        // Reset selected values and local storage
+                        selectedValues = []; // Reset selected values array
+                        localStorage.setItem(selectedValuesKey, JSON.stringify(selectedValues)); // Update local storage
                         // Redirect to another page
                         window.location.href = requestReview; // Use the named route
                     }
@@ -791,6 +808,10 @@ $(function () {
                 },
                 success: function(response) {
                     if (response.error === false) {
+
+                        // Reset selected values and local storage
+                        selectedValues = []; // Reset selected values array
+                        localStorage.setItem(selectedValuesKey, JSON.stringify(selectedValues)); // Update local storage
                         // Redirect to another page
                         window.location.href = requestReview; // Use the named route
                     }
