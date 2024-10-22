@@ -9,6 +9,7 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\ContactProviderController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GetInTouchController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PricingController;
@@ -47,6 +48,9 @@ Route::post('/webhook/stripe', [WebhookController::class, 'handleWebhook']);
 
 Route::get('/zipcodes', ZipCodeController::class);
 Route::get('/city', CityController::class);
+
+Route::post('/get-in-touch', [GetInTouchController::class, 'sendEmail'])->name('get-in-touch');
+
 
 Route::group(['middleware' => 'guest'], function () {
 

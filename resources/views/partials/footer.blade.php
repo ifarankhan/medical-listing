@@ -108,10 +108,13 @@
                 <div class="col-lg-3 col-md-8 wow fadeInRight" data-wow-duration="2.2s">
                     <div class="footer_right footer_right_2">
                         <h4>Get in Touch</h4>
-                        <form action="#">
-                            <input type="text" placeholder="info@diverrx.com">
-                            <button><i class="far fa-arrow-right"></i></button>
+                        <form id="getInTouchForm">
+
+
+                            <input id="getInTouchEmail" type="email" placeholder="Enter your email address *" required>
+                            <button type="submit" id="getInTouchSubmit"><i class="far fa-arrow-right"></i></button>
                         </form>
+                        <div id="formMessage"></div>
                         <h5>Follow Us</h5>
                         <ul class="d-flex flex-wrap">
 {{--                            <li><a href="#"><i class="fab fa-twitter"></i></a></li>--}}

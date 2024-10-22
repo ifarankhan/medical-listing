@@ -1122,5 +1122,43 @@ $(function () {
             allowClear: false // Allow clearing the selection
         });
     });
+
+    // Get in touch
+    $(document).ready(function() {
+        $('#getInTouchForm').submit(function(e) {
+            e.preventDefault(); // Prevent form from submitting the traditional way
+
+            const email = $('#getInTouchEmail').val();
+            const formMessage = $('#formMessage');
+            const csrfToken = $('meta[name="csrf-token"]').attr('content'); // Get CSRF token from meta tag
+
+            $.ajax({
+                url: "/get-in-touch", // Laravel route to handle form submission
+                method: 'POST',
+                data: {
+                    _token: csrfToken, // CSRF Token
+                    email: email
+                },
+                success: function(response) {
+                    if (response.success) {
+                        formMessage.text(response.message).css('color', 'green'); // Success message.
+                        $('#getInTouchForm')[0].reset(); // Reset the form.
+                        // Hide the message after 5 seconds (5000 milliseconds)
+                        setTimeout(function() {
+                            formMessage.fadeOut(); // You can use fadeOut for a smoother transition
+                        }, 5000);
+                    }
+                },
+                error: function(xhr) {
+                    const errors = xhr.responseJSON.errors;
+                    formMessage.text(errors.email[0]).css('color', 'red'); // Show validation error.
+                    // Hide the message after 5 seconds (5000 milliseconds)
+                    setTimeout(function() {
+                        formMessage.fadeOut(); // You can use fadeOut for a smoother transition
+                    }, 5000);
+                }
+            });
+        });
+    });
 });
 
