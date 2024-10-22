@@ -18,7 +18,7 @@ class ContactUsController extends Controller
     }
 
     public function submit(Request $request): RedirectResponse
-    {;
+    {
         // Validate the form data
         $request->validate([
             'name' => 'required|string|max:255',
