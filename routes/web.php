@@ -8,6 +8,7 @@ use App\Http\Controllers\BarChartWidgetController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\ContactProviderController;
 use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\CustomerDashboardController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GetInTouchController;
 use App\Http\Controllers\HomeController;
@@ -112,6 +113,9 @@ Route::group(['middleware' => ['role:customer']], function () {
          ->name('contact.multiple.providers');
     Route::get('/review-request', [ContactProviderController::class, 'reviewRequest'])
          ->name('review.request');
+
+    Route::get('/my-dash', [CustomerDashboardController::class, 'index'])
+         ->name('my-dash');
 });
 
 use App\Http\Controllers\Auth\ForgotPasswordController;
