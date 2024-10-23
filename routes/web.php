@@ -8,6 +8,7 @@ use App\Http\Controllers\BarChartWidgetController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\ContactProviderController;
 use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\CustomerBarChartController;
 use App\Http\Controllers\CustomerDashboardController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GetInTouchController;
@@ -66,7 +67,7 @@ Route::group(['middleware' => ['role:customer,insurance_provider']], function ()
     Route::get('/account', [DashboardController::class, 'index'])->name('account');
 
     Route::delete('/logout', [LogoutController::class, 'logout'])->name('logout');
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
     Route::get('/dashboard/message', [MessageController::class, 'index'])->name('message');
     // Route to handle the file upload via AJAX
     Route::post('/profile/upload', [ProfileController::class, 'upload'])->name('profile.upload');
@@ -74,6 +75,7 @@ Route::group(['middleware' => ['role:customer,insurance_provider']], function ()
 
 Route::group(['middleware' => ['role:insurance_provider']], function () {
 
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/listing', [ListingController::class, 'index'])->name('listing.index');
     Route::get('/dashboard/listing/create', [ListingController::class, 'create'])->name('listing.create');
     Route::post('/dashboard/listing/store', [ListingController::class, 'store'])->name('listing.store');
@@ -116,6 +118,9 @@ Route::group(['middleware' => ['role:customer']], function () {
 
     Route::get('/my-dash', [CustomerDashboardController::class, 'index'])
          ->name('my-dash');
+
+    Route::get('/customer-queries-per-month', [CustomerBarChartController::class, 'index']);
+
 });
 
 use App\Http\Controllers\Auth\ForgotPasswordController;

@@ -11,20 +11,20 @@
 
             <div class="dashboard_overview">
                 <div class="row">
-                    <div class="col-xxl-3 col-md-6 col-xl-6 wow fadeInUp" data-wow-duration="1.5s">
+                    {{--<div class="col-xxl-3 col-md-6 col-xl-6 wow fadeInUp" data-wow-duration="1.5s">
                         <div class="dashboard_overview_item">
                             <div class="icon">
                                 <i class="far fa-list-ul"></i>
                             </div>
-                            <h3> {{ $numberOfProductServicesInListing }} <span>New Messages</span></h3>
+                            <h3> {{ $messageSent }} <span>New Messages</span></h3>
                         </div>
-                    </div>
+                    </div>--}}
                     <div class="col-xxl-3 col-md-6 col-xl-6 wow fadeInUp" data-wow-duration="1.5s">
                         <div class="dashboard_overview_item blue">
                             <div class="icon">
                                 <i class="fas fa-spinner"></i>
                             </div>
-                            <h3> {{ $customerLeads }} <span>Queries Sent</span></h3>
+                            <h3> {{ $queriesSent }} <span>Queries Sent</span></h3>
                         </div>
                     </div>
                     {{--<div class="col-xxl-3 col-md-6 col-xl-6 wow fadeInUp" data-wow-duration="1.5s">
@@ -48,7 +48,7 @@
                     <div class="col-xxl-9 col-xl-8">
                         <div class="row">
 
-                            <x-customer-leads-per-month-chart :title="'Customer Queries Sent Per Month'" :data="['News 1', 'News 2', 'News 3']"/>
+                            <x-customer-bar-chart-component :title="'Customer Queries Sent Per Month'" :data="['News 1', 'News 2', 'News 3']"/>
 
                             <div class="col-xxl-6 col-xl-12 wow fadeInRight" data-wow-duration="1.5s">
                                 {{--<div class="review_progressbar mt_25">

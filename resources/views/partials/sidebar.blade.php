@@ -55,6 +55,16 @@
                     your business profile
                 </a>
             </li>
+            @else
+                <li>
+                    <a class="{{ request()->routeIs('my-dash') ? 'active' : '' }}" href="{{ route('my-dash') }}">
+                            <span>
+                                <img src="{{ asset('frontend/images/dashboard_icon_1.png') }}" alt="icon"
+                                     class="img-fluid w-100">
+                            </span>
+                        dashboard
+                    </a>
+                </li>
             @enduserRole
 
 
