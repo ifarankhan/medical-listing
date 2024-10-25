@@ -132,6 +132,8 @@ Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEm
 Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
 
+Route::view('/privacy-policy', 'static.privacy-policy')->name('privacy.policy');
+Route::view('/terms-of-use', 'static.terms-of-use')->name('terms.of.use');
 /*use Illuminate\Support\Facades\Mail;
 
 Route::get('/test-email', function () {

@@ -91,7 +91,6 @@
                 </div>--}}
                 <div class="col-lg-3 col-sm-6 wow fadeInRight" data-wow-duration="1.9s">
                     <div class="footer_menu">
-                        <h4>Help</h4>
                         <ul>
                             <li><a href="{{ route('login') }}">sign in</a></li>
                             <li><a href="{{ route('register') }}">Register</a></li>
@@ -101,6 +100,12 @@
                                 @else
                                     <a href="{{ route('login') }}">Add A Product/Service</a>
                                 @endauth
+                            </li>
+                            <li>
+                                <a href="{{ route('terms.of.use') }}">Terms of Use</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('privacy.policy') }}">Privacy Policy</a>
                             </li>
                         </ul>
                     </div>
@@ -131,7 +136,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xl-12">
-                    <p>© 2024 All Rights Reserved by Diverrx</p>
+                    <p>© 2024 All Rights Reserved by DivSol LLC</p>
                 </div>
             </div>
         </div>
