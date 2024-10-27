@@ -1160,5 +1160,16 @@ $(function () {
             });
         });
     });
+
+
+    $(document).ready(function() {
+        $('#multiStepForm').on('submit', function(event) { console.log(event);
+            // Trigger browser validation
+            if (!this.checkValidity()) {
+                event.preventDefault(); // Stop form submission if invalid
+                this.reportValidity();  // Show validation messages
+            }
+        });
+    });
 });
 

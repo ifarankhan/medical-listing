@@ -183,7 +183,7 @@
             addressZipcode.value = postcode;
             addressCity.value = city;
 
-            address1Field.focus();
+            //address1Field.focus(); as this triggers google map api even after address selection.
         }
 
         window.initAutocomplete = initAutocomplete;

@@ -10,12 +10,12 @@
                 <label>Are you legally authorized to promote products and services that you wish to list on diverrx? <span class="text-danger">*</span></label>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" id="authorized_yes" name="authorized" value="1"
-                           {{ old('authorized', $listing->authorized) == 1 ? 'checked' : '' }} required {{ isset($listing->id) ? 'disabled' : '' }}>
+                           {{ old('authorized', $listing->authorized) == 1 ? 'checked' : '' }} required {{ isset($listing->id) ? 'readonly' : '' }}>
                     <label class="form-check-label" for="authorized_yes">Yes</label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" id="authorized_no" name="authorized" value="0"
-                           {{ old('authorized', $listing->authorized) == 0 ? 'checked' : '' }} required {{ isset($listing->id) ? 'disabled' : '' }}>
+                           {{ old('authorized', $listing->authorized) == 0 ? 'checked' : '' }} required {{ isset($listing->id) ? 'readonly' : '' }}>
                     <label class="form-check-label" for="authorized_no">No</label>
                 </div>
 
@@ -26,13 +26,13 @@
                 <label>Is the business you wish to promote on diverrx a legally registered entity? (Proof of registration will be required in subsequent steps) <span class="text-danger">*</span></label>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" id="registered_yes" name="registered" value="1"
-                           {{ old('registered', $listing->registered) == 1 ? 'checked' : '' }} required {{ isset($listing->id) ? 'disabled' : '' }}>
+                           {{ old('registered', $listing->registered) == 1 ? 'checked' : '' }} required {{ isset($listing->id) ? 'readonly' : '' }}>
                     <label class="form-check-label" for="registered_yes">Yes</label>
 
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" id="registered_no" name="registered" value="0"
-                           {{ old('registered', $listing->registered) == 0 ? 'checked' : '' }} required {{ isset($listing->id) ? 'disabled' : '' }}>
+                           {{ old('registered', $listing->registered) == 0 ? 'checked' : '' }} required {{ isset($listing->id) ? 'readonly' : '' }}>
                     <label class="form-check-label" for="registered_no">No</label>
                 </div>
             </div>
@@ -158,7 +158,7 @@
                     </div>
                 @endif
 
-                <input type="file" name="profile_picture" accept="image/*" {{ isset($listing->id) ? 'disabled' : '' }}>
+                <input type="file" name="profile_picture" accept="image/*" {{ isset($listing->id) ? 'readonly' : '' }}>
             </div>
         </div>
 
@@ -347,3 +347,4 @@
         </div>
     </div>
 </div>
+
