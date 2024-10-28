@@ -87,18 +87,22 @@
                                         @csrf
                                         <div class="single_input">
                                             <label>Name <span class="text-danger">*</span></label>
-                                            <input type="text" placeholder="Name" name="name" value="{{ old('name') }}" required>
+                                            <input type="text" placeholder="Name" name="name" value="{{ old('name') }}"
+                                                   required>
                                         </div>
                                         @error('name')
-                                            <div class="invalid-feedback" style="display: block" role="alert">{{ $message }}</div>
+                                        <div class="invalid-feedback" style="display: block"
+                                             role="alert">{{ $message }}</div>
                                         @enderror
 
                                         <div class="single_input">
                                             <label>Email <span class="text-danger">*</span></label>
-                                            <input type="email" name="email" placeholder="Email" value="{{ old('email') }}" required>
+                                            <input type="email" name="email" placeholder="Email"
+                                                   value="{{ old('email') }}" required>
                                         </div>
                                         @error('email')
-                                            <div class="invalid-feedback" style="display: block" role="alert">{{ $message }}</div>
+                                        <div class="invalid-feedback" style="display: block"
+                                             role="alert">{{ $message }}</div>
                                         @enderror
 
                                         <div class="single_input">
@@ -106,14 +110,16 @@
                                             <select class="form-select" id="role" name="role" required>
                                                 <option value="">Select Role</option>
                                                 @foreach ($userRoles as $role)
-                                                    <option value="{{ $role->id }}" {{ old('role') == $role->id ? 'selected' : '' }}>
+                                                    <option
+                                                        value="{{ $role->id }}" {{ old('role') == $role->id ? 'selected' : '' }}>
                                                         {{ $role->title }}
                                                     </option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         @error('role')
-                                            <div class="invalid-feedback" style="display: block" role="alert">{{ $message }}</div>
+                                        <div class="invalid-feedback" style="display: block"
+                                             role="alert">{{ $message }}</div>
                                         @enderror
 
                                         <div class="single_input">
@@ -122,12 +128,15 @@
 
                                             <!-- Password requirements note -->
                                             <small class="text-muted d-block mt-1">
-                                                Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character (e.g., @, $, !, %, *, ?).
+                                                Password must be at least 8 characters long, contain at least one
+                                                uppercase letter, one lowercase letter, one number, and one special
+                                                character (e.g., @, $, !, %, *, ?).
                                             </small>
 
                                         </div>
                                         @error('password')
-                                            <div class="invalid-feedback" style="display: block" role="alert">{{ $message }}</div>
+                                        <div class="invalid-feedback" style="display: block"
+                                             role="alert">{{ $message }}</div>
                                         @enderror
 
                                         <div class="single_input">
@@ -137,22 +146,28 @@
                                                 name="password_confirmation" placeholder="********" required>
                                         </div>
                                         @error('password_confirmation')
-                                            <div class="invalid-feedback" style="display: block" role="alert">{{ $message }}</div>
+                                        <div class="invalid-feedback" style="display: block"
+                                             role="alert">{{ $message }}</div>
                                         @enderror
 
                                         <!-- Terms and Conditions Checkbox -->
                                         <div class="single_input d-flex align-items-center">
-                                            <input type="checkbox" id="terms" name="terms" required class="me-1" style="width: auto; height: auto;">
+                                            <input type="checkbox" id="terms" name="terms" required class="me-1"
+                                                   style="width: auto; height: auto;">
                                             <label for="terms" class="mb-0">
-                                                I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal" class="link-primary">Terms and Conditions</a> <span class="text-danger">*</span>
+                                                I agree to the <a href="#" data-bs-toggle="modal"
+                                                                  data-bs-target="#termsModal" class="link-primary">Terms
+                                                    and Conditions</a> <span class="text-danger">*</span>
                                             </label>
                                         </div>
                                         @error('terms')
-                                            <div class="invalid-feedback" style="display: block" role="alert">{{ $message }}</div>
+                                        <div class="invalid-feedback" style="display: block"
+                                             role="alert">{{ $message }}</div>
                                         @enderror
 
 
-                                        <button id="submitBtn" class="common_btn common_btn_2">Create an account</button>
+                                        <button id="submitBtn" class="common_btn common_btn_2">Create an account
+                                        </button>
                                     </form>
 
                                     <p>Already have an account? <a href="{{ route('login') }}">login</a></p>
@@ -160,7 +175,8 @@
                             </div>
                             <div class="col-xl-6 d-none d-xl-block wow fadeInRight" data-wow-duration="1.5s">
                                 <div class="login_img">
-                                    <img src="{{ asset('frontend/images/about_us_1.jpg') }}" alt="img" class="img-fluid w-100">
+                                    <img src="{{ asset('frontend/images/about_us_1.jpg') }}" alt="img"
+                                         class="img-fluid w-100">
                                 </div>
                             </div>
                         </div>
@@ -177,97 +193,168 @@
                         <h5 class="modal-title" id="termsModalLabel">Diverrx Inc. Terms of Service</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body" style="padding: 30px; max-height: 40vh; overflow-y: auto;">
-                        <style>
-                            .modal-body {
-                                line-height: 1.6;
-                            }
-                            .modal-body h6 {
-                                margin-top: 20px;
-                                margin-bottom: 10px;
-                            }
-                            .modal-body p {
-                                margin-bottom: 10px;
-                                padding-left: 20px; /* Ensure no padding is applied */
-                                font-size: 1rem; /* Set a specific font size */
-                                color: #212529; /* Default text color */
-                            }
-                            .modal-body ul {
-                                padding-left: 40px;
-                                margin: 0;
-                                list-style: lower-roman;
-                            }
-                            .modal-body ul li {
-                                margin-bottom: 5px; /* Add some spacing between list items */
-                                list-style: lower-roman
-                            }
-                        </style>
 
-                        <h6>Effective Date: [Insert Date]</h6>
+                    <div class="modal-body privacy_policy_area" style="padding: 30px; max-height: 60vh; overflow-y: auto;">
+                        <h4>User Agreement</h4>
+                        <p>This User Agreement ("Agreement") is made between DivSol LLC ("we," "us,"
+                            "our"), the owner and operator of <a href="http://www.diverrx.com" target="_blank">www.diverrx.com</a>
+                            ("Site"), and you, the user ("you," "your"). By accessing or using the Site, you agree to be
+                            bound by the terms and conditions of this Agreement.</p>
+                        <p>This Agreement governs your use of the Site, including both service providers and consumers
+                            seeking services or products. It is important that you read this Agreement carefully before
+                            using the Site. If you do not agree to these terms, you must discontinue your use of the
+                            Site.</p>
 
-                        <h6>1. Introduction</h6>
-                        <p>Welcome to Diverrx Inc. By using our website and services (the “Site”), you agree to abide by the following Terms of Service. If you disagree with these terms, please do not use the Site.</p>
+                        <h4>1. Acceptance of Terms</h4>
+                        <br/>
+                        <p>By accessing or using the Site, you acknowledge that you have read, understood, and agree to
+                            be bound by these terms. If you do not accept these terms, you are not authorized to use the
+                            Site.</p>
 
-                        <h6>2. Purpose and Scope</h6>
-                        <p>The Site provides general information and resources. We do not endorse or recommend any specific professionals, products, or services listed. Your use of the Site is at your own risk, and you are responsible for assessing the information provided.</p>
+                        <h4>2. Purpose of the Site</h4>
+                        <br/>
+                        <p>The Site is intended to facilitate the connection between service providers and consumers.
+                            The information provided on the Site is for general purposes only. We do not endorse,
+                            recommend, or warrant any specific professionals, services, or products featured on the
+                            Site.</p>
 
-                        <h6>3. User Responsibilities</h6>
-                        <p>While using the Site, you must:</p>
+                        <h4>3. Code of Conduct</h4>
+                        <br/>
                         <ul>
-                            <li>Avoid posting or sharing content that is illegal, offensive, or harmful.</li>
-                            <li>Not use the Site for unauthorized commercial purposes or personal gain.</li>
-                            <li>Refrain from impersonating others or submitting false information.</li>
-                            <li>Not distribute unsolicited messages or spam.</li>
+                            <li><strong>Posting Guidelines:</strong> You must not post content that:
+                                <br/>
+                                <ul>
+                                    <li>Contains links to competing websites.</li>
+                                    <li>Infringes on intellectual property rights or contains unauthorized copyrighted
+                                        materials.
+                                    </li>
+                                    <li>Shares confidential or trade-secret information without proper authorization.
+                                    </li>
+                                    <li>Contains defamatory, obscene, abusive, or offensive material.</li>
+                                    <li>Misrepresents your identity or impersonates others.</li>
+                                    <li>Advertises or solicits business outside of your own listings.</li>
+                                    <li>Includes chain letters, pyramid schemes, or similar solicitations.</li>
+                                </ul>
+                            </li>
+                            <li><strong>User Conduct:</strong> You agree to:
+                                <ul>
+                                    <li>Use the Site's messaging center only for legitimate communications related to
+                                        services on the Site.
+                                    </li>
+                                    <li>Avoid sending unsolicited commercial messages to other users.</li>
+                                    <li>Report inappropriate content to <a href="mailto:info@diverrx.com">info@diverrx.com</a>.
+                                    </li>
+                                    <li>Not alter or delete content posted by others.</li>
+                                    <li>Conduct yourself in a way that does not interfere with other users’ experience
+                                        on the Site.
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p>Failure to comply with these guidelines may result in suspension or termination of your
+                            account.</p>
+
+                        <h4>4. Security Rules</h4>
+
+                        <p>You must not attempt to compromise the security of the Site. Prohibited activities
+                            include:</p><br/>
+                        <ul>
+                            <li>Accessing data not intended for you.</li>
+                            <li>Testing or breaching the Site’s security measures without proper authorization.</li>
+                            <li>Disrupting the services provided by the Site.</li>
+                            <li>Sending unsolicited emails to users of the Site.</li>
+                        </ul>
+                        <p>Violating these security rules may result in the termination of your access and possible
+                            legal action.</p>
+
+                        <h4>5. Account Registration and Responsibilities</h4>
+                        <p>To list services as a provider, you must register for an account and provide accurate and
+                            up-to-date information. By registering, you agree to:</p>
+                        <ul>
+                            <li>Be responsible for maintaining the confidentiality of your account credentials.</li>
+                            <li>Notify us immediately of any unauthorized use of your account.</li>
+                            <li>Keep all information provided during registration accurate and current.</li>
+                        </ul>
+                        <p>We reserve the right to terminate accounts for any misrepresentation or violation of these
+                            terms.</p>
+
+                        <h4>6. License to Use the Site</h4>
+                        <p>You are granted a limited, non-exclusive license to access and use the Site for personal
+                            purposes only. Any material downloaded or copied from the Site must include the following
+                            notice: "Copyright DivSol LLC. No copying or commercial use permitted without express
+                            written permission."</p>
+
+                        <h4>7. Rights Reserved</h4>
+                        <p>DivSol LLC retains all rights, title, and interest in the Site, including all content,
+                            materials, and trademarks. By submitting any content to the Site, you grant us a
+                            royalty-free, perpetual, worldwide license to use, distribute, and display your
+                            submissions.</p>
+
+                        <h4>8. Disclaimers and Limitations of Liability</h4>
+                        <ul>
+                            <li><strong>Disclaimer of Warranties:</strong> The Site is provided "as is," without any
+                                warranties, express or implied. We do not guarantee the accuracy, reliability, or
+                                availability of the Site or its content.
+                            </li>
+                            <li><strong>No Professional Advice:</strong> The information on the Site is for general
+                                purposes and should not be taken as professional advice. We are not liable for any
+                                damages resulting from reliance on information provided on the Site.
+                            </li>
+                            <li><strong>Third-Party Content:</strong> We are not responsible for the content of
+                                third-party websites or materials linked to or referenced from the Site. We do not
+                                endorse any third-party products, services, or opinions.
+                            </li>
+                            <li><strong>User-Generated Content:</strong> We do not pre-screen user-generated content.
+                                You are responsible for the legality and accuracy of your posts. The views expressed by
+                                contributors are their own and do not represent our views.
+                            </li>
                         </ul>
 
-                        <h6>4. Dispute Resolution for Information Exchange</h6>
-                        <p>Any personal information exchanged between providers listed on Diverrx Inc. and customers utilizing Diverrx Inc. is conducted directly between those two parties. Diverrx Inc. disclaims any responsibility for disputes, claims, or issues arising from such exchanges. Any misuse or inappropriate handling of personal information shared through our messaging center is solely the responsibility of the parties involved in the exchange. Diverrx Inc. shall not be held liable for any consequences or damages resulting from the misuse or mishandling of personal information between users and providers.</p>
+                        <h4>9. Indemnification</h4>
+                        <p>You agree to indemnify and hold DivSol LLC harmless from any claims, damages, or liabilities
+                            arising from your use of the Site, your violation of this Agreement, or your infringement of
+                            any third-party rights.</p>
 
-                        <h6>5. Content Guidelines</h6>
-                        <p>When contributing content to the Site, you must:</p>
+                        <h4>10. Limitation of Liability</h4><br/>
                         <ul>
-                            <li>Ensure you have the rights to share any material you post.</li>
-                            <li>Avoid infringing on others’ intellectual property or violating their rights.</li>
-                            <li>Ensure your content is accurate and respectful.</li>
+                            <li><strong>Indirect Damages:</strong> We are not liable for any indirect, incidental, or
+                                consequential damages resulting from your use of the Site.
+                            </li>
+                            <li><strong>Direct Damages:</strong> In the event of direct damages, our liability is
+                                limited to the greater of $100 or the fees you have paid to use the Site in the past 12
+                                months.
+                            </li>
+                            <li><strong>Jurisdictional Limits:</strong> Some jurisdictions do not allow the exclusion or
+                                limitation of liability for certain damages. In such cases, these limitations may not
+                                apply to you.
+                            </li>
                         </ul>
-                        <p>We reserve the right to remove any content that breaches these guidelines and may suspend or terminate accounts associated with such content.</p>
 
-                        <h6>6. Security Measures</h6>
-                        <p>You must not:</p>
-                        <ul>
-                            <li>Access unauthorized areas of the Site or interfere with its functionality.</li>
-                            <li>Use harmful code or actions that disrupt the Site’s operations.</li>
-                            <li>Compromise the security of the Site or other users.</li>
-                        </ul>
-                        <p>Violations may lead to legal action and cooperation with law enforcement.</p>
+                        <h4>11. Intellectual Property and Copyright</h4>
+                        <p>All content on the Site is protected by copyright law. If you believe that your intellectual
+                            property rights have been violated, please contact our designated agent for copyright
+                            infringement claims.</p>
 
-                        <h6>7. Account Management</h6>
-                        <p>To access certain features, you may need to register. Provide accurate and up-to-date information. You are responsible for keeping your account details confidential and for all activities conducted under your account. Notify us immediately of any unauthorized access.</p>
+                        <h4>12. Governing Law and Dispute Resolution</h4>
+                        <p>This Agreement is governed by the laws of the Commonwealth of Virginia. Any disputes arising
+                            under this Agreement will be resolved in the courts located in Fairfax County, Virginia.</p>
 
-                        <h6>8. Intellectual Property Rights</h6>
-                        <p>You are granted a limited, non-exclusive license to use the Site for personal purposes only. Unauthorized use, copying, or distribution of Site materials is prohibited. All intellectual property rights related to the Site are owned by Diverrx Inc.</p>
+                        <h4>13. Notices</h4>
+                        <p>Notices to DivSol LLC should be sent by email or mail to our contact address. Any notices we
+                            send to you will be directed to the email address you provided during registration.</p>
 
-                        <h6>9. Disclaimers and Limitations</h6>
-                        <p>The Site is provided “as is” without any warranties. We do not guarantee the accuracy or availability of the Site or its content. You use the Site at your own risk, and we are not responsible for any errors or damages resulting from your use.</p>
+                        <h4>14. Amendments to This Agreement</h4>
+                        <p>We reserve the right to modify this Agreement at any time. Any changes will be posted on the
+                            Site, and your continued use of the Site constitutes acceptance of the updated terms.</p>
 
-                        <h6>10. Liability Limitations</h6>
-                        <p>Our liability is limited to direct damages up to $100 or the amount you paid for our services in the past 12 months, whichever is greater. We are not responsible for indirect or consequential damages.</p>
+                        <h4>15. General Provisions</h4>
+                        <p>This Agreement constitutes the entire agreement between you and DivSol LLC and supersedes any
+                            prior agreements. If any part of this Agreement is found to be unenforceable, the remaining
+                            provisions will remain in full force and effect. DivSol LLC retains all rights to its
+                            trademarks, services, and materials provided on the Site.</p>
 
-                        <h6>11. Indemnification</h6>
-                        <p>You agree to indemnify and hold Diverrx Inc. and its affiliates harmless from any claims, damages, or expenses arising from your use of the Site or any breach of these Terms of Service.</p>
-
-                        <h6>12. Governing Law</h6>
-                        <p>These Terms of Service are governed by the laws of the State of Virginia. Any disputes arising under these terms will be resolved in the courts located in Fairfax County, Virginia.</p>
-
-                        <h6>13. Changes to Terms</h6>
-                        <p>We may update these Terms of Service periodically. Changes will be posted on the Site, and your continued use of the Site signifies your acceptance of the revised terms.</p>
-
-                        <h6>14. Contact Us</h6>
-                        <p>For questions or concerns regarding these Terms of Service, please contact:</p>
-                        <p>Diverrx Inc.<br>
-                            info@diverrx.com</p>
-
-                        <p style="padding-left: 2px;">Thank you for using Diverrx Inc.</p>
+                        <p class="pt_15">By creating an account, you acknowledge that you have read, understood,
+                            and agree to be bound by the terms and conditions set forth in this Agreement.</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -284,7 +371,8 @@
     <!--=============================
         REGISTRATION Success Modal
     ==============================-->
-    <div class="modal fade" id="registrationSuccessModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="registrationSuccessModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -304,13 +392,13 @@
 
     <script>
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Get the terms checkbox and submit button
             const termsCheckbox = document.getElementById('terms');
             const submitBtn = document.getElementById('submitBtn');
 
             // Enable or disable the submit button based on checkbox state
-            termsCheckbox.addEventListener('change', function() {
+            termsCheckbox.addEventListener('change', function () {
                 submitBtn.disabled = !this.checked;
             });
         });
@@ -318,8 +406,8 @@
         document.addEventListener("DOMContentLoaded", function () {
 
             @if(session('success'))
-                const successModal = new bootstrap.Modal(document.getElementById('registrationSuccessModal'), {});
-                successModal.show();
+            const successModal = new bootstrap.Modal(document.getElementById('registrationSuccessModal'), {});
+            successModal.show();
             @endif
         });
     </script>

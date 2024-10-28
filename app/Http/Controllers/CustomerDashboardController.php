@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,7 +33,11 @@ class CustomerDashboardController extends Controller
     {
         // Get all new messages received by service provider against query.
         // Get all messages by provider id against user id with status 'unread'.
-        return $user->messages()->where('status', 'unread')->count();
+        return $user->messages()
+            ->where('status', 'unread')
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->count();
     }
 
     private function getQueriesSentCount($user)

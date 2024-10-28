@@ -11,14 +11,14 @@
 
             <div class="dashboard_overview">
                 <div class="row">
-                    {{--<div class="col-xxl-3 col-md-6 col-xl-6 wow fadeInUp" data-wow-duration="1.5s">
+                    <div class="col-xxl-3 col-md-6 col-xl-6 wow fadeInUp" data-wow-duration="1.5s">
                         <div class="dashboard_overview_item">
                             <div class="icon">
                                 <i class="far fa-list-ul"></i>
                             </div>
                             <h3> {{ $messageSent }} <span>New Messages</span></h3>
                         </div>
-                    </div>--}}
+                    </div>
                     <div class="col-xxl-3 col-md-6 col-xl-6 wow fadeInUp" data-wow-duration="1.5s">
                         <div class="dashboard_overview_item blue">
                             <div class="icon">
