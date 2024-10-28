@@ -194,9 +194,9 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
-                    <div class="modal-body" style="padding: 30px; max-height: 60vh; overflow-y: auto;">
+                    <div class="modal-body privacy_policy_area" style="padding: 30px; max-height: 60vh; overflow-y: auto;">
                         <h4>User Agreement</h4>
-                        <p class="mt-4">This User Agreement ("Agreement") is made between DivSol LLC ("we," "us,"
+                        <p>This User Agreement ("Agreement") is made between DivSol LLC ("we," "us,"
                             "our"), the owner and operator of <a href="http://www.diverrx.com" target="_blank">www.diverrx.com</a>
                             ("Site"), and you, the user ("you," "your"). By accessing or using the Site, you agree to be
                             bound by the terms and conditions of this Agreement.</p>
@@ -205,20 +205,20 @@
                             using the Site. If you do not agree to these terms, you must discontinue your use of the
                             Site.</p>
 
-                        <h4 class="mt-5">1. Acceptance of Terms</h4>
+                        <h4>1. Acceptance of Terms</h4>
                         <br/>
                         <p>By accessing or using the Site, you acknowledge that you have read, understood, and agree to
                             be bound by these terms. If you do not accept these terms, you are not authorized to use the
                             Site.</p>
 
-                        <h4 class="mt-5">2. Purpose of the Site</h4>
+                        <h4>2. Purpose of the Site</h4>
                         <br/>
                         <p>The Site is intended to facilitate the connection between service providers and consumers.
                             The information provided on the Site is for general purposes only. We do not endorse,
                             recommend, or warrant any specific professionals, services, or products featured on the
                             Site.</p>
 
-                        <h4 class="mt-5">3. Code of Conduct</h4>
+                        <h4>3. Code of Conduct</h4>
                         <br/>
                         <ul>
                             <li><strong>Posting Guidelines:</strong> You must not post content that:
@@ -254,7 +254,7 @@
                         <p>Failure to comply with these guidelines may result in suspension or termination of your
                             account.</p>
 
-                        <h4 class="mt-5">4. Security Rules</h4>
+                        <h4>4. Security Rules</h4>
 
                         <p>You must not attempt to compromise the security of the Site. Prohibited activities
                             include:</p><br/>
@@ -267,7 +267,7 @@
                         <p>Violating these security rules may result in the termination of your access and possible
                             legal action.</p>
 
-                        <h4 class="mt-5">5. Account Registration and Responsibilities</h4>
+                        <h4>5. Account Registration and Responsibilities</h4>
                         <p>To list services as a provider, you must register for an account and provide accurate and
                             up-to-date information. By registering, you agree to:</p>
                         <ul>
@@ -278,19 +278,19 @@
                         <p>We reserve the right to terminate accounts for any misrepresentation or violation of these
                             terms.</p>
 
-                        <h4 class="mt-5">6. License to Use the Site</h4>
+                        <h4>6. License to Use the Site</h4>
                         <p>You are granted a limited, non-exclusive license to access and use the Site for personal
                             purposes only. Any material downloaded or copied from the Site must include the following
                             notice: "Copyright DivSol LLC. No copying or commercial use permitted without express
                             written permission."</p>
 
-                        <h4 class="mt-5">7. Rights Reserved</h4>
+                        <h4>7. Rights Reserved</h4>
                         <p>DivSol LLC retains all rights, title, and interest in the Site, including all content,
                             materials, and trademarks. By submitting any content to the Site, you grant us a
                             royalty-free, perpetual, worldwide license to use, distribute, and display your
                             submissions.</p>
 
-                        <h4 class="mt-5">8. Disclaimers and Limitations of Liability</h4>
+                        <h4>8. Disclaimers and Limitations of Liability</h4>
                         <ul>
                             <li><strong>Disclaimer of Warranties:</strong> The Site is provided "as is," without any
                                 warranties, express or implied. We do not guarantee the accuracy, reliability, or
@@ -310,12 +310,12 @@
                             </li>
                         </ul>
 
-                        <h4 class="mt-5">9. Indemnification</h4>
+                        <h4>9. Indemnification</h4>
                         <p>You agree to indemnify and hold DivSol LLC harmless from any claims, damages, or liabilities
                             arising from your use of the Site, your violation of this Agreement, or your infringement of
                             any third-party rights.</p>
 
-                        <h4 class="mt-5">10. Limitation of Liability</h4><br/>
+                        <h4>10. Limitation of Liability</h4><br/>
                         <ul>
                             <li><strong>Indirect Damages:</strong> We are not liable for any indirect, incidental, or
                                 consequential damages resulting from your use of the Site.
@@ -330,30 +330,30 @@
                             </li>
                         </ul>
 
-                        <h4 class="mt-5">11. Intellectual Property and Copyright</h4>
+                        <h4>11. Intellectual Property and Copyright</h4>
                         <p>All content on the Site is protected by copyright law. If you believe that your intellectual
                             property rights have been violated, please contact our designated agent for copyright
                             infringement claims.</p>
 
-                        <h4 class="mt-5">12. Governing Law and Dispute Resolution</h4>
+                        <h4>12. Governing Law and Dispute Resolution</h4>
                         <p>This Agreement is governed by the laws of the Commonwealth of Virginia. Any disputes arising
                             under this Agreement will be resolved in the courts located in Fairfax County, Virginia.</p>
 
-                        <h4 class="mt-5">13. Notices</h4>
+                        <h4>13. Notices</h4>
                         <p>Notices to DivSol LLC should be sent by email or mail to our contact address. Any notices we
                             send to you will be directed to the email address you provided during registration.</p>
 
-                        <h4 class="mt-5">14. Amendments to This Agreement</h4>
+                        <h4>14. Amendments to This Agreement</h4>
                         <p>We reserve the right to modify this Agreement at any time. Any changes will be posted on the
                             Site, and your continued use of the Site constitutes acceptance of the updated terms.</p>
 
-                        <h4 class="mt-5">15. General Provisions</h4>
+                        <h4>15. General Provisions</h4>
                         <p>This Agreement constitutes the entire agreement between you and DivSol LLC and supersedes any
                             prior agreements. If any part of this Agreement is found to be unenforceable, the remaining
                             provisions will remain in full force and effect. DivSol LLC retains all rights to its
                             trademarks, services, and materials provided on the Site.</p>
 
-                        <p class="text-center">By creating an account, you acknowledge that you have read, understood,
+                        <p class="pt_15">By creating an account, you acknowledge that you have read, understood,
                             and agree to be bound by the terms and conditions set forth in this Agreement.</p>
                     </div>
                     <div class="modal-footer">

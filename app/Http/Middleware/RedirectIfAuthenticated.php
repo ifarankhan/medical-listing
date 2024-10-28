@@ -42,7 +42,7 @@ class RedirectIfAuthenticated
                     return redirect('dashboard/listing');
                 }
 
-                return redirect(RouteServiceProvider::HOME);
+                return redirect(RouteServiceProvider::SEARCH);
             }
         }
 

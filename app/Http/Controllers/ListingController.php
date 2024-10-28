@@ -8,6 +8,7 @@ use App\Models\ProductService;
 use App\Models\Subscription;
 use App\Rules\WordCount;
 use App\Services\PaymentService;
+use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -322,10 +323,19 @@ class ListingController extends Controller
         $listingId = $listing->id;
 
         try {
-            // Get the subscription associated with the listing
+            // Get the subscription associated with the listing.
             $subscriptionModel = $listing->subscription()->latest()->first();
 
             if ($subscriptionModel != null) {
+                // Do not delete listing that is not 14 days or more, old.
+                if ($subscriptionModel->status === Subscription::STATUS_ACTIVE) {
+                    $createdDate = Carbon::parse($subscriptionModel->start_date); // Get the subscription creation date
+                    // Check if the subscription is less than 14 days old
+                    if ($createdDate->diffInDays(Carbon::now()) < 14) {
+                        return redirect()->route('listing.index')
+                            ->with('error', 'Cannot delete listings that are less than 14 days old.');
+                    }
+                }
                 // Step 1: Cancel the associated subscription in Stripe
                 // This will trigger customer.subscription.deleted from stripe
                 // And it's best to perform deletion and archiving there.
