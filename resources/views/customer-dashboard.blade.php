@@ -40,7 +40,7 @@
                             <div class="icon">
                                 <i class="far fa-star"></i>
                             </div>
-                            <h3> 27 <span>Your Reviews</span></h3>
+                            <h3 style="font-size: 12px"> Coming Soon <span>Reviews</span></h3>
                         </div>
                     </div>
                 </div>
