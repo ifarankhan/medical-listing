@@ -330,10 +330,10 @@ class ListingController extends Controller
                 // Do not delete listing that is not 14 days or more, old.
                 if ($subscriptionModel->status === Subscription::STATUS_ACTIVE) {
                     $createdDate = Carbon::parse($subscriptionModel->start_date); // Get the subscription creation date
-                    // Check if the subscription is less than 14 days old
-                    if ($createdDate->diffInDays(Carbon::now()) < 14) {
+                    // Check if the subscription is more than 14 days old.
+                    if ($createdDate->diffInDays(Carbon::now()) > 14) {
                         return redirect()->route('listing.index')
-                            ->with('error', 'Cannot delete listings that are less than 14 days old.');
+                            ->with('error', 'Cannot delete listing that is more than 14 days old.');
                     }
                 }
                 // Step 1: Cancel the associated subscription in Stripe
@@ -342,9 +342,9 @@ class ListingController extends Controller
                 // On charge.refund, the related payment is also gets refunded.
                 $this->paymentService->cancel($listing);
                 Log::info('Listing ID: '. $listingId .' Subscription: '. $subscriptionModel->stripe_subscription_id . ' Deleted');
-                // Step 2: Update Listing status to "Deleted".
-                $listing->update(['listing_status' => 'deleted']);
             }
+
+            $this->deleteListing($listing);
             // Step 4: Redirect with success message
             return redirect()->route('listing.index')
                 ->with('success', 'Listing deletion is in process. You will be notified once the cancellation is confirmed.');

@@ -1160,5 +1160,19 @@ $(function () {
             });
         });
     });
+
+
+    $('#multiStepForm .common_btn').on('click', function(event) {
+        const action = $(this).val(); // Capture which button was clicked
+        console.log('Button clicked:', action);
+
+        // Trigger browser validation manually to show errors, but prevent form submission.
+        if (!$('#multiStepForm')[0].checkValidity()) {
+            console.log('validate ...')
+            //event.preventDefault(); // Prevent actual submission if the form is invalid
+            $('#multiStepForm')[0].reportValidity(); // Show validation messages
+            console.log('show validation ...')
+        }
+    });
 });
 

@@ -10,12 +10,12 @@
                 <label>Are you legally authorized to promote products and services that you wish to list on diverrx? <span class="text-danger">*</span></label>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" id="authorized_yes" name="authorized" value="1"
-                           {{ old('authorized', $listing->authorized) == 1 ? 'checked' : '' }} required {{ isset($listing->id) ? 'disabled' : '' }}>
+                           {{ old('authorized', $listing->authorized) == 1 ? 'checked' : '' }} required {{ isset($listing->id) ? 'readonly' : '' }}>
                     <label class="form-check-label" for="authorized_yes">Yes</label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" id="authorized_no" name="authorized" value="0"
-                           {{ old('authorized', $listing->authorized) == 0 ? 'checked' : '' }} required {{ isset($listing->id) ? 'disabled' : '' }}>
+                           {{ old('authorized', $listing->authorized) == 0 ? 'checked' : '' }} {{ isset($listing->id) ? 'readonly' : '' }}>
                     <label class="form-check-label" for="authorized_no">No</label>
                 </div>
 
@@ -26,13 +26,13 @@
                 <label>Is the business you wish to promote on diverrx a legally registered entity? (Proof of registration will be required in subsequent steps) <span class="text-danger">*</span></label>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" id="registered_yes" name="registered" value="1"
-                           {{ old('registered', $listing->registered) == 1 ? 'checked' : '' }} required {{ isset($listing->id) ? 'disabled' : '' }}>
+                           {{ old('registered', $listing->registered) == 1 ? 'checked' : '' }} required {{ isset($listing->id) ? 'readonly' : '' }}>
                     <label class="form-check-label" for="registered_yes">Yes</label>
 
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" id="registered_no" name="registered" value="0"
-                           {{ old('registered', $listing->registered) == 0 ? 'checked' : '' }} required {{ isset($listing->id) ? 'disabled' : '' }}>
+                           {{ old('registered', $listing->registered) == 0 ? 'checked' : '' }} {{ isset($listing->id) ? 'readonly' : '' }}>
                     <label class="form-check-label" for="registered_no">No</label>
                 </div>
             </div>
@@ -74,7 +74,8 @@
             <div class="add_property_input">
                 <label for="contact_number">Contact Number: <span class="text-danger">*</span></label>
                 <input type="text" id="contact_number" name="contact_number" placeholder="+1XXXXXXXXXX"
-                       pattern="\+1\d{10}" title="Please enter a valid phone number in the format +12345678900"
+{{--                       pattern="\+1\d{10}" --}}
+                       title="Please enter a valid phone number in the format +12345678900"
                        value="{{ old('contact_number', $listing->contact_number) }}" required {{ isset($listing->id) ? 'readonly' : '' }}>
             </div>
         </div>
@@ -99,7 +100,7 @@
                 <label for="business_name">Legal Business Name: <span class="text-danger">*</span></label>
                 <input type="text" id="business_name" name="business_name" placeholder="Business Name"
                        value="{{ old('business_name', $listing->business_name) }}" required {{ isset($listing->id) ? 'readonly' : '' }}>
-                <small class="text-muted">(Write as it appears on your registration document)</small>
+                <small class="text-muted">Write as it appears on your registration document.</small>
             </div>
         </div>
         <div class="col-xxl-4 col-md-6">
@@ -108,14 +109,16 @@
                 <input type="text" id="ein" name="ein" placeholder="XX-XXXXXXX"
                        pattern="\d{2}-\d{7}"
                        value="{{ old('ein', $listing->ein) }}" required {{ isset($listing->id) ? 'readonly' : '' }}>
-                <small class="text-muted">(This will be used to verify business information)</small>
+                <small class="text-muted">This will be used to verify business information.</small>
             </div>
         </div>
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
                 <label for="business_address">Address: <span class="text-danger">*</span></label>
                 <input type="text" id="business_address" name="business_address" placeholder="Business Address"
-                       value="{{ old('business_address', $listing->business_address) }}" required {{ isset($listing->id) ? 'readonly' : '' }}>
+                       value="{{ old('business_address', $listing->business_address) }}"
+                       required {{ isset($listing->id) ? 'readonly' : '' }} class="{{ isset($listing->id) ? 'no-click' : '' }}">
+                <small class="text-muted"><b>Note:</b> Please select your address from the dropdown to automatically fill related fields. Pasting an address may not populate all details correctly.</small>
             </div>
 
             <div class="add_property_input">
@@ -126,9 +129,10 @@
 
             <div class="add_property_input">
                 <label for="zipcode">ZIP Code: <span class="text-danger">*</span></label>
-                <input readonly type="text" id="business_zipcode" name="business_zipcode" placeholder="ZIP Code"
+                <input required type="text" id="business_zipcode" name="business_zipcode" placeholder="ZIP Code"
                        value="{{ old('business_zipcode', $listing->business_zipcode) }}"
-                       pattern="\d{5}(-\d{4})?" title="Format: 12345 or 12345-6789" {{ isset($listing->id) ? 'readonly' : '' }}>
+{{--                       pattern="\d{5}(-\d{4})?" --}}
+                       title="Format: 12345 or 12345-6789" readonly />
             </div>
 
         </div>
@@ -136,7 +140,8 @@
             <div class="add_property_input">
                 <label for="business_contact">Contact: <span class="text-danger">*</span></label>
                 <input type="text" id="business_contact" name="business_contact" placeholder="+1XXXXXXXXXX"
-                       pattern="\+1\d{10}" title="Please enter a valid phone number in the format +12345678900"
+{{--                       pattern="\+1\d{10}" --}}
+                       title="Please enter a valid phone number in the format +12345678900"
                        value="{{ old('business_contact', $listing->business_contact) }}" required {{ isset($listing->id) ? 'readonly' : '' }}>
             </div>
         </div>
@@ -156,9 +161,10 @@
                     <div class="mb-3">
                         <img src="{{ asset('storage/'.$listing->profile_picture) }}" alt="Profile Picture" style="max-width: 150px; max-height: 150px; object-fit: cover;">
                     </div>
-                @endif
+                @else
 
-                <input type="file" name="profile_picture" accept="image/*" {{ isset($listing->id) ? 'disabled' : '' }}>
+                <input required type="file" name="profile_picture" accept="image/*" {{ isset($listing->id) ? 'readonly' : '' }}>
+                @endif
             </div>
         </div>
 
@@ -340,7 +346,7 @@
 <div class="add_property_info add_property_aminities wow fadeInUp" data-wow-duration="1.5s">
     <div class="row">
         <div class="col-6 text-start">
-            <button type="submit" name="action" value="save" class="common_btn nextStep">Save</button>
+            <button type="submit" name="action" value="save" class="common_btn">Save</button>
         </div>
         <div class="col-6 text-end">
             <button type="submit" name="action" value="save_continue" class="common_btn nextStep">Save & Continue</button>
