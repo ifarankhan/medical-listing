@@ -118,7 +118,7 @@
                         <h4 class="mt-4">7. Rights Reserved</h4>
                         <p>You are granted a limited, non-exclusive license to access and use the Site for personal
                             purposes only. Any material downloaded or copied must include the copyright notice:
-                            “Copyright The 7Q Foundation. No copying or commercial use permitted without express written
+                            “Copyright The DivSol LLC. No copying or commercial use permitted without express written
                             permission.”</p>
                         <p>We retain full ownership and rights to all content, materials, and trademarks on the Site. By
                             submitting content to the Site, you grant us a royalty-free, perpetual, worldwide license to
