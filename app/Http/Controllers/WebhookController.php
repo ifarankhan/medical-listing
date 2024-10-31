@@ -201,7 +201,8 @@ class WebhookController extends Controller
             $subscriptionModel->delete();
 
             $listing = $this->listing->find($subscriptionModel->listing_id);
-            $listing->delete();
+            $listing->update(['listing_status' => Subscription::STATUS_REFUNDED]);
+            //$listing->delete();
 
             $interval = '';
             // Retrieve the subscription interval.
@@ -238,13 +239,14 @@ class WebhookController extends Controller
                     if ($listing) {
                         $listing->update(['listing_status' => Subscription::STATUS_REFUNDED]); // or any relevant status
                     }
-                    // Update subscription details
+                    // Update subscription details.
                     $subscriptionModel->status = Subscription::STATUS_REFUNDED;
                     $subscriptionModel->end_date = $refundTime;
                     $subscriptionModel->save();
-                    /*$archivedData = $subscriptionModel->toArray();
+                    // Archive subscription and delete from main table.
+                    $archivedData = $subscriptionModel->toArray();
                     $subscriptionModel->archive($archivedData);
-                    $subscriptionModel->delete();*/
+                    $subscriptionModel->delete();
 
                     Log::info('Charge refunded for subscription ID: ' . $subscriptionId);
                 }

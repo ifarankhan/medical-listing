@@ -7425,3 +7425,6 @@ form .sidebar_search input {
 /*=============================
     DASHBOARD END
 =============================*/
+.no-click {
+    pointer-events: none;
+}
