@@ -35,7 +35,7 @@
 <!--=============================
     LISTING LEFT SIDEBAR START
 ==============================-->
-<section class="property_left_sidebar property_page pt_120 xs_pt_100 pb_120 xs_pb_100">
+<section class="property_left_sidebar search_page property_page pt_120 xs_pt_100 pb_120 xs_pb_100">
     <div class="container">
         <div class="row">
             <div class="col-xl-4 col-md-7 order-2 order-xl-0">

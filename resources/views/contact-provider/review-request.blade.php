@@ -72,7 +72,7 @@
                     <input type="hidden" id="successRedirect" value="{{ route('message') }}"/>
                     <div class="form-group">
 
-                        @if($contactRequested)
+                        @if($contactRequested == 'true')
                             <input type="hidden" id="Message"
                                    value="Customer '{{ auth()->user()->name }}' has requested to be contacted."/>
                         @else

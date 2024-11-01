@@ -75,7 +75,12 @@ class Listing extends Model
         $insuranceList = $this->productService->pluck('insurance_list');
         // Fetch related product services and format them into a string.
         return ($insuranceList->isNotEmpty()) ?
-            $this->productService->pluck('insurance_list')->implode(', ') : '';
+                preg_replace('/\s*,\s*/', ', ', trim(
+                    $this->productService->pluck('insurance_list')
+                        ->filter()
+                        ->implode(', '), ', ')
+                ) : '';
+
     }
 
     /**
