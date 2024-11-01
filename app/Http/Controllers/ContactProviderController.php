@@ -36,11 +36,9 @@ class ContactProviderController extends Controller
 
             return response()->json(['error' => 'Unauthorized'], 403);
         }
+        // Review request will be without message text field.
+        session()->put('contactRequested', $request->post('contactRequested'));
 
-        if ($request->post('contactRequested') != 'false') {
-            // Review request will be without message text field.
-            session()->put('contactRequested', $request->post('contactRequested'));
-        }
         // Retrieve the selected values from the request
         $selectedListingIds = $request->input('selectedValues');
         // Store selected values in the session
@@ -53,7 +51,7 @@ class ContactProviderController extends Controller
     {
         $listings = [];
         $listingIds = [];
-        $contactRequested = session()->has('contactRequested') == 'true';
+        $contactRequested = session('contactRequested');
         // Check if session variable is set
         if (session()->has('selectedValues')) {
 

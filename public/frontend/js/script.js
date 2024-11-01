@@ -587,6 +587,7 @@ $(function () {
             }
         });
 
+        const selectedValuesKey = 'selectedValues';
         const sendMessageModal = $('#sendMessageModal');
         const sendMessageForm = $('#sendMessageForm');
         // Handle click on Send Message button
@@ -670,7 +671,7 @@ $(function () {
                         sendMessageModal.modal('hide');
                         // Clear form fields
                         sendMessageForm[0].reset(); // Reset the form
-
+                        localStorage.removeItem(selectedValuesKey);
                         alert(response.message);
 
                         if (successRedirect) {
@@ -718,10 +719,10 @@ $(function () {
             }
         }
 
-        const selectedValuesKey = 'selectedValues';
 
-        // Load selected values from local storage
-        let selectedValues = JSON.parse(localStorage.getItem(selectedValuesKey)) || [];
+        // Load selected values from local storage and ensure uniqueness
+        let selectedValues = Array.from(new Set(JSON.parse(localStorage.getItem(selectedValuesKey)) || []));
+        //console.log('Loaded selected values:', selectedValues);
 
         // Restore the checkbox states based on stored values
         $('.select-to-contact').each(function() {
@@ -730,17 +731,17 @@ $(function () {
             }
         });
 
-        // Toggle the visibility of the ContactOptions div
+        // Toggle the visibility of the ContactOptions div based on selected values
         toggleContactOptions();
-
         // Update local storage when checkboxes change
         $('.select-to-contact').on('change', function() {
+            // Reset counter and selected values
             let counter = 0;
-            selectedValues = []; // Reset selected values array
+            selectedValues = selectedValues.filter(value => $('.select-to-contact[value="' + value + '"]').is(':checked'));
 
-            // Check the number of checked checkboxes
+            // Check the number of checked checkboxes and update selectedValues
             $('.select-to-contact').each(function() {
-                if ($(this).is(':checked')) {
+                if ($(this).is(':checked') && !selectedValues.includes($(this).val())) {
                     selectedValues.push($(this).val());
                     counter++;
                 }
@@ -756,6 +757,7 @@ $(function () {
 
             // Update local storage with the selected values
             localStorage.setItem(selectedValuesKey, JSON.stringify(selectedValues));
+            console.log('Updated selected values:', selectedValues);
 
             // Toggle the visibility of the ContactOptions div
             toggleContactOptions();
@@ -767,7 +769,7 @@ $(function () {
 
             // Proceed with AJAX request
             $.ajax({
-                url: contactMultipleProvidersUrl, // Use the named route
+                url: contactMultipleProvidersUrl,
                 method: 'POST',
                 data: {
                     contactRequested: false,
@@ -775,18 +777,15 @@ $(function () {
                 },
                 success: function(response) {
                     if (response.error === false) {
-                        // Reset selected values and local storage
-                        selectedValues = []; // Reset selected values array
-                        localStorage.setItem(selectedValuesKey, JSON.stringify(selectedValues)); // Update local storage
-                        // Redirect to another page
-                        window.location.href = requestReview; // Use the named route
+                        // Clear selected values from local storage on success
+                        //selectedValues = [];
+                        localStorage.setItem(selectedValuesKey, JSON.stringify(selectedValues));
+                        window.location.href = requestReview; // Redirect to another page
                     }
                 },
                 error: function(xhr, status, error) {
-                    // Handle the error response
                     if (xhr.status === 401) {
-                        // Redirect to login page or handle as needed
-                        window.location.href = '/login'; // Replace with your login page URL
+                        window.location.href = '/login';
                     } else {
                         console.error(error);
                     }
@@ -810,7 +809,6 @@ $(function () {
                     if (response.error === false) {
 
                         // Reset selected values and local storage
-                        selectedValues = []; // Reset selected values array
                         localStorage.setItem(selectedValuesKey, JSON.stringify(selectedValues)); // Update local storage
                         // Redirect to another page
                         window.location.href = requestReview; // Use the named route

@@ -140,7 +140,7 @@
                         </div>
                         @endif
                     </div>
-                    <div class="col-xxl-3 col-xl-4 wow fadeInRight" data-wow-duration="1.5s">
+                    {{--<div class="col-xxl-3 col-xl-4 wow fadeInRight" data-wow-duration="1.5s">
                         <div class="dashboard_overview_review">
                             <h2>Recent Reviews</h2>
                             <div class="single_review">
@@ -204,7 +204,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>--}}
                 </div>
             </div>
 

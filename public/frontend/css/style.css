@@ -497,7 +497,7 @@ button {
 .main_menu {
     position: fixed;
     width: 100%;
-    height: 80px;
+    height: 100px;
     padding: 0;
     z-index: 9999;
     background: transparent;
@@ -7427,4 +7427,15 @@ form .sidebar_search input {
 =============================*/
 .no-click {
     pointer-events: none;
+}
+
+.sendMessageModal .sidebar {
+    margin-top: 15px;
+}
+
+@media(max-width: 768px) {
+    .search_page .col-md-6 {
+        flex: 0 0 auto;
+        width: 100% !important;
+    }
 }
