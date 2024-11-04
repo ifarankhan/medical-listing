@@ -43,7 +43,7 @@ class ContactUsController extends Controller
             'phone'
         ), function ($message) use ($name, $email) {
 
-            $message->to(env('INO_EMAIL'))  // Recipient email
+            $message->to(env('INO_EMAIL', 'info@diverrx.com'))  // Recipient email
                     ->subject('New Contact Us Message')
                     ->from($email, $name);
         });

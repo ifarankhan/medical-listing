@@ -17,7 +17,9 @@
                 <!-- Display a default image if the user does not have a profile picture -->
                 <img id="profilePicture" src="{{ asset('frontend/images/agent_8.jpg') }}" alt="dashboard" class="img-fluid w-100" style="cursor: pointer;">
             @endif
-            <label for="profile_photo" style="cursor: pointer;"><i class="far fa-camera"></i></label>
+                <label for="profile_photo" style="cursor: pointer;" data-bs-toggle="tooltip" data-bs-placement="top" title="Allowed file types: JPEG, PNG, JPG, GIF. Max size: 2MB">
+                    <i class="far fa-camera"></i>
+                </label>
             <input type="file" id="profile_photo" hidden>
         </div>
         <h3>{{ Auth::user()->name }}</h3>
@@ -144,3 +146,12 @@
         </ul>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+
+</script>

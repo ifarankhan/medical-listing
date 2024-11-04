@@ -74,8 +74,14 @@ $(function () {
         autoplaySpeed: 4000,
         dots: false,
         arrows: false,
-
+        // variableWidth: true,
         responsive: [
+            {
+                breakpoint: 1800,
+                settings: {
+                    slidesToShow: 5,
+                }
+            },
             {
                 breakpoint: 1600,
                 settings: {
@@ -85,7 +91,7 @@ $(function () {
             {
                 breakpoint: 1400,
                 settings: {
-                    slidesToShow: 4,
+                    slidesToShow: 3,
                 }
             },
             {
@@ -103,7 +109,7 @@ $(function () {
             {
                 breakpoint: 768,
                 settings: {
-                    slidesToShow: 2,
+                    slidesToShow: 4,
                 }
             },
             {

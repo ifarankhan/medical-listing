@@ -5,7 +5,7 @@
     <h3>Eligibility</h3>
 
     <div class="row">
-        <div class="col-xxl-6 col-md-2">
+        <div class="col-xxl-6 col-md-6">
             <div class="add_property_input">
                 <label>Are you legally authorized to promote products and services that you wish to list on diverrx? <span class="text-danger">*</span></label>
                 <div class="form-check">
@@ -21,7 +21,7 @@
 
             </div>
         </div>
-        <div class="col-xxl-6 col-md-2">
+        <div class="col-xxl-6 col-md-6">
             <div class="add_property_input">
                 <label>Is the business you wish to promote on diverrx a legally registered entity? (Proof of registration will be required in subsequent steps) <span class="text-danger">*</span></label>
                 <div class="form-check">
