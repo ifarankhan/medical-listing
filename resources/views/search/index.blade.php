@@ -38,7 +38,7 @@
 <section class="property_left_sidebar search_page property_page pt_120 xs_pt_100 pb_120 xs_pb_100">
     <div class="container">
         <div class="row">
-            <div class="col-xl-4 order-0 col-12">
+            <div class="col-xl-4 order-0 col-12 mb-3">
                 <div class="property_sidebar sticky_sidebar">
 
                     <form action="{{ route('search') }}" method="GET">
@@ -258,7 +258,7 @@
                         </div>
                     @else
                         @for($i = 0; $i < count($listings); $i++)
-                            <div class="col-xl-6 col-lg-4 col-md-6 wow fadeInUp" data-wow-duration="1.5s">
+                            <div class="col-xl-6 col-lg-4 col-md-12 wow fadeInUp" data-wow-duration="1.5s">
                                 <div class="listing_item" data-listing-id="{{ $listings[$i]->id }}">
                                     <div class="listing_img">
                                         <img src="{{ asset($listings[$i]->profile_picture ? 'storage/' . $listings[$i]->profile_picture : 'frontend/images/listing_1.jpg') }}" alt="Profile Image" class="img-fluid w-100">

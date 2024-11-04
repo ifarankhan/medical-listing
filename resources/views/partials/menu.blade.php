@@ -26,8 +26,8 @@
 {{--                    <a class="nav-link" href="{{ route('contact') }}">Contact Us</a>--}}
 {{--                </li>--}}
             </ul>
-            <ul class="menu_right d-flex align-items-center">
-                <li>
+            <ul class="menu_right d-flex flex-wrap align-items-center justify-content-between">
+                <li class="mb-2">
                     <a class="user_login" href="{{ Auth::check() ? route('message') : route('login') }}">
                         <span>
                             <img src="{{ asset('frontend/images/login_icon.png') }}" alt="user" class="img-fluid w-100">
@@ -39,7 +39,7 @@
                         @endauth
                     </a>
                 </li>
-                <li class="menu_btn_2">
+                <li class="menu_btn_2 mb-2">
                     @auth
                         <a class="common_btn_2" href="{{ route('listing.create') }}">Add A Product/Service <span><i
                                 class="far fa-plus"></i></span></a>
