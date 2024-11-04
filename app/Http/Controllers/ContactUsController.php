@@ -45,7 +45,7 @@ class ContactUsController extends Controller
 
             $message->to(env('INO_EMAIL', 'info@diverrx.com'))  // Recipient email
                     ->subject('New Contact Us Message')
-                    ->from($email, $name);
+                    ;
         });
 
         // Send email back to the user (Acknowledgment).
