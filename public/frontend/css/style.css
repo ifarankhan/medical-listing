@@ -7439,3 +7439,17 @@ form .sidebar_search input {
         width: 100% !important;
     }
 }
+
+
+@media (max-width: 576px) {
+    .modal-footer {
+        display: block;
+        position: relative;
+        width: 100%;
+        padding: 1rem;  /* Adjust padding as needed */
+    }
+    .modal-body {
+        overflow-y: auto;  /* Allow scrolling if needed */
+        max-height: 60vh;  /* Set a maximum height for the body */
+    }
+}

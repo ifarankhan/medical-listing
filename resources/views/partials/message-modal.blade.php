@@ -1,13 +1,13 @@
 <!-- resources/views/partials/message-modal.blade.php -->
 <div class="modal fade sendMessageModal" id="sendMessageModal" tabindex="-1" aria-labelledby="sendMessageModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="sendMessageModalLabel">Send Message</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="row">
+                <div class="row mb-2">
                     <!-- Left column with form -->
                     <div class="col-md-8">
                         <form id="sendMessageForm" action="#">
@@ -71,11 +71,14 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row-cols-md-1 property_sm_margin">
+                    <p>Your message will be sent to providers at Diverrx, and you'll receive a copy for your records. Please note that email communication may not be fully secure, and delivery isn't guaranteed. For urgent matters, we recommend following up with a phone call. If you'd prefer to communicate by phone, please include your contact number in your message. For emergencies, contact 911 or your nearest hospital directly.</p>
+
+                </div>
             </div>
-            <div class="modal-footer" style="justify-content: normal;">
-                <p>Your message will be sent to your selected providers at Diverrx Inc., and a copy will be provided to you for your records. Please note that while we take precautions, email communication may not be entirely secure. Sending a message through this platform does not guarantee delivery, and spam filters may prevent its receipt.</p>
-                <p>While a response by email is anticipated, we recommend following up with a phone call for urgent matters or if you prefer direct communication. If you prefer to communicate via phone, please include your contact number in your message.</p>
-                <p>For emergencies, please do not use this form. Contact emergency services directly by calling 911 or your nearest hospital.</p>
+            <div class="modal-footer">
+
             </div>
         </div>
     </div>
