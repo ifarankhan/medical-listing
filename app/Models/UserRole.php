@@ -20,7 +20,7 @@ class UserRole extends Model
      *
      * @var string
      */
-    protected $identifiableAttribute = 'title';
+    protected string $identifiableAttribute = 'title';
     /**
      * Get the users associated with the role.
      */

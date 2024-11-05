@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\InsuranceProviderCrudController;
 use Illuminate\Support\Facades\Route;
 
 // --------------------------
@@ -17,4 +18,18 @@ Route::group([
     'namespace'  => 'App\Http\Controllers\Admin',
 ], function () { // custom admin routes
     Route::crud('user', 'UserCrudController');
+    Route::crud('category', 'CategoryCrudController');
+    Route::crud('insurance-provider', 'InsuranceProviderCrudController');
+
+
+
 }); // this should be the absolute last line of this file
+use App\Http\Controllers\Admin\CategoryCrudController;
+
+Route::post('import', [CategoryCrudController::class, 'import'])->name('import');
+Route::get('export', [CategoryCrudController::class, 'export'])->name('export');
+
+
+Route::post('insurance-provider-import', [
+    InsuranceProviderCrudController::class, 'import'
+])->name('insurance-provider-import');
