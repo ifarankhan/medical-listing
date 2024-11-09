@@ -35,6 +35,9 @@ return [
         'public' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
         'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
-        'daily_sub_test' => env('STRIPE_DAILY_TEST', false)
+        'daily_sub_test' => env('STRIPE_DAILY_TEST', false),
+        'basic_product' => env('STRIPE_BASIC_PRODUCT'),
+        'yearly_product' => env('STRIPE_YEARLY_PRODUCT'),
+        'daily_test' => env('STRIPE_TEST_DAILY'),
     ]
 ];
