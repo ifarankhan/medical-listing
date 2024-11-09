@@ -2,6 +2,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+    @if (App::environment('production'))
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-QX099FPKPV"></script>
+        <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-QX099FPKPV'); </script>
+    @endif
     <title>@yield('title', 'Medical Listing')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="UTF-8">
