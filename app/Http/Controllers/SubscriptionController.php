@@ -61,7 +61,7 @@ class SubscriptionController extends Controller
                     'start_date'      => now(),
                 ]);
             }
-
+            // A template of subscription is created in database at this point.
             $checkoutSession = $this->paymentService->checkoutSession(
                 $user->id,
                 $listing->id,
