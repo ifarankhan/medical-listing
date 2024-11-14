@@ -19,7 +19,12 @@ class SearchService
     public function search(array $filters, $paginate = self::RESULT_THRESHOLD): LengthAwarePaginator
     {
         $query = Listing::query();
-        $query->where('listing_status', ListingController::STATUS_SUBSCRIBED);
+
+        $query->whereIn('listing_status', [
+            Listing::STATUS_SUBSCRIBED,
+            Listing::STATUS_ACTIVE_TRIAL
+        ]);
+
         foreach ($filters as $filter => $value) {
 
             if (!empty($value) && isset($this->filters[$filter])) {

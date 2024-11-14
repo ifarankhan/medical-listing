@@ -16,6 +16,14 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Listing extends Model
 {
     const STATUS_SUBSCRIBED = 'subscribed';
+    CONST STATUS_ACTIVE_TRIAL = 'active_trial';
+    CONST STATUS_EXPIRED_TRIAL = 'trial_expired';
+
+    const STATUS_PAID = 'paid';
+    const STATUS_PENDING = 'pending';
+
+    const STATUS_CANCELLED = 'canceled';
+    CONST STATUS_REFUNDED = 'refunded';
 
     protected $fillable = [
         'user_id',
