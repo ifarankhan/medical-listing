@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -115,5 +116,23 @@ class User extends Authenticatable
         $key = $this->isServiceProvider()? 'provider_id': 'user_id';
 
         return $this->hasMany(Message::class, $key);
+    }
+
+    public function getHasTrialEndedAttribute(): bool
+    {
+        if (!$this->trial_period_end) {
+            return false;
+        }
+
+        return Carbon::parse($this->trial_period_end)->isPast();
+    }
+
+    public function getFormattedTrialEndDateAttribute(): ?string
+    {
+        if (!$this->trial_period_end) {
+            return null;
+        }
+
+        return Carbon::parse($this->trial_period_end)->format('F j, Y');
     }
 }

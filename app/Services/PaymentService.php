@@ -16,16 +16,25 @@ use \App\Models\Subscription as SubscriptionModel;
 
 class PaymentService
 {
-    const BASIC_PRODUCT = 'prod_QbuPEDi4VgX5x2';
-    const YEARLY_PRODUCT = 'prod_QbuPerPo3q22fm';
-
-    const STRIPE_DAILY_TEST = 'prod_QkcaG8TzYcCzLv';
-
     public function __construct(
         protected StripeClient $stripeClient,
         protected SubscriptionModel $subscriptionModel
     ) {}
 
+    public static function getBasicProduct(): string
+    {
+        return config('services.stripe.basic_product');
+    }
+
+    public static function getYearlyProduct(): string
+    {
+        return config('services.stripe.yearly_product');
+    }
+
+    public static function getDailyTestProduct(): string
+    {
+        return config('services.stripe.daily_test');
+    }
     /**
      * @throws ApiErrorException
      */
@@ -243,12 +252,12 @@ class PaymentService
     public function getProductIdByIntervalRequest($interval): string
     {
         if ($interval == 'month') {
-            $product = self::BASIC_PRODUCT;
+            $product = self::getBasicProduct();
         } elseif ($interval == 'year') {
-            $product = self::YEARLY_PRODUCT;
+            $product = self::getYearlyProduct();
         } else {
             // Handle other cases or assign a default value
-            $product = self::STRIPE_DAILY_TEST; // For testing.
+            $product = self::getDailyTestProduct(); // For testing.
         }
 
         return $product;

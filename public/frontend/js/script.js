@@ -1034,11 +1034,12 @@ $(function () {
 
         // Handle file selection and upload
         $('#profile_photo').on('change', function() {
+
             let file = this.files[0];
             let formData = new FormData();
             formData.append('profile_picture', file);
             formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
-
+            const uploadErrorMessage = 'Please upload a profile picture in JPEG, PNG, or JPG format. The file should be an image and must not exceed 2 MB in size.';
             $.ajax({
                 url: '/profile/upload', // Adjust URL if necessary
                 type: 'POST',
@@ -1049,11 +1050,16 @@ $(function () {
                     if (data.success) {
                         $('#profilePicture').attr('src', data.path);
                     } else {
-                        console.error('Upload failed');
+                        alert(uploadErrorMessage);
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error('Error:', error);
+
+                    let errorMessage = xhr.status === 422 ?
+                        uploadErrorMessage:
+                        'An error occurred while uploading. Please try again.';
+
+                    alert(errorMessage);
                 }
             });
         });

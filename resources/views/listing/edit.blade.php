@@ -164,6 +164,7 @@
                 @else
 
                 <input required type="file" name="profile_picture" accept="image/*" {{ isset($listing->id) ? 'readonly' : '' }}>
+                    <small class="text-muted">Please upload a profile picture in JPEG, PNG, or JPG format. The file should be an image and must not exceed 4 MB in size.</small>
                 @endif
             </div>
         </div>
