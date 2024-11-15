@@ -61,7 +61,7 @@
                                         </td>
 
                                         <td class="status">
-                                            <span class="sold">{{ $listing->listing_status }}</span>
+                                            <span class="sold">{{ $listing->getFormattedStatus() }}</span>
                                             @if ($listing->user && !$listing->user->has_trial_ended)
                                                 <p class="trial-end-date mt-1 text-danger">
                                                     Trial Ends: <b>{{ $listing->user->formatted_trial_end_date }}</b>

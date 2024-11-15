@@ -103,4 +103,18 @@ class Listing extends Model
             ->distinct()
             ->count('email');
     }
+
+    /**
+     * Get formatted listing status text.
+     *
+     * @return string
+     */
+    public function getFormattedStatus(): string
+    {
+        return match ($this->listing_status) {
+            self::STATUS_ACTIVE_TRIAL => 'Active Trial',
+            self::STATUS_EXPIRED_TRIAL => 'Trial Expired',
+            default => 'Status Unknown',
+        };
+    }
 }
