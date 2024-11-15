@@ -16,6 +16,14 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Listing extends Model
 {
     const STATUS_SUBSCRIBED = 'subscribed';
+    CONST STATUS_ACTIVE_TRIAL = 'active_trial';
+    CONST STATUS_EXPIRED_TRIAL = 'trial_expired';
+
+    const STATUS_PAID = 'paid';
+    const STATUS_PENDING = 'pending';
+
+    const STATUS_CANCELLED = 'canceled';
+    CONST STATUS_REFUNDED = 'refunded';
 
     protected $fillable = [
         'user_id',
@@ -94,5 +102,20 @@ class Listing extends Model
             ->select('email')
             ->distinct()
             ->count('email');
+    }
+
+    /**
+     * Get formatted listing status text.
+     *
+     * @return string
+     */
+    public function getFormattedStatus(): string
+    {
+        return match ($this->listing_status) {
+
+            self::STATUS_ACTIVE_TRIAL => 'Active Trial',
+            self::STATUS_EXPIRED_TRIAL => 'Trial Expired',
+            default => $this->listing_status,
+        };
     }
 }

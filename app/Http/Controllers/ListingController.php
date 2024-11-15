@@ -28,13 +28,6 @@ use Stripe\Exception\InvalidRequestException;
 
 class ListingController extends Controller
 {
-    const STATUS_PAID = 'paid';
-    const STATUS_PENDING = 'pending';
-
-    const STATUS_CANCELLED = 'canceled';
-    CONST STATUS_SUBSCRIBED = 'subscribed';
-    CONST STATUS_REFUNDED = 'refunded';
-
     public function __construct(
         protected PaymentService $paymentService,
         protected Subscription $subscription

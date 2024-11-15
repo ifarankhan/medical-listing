@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Listing;
 use App\Models\Subscription;
+use App\Observers\ListingObserver;
 use App\Services\PaymentService;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -45,5 +47,7 @@ class AppServiceProvider extends ServiceProvider
 
             return !(auth()->check() && auth()->user()->hasRole($role));
         });
+
+        Listing::observe(ListingObserver::class);
     }
 }

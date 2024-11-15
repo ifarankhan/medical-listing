@@ -113,7 +113,7 @@ class WebhookController extends Controller
                 $subscriptionModel->status = Subscription::STATUS_ACTIVE;
                 $subscriptionModel->save();
 
-                $listing->listing_status = ListingController::STATUS_SUBSCRIBED;
+                $listing->listing_status = Listing::STATUS_SUBSCRIBED;
                 $listing->save();
                 // Send the subscription confirmation email
                 Mail::to($user->email)->send(new SubscriptionConfirmationMail($user, $listing, $interval));
@@ -141,7 +141,7 @@ class WebhookController extends Controller
             $subscriptionModel->save();
 
             $listing = Listing::find($subscriptionModel->listing_id);
-            $listing->listing_status = ListingController::STATUS_SUBSCRIBED;
+            $listing->listing_status = Listing::STATUS_SUBSCRIBED;
             $listing->save();
             $user = $listing->user;
 
@@ -289,8 +289,8 @@ class WebhookController extends Controller
                 }
 
                 $listingStatus = $data->status == 'canceled'?
-                    ListingController::STATUS_SUBSCRIBED:
-                    ListingController::STATUS_CANCELLED;
+                    Listing::STATUS_SUBSCRIBED:
+                    Listing::STATUS_CANCELLED;
 
                 $listing->update(['listing_status' => $listingStatus]);
             }
