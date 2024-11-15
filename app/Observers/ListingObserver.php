@@ -27,6 +27,11 @@ class ListingObserver
             $user->trial_period_end = Carbon::now()->addDays(90); // 90 days later.
             // Save the user with the updated trial period timestamps.
             $user->save();
+
+        } elseif ($user->trial_period_end && Carbon::now()->lt($user->trial_period_end)) {
+            // Reactivate trial if within trial period.
+            $listing->listing_status = Listing::STATUS_ACTIVE_TRIAL;
+            $listing->save();
         }
     }
 
