@@ -112,9 +112,10 @@ class Listing extends Model
     public function getFormattedStatus(): string
     {
         return match ($this->listing_status) {
+
             self::STATUS_ACTIVE_TRIAL => 'Active Trial',
             self::STATUS_EXPIRED_TRIAL => 'Trial Expired',
-            default => 'Status Unknown',
+            default => $this->listing_status,
         };
     }
 }
