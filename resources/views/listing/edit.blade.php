@@ -105,10 +105,10 @@
         </div>
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
-                <label for="ein">EIN: <span class="text-danger">*</span></label>
+                <label for="ein">EIN:</label>
                 <input type="text" id="ein" name="ein" placeholder="XX-XXXXXXX"
                        pattern="\d{2}-\d{7}"
-                       value="{{ old('ein', $listing->ein) }}" required {{ isset($listing->id) ? 'readonly' : '' }}>
+                       value="{{ old('ein', $listing->ein) }}" {{ isset($listing->id) ? 'readonly' : '' }}>
                 <small class="text-muted">This will be used to verify business information.</small>
             </div>
         </div>
@@ -347,10 +347,10 @@
 <div class="add_property_info add_property_aminities wow fadeInUp" data-wow-duration="1.5s">
     <div class="row">
         <div class="col-6 text-start">
-            <button type="submit" name="action" value="save" class="common_btn">Save</button>
+            <button type="submit" name="action" value="save" class="common_btn">{{ $listing->id ? 'Save': 'Free Trial Now' }}</button>
         </div>
         <div class="col-6 text-end">
-            <button type="submit" name="action" value="save_continue" class="common_btn nextStep">Save & Continue</button>
+            <button type="submit" name="action" value="save_continue" class="common_btn nextStep">Continue to Payment</button>
         </div>
     </div>
 </div>
