@@ -202,7 +202,7 @@ class ListingController extends Controller
                 'contact_number' => 'required|string',
                 'address' => 'required|string',
                 'business_name' => 'required|string',
-                'ein' => 'required|regex:/^\d{2}-\d{7}$/',
+                'ein' => 'nullable|regex:/^\d{2}-\d{7}$/',
                 'business_address' => 'required|string',
                 'business_city' => 'string',
                 'business_zipcode' => 'string|regex:/^\d{5}(-\d{4})?$/',
