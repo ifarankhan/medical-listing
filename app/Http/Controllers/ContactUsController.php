@@ -26,6 +26,10 @@ class ContactUsController extends Controller
             'message' => 'required|string',
             'subject' => 'required',
             'phone' => ['required', 'regex:/^(?:\+1)?\d{10}$/'],
+            'g-recaptcha-response' => 'required|captcha',
+        ],[
+            'g-recaptcha-response.required' => 'Please verify that you are not a robot.',
+            'g-recaptcha-response.captcha' => 'Captcha error! try again later or contact site admin.',
         ]);
 
         // Get individual fields

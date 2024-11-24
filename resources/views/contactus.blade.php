@@ -117,7 +117,22 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-12">
+
+                            <div class="col-md-6 col-lg-12 col-xl-6">
+                                <div class="contact_input">
+                                    {!! NoCaptcha::renderJs() !!}
+                                    {!! NoCaptcha::display() !!}
+                                </div>
+
+                                @error('g-recaptcha-response')
+                                    <div class="invalid-feedback" style="display: block" role="alert">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+
+                            </div>
+
+                            <div class="col-md-12 mt-2">
                                 <div class="contact_input">
                                     <button class="common_btn">Send Message</button>
                                 </div>
