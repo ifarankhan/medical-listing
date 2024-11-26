@@ -1184,5 +1184,36 @@ $(function () {
             console.log('show validation ...')
         }
     });
+
+    $(document).ready(function (){
+
+        $('.js-data-states').select2({
+            placeholder: 'Select states',
+            maximumSelectionLength: 5,
+            ajax: {
+                url: '/state',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        search: params.term,
+                        page: params.page || 1
+                    };
+                },
+                processResults: function (data, params) {
+                    params.page = params.page || 1;
+                    return {
+                        results: data.items,
+                        pagination: {
+                            more: data.pagination.more
+                        }
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 2
+        });
+
+    });
 });
 
