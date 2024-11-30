@@ -41,9 +41,9 @@
         <div class="col-xxl-6 col-md-6">
             <div class="add_property_input">
 
-                    <label>Upload a file <span class="text-danger">*</span></label>
-                    <input required type="file" name="legal_proof" accept="image/*,application/pdf">
-                    <small class="text-muted">Please upload proof of your legal authorization to provide this service/product: business/professional license.</small>
+                <label>Upload a file <span class="text-danger">*</span></label>
+                <input required type="file" name="legal_proof" accept="image/*,application/pdf">
+                <small class="text-muted">Please upload proof of your legal authorization to provide this service/product: business/professional license.</small>
 
             </div>
         </div>
@@ -156,7 +156,7 @@
                 <label for="business_address">Address: <span class="text-danger">*</span></label>
                 <input type="text" id="business_address" name="business_address" placeholder="Business Address"
                        value="{{ old('business_address', $listing->business_address) }}"
-                       required class="{{ isset($listing->id) ? 'no-click' : '' }}">
+                       required>
                 <small class="text-muted"><b>Note:</b> Please select your address from the dropdown to automatically fill related fields. Pasting an address may not populate all details correctly.</small>
             </div>
 
@@ -177,7 +177,8 @@
             <div class="add_property_input">
                 <label for="states">State(s): <span class="text-danger">*</span></label>
                 {{ $states = old('business_states', $listing->business_states) }}
-                <select class="js-data-states" id="business_states" name="business_states[]" multiple="multiple">
+
+                <select class="js-data-states select_2" id="business_states" name="business_states[]" multiple="multiple">
 
                     @if(!is_null($states))
                         @foreach($states as $stateId => $stateName)
@@ -188,6 +189,7 @@
                     @endif
                 </select>
 
+                <small class="text-muted">you can list upto 5 states.</small>
             </div>
 
         </div>
@@ -218,7 +220,7 @@
             </div>
         </div>
 
-        <div class="col-xxl-4 col-md-6">
+        <div class="col-xxl-4 col-md-6 mt-2">
 
             <div class="add_property_input">
                 <label for="social_media_3">Social Media Link 3:</label>
@@ -228,7 +230,7 @@
 
         </div>
 
-        <div class="col-xxl-4 col-md-6">
+        <div class="col-xxl-4 col-md-6 mt-2">
 
             <div class="add_property_input">
                 <label for="social_media_4">Social Media Link 4:</label>
@@ -318,6 +320,22 @@
                         <input type="number" id="price_input_0" name="products[0][price]" placeholder="Price" step="0.01" min="0">
                     </div>
                 </div>
+
+                <div class="col-xxl-4 col-md-6">
+
+                    <label>Please select one of the following options: <span class="text-danger">*</span></label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="accepting_clients_0"
+                               name="products[0][accepting_clients]" value="1" required>
+                        <label for="accepting_clients_0">Currently Accepting New Clients</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="accepting_clients_0"
+                               name="products[0][accepting_clients]" value="0" required>
+                        <label class="form-check-label" for="accepting_clients_0">Currently Have A Waitlist</label>
+                    </div>
+
+                </div>
             </div>
         @endif
         @foreach($listing->productService as $index => $item)
@@ -403,6 +421,27 @@
                         <input type="number" id="price_input_{{ $index }}" name="products[{{ $index }}][price]" placeholder="Price"
                                value="{{ old('products.' . $index . '.price', $item->price) }}" step="0.01" min="0">
                     </div>
+                </div>
+
+                <div class="col-xxl-4 col-md-6">
+
+                    <label>Please select one of the following options: <span class="text-danger">*</span></label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="accepting_clients_{{ $index }}"
+                               name="products[{{ $index }}][accepting_clients]"
+                               value="1"
+                               {{ old('products.' . $index . '.accepting_clients', $item->accepting_clients) == '1' ? 'checked' : '' }}
+                               required>
+                        <label for="accepting_clients_{{ $index }}">Currently Accepting New Clients</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="accepting_clients_{{ $index }}"
+                               name="products[{{ $index }}][accepting_clients]" value="0"
+                               {{ old('products.' . $index . '.accepting_clients', $item->accepting_clients) == '0' ? 'checked' : '' }}
+                               required>
+                        <label class="form-check-label" for="accepting_clients_{{ $index }}">Currently Have A Waitlist</label>
+                    </div>
+
                 </div>
             </div>
 

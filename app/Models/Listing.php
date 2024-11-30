@@ -118,4 +118,9 @@ class Listing extends Model
             default => $this->listing_status,
         };
     }
+
+    public function details(): HasMany
+    {
+        return $this->hasMany(ListingDetail::class);
+    }
 }

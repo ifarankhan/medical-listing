@@ -144,6 +144,8 @@ class ListingController extends Controller
 
                 $listing->save();
             }
+            // Save listing details.
+            $this->saveListingDetails($listing, $validatedData['details']);
             // Save product/services associated with the listing.
             $this->saveProductServices($listing, $validatedData['products']);
 
@@ -189,28 +191,40 @@ class ListingController extends Controller
             'products.*.accept_insurance' => 'nullable|boolean', // Validate each product accept_insurance attribute.
             'products.*.insurance_list' => 'nullable|string', // Validate each product insurance_list attribute.
             'products.*.price' => 'nullable|numeric|min:0', // Validate each product price.
+            'products.*.accepting_clients' => 'required'
         ];
 
-        // Add rules only for create action
-        if (!$isEdit) {
-            $rules = array_merge($rules, [
-                'authorized' => 'required|boolean',
-                'registered' => 'required|boolean',
-                'first_name' => 'required|string',
-                'last_name' => 'required|string',
-                'email' => 'required|email',
-                'contact_number' => 'required|string',
-                'address' => 'required|string',
-                'business_name' => 'required|string',
-                'ein' => 'nullable|regex:/^\d{2}-\d{7}$/',
-                'business_address' => 'required|string',
-                'business_city' => 'string',
-                'business_zipcode' => 'string|regex:/^\d{5}(-\d{4})?$/',
-                'business_contact' => 'required|string',
-                'business_email' => 'required|email',
-                'profile_picture' => 'mimes:jpeg,png,jpg|image|max:4096',
-            ]);
-        }
+        $rules = array_merge($rules, [
+            'authorized' => 'required|boolean',
+            'registered' => 'required|boolean',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'email' => 'required|email',
+            'contact_number' => 'required|string',
+            'address' => 'required|string',
+            'business_name' => 'required|string',
+            'ein' => 'nullable|regex:/^\d{2}-\d{7}$/',
+            'business_address' => 'required|string',
+            'business_city' => 'string',
+            'business_zipcode' => 'string|regex:/^\d{5}(-\d{4})?$/',
+            'business_contact' => 'required|string',
+            'business_email' => 'required|email',
+            'profile_picture' => 'mimes:jpeg,png,jpg|image|max:4096',
+        ]);
+
+        $rules = array_merge($rules, [
+            'legal_proof' => 'mimes:jpeg,png,jpg,pdf|file|max:4096',
+            'group_genius' => 'nullable',
+            'business_states' => 'required|max:5',
+            'business_description' => 'nullable',
+            'social_media_1' => 'nullable|url',
+            'social_media_2' => 'nullable|url',
+            'social_media_3' => 'nullable|url',
+            'social_media_4' => 'nullable|url',
+        ], [
+            'legal_proof.mimes' => 'The file must be an image (jpeg, png, jpg) or a PDF.',
+            'legal_proof.max' => 'The file size must not exceed 4 MB.',
+        ]);
 
         // Validate the request data
         $validatedData = $request->validate($rules, [
@@ -248,7 +262,7 @@ class ListingController extends Controller
 
 
     private function createListing(array $data): Listing
-    {
+    { dd($data);
         $listing = new Listing();
         $listing->user_id = Auth::id();
         $listing->authorized = $data['authorized'];
@@ -275,6 +289,16 @@ class ListingController extends Controller
         $listing->profile_picture =
 
         $listing->save();
+        // Save in Listing details.
+        $listing->details()->create([
+            'group_genius' => $data['group_genius'],
+            'business_description' => $data['business_description'],
+            'business_states' => $data['business_states'],
+            'social_media_1' => $data['social_media_1'],
+            'social_media_2' => $data['social_media_2'],
+            'social_media_3' => $data['social_media_3'],
+            'social_media_4' => $data['social_media_4'],
+        ]);
 
         return $listing;
     }
@@ -291,6 +315,7 @@ class ListingController extends Controller
                 'accept_insurance' => $product['accept_insurance'] ?? false,
                 'insurance_list' => $product['insurance_list'] ?? '',
                 'price' => $product['price'],
+                'accepting_clients' => $product['accepting_clients'],
             ]);
 
             $productService->save();
@@ -385,5 +410,10 @@ class ListingController extends Controller
             // If there's an error, return a failure response
             return response()->json(['success' => false, 'message' => 'Failed to delete the product.'], 500);
         }
+    }
+
+    private function saveListingDetails(Listing $listing, array $details)
+    {
+
     }
 }
