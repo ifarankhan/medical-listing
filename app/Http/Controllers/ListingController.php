@@ -144,8 +144,7 @@ class ListingController extends Controller
 
                 $listing->save();
             }
-            // Save listing details.
-            $this->saveListingDetails($listing, $validatedData['details']);
+
             // Save product/services associated with the listing.
             $this->saveProductServices($listing, $validatedData['products']);
 
@@ -201,7 +200,7 @@ class ListingController extends Controller
             'last_name' => 'required|string',
             'email' => 'required|email',
             'contact_number' => 'required|string',
-            'address' => 'required|string',
+            //'address' => 'required|string',
             'business_name' => 'required|string',
             'ein' => 'nullable|regex:/^\d{2}-\d{7}$/',
             'business_address' => 'required|string',
@@ -271,7 +270,7 @@ class ListingController extends Controller
         $listing->last_name = $data['last_name'];
         $listing->email = $data['email'];
         $listing->contact_number = $data['contact_number'];
-        $listing->address = $data['address'];
+        //$listing->address = $data['address'];
         $listing->business_name = $data['business_name'];
         $listing->ein = $data['ein'];
         $listing->business_address = $data['business_address'];

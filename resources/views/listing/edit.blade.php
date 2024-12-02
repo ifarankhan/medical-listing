@@ -176,7 +176,10 @@
 
             <div class="add_property_input">
                 <label for="states">State(s): <span class="text-danger">*</span></label>
-                {{ $states = old('business_states', $listing->business_states) }}
+                @php
+                    //dd($listing->business_states);
+                    $states = old('business_states', isset($listing->business_states) ? explode(',', $listing->business_states) : [])
+                @endphp
 
                 <select class="js-data-states select_2" id="business_states" name="business_states[]" multiple="multiple">
 
