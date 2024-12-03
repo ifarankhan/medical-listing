@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\AuthController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -55,7 +56,6 @@ Route::post('/get-in-touch', [GetInTouchController::class, 'sendEmail'])->name('
 
 
 Route::group(['middleware' => 'guest'], function () {
-
     Route::get('/register', [RegisterController::class, 'register'])->name('register');
     Route::post('/register', [RegisterController::class, 'registerPost'])->name('register');
     Route::get('/login', [LoginController::class, 'login'])->name('login');
@@ -63,7 +63,6 @@ Route::group(['middleware' => 'guest'], function () {
 });
 
 Route::group(['middleware' => ['role:customer,insurance_provider']], function () {
-
     Route::get('/account', [DashboardController::class, 'index'])->name('account');
 
     Route::delete('/logout', [LogoutController::class, 'logout'])->name('logout');
@@ -74,23 +73,26 @@ Route::group(['middleware' => ['role:customer,insurance_provider']], function ()
 });
 
 Route::group(['middleware' => ['role:insurance_provider']], function () {
-
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/listing', [ListingController::class, 'index'])->name('listing.index');
     Route::get('/dashboard/listing/create', [ListingController::class, 'create'])->name('listing.create');
     Route::post('/dashboard/listing/store', [ListingController::class, 'store'])->name('listing.store');
     Route::get('/dashboard/listing/{listing}/subscription', [ListingController::class, 'subscription'])
+         ->middleware('disable.route')
          ->name('listing.step.subscription');
     Route::get('/dashboard/listing/{listing}/edit', [ListingController::class, 'edit'])->name('listing.edit');
     Route::get('/dashboard/listing/{listing}/delete', [ListingController::class, 'delete'])
          ->name('listing.delete');
 
     Route::get('/subscription', [SubscriptionController::class, 'showSubscriptionForm'])
+         ->middleware('disable.route')
          ->name('subscription.form');
     Route::post('/create-subscription', [SubscriptionController::class, 'createSubscription'])
+         ->middleware('disable.route')
          ->name('subscription.create');
 
     Route::get('/callback-subscription', [SubscriptionController::class, 'processCallback'])
+         ->middleware('disable.route')
          ->name('subscription.callback');
 
     //Route::post('/subscription/process', [SubscriptionController::class, 'processPayment'])->name('subscription.process');
@@ -98,7 +100,8 @@ Route::group(['middleware' => ['role:insurance_provider']], function () {
     Route::post('/subscription/session-status', [
         SubscriptionController::class,
         'sessionStatus'
-    ])->name('subscription.session.status');
+    ])->middleware('disable.route')
+         ->name('subscription.session.status');
 
     Route::delete('/delete-product/{id}', [
         ListingController::class,
@@ -109,7 +112,6 @@ Route::group(['middleware' => ['role:insurance_provider']], function () {
 });
 
 Route::group(['middleware' => ['role:customer']], function () {
-
     Route::post('/send-message', [MessageController::class, 'send'])->name('send-message');
     Route::post('/contact-multiple-providers', [ContactProviderController::class, 'contactMultiple'])
          ->name('contact.multiple.providers');
@@ -120,7 +122,6 @@ Route::group(['middleware' => ['role:customer']], function () {
          ->name('my-dash');
 
     Route::get('/customer-queries-per-month', [CustomerBarChartController::class, 'index']);
-
 });
 
 use App\Http\Controllers\Auth\ForgotPasswordController;
