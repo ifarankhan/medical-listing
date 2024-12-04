@@ -25,9 +25,6 @@
         }
 
         /* Ensure modal backdrop doesn't cover the header */
-        .modal-backdrop {
-            z-index: 1050; /* Below the navbar */
-        }
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
@@ -165,6 +162,16 @@
                                              role="alert">{{ $message }}</div>
                                         @enderror
 
+                                        <div class="single_input d-flex align-items-center">
+                                            {!! NoCaptcha::renderJs() !!}
+                                            {!! NoCaptcha::display() !!}
+                                        </div>
+
+                                        @error('g-recaptcha-response')
+                                            <div class="invalid-feedback" style="display: block" role="alert">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
 
                                         <button id="submitBtn" class="common_btn common_btn_2">Create an account
                                         </button>

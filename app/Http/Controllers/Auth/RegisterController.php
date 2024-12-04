@@ -42,6 +42,7 @@ class RegisterController extends Controller
             ],
             'password_confirmation' => 'min:8',
             'role' => 'required',
+            'g-recaptcha-response' => 'required|captcha',
         ], [
             'name.required' => 'Name is required',
             'email.required' => 'Email is required',
@@ -53,6 +54,8 @@ class RegisterController extends Controller
             one number and one special character.',
             'password.confirmed' => 'Password confirmation does not match',
             'role.required' => 'Role is required',
+            'g-recaptcha-response.required' => 'Please verify that you are not a robot.',
+            'g-recaptcha-response.captcha' => 'Captcha error! try again later or contact site admin.',
         ]);
 
         try {
