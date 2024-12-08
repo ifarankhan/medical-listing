@@ -18,6 +18,7 @@ use App\Http\Controllers\PricingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
 
+use App\Http\Controllers\StateController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\WebhookController;
 use App\Http\Controllers\ZipcodeController;
@@ -51,6 +52,7 @@ Route::post('/webhook/stripe', [WebhookController::class, 'handleWebhook']);
 
 Route::get('/zipcodes', ZipCodeController::class);
 Route::get('/city', CityController::class);
+Route::get('/state', StateController::class);
 
 Route::post('/get-in-touch', [GetInTouchController::class, 'sendEmail'])->name('get-in-touch');
 

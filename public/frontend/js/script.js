@@ -893,9 +893,25 @@ $(function () {
         </div>
         <div class="col-xxl-4 col-md-6" id="price_{index}" style="display:none;">
             <div class="add_property_input">
-                <label>If you do not accept insurance, please enter price for the product: <span class="text-danger">*</span></label>
+                <label>If you do not accept insurance, please enter price for the product:</label>
                 <input type="number" id="price_input_{index}" name="products[{index}][price]" placeholder="Price" step="0.01" min="0">
             </div>
+        </div>
+
+        <div class="col-xxl-4 col-md-6">
+
+            <label>Please select one of the following options: <span class="text-danger">*</span></label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="accepting_clients_{index}"
+                       name="products[{index}][accepting_clients]" value="1" required>
+                <label for="accepting_clients_{index}">Currently Accepting New Clients</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="accepting_clients_{index}"
+                       name="products[{index}][accepting_clients]" value="2" required>
+                <label class="form-check-label" for="accepting_clients_{index}">Currently Have A Waitlist</label>
+            </div>
+
         </div>
     </div>
 `;
@@ -1183,6 +1199,37 @@ $(function () {
             $('#multiStepForm')[0].reportValidity(); // Show validation messages
             console.log('show validation ...')
         }
+    });
+
+    $(document).ready(function (){
+
+        $('.js-data-states').select2({
+            placeholder: 'Select states',
+            maximumSelectionLength: 5,
+            ajax: {
+                url: '/state',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        search: params.term,
+                        page: params.page || 1
+                    };
+                },
+                processResults: function (data, params) {
+                    params.page = params.page || 1;
+                    return {
+                        results: data.items,
+                        pagination: {
+                            more: data.pagination.more
+                        }
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 2
+        });
+
     });
 });
 

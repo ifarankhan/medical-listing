@@ -118,4 +118,19 @@ class Listing extends Model
             default => $this->listing_status,
         };
     }
+
+    public function details(): HasMany
+    {
+        return $this->hasMany(ListingDetail::class);
+    }
+
+    public function getDetailsMapAttribute()
+    {
+        return $this->details->pluck('value', 'key')->toArray();
+    }
+
+    public function getDetail($key, $default = '')
+    {
+        return $this->detailsMap[$key] ?? $default;
+    }
 }
