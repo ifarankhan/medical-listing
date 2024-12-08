@@ -123,4 +123,14 @@ class Listing extends Model
     {
         return $this->hasMany(ListingDetail::class);
     }
+
+    public function getDetailsMapAttribute()
+    {
+        return $this->details->pluck('value', 'key')->toArray();
+    }
+
+    public function getDetail($key, $default = '')
+    {
+        return $this->detailsMap[$key] ?? $default;
+    }
 }

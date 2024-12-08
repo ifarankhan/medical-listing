@@ -42,8 +42,33 @@
             <div class="add_property_input">
 
                 <label>Upload a file <span class="text-danger">*</span></label>
-                <input required type="file" name="legal_proof" accept="image/*,application/pdf">
-                <small class="text-muted">Please upload proof of your legal authorization to provide this service/product: business/professional license.</small>
+                <input {{ $listing->getDetail('legal_proof') ? '' : 'required' }} type="file" name="legal_proof" accept="image/*,application/pdf">
+                <small class="text-muted">Please upload proof in JPEG, PNG, JPG or PDF format of your legal authorization to provide this service/product: business/professional license.</small>
+
+                @if(!empty($listing->getDetail('legal_proof')))
+                    <div class="mt-3">
+                        @php
+                            $filePath = $listing->getDetail('legal_proof');
+                            $imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+                            $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
+                        @endphp
+
+                        @if(in_array($fileExtension, $imageExtensions))
+                            <!-- Display image -->
+                            <img src="{{ asset('storage/' . $listing->getDetail('legal_proof')) }}"
+                                 alt="Uploaded Proof"
+                                 class="img-fluid"
+                                 style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                        @elseif(str_ends_with($listing->getDetail('legal_proof'), '.pdf'))
+                            <!-- Display link to PDF -->
+                            <a href="{{ asset('storage/' . $listing->getDetail('legal_proof')) }}" target="_blank" class="btn btn-outline-primary mt-2">
+                                View Uploaded Proof (PDF)
+                            </a>
+                        @else
+                            <p class="text-warning">Uploaded file format is not supported for preview.</p>
+                        @endif
+                    </div>
+                @endif
 
             </div>
         </div>
@@ -116,14 +141,16 @@
 
             <div class="add_property_input">
                 <label>Profile Picture <span class="text-danger">*</span></label>
+
+                <input {{ $listing->profile_picture ? '' : 'required' }} type="file" name="profile_picture" accept="image/*">
+                <small class="text-muted">Please upload a profile picture in JPEG, PNG, or JPG format. The file should be an image and must not exceed 4 MB in size.</small>
                 <!-- Show the uploaded image if it exists. -->
                 @if(!empty($listing->profile_picture))
+
                     <div class="mb-3">
                         <img src="{{ asset('storage/'.$listing->profile_picture) }}" alt="Profile Picture" style="max-width: 150px; max-height: 150px; object-fit: cover;"/>
                     </div>
                 @endif
-                <input required type="file" name="profile_picture" accept="image/*">
-                <small class="text-muted">Please upload a profile picture in JPEG, PNG, or JPG format. The file should be an image and must not exceed 4 MB in size.</small>
             </div>
 
         </div>
@@ -141,13 +168,6 @@
                 <label for="business_email">Email Address: <span class="text-danger">*</span></label>
                 <input type="email" id="business_email" name="business_email" placeholder="Business Email"
                        value="{{ old('business_email', $listing->business_email) }}" required>
-            </div>
-
-            <div class="add_property_input mt-2">
-                <label for="group_genius">Group Genius:</label>
-                <input type="text" id="group_genius" name="group_genius" placeholder="Group Genius"
-                       value="{{ old('group_genius', $listing->group_genius) }}"/>
-                <small class="text-muted">Group Genius is a Virtual Resource Fair Space free for all Diverrx members. If you don’t already have a Virtual Table we will assign you once you complete the registration with Diverrx.</small>
             </div>
 
         </div>
@@ -177,22 +197,21 @@
             <div class="add_property_input">
                 <label for="states">State(s): <span class="text-danger">*</span></label>
                 @php
-                    //dd($listing->business_states);
-                    $states = old('business_states', isset($listing->business_states) ? explode(',', $listing->business_states) : [])
+                    $businessStates = old('business_states', json_decode($listing->getDetail('business_states')));
                 @endphp
 
                 <select class="js-data-states select_2" id="business_states" name="business_states[]" multiple="multiple">
 
-                    @if(!is_null($states))
+                    @if(!is_null($states) && !is_null($businessStates))
                         @foreach($states as $stateId => $stateName)
-                            <option value="{{ $stateId }}" @if(in_array($stateId, $states)) selected @endif>
+                            <option value="{{ $stateId }}" @if(in_array($stateId, $businessStates)) selected @endif>
                                 {{ $stateName }}
                             </option>
                         @endforeach
                     @endif
                 </select>
 
-                <small class="text-muted">you can list upto 5 states.</small>
+                <small class="text-muted">You can add up to 5 states where you’re currently operating.</small>
             </div>
 
         </div>
@@ -201,7 +220,7 @@
 
             <label for="zipcode">Description:</label>
             <div class="add_property_input">
-                <textarea class="form-control summer_note" name="business_description">{{ old('business_description', $listing->business_description) }}</textarea>
+                <textarea class="form-control summer_note" name="business_description">{{ old('business_description', $listing->getDetail('business_description', '')) }}</textarea>
                 <small class="text-muted">1000 characters or 200 words.</small>
             </div>
 
@@ -212,14 +231,14 @@
             <div class="add_property_input">
                 <label for="social_media_1">Social Media Link 1:</label>
                 <input type="url" id="social_media_1" name="social_media_1" placeholder="Social Media Link"
-                       value="{{ old('social_media_1', $listing->social_media_1) }}"/>
+                       value="{{ old('social_media_1', $listing->getDetail('social_media_1')) }}"/>
             </div>
 
             <div class="add_property_input mt-2">
 
                 <label for="social_media_2">Social Media Link 2:</label>
                 <input type="url" id="social_media_2" name="social_media_2" placeholder="Social Media Link"
-                       value="{{ old('social_media_2', $listing->social_media_2) }}"/>
+                       value="{{ old('social_media_2', $listing->getDetail('social_media_2')) }}"/>
             </div>
         </div>
 
@@ -228,7 +247,7 @@
             <div class="add_property_input">
                 <label for="social_media_3">Social Media Link 3:</label>
                 <input type="url" id="social_media_3" name="social_media_3" placeholder="Social Media Link"
-                       value="{{ old('social_media_3', $listing->social_media_3) }}"/>
+                       value="{{ old('social_media_3', $listing->getDetail('social_media_3')) }}"/>
             </div>
 
         </div>
@@ -238,7 +257,7 @@
             <div class="add_property_input">
                 <label for="social_media_4">Social Media Link 4:</label>
                 <input type="url" id="social_media_4" name="social_media_4" placeholder="Social Media Link"
-                       value="{{ old('social_media_4', $listing->social_media_4) }}"/>
+                       value="{{ old('social_media_4', $listing->getDetail('social_media_4')) }}"/>
             </div>
 
         </div>
@@ -319,7 +338,7 @@
                 </div>
                 <div class="col-xxl-4 col-md-6" id="price_0" style="display:none;">
                     <div class="add_property_input">
-                        <label>If you do not accept insurance, please enter price for the product: <span class="text-danger">*</span></label>
+                        <label>If you do not accept insurance, please enter price for the product:</label>
                         <input type="number" id="price_input_0" name="products[0][price]" placeholder="Price" step="0.01" min="0">
                     </div>
                 </div>
@@ -334,7 +353,7 @@
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="accepting_clients_0"
-                               name="products[0][accepting_clients]" value="0" required>
+                               name="products[0][accepting_clients]" value="2" required>
                         <label class="form-check-label" for="accepting_clients_0">Currently Have A Waitlist</label>
                     </div>
 
@@ -420,7 +439,7 @@
                 </div>
                 <div class="col-xxl-4 mb-3 col-md-6" id="price_{{ $index }}" style="display: {{ old('products.' . $index . '.accept_insurance', $item->accept_insurance) == '0' ? 'block' : 'none' }};">
                     <div class="add_property_input">
-                        <label>If you do not accept insurance, please enter price for the product: <span class="text-danger">*</span></label>
+                        <label>If you do not accept insurance, please enter price for the product:</label>
                         <input type="number" id="price_input_{{ $index }}" name="products[{{ $index }}][price]" placeholder="Price"
                                value="{{ old('products.' . $index . '.price', $item->price) }}" step="0.01" min="0">
                     </div>
@@ -439,8 +458,8 @@
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="accepting_clients_{{ $index }}"
-                               name="products[{{ $index }}][accepting_clients]" value="0"
-                               {{ old('products.' . $index . '.accepting_clients', $item->accepting_clients) == '0' ? 'checked' : '' }}
+                               name="products[{{ $index }}][accepting_clients]" value="2"
+                               {{ old('products.' . $index . '.accepting_clients', $item->accepting_clients) == '2' ? 'checked' : '' }}
                                required>
                         <label class="form-check-label" for="accepting_clients_{{ $index }}">Currently Have A Waitlist</label>
                     </div>
