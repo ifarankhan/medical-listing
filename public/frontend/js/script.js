@@ -1231,5 +1231,9 @@ $(function () {
         });
 
     });
+
+    $(document).ready(function(){
+        $('#contact_number, #business_contact').mask('(000) 000-0000'); // Mask phone number format
+    });
 });
 

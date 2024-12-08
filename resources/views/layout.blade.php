@@ -107,6 +107,8 @@
 <script src="{{ asset('frontend/js/venobox.min.js') }}"></script>
 <!--animated headline js-->
 <script src="{{ asset('frontend/js/jquery.animatedheadline.min.js') }}"></script>
+<!--mask js-->
+<script src="{{ asset('frontend/js/jquery.mask.min.js') }}"></script>
 <!--script/custom js-->
 <script src="{{ asset('frontend/js/script.js') }}"></script>
 @if(request()->routeIs('listing.edit') || request()->routeIs('listing.create'))

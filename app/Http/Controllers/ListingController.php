@@ -10,6 +10,7 @@ use App\Models\Subscription;
 use App\Rules\WordCount;
 use App\Services\FileUploadService;
 use App\Services\PaymentService;
+use App\Services\PhoneService;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -35,6 +36,7 @@ class ListingController extends Controller
         protected PaymentService $paymentService,
         protected Subscription $subscription,
         protected FileUploadService $fileUploadService,
+        protected PhoneService  $phoneService,
     ){}
     public function index(): Factory|View|Application
     {
@@ -182,6 +184,8 @@ class ListingController extends Controller
     }
     private function updateListing(Listing $listing, array $data): void
     {
+        $data['contact_number'] = $this->phoneService->unformatPhoneNumber($data['contact_number']);
+        $data['business_contact'] = $this->phoneService->unformatPhoneNumber($data['business_contact']);
         $listing->update($data);
         $listing->productService()->delete();
         // Keep legal proof data as it is handled separately.
@@ -219,14 +223,14 @@ class ListingController extends Controller
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'email' => 'required|email',
-            'contact_number' => 'required|string',
+            'contact_number' => 'required|regex:/^\(\d{3}\)\s\d{3}-\d{4}$/',
             //'address' => 'required|string',
             'business_name' => 'required|string',
             'ein' => 'nullable|regex:/^\d{2}-\d{7}$/',
             'business_address' => 'required|string',
             'business_city' => 'string',
             'business_zipcode' => 'string|regex:/^\d{5}(-\d{4})?$/',
-            'business_contact' => 'required|string',
+            'business_contact' => 'required|regex:/^\(\d{3}\)\s\d{3}-\d{4}$/',
             'business_email' => 'required|email',
             'profile_picture' => 'mimes:jpeg,png,jpg|image|max:4096',
         ], [
@@ -289,7 +293,7 @@ class ListingController extends Controller
         $listing->first_name = $data['first_name'];
         $listing->last_name = $data['last_name'];
         $listing->email = $data['email'];
-        $listing->contact_number = $data['contact_number'];
+        $listing->contact_number = $this->phoneService->unformatPhoneNumber($data['contact_number']);
         //$listing->address = $data['address'];
         $listing->business_name = $data['business_name'];
         $listing->ein = $data['ein'];
@@ -303,7 +307,7 @@ class ListingController extends Controller
         // If a ZIP code is found, store it, else handle the absence.
         $listing->business_zipcode = !empty($matches) ? $matches[0] : null;*/
 
-        $listing->business_contact = $data['business_contact'];
+        $listing->business_contact = $this->phoneService->unformatPhoneNumber($data['business_contact']);
         $listing->business_email = $data['business_email'];
 
         $listing->save();

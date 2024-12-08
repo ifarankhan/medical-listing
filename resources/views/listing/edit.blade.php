@@ -108,9 +108,9 @@
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
                 <label for="contact_number">Contact Number: <span class="text-danger">*</span></label>
-                <input type="text" id="contact_number" name="contact_number" placeholder="+1XXXXXXXXXX"
+                <input type="text" id="contact_number" name="contact_number" placeholder="(000) 000-0000"
 {{--                       pattern="\+1\d{10}" --}}
-                       title="Please enter a valid phone number in the format +12345678900"
+                       title="Please enter a valid phone number in the format (000) 000-0000"
                        value="{{ old('contact_number', $listing->contact_number) }}" required>
             </div>
         </div>
@@ -133,9 +133,9 @@
 
             <div class="add_property_input">
                 <label for="business_contact">Contact: <span class="text-danger">*</span></label>
-                <input type="text" id="business_contact" name="business_contact" placeholder="+1XXXXXXXXXX"
+                <input type="text" id="business_contact" name="business_contact" placeholder="(000) 000-0000"
                        {{--                       pattern="\+1\d{10}" --}}
-                       title="Please enter a valid phone number in the format +12345678900"
+                       title="Please enter a valid phone number in the format (000) 000-0000"
                        value="{{ old('business_contact', $listing->business_contact) }}" required>
             </div>
 
