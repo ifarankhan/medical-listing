@@ -68,9 +68,9 @@
                                                 $listing->user?->has_trial_ended === false
                                                 && $listing->listing_status === Listing::STATUS_ACTIVE_TRIAL
                                             )
-                                            <p class="trial-end-date mt-1 text-danger">
+                                            {{--<p class="trial-end-date mt-1 text-danger">
                                                 Trial Ends: <b>{{ $listing->user->formatted_trial_end_date }}</b>
-                                            </p>
+                                            </p>--}}
                                         @endif
                                     </td>
                                     <td class="action">

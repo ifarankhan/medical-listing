@@ -24,7 +24,7 @@ class ListingObserver
             $listing->save();
             // Set trial period to 90 days from the time the listing is created.
             $user->trial_period_start = Carbon::now(); // Current date and time.
-            $user->trial_period_end = Carbon::now()->addDays(90); // 90 days later.
+            $user->trial_period_end = Carbon::now()->addDays(180); // 180 days later. DIV-103
             // Save the user with the updated trial period timestamps.
             $user->save();
 

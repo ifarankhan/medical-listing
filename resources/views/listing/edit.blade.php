@@ -457,10 +457,10 @@
 <div class="add_property_info add_property_aminities wow fadeInUp" data-wow-duration="1.5s">
     <div class="row">
         <div class="col-6 text-start">
-            <button type="submit" name="action" value="save" class="common_btn">{{ $listing->id ? 'Save': 'Free Trial Now' }}</button>
+            <button type="submit" name="action" value="save" class="common_btn">{{ $listing->id ? 'Save': 'Free Sign Up' }}</button>
         </div>
-        <div class="col-6 text-end">
+        {{--<div class="col-6 text-end">
             <button type="submit" name="action" value="save_continue" class="common_btn nextStep">Continue to Payment</button>
-        </div>
+        </div>--}}
     </div>
 </div>

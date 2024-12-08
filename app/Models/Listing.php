@@ -113,7 +113,7 @@ class Listing extends Model
     {
         return match ($this->listing_status) {
 
-            self::STATUS_ACTIVE_TRIAL => 'Active Trial',
+            self::STATUS_ACTIVE_TRIAL => 'Active',
             self::STATUS_EXPIRED_TRIAL => 'Trial Expired',
             default => $this->listing_status,
         };
