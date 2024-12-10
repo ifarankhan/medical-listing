@@ -51,12 +51,12 @@
                     <div class="single_property_details mt_20 wow fadeInUp" data-wow-duration="1.5s">
                         <div class=" d-flex flex-wrap justify-content-between">
                             <h4>{{ $listing->business_name }}</h4>
-                            <ul class="property_details_share d-flex flex-wrap">
+                            {{--<ul class="property_details_share d-flex flex-wrap">
                                 <li><a href="#"><i class="fas fa-heart"></i></a></li>
                                 <li><a href="#"><i class="far fa-plus"></i></a></li>
                                 <li><a href="#"><i class="fas fa-share-alt"></i></a></li>
                                 <li><a href="#"><i class="fas fa-print"></i></a></li>
-                            </ul>
+                            </ul>--}}
                         </div>
                         <div class="property_details_address d-flex flex-wrap justify-content-between">
                             <ul class="d-flex flex-wrap">
@@ -74,13 +74,13 @@
                     <div class="single_property_details mt_25 wow fadeInUp" data-wow-duration="1.5s">
                         <div class="property_facilities">
                             <h4>Services/Products Offered</h4>
-                            <ul class="list-group list-group-horizontal-lg">
+                            <ul class="list-group list-group-horizontal-lg w-100">
                                 @foreach($listing->productService as $item)
-                                    <li class="">
-                                        {{ $item->category->name }} {{ $item->getAcceptingNewClientsOrWaitlistAttribute() }}
-                                        <ul class="list-group">
-                                            <li class="list-unstyled">{{ $item->description }}</li>
-                                            <li>Accepts Insurance: {{ $item->accept_insurance == 1 ? 'Yes': 'No' }}</li>
+                                    <li class="w-100">
+                                        <b>{{ $item->category->name }}</b> {{ $item->getAcceptingNewClientsOrWaitlistAttribute() }}
+                                        <ul class="list-group w-100">
+                                            <li class="list-unstyled w-100">{{ $item->description }}</li>
+                                            <li class="w-100"><b>Accepts Insurance:</b> {{ $item->accept_insurance == 1 ? 'Yes': 'No' }}</li>
                                         </ul>
                                     </li>
                                 @endforeach
@@ -306,28 +306,26 @@
                 <div class="col-lg-4">
                     <div class="sticky_sidebar">
                         <div class="opening_our">
-                            <h3>Opening Hours </h3>
+                            <h3>at a glance </h3>
                             <ul>
-                                <li><span>Sunday</span> <span>9:00 AM - 5:00 PM</span></li>
-                                <li><span>Monday</span> <span>9:30 AM - 5:30 PM</span></li>
-                                <li><span>Tuesday</span> <span>9:30 AM - 5:30 PM</span></li>
-                                <li><span>Wednesday</span> <span>9:00 AM - 5:00 PM</span></li>
-                                <li><span>Thursday</span> <span>9:30 AM - 5:30 PM</span></li>
-                                <li><span>Friday</span> <span>9:30 AM - 5:30 PM</span></li>
+                                <li><span>Registered Business Address:</span> <span>{{ $listing->business_address }}</span></li>
+                                <li><a href="#"><span>Verified as per Diverrx's Safe Space Policy</span></a></li>
+                                <li><span>Acceptable Insurances:</span> <span>{{ $listing->getProductServicesInsuranceList()? $listing->getProductServicesInsuranceList(): 'No'  }}</span></li>
+
                             </ul>
                         </div>
 
                         <div class="sales_executive">
 
                             <a href="#" class="sales_executive_img">
-                                @if(Auth::user()->profile_picture)
+                                @if($listing->user->profile_picture)
                                     <!-- Display the user's profile picture if it exists -->
-                                    <img id="profilePicture" src="{{ asset('storage/profile_pictures/' . Auth::user()->profile_picture) }}" alt="dashboard" class="img-fluid w-100">
+                                    <img id="profilePicture" src="{{ asset('storage/profile_pictures/' . $listing->user->profile_picture) }}" alt="dashboard" class="img-fluid w-100">
                                 @else
                                     <img src="{{ asset('frontend/images/blog_owner.png') }}" alt="img" class="img-fluid w-100">
                                 @endif
                             </a>
-                            <a href="javascript: void(0)" class="sales_executive_name" style="pointer-events: none">{{ Auth::user()->name }}</a>
+                            <a href="javascript: void(0)" class="sales_executive_name" style="pointer-events: none">{{ $listing->user->name }}</a>
 {{--                            <p>Sales Executive</p>--}}
                             <ul class="d-flex flex-wrap justify-content-center">
                                 <li><a href="#"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
