@@ -19,6 +19,7 @@ class ProductService extends Model
         'accept_insurance',
         'insurance_list',
         'price',
+        'accepting_clients'
     ];
 
     // This mutator will automatically remove spaces around commas before saving

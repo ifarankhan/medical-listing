@@ -71,7 +71,7 @@
                                 <option value="">Select Insurance</option>
                             </select>
                         </div>--}}
-                        <div class="sidebar_dropdown sidebar_wizerd">
+                        {{--<div class="sidebar_dropdown sidebar_wizerd">
                             <h3>zip code</h3>
                             <select class="select_2" name="zip_code" id="zip_code">
                                 <option value="">Select Zip Code</option>
@@ -93,7 +93,7 @@
                                         </option>
                                     @endif
                             </select>
-                        </div>
+                        </div>--}}
 
                         <div class="sidebar_dropdown sidebar_wizerd">
                             <h3>service/products</h3>
@@ -268,8 +268,10 @@
                                     <div class="listing_text">
                                         <h5>{{ $listings[$i]->business_name }}</h5>
                                         <ul>
-                                            <li><i class="fas fa-map-marker-alt"></i>{{ $listings[$i]->business_address }}</li>
-                                            <li><i class="fas fa-phone-alt"></i>{{ $listings[$i]->business_contact }}</li>
+                                            @if($listings[$i]->getBusinessStatesFormatted())
+                                                <li><i class="fas fa-map-marker-alt"></i><b>Serving:</b> {{ str_replace(',', ', ', $listings[$i]->getBusinessStatesFormatted()) }}</li>
+                                            @endif
+                                            <li><i class="fas fa-phone-alt"></i>{{ $listings[$i]->getFormattedBusinessContactAttribute() }}</li>
                                             @if($listings[$i]->getProductServicesInsuranceList() != '')
                                                 <li><i class="fas fa-list-alt"></i>{{ trim($listings[$i]->getProductServicesInsuranceList(), ', ') }}</li>
                                             @endif
