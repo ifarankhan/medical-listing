@@ -266,7 +266,9 @@
         {{--                                <a class="love" href="#"><i class="fas fa-heart"></i></a>--}}
                                     </div>
                                     <div class="listing_text">
-                                        <h5>{{ $listings[$i]->business_name }}</h5>
+                                        <a href="{{ route('listing.details', $listings[$i]->id) }}">
+                                            <h5>{{ $listings[$i]->business_name }}</h5>
+                                        </a>
                                         <ul>
                                             @if($listings[$i]->getBusinessStatesFormatted())
                                                 <li><i class="fas fa-map-marker-alt"></i><b>Serving:</b> {{ str_replace(',', ', ', $listings[$i]->getBusinessStatesFormatted()) }}</li>

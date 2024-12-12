@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProductService extends Model
 {
@@ -36,5 +37,14 @@ class ProductService extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function getAcceptingNewClientsOrWaitlistAttribute(): string
+    {
+        $item = $this->attributes['accepting_clients'];
+        if ($item === null) {
+            return '';
+        }
+        return $item == 1? '(Accepting New Clients)' : '(Waitlist)';
     }
 }
