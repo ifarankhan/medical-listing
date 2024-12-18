@@ -13,11 +13,13 @@ use App\Http\Controllers\CustomerDashboardController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GetInTouchController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Listing\DetailsController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
 
+use App\Http\Controllers\StateController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\WebhookController;
 use App\Http\Controllers\ZipcodeController;
@@ -44,6 +46,7 @@ Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
 Route::get('/contact', [ContactUsController::class, 'index'])->name('contact');
 Route::post('/contact/submit', [ContactUsController::class, 'submit'])->name('contact.submit');
 Route::get('/search', [SearchController::class, 'search'])->name('search');
+Route::get('/listing/details/{listing}', [DetailsController::class, 'index'])->name('listing.details');
 
 Route::get('/check-auth', [AuthController::class, 'checkAuth'])->name('check-auth');
 
@@ -51,6 +54,7 @@ Route::post('/webhook/stripe', [WebhookController::class, 'handleWebhook']);
 
 Route::get('/zipcodes', ZipCodeController::class);
 Route::get('/city', CityController::class);
+Route::get('/state', StateController::class);
 
 Route::post('/get-in-touch', [GetInTouchController::class, 'sendEmail'])->name('get-in-touch');
 

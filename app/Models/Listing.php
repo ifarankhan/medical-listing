@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Http\Controllers\ListingController;
+use App\Services\PhoneService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -46,6 +47,13 @@ class Listing extends Model
         'profile_picture'
     ];
 
+    protected ?PhoneService $phoneService = null;
+
+    public function getPhoneService(): PhoneService
+    {
+        // Resolve the service lazily using the app() helper
+        return $this->phoneService ?? app(PhoneService::class);
+    }
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -117,5 +125,46 @@ class Listing extends Model
             self::STATUS_EXPIRED_TRIAL => 'Trial Expired',
             default => $this->listing_status,
         };
+    }
+
+    public function details(): HasMany
+    {
+        return $this->hasMany(ListingDetail::class);
+    }
+
+    public function getDetailsMapAttribute()
+    {
+        return $this->details->pluck('value', 'key')->toArray();
+    }
+
+    public function getDetail($key, $default = '')
+    {
+        return $this->detailsMap[$key] ?? $default;
+    }
+
+    public function getBusinessStatesFormatted(): string
+    {
+        $businessStates = $this->detailsMap['business_states'] ?? null;
+        if (empty($businessStates)) {
+            return '';
+        }
+        // Fetch states in comma separated formated for formatted view.
+        $decodedStates = json_decode($businessStates);
+
+        $states = State::whereIn('id', $decodedStates)->pluck('name')->toArray();
+
+        return implode(',', $states);
+    }
+
+    public function getFormattedContactNumberAttribute(): string
+    {
+        $contact = $this->attributes['contact_number'];
+        return $this->getPhoneService()->formatPhoneNumber($contact);
+    }
+
+    public function getFormattedBusinessContactAttribute(): string
+    {
+        $contact = $this->attributes['business_contact'];
+        return $this->getPhoneService()->formatPhoneNumber($contact);
     }
 }

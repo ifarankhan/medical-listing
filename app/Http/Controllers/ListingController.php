@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Listing;
 use App\Models\ProductService;
+use App\Models\State;
 use App\Models\Subscription;
 use App\Rules\WordCount;
+use App\Services\FileUploadService;
 use App\Services\PaymentService;
+use App\Services\PhoneService;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -30,7 +34,9 @@ class ListingController extends Controller
 {
     public function __construct(
         protected PaymentService $paymentService,
-        protected Subscription $subscription
+        protected Subscription $subscription,
+        protected FileUploadService $fileUploadService,
+        protected PhoneService  $phoneService,
     ){}
     public function index(): Factory|View|Application
     {
@@ -53,7 +59,8 @@ class ListingController extends Controller
     {
         $categories = Category::all();
         $listing = new Listing();
-        return view('listing.create', compact('listing', 'categories'));
+        $states = State::all()->pluck('name', 'id')->toArray();
+        return view('listing.create', compact('listing', 'categories', 'states'));
     }
 
     /**
@@ -67,34 +74,20 @@ class ListingController extends Controller
             abort(403, 'Unauthorized'); // Or redirect to a different page
         }
         $categories = Category::all();
-        $listing->with(['productService', 'productService.category']);
+        $states = State::all()->pluck('name', 'id')->toArray();
+        $listing->with(['productService', 'productService.category', 'details']);
 
-        return view('listing.create', compact('listing', 'categories'));
+        return view('listing.create', compact('listing', 'categories', 'states'));
     }
 
-    public function uploadProfilePicture($image, ?Listing $listing): string
+    /**
+     * @throws Exception
+     */
+    public function uploadAndSaveProfilePicture($image, ?Listing $listing): void
     {
-        // Get the original file name and create a unique name.
-        $fileName = pathinfo(
-            $image->getClientOriginalName(),
-            PATHINFO_FILENAME
-        ) . '_' . time() . '.' . $image->getClientOriginalExtension();
-
-        // Define the directory
-        $directory = storage_path('app/public/listings/profile_picture');
-
-        // Ensure the directory exists
-        if (!File::exists($directory)) {
-            File::makeDirectory($directory, 0755, true); // Create the directory with proper permissions.
+        if (is_null($image)) {
+            return;
         }
-
-        // Resize the image using Intervention Image.
-        $resizedImage = Image::read($image);
-
-        // Resize the image to 410x280 and save it.
-        $resizedImage->resize(410, 280)
-            ->save($directory . '/' . $fileName);
-
         // Check if the listing already has a profile picture.
         if ($listing->profile_picture) {
             // Delete the old profile picture from the directory.
@@ -103,9 +96,35 @@ class ListingController extends Controller
                 File::delete($oldFilePath);
             }
         }
-
         // Return the saved image path.
-        return 'listings/profile_picture/' . $fileName;
+        $listing->profile_picture = $this->fileUploadService->uploadFile($image, "listings/$listing->id/profile_picture");
+
+        $listing->save();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function uploadAndSaveLegalProof($file, ?Listing $listing): void
+    {
+        if (is_null($file)) {
+            return;
+        }
+        $details = $listing->getDetailsMapAttribute();
+        // Check if the listing already has a profile picture.
+        if (isset($details['legal_proof'])) {
+            // Delete the old profile picture from the directory.
+            $oldFilePath = public_path($details['legal_proof']);
+            if (File::exists($oldFilePath)) {
+                File::delete($oldFilePath);
+            }
+        }
+        // Return the saved image path.
+        $path = $this->fileUploadService->uploadFile($file, "listings/$listing->id/legal_proof");
+        $listing->details()->create([
+            'key' => 'legal_proof',
+            'value' => $path,
+        ]);
     }
 
     /**
@@ -134,18 +153,15 @@ class ListingController extends Controller
                 $listing = $this->createListing($validatedData);
                 $message = 'Listing created successfully. Please choose the plan.';
             }
-            // Check if an image is uploaded
-            if ($request->hasFile('profile_picture')) {
 
-                $listing->profile_picture = $this->uploadProfilePicture(
-                    $request->file('profile_picture'),
-                    $listing
-                );
-
-                $listing->save();
-            }
             // Save product/services associated with the listing.
             $this->saveProductServices($listing, $validatedData['products']);
+            // Save details associated with the listing.
+            $this->saveListingDetails($listing, $validatedData);
+            // Handle profile picture upload separately.
+            $this->uploadAndSaveProfilePicture($request->file('profile_picture'), $listing);
+            // Handle legal proof document upload separately.
+            $this->uploadAndSaveLegalProof($request->file('legal_proof'), $listing);
 
             if ($request->input('action') == 'save') {
 
@@ -161,12 +177,21 @@ class ListingController extends Controller
         } catch (ValidationException $exception) {
             // If validation fails, redirect back with validation errors.
             return redirect()->back()->withErrors($exception->errors())->withInput();
+        } catch (Exception $e) {
+
+            return redirect()->back()->withErrors($e->getMessage())->withInput();
         }
     }
     private function updateListing(Listing $listing, array $data): void
     {
+        $data['contact_number'] = $this->phoneService->unformatPhoneNumber($data['contact_number']);
+        $data['business_contact'] = $this->phoneService->unformatPhoneNumber($data['business_contact']);
         $listing->update($data);
         $listing->productService()->delete();
+        // Keep legal proof data as it is handled separately.
+        $listing->details()
+                ->whereNotIn('key', ['legal_proof'])
+                ->delete();
     }
 
     /**
@@ -189,37 +214,49 @@ class ListingController extends Controller
             'products.*.accept_insurance' => 'nullable|boolean', // Validate each product accept_insurance attribute.
             'products.*.insurance_list' => 'nullable|string', // Validate each product insurance_list attribute.
             'products.*.price' => 'nullable|numeric|min:0', // Validate each product price.
+            'products.*.accepting_clients' => 'required'
         ];
 
-        // Add rules only for create action
-        if (!$isEdit) {
-            $rules = array_merge($rules, [
-                'authorized' => 'required|boolean',
-                'registered' => 'required|boolean',
-                'first_name' => 'required|string',
-                'last_name' => 'required|string',
-                'email' => 'required|email',
-                'contact_number' => 'required|string',
-                'address' => 'required|string',
-                'business_name' => 'required|string',
-                'ein' => 'nullable|regex:/^\d{2}-\d{7}$/',
-                'business_address' => 'required|string',
-                'business_city' => 'string',
-                'business_zipcode' => 'string|regex:/^\d{5}(-\d{4})?$/',
-                'business_contact' => 'required|string',
-                'business_email' => 'required|email',
-                'profile_picture' => 'mimes:jpeg,png,jpg|image|max:4096',
-            ]);
-        }
+        $rules = array_merge($rules, [
+            'authorized' => 'required|boolean',
+            'registered' => 'required|boolean',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'email' => 'required|email',
+            'contact_number' => 'required|regex:/^\(\d{3}\)\s\d{3}-\d{4}$/',
+            //'address' => 'required|string',
+            'business_name' => 'required|string',
+            'ein' => 'nullable|regex:/^\d{2}-\d{7}$/',
+            'business_address' => 'required|string',
+            'business_city' => 'string',
+            'business_zipcode' => 'string|regex:/^\d{5}(-\d{4})?$/',
+            'business_contact' => 'required|regex:/^\(\d{3}\)\s\d{3}-\d{4}$/',
+            'business_email' => 'required|email',
+            'profile_picture' => 'mimes:jpeg,png,jpg|image|max:4096',
+        ], [
+            'profile_picture.mimes' => 'The profile picture must be a file of type: jpeg, png, jpg.',
+            'profile_picture.image' => 'The profile picture must be an image.',
+            'profile_picture.max' => 'The profile picture may not be greater than 4 MB.',
+        ]);
+
+        $rules = array_merge($rules, [
+            'legal_proof' => 'mimes:jpeg,png,jpg,pdf|file|max:6000',
+            'business_states' => 'required|max:5',
+            'business_description' => 'nullable',
+            'social_media_1' => 'nullable|url',
+            'social_media_2' => 'nullable|url',
+            'social_media_3' => 'nullable|url',
+            'social_media_4' => 'nullable|url',
+        ], [
+            'legal_proof.mimes' => 'The file must be an image (jpeg, png, jpg) or a PDF.',
+            'legal_proof.max' => 'The file size must not exceed 6 MB.',
+        ]);
 
         // Validate the request data
         $validatedData = $request->validate($rules, [
             // Custom error messages.
             'products.*.category_id.required' => 'The Product/Service is required for each product.',
             'products.*.category_id.exists' => 'The selected Product/Service does not exist.',
-            'profile_picture.mimes' => 'The profile picture must be a file of type: jpeg, png, jpg.',
-            'profile_picture.image' => 'The profile picture must be an image.',
-            'profile_picture.max' => 'The profile picture may not be greater than 4 MB.',
         ], [
             // Custom attributes for friendly error messages.
             'products.0.category_id' => 'Product/Service for Product 1',
@@ -247,6 +284,9 @@ class ListingController extends Controller
     }
 
 
+    /**
+     * @throws Exception
+     */
     private function createListing(array $data): Listing
     {
         $listing = new Listing();
@@ -256,8 +296,8 @@ class ListingController extends Controller
         $listing->first_name = $data['first_name'];
         $listing->last_name = $data['last_name'];
         $listing->email = $data['email'];
-        $listing->contact_number = $data['contact_number'];
-        $listing->address = $data['address'];
+        $listing->contact_number = $this->phoneService->unformatPhoneNumber($data['contact_number']);
+        //$listing->address = $data['address'];
         $listing->business_name = $data['business_name'];
         $listing->ein = $data['ein'];
         $listing->business_address = $data['business_address'];
@@ -270,11 +310,12 @@ class ListingController extends Controller
         // If a ZIP code is found, store it, else handle the absence.
         $listing->business_zipcode = !empty($matches) ? $matches[0] : null;*/
 
-        $listing->business_contact = $data['business_contact'];
+        $listing->business_contact = $this->phoneService->unformatPhoneNumber($data['business_contact']);
         $listing->business_email = $data['business_email'];
-        $listing->profile_picture =
 
         $listing->save();
+
+        $this->saveListingDetails($listing, $data);
 
         return $listing;
     }
@@ -291,6 +332,7 @@ class ListingController extends Controller
                 'accept_insurance' => $product['accept_insurance'] ?? false,
                 'insurance_list' => $product['insurance_list'] ?? '',
                 'price' => $product['price'],
+                'accepting_clients' => $product['accepting_clients'],
             ]);
 
             $productService->save();
@@ -346,7 +388,7 @@ class ListingController extends Controller
 
             return redirect()->route('listing.index')
                 ->with('error', 'Stripe API error: ' . $e->getMessage());
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             Log::error('Error deleting listing ID ' . $listingId . ': ' . $exception->getMessage());
 
             return redirect()->route('listing.index')
@@ -381,9 +423,36 @@ class ListingController extends Controller
             $product->delete();
             // Return a success response
             return response()->json(['success' => true, 'message' => 'Product deleted successfully.']);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // If there's an error, return a failure response
             return response()->json(['success' => false, 'message' => 'Failed to delete the product.'], 500);
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function saveListingDetails(Listing $listing, array $data): void
+    {
+        $details = [
+            'business_description' => $data['business_description'] ?? null,
+            'business_states' => !empty($data['business_states']) ? json_encode($data['business_states']) : null,
+            'social_media_1' => $data['social_media_1'] ?? null,
+            'social_media_2' => $data['social_media_2'] ?? null,
+            'social_media_3' => $data['social_media_3'] ?? null,
+            'social_media_4' => $data['social_media_4'] ?? null,
+        ];
+        // Filter out null or empty values
+        $filteredDetails = array_filter($details, function ($value) {
+            return !is_null($value) && $value !== '';
+        });
+
+        foreach ($filteredDetails as $key => $detail) {
+            // Save in Listing details.
+            $listing->details()->create([
+                'key' => $key,
+                'value' => $detail,
+            ]);
         }
     }
 }
