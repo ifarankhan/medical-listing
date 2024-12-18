@@ -868,9 +868,12 @@ $(function () {
         </div>
         <div class="col-xxl-4 mb-3 col-md-6">
             <div class="add_property_input">
-                <label for="description_{index}">Brief description (150 word limit): <span class="text-danger">*</span></label>
+                <label for="description_{index}">Brief description (150 words limit): <span class="text-danger">*</span></label>
                 <div class="note-editor note-frame panel panel-default">
-                    <textarea id="description_{index}" name="products[{index}][description]" placeholder="Description" maxlength="150" required></textarea>
+                    <textarea id="description_{index}" name="products[{index}][description]" data-word-limit="150" placeholder="Description" required></textarea>
+                </div>
+                <div class="word-count-feedback text-muted">
+                    Words remaining: <span class="word-count-remaining" data-index="{index}">150</span>
                 </div>
             </div>
         </div>
@@ -1009,6 +1012,53 @@ $(function () {
             }
         });
 
+        // Word counter ProductBusinessDescription.
+        $(document).ready(function () {
+            function updateWordCount($textarea) {
+                const wordLimit = parseInt($textarea.data('word-limit'), 10);
+
+                // Locate the .word-count-feedback element outside the parent div
+                const feedback = $textarea.closest('.col-xxl-4').find('.word-count-feedback .word-count-remaining');
+
+                // Get current words and limit
+                const words = $textarea.val().trim().split(/\s+/).filter(word => word.length > 0);
+                const remaining = wordLimit - words.length;
+
+                // Update feedback text
+                feedback.text(remaining < 0 ? 0 : remaining);
+
+                // Truncate words if limit is exceeded
+                if (remaining < 0) {
+                    $textarea.val(words.slice(0, wordLimit).join(' ')); // Keep only the first `wordLimit` words
+                }
+            }
+
+            // Initialize word count for all existing textareas
+            $('.word-count').each(function () {
+                updateWordCount($(this));
+            });
+
+            // Event delegation for typing
+            $(document).on('input', '.word-count', function () {
+                updateWordCount($(this));
+            });
+
+            // Handle pasting to enforce the word limit
+            $(document).on('paste', '.word-count', function (e) {
+                const $textarea = $(this);
+                const wordLimit = parseInt($textarea.data('word-limit'), 10);
+
+                setTimeout(function () {
+                    const words = $textarea.val().trim().split(/\s+/).filter(word => word.length > 0);
+
+                    if (words.length > wordLimit) {
+                        $textarea.val(words.slice(0, wordLimit).join(' ')); // Truncate words
+                    }
+
+                    updateWordCount($textarea);
+                }, 0); // Delay to allow the paste operation to complete
+            });
+        });
 
         $(additionalProductsDivId).on('click', '.delete-btn-ajx', function(e) {
             e.preventDefault(); // Prevent default form submission or link action

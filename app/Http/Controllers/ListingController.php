@@ -240,7 +240,7 @@ class ListingController extends Controller
         ]);
 
         $rules = array_merge($rules, [
-            'legal_proof' => 'mimes:jpeg,png,jpg,pdf|file|max:4096',
+            'legal_proof' => 'mimes:jpeg,png,jpg,pdf|file|max:6000',
             'business_states' => 'required|max:5',
             'business_description' => 'nullable',
             'social_media_1' => 'nullable|url',
@@ -249,7 +249,7 @@ class ListingController extends Controller
             'social_media_4' => 'nullable|url',
         ], [
             'legal_proof.mimes' => 'The file must be an image (jpeg, png, jpg) or a PDF.',
-            'legal_proof.max' => 'The file size must not exceed 4 MB.',
+            'legal_proof.max' => 'The file size must not exceed 6 MB.',
         ]);
 
         // Validate the request data
@@ -284,6 +284,9 @@ class ListingController extends Controller
     }
 
 
+    /**
+     * @throws Exception
+     */
     private function createListing(array $data): Listing
     {
         $listing = new Listing();

@@ -43,7 +43,7 @@
 
                 <label>Upload a file <span class="text-danger">*</span></label>
                 <input {{ $listing->getDetail('legal_proof') ? '' : 'required' }} type="file" name="legal_proof" accept="image/*,application/pdf">
-                <small class="text-muted">Please upload proof in JPEG, PNG, JPG or PDF format of your legal authorization to provide this service/product: business/professional license.</small>
+                <small class="text-muted">Please upload proof in JPEG, PNG, JPG or PDF format, with max size upto 6MB, of your legal authorization to provide this service/product: business/professional license.</small>
 
                 @if(!empty($listing->getDetail('legal_proof')))
                     <div class="mt-3">
@@ -143,7 +143,7 @@
                 <label>Profile Picture <span class="text-danger">*</span></label>
 
                 <input {{ $listing->profile_picture ? '' : 'required' }} type="file" name="profile_picture" accept="image/*">
-                <small class="text-muted">Please upload a profile picture in JPEG, PNG, or JPG format. The file should be an image and must not exceed 4 MB in size.</small>
+                <small class="text-muted">Please upload a profile picture in JPEG, PNG, or JPG format. The file should be an image and must not exceed 4MB in size.</small>
                 <!-- Show the uploaded image if it exists. -->
                 @if(!empty($listing->profile_picture))
 
@@ -282,7 +282,7 @@
                         <select class="select_2" id="product_service_0" name="products[0][category_id]" required>
                             <option value="">Select a product/service</option>
                             @foreach($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                <option value="{{ $category->id }}" {{ old('products.0.category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                             @endforeach
                         </select>
 
@@ -297,13 +297,13 @@
 
                     <div class="form-check">
 
-                        <input class="form-check-input" type="checkbox" id="virtual_0" name="products[0][virtual]" value="1">
+                        <input class="form-check-input" type="checkbox" id="virtual_0" name="products[0][virtual]" {{ old('products.0.virtual') ? 'checked' : '' }} value="1">
                         <label class="form-check-label" for="virtual_0">Virtual</label>
 
                     </div>
 
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="in_person_0" name="products[0][in_person]" value="1">
+                        <input class="form-check-input" type="checkbox" id="in_person_0" name="products[0][in_person]" value="1" {{ old('products.0.in_person') ? 'checked' : '' }}>
                         <label class="form-check-label" for="in_person_0">In person</label>
                     </div>
 
@@ -313,7 +313,11 @@
                         <label for="description_0">Brief description (150 word limit): <span class="text-danger">*</span></label>
                         <div class="note-editor note-frame panel panel-default">
 
-                            <textarea id="description_0" name="products[0][description]" placeholder="Description" maxlength="150" required></textarea>
+                            <textarea id="description_0" name="products[0][description]" class="word-count"  placeholder="Description" data-word-limit="150" required>{{ old('products.0.description') }}</textarea>
+
+                        </div>
+                        <div class="word-count-feedback text-muted">
+                            Words remaining: <span class="word-count-remaining" data-index="0">150</span>
                         </div>
                     </div>
                 </div>
@@ -321,25 +325,25 @@
 
                     <label>Do you accept insurance for this product? <span class="text-danger">*</span></label>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" id="accept_insurance_yes_0" name="products[0][accept_insurance]" value="1" required>
+                        <input class="form-check-input" type="radio" id="accept_insurance_yes_0" name="products[0][accept_insurance]" value="1" required {{ old('products.0.accept_insurance') == '1' ? 'checked' : '' }}>
                         <label for="accept_insurance_yes_0">Yes</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" id="accept_insurance_no_0" name="products[0][accept_insurance]" value="0" required>
+                        <input class="form-check-input" type="radio" id="accept_insurance_no_0" name="products[0][accept_insurance]" value="0" required {{ old('products.0.accept_insurance') == '0' ? 'checked' : '' }}>
                         <label class="form-check-label" for="accept_insurance_no_0">No</label>
                     </div>
 
                 </div>
-                <div class="col-xxl-4 col-md-6" id="insurance_list_0" style="display:none;">
+                <div class="col-xxl-4 col-md-6" id="insurance_list_0" style="display:{{ old('products.0.accept_insurance') == '1' ? 'block' : 'none' }};">
                     <div class="add_property_input">
                         <label>If you accept insurance for this product, please list down all the insurances you are currently accepting: <span class="text-danger">*</span></label>
-                        <input type="text" id="insurance_0" name="products[0][insurance_list]" placeholder="Insurance List">
+                        <input type="text" id="insurance_0" name="products[0][insurance_list]" placeholder="Insurance List" value="{{ old('products.0.insurance_list') }}">
                     </div>
                 </div>
-                <div class="col-xxl-4 col-md-6" id="price_0" style="display:none;">
+                <div class="col-xxl-4 col-md-6" id="price_0" style="display:{{ old('products.0.accept_insurance') == '0' ? 'block' : 'none' }};">
                     <div class="add_property_input">
                         <label>If you do not accept insurance, please enter price for the product:</label>
-                        <input type="number" id="price_input_0" name="products[0][price]" placeholder="Price" step="0.01" min="0">
+                        <input type="number" id="price_input_0" name="products[0][price]" placeholder="Price" step="0.01" min="0" value="{{ old('products.0.price') }}">
                     </div>
                 </div>
 
@@ -348,12 +352,12 @@
                     <label>Please select one of the following options: <span class="text-danger">*</span></label>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="accepting_clients_0"
-                               name="products[0][accepting_clients]" value="1" required>
+                               name="products[0][accepting_clients]" value="1" required {{ old('products.0.accepting_clients') == '1' ? 'checked' : '' }}>
                         <label for="accepting_clients_0">Currently Accepting New Clients</label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="accepting_clients_0"
-                               name="products[0][accepting_clients]" value="2" required>
+                               name="products[0][accepting_clients]" value="2" required {{ old('products.0.accepting_clients') == '2' ? 'checked' : '' }}>
                         <label class="form-check-label" for="accepting_clients_0">Currently Have A Waitlist</label>
                     </div>
 
@@ -410,8 +414,12 @@
                             <textarea id="description_{{ $index }}"
                                       name="products[{{ $index }}][description]"
                                       placeholder="Description"
-                                      maxlength="150"
+                                      data-word-limit="150"
+                                      class="word-count"
                                       required>{{ old('products.' . $index . '.description', $item->description) }}</textarea>
+                        </div>
+                        <div class="word-count-feedback text-muted">
+                            Words remaining: <span class="word-count-remaining" data-index="{{ $index }}">150</span>
                         </div>
                     </div>
                 </div>
