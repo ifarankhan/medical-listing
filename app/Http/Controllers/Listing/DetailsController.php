@@ -11,6 +11,15 @@ class DetailsController extends Controller
     public function index(Listing $listing)
     {
         $listing->with(['productService', 'productService.category', 'details']);
-        return view('listing.details', compact('listing'));
+
+        $businessDescription = (trim($listing->getDetail('business_description')) !== '<p><br></p>')
+                               ? $listing->getDetail('business_description'): '';
+        $businessImage = asset('storage/' . $listing->profile_picture) ?? null;
+
+        return view('listing.details', compact('listing', 'businessDescription'))->with(['meta' => [
+            'og:title' => $listing->business_name,
+            'og:description' => $businessDescription ? strip_tags($businessDescription) : null,
+            'og:image' => $businessImage,
+        ]]);
     }
 }

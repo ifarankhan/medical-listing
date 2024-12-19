@@ -67,10 +67,10 @@
                             </ul>
                         </div>
                     </div>
-                    @unless(trim($listing->getDetail('business_description')) === '<p><br></p>')
+                    @if($businessDescription)
                         <div class="single_property_details mt_25 wow fadeInUp" data-wow-duration="1.5s">
                             <h4>Description</h4>
-                            {!! $listing->getDetail('business_description') !!}
+                            {!! $businessDescription !!}
                         </div>
                     @endunless
                     <div class="single_property_details mt_25 wow fadeInUp" data-wow-duration="1.5s">

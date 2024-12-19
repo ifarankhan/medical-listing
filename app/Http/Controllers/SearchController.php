@@ -32,6 +32,8 @@ class SearchController extends Controller
             'serviceCategories',
             'filters',
             'resultThreshold',
-        ));
+        ))->with(['meta' => [
+            'og:title' => 'Search Result'
+        ]]);
     }
 }

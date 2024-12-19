@@ -20,6 +20,8 @@ class HomeController extends Controller
     {
         $serviceCategories = $this->categoryDropDown->getServiceCategories();
 
-        return view('home', compact('serviceCategories'));
+        return view('home', compact('serviceCategories'))->with(['meta' => [
+            'og:title' => 'Home'
+        ]]);
     }
 }
