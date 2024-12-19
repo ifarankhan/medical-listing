@@ -40,7 +40,9 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            let categories = @json($categories ?? []);
+            let categories = [];
+            // eslint-disable-next-line no-undef
+            categories = @json($categories ?? []);
             // Ensure categories is an array
             if (!Array.isArray(categories)) {
                 categories = [];
