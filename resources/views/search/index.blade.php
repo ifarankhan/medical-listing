@@ -2,7 +2,7 @@
 @php use App\Models\UserRole; @endphp
 @extends('layout')
 
-@section('title', 'Listings')
+@section('title', 'Search Result')
 
 @section('content')
     @include('partials.menu')

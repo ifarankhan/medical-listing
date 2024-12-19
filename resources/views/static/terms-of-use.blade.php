@@ -1,7 +1,7 @@
 <!-- resources/views/about.blade.php -->
 @extends('layout')
 
-@section('title', 'About')
+@section('title', 'Terms of Use')
 
 @section('content')
     @include('partials.menu')

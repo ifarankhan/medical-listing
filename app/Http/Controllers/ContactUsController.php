@@ -14,7 +14,9 @@ class ContactUsController extends Controller
 {
     public function index(): Factory|View|Application
     {
-        return view('contactus');
+        return view('contactus')->with(['meta' => [
+            'og:title' => 'Contact Us',
+        ]]);
     }
 
     public function submit(Request $request): RedirectResponse

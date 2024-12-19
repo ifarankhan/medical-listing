@@ -20,14 +20,20 @@ class ResetPasswordController extends Controller
     /**
      * Display the password reset view for the given token.
      *
-     * @param  string|null  $token
+     * @param Request $request
+     * @param null $token
+     *
      * @return View
      */
-    public function showResetForm(Request $request, $token = null)
+    public function showResetForm(Request $request, $token = null): View
     {
-        return view('auth.passwords.reset')->with(
-            ['token' => $token, 'email' => $request->email]
-        );
+        return view('auth.passwords.reset')->with([
+            'token' => $token,
+            'email' => $request->email,
+            'meta' => [
+                'og:title' => 'Reset Password'
+            ]
+        ]);
     }
 
     /**

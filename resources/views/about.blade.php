@@ -1,7 +1,7 @@
 <!-- resources/views/about.blade.php -->
 @extends('layout')
 
-@section('title', 'About')
+@section('title', $title ?? 'Providers/Businesses')
 
 @section('content')
     @include('partials.menu')
@@ -14,10 +14,10 @@
                 <div class="row">
                     <div class="col-12 justify-content-center">
                         <div class="breadcrumb_text wow fadeInUp" data-wow-duration="1.5s">
-                            <h1>Providers/Businesses</h1>
+                            <h1>{{ $title ?? 'Providers/Businesses' }}</h1>
                             <ul class="d-flex flex-wrap justify-content-center">
                                 <li><a href="/"><i class="fas fa-home"></i>Home</a></li>
-                                <li><a href="{{ route('about') }}">Providers/Businesses</a></li>
+                                <li><a href="{{ route('about') }}">{{ $title ?? 'Providers/Businesses' }}</a></li>
                             </ul>
                         </div>
                     </div>

@@ -1,7 +1,7 @@
 <!-- resources/views/login.blade.php -->
 @extends('layout')
 
-@section('title', 'Login')
+@section('title', 'Sign Up')
 
 @section('content')
     @include('partials.menu')

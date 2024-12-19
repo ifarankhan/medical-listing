@@ -22,7 +22,9 @@ class RegisterController extends Controller
         // Don't show Admin role for front end.
         $userRoles = UserRole::all()->where('name', '!=', UserRole::ROLE_ADMIN);
 
-        return view('register', ['userRoles' => $userRoles]);
+        return view('register', ['userRoles' => $userRoles])->with(['meta' => [
+            'og:title' => 'Register'
+        ]]);
     }
 
     public function registerPost(Request $request): RedirectResponse

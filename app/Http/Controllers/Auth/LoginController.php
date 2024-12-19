@@ -16,7 +16,9 @@ class LoginController extends Controller
 {
     public function login(): Factory|View|Application
     {
-        return view('login');
+        return view('login')->with(['meta' => [
+            'og:title' => 'Login'
+        ]]);
     }
 
     public function loginPost(Request $request): Redirector|RedirectResponse|Application
