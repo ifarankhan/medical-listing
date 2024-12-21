@@ -836,8 +836,7 @@ $(function () {
     $(document).ready(function() {
 
         const templateHtml = `
-<div class="border-top my-3"></div>
-
+    <div class="border-top my-3"></div>
     <div class="row mt-4 border-1 product-row" data-index="{index}">
         <div class="col-xxl-12 mb-3 d-flex justify-content-between align-items-center">
             <h4>Product/Service {index}</h4>
@@ -868,12 +867,12 @@ $(function () {
         </div>
         <div class="col-xxl-4 mb-3 col-md-6">
             <div class="add_property_input">
-                <label for="description_{index}">Brief description (150 words limit): <span class="text-danger">*</span></label>
+                <label for="description_{index}">Brief description (200 words limit): <span class="text-danger">*</span></label>
                 <div class="note-editor note-frame panel panel-default">
-                    <textarea id="description_{index}" name="products[{index}][description]" class="word-count" data-word-limit="150" placeholder="Description" required></textarea>
+                    <textarea id="description_{index}" name="products[{index}][description]" class="word-count" data-word-limit="200" placeholder="Description" required></textarea>
                 </div>
                 <div class="word-count-feedback text-muted">
-                    Words remaining: <span class="word-count-remaining" data-index="{index}">150</span>
+                    Words remaining: <span class="word-count-remaining" data-index="{index}">200</span>
                 </div>
             </div>
         </div>
@@ -941,7 +940,8 @@ $(function () {
 
         // Delegate delete button event
         $(additionalProductsDivId).on('click', '.delete-product-btn', function() {
-
+            // Remove closest border div.
+            $(this).closest('.product-row').prev('.border-top').remove();
             // Find and destroy existing select2 instances
             $(this).closest('.product-row').remove();
 

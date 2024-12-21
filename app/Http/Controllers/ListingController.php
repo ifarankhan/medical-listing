@@ -137,19 +137,15 @@ class ListingController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $listingId = $request->input('listing_id');
+        $validatedData = $this->validateListingData($request);
         try {
-
-            $listingId = $request->input('listing_id');
             // Create a new listing instance and save the data
             if ($listingId) {
-                // Validate the request data
-                $validatedData = $this->validateListingData($request, true);
                 $listing = Listing::findOrFail($listingId);
                 $this->updateListing($listing, $validatedData);
                 $message = 'Listing updated successfully.';
             } else {
-                // Validate the request data
-                $validatedData = $this->validateListingData($request);
                 $listing = $this->createListing($validatedData);
                 $message = 'Listing created successfully. Please choose the plan.';
             }
@@ -176,10 +172,10 @@ class ListingController extends Controller
             }
         } catch (ValidationException $exception) {
             // If validation fails, redirect back with validation errors.
-            return redirect()->back()->withErrors($exception->errors())->withInput();
+            return redirect()->back()->withErrors($validatedData)->withInput();
         } catch (Exception $e) {
 
-            return redirect()->back()->withErrors($e->getMessage())->withInput();
+            return redirect()->back()->withErrors($validatedData)->withInput();
         }
     }
     private function updateListing(Listing $listing, array $data): void
@@ -196,19 +192,19 @@ class ListingController extends Controller
 
     /**
      * @param Request $request
-     * @param bool $isEdit
      *
      * @return array
      * @throws \Illuminate\Validation\ValidationException
      */
-    private function validateListingData(Request $request, bool $isEdit = false): array
+    private function validateListingData(Request $request): array
     {
+        $contactFormatRule = 'required|regex:/^\(\d{3}\)\s\d{3}-\d{4}$/|max:14';
         // Define validation rules
         $rules = [
             // Common rules
             'products' => 'required|array|max:5', // Maximum 5 products allowed.
             'products.*.category_id' => 'bail|required|exists:categories,id', // Using bail to stop after first failure.
-            'products.*.description' => ['required', 'string', new WordCount(150)], // Validate each product description.
+            'products.*.description' => ['required', 'string', new WordCount(200)], // Validate each product description.
             'products.*.virtual' => 'nullable|boolean', // Validate each product virtual attribute.
             'products.*.in_person' => 'nullable|boolean', // Validate each product in_person attribute.
             'products.*.accept_insurance' => 'nullable|boolean', // Validate each product accept_insurance attribute.
@@ -223,33 +219,31 @@ class ListingController extends Controller
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'email' => 'required|email',
-            'contact_number' => 'required|regex:/^\(\d{3}\)\s\d{3}-\d{4}$/',
+            'contact_number' => $contactFormatRule,
             //'address' => 'required|string',
             'business_name' => 'required|string',
             'ein' => 'nullable|regex:/^\d{2}-\d{7}$/',
             'business_address' => 'required|string',
             'business_city' => 'string',
             'business_zipcode' => 'string|regex:/^\d{5}(-\d{4})?$/',
-            'business_contact' => 'required|regex:/^\(\d{3}\)\s\d{3}-\d{4}$/',
+            'business_contact' => $contactFormatRule,
             'business_email' => 'required|email',
+            'business_states' => 'required|max:5',
             'profile_picture' => 'mimes:jpeg,png,jpg|image|max:4096',
         ], [
-            'profile_picture.mimes' => 'The profile picture must be a file of type: jpeg, png, jpg.',
-            'profile_picture.image' => 'The profile picture must be an image.',
-            'profile_picture.max' => 'The profile picture may not be greater than 4 MB.',
+            'profile_picture.*' => 'The profile picture must be a file of type: jpeg, png, jpg, must be an image, and may not be greater than 4 MB.',
         ]);
 
         $rules = array_merge($rules, [
             'legal_proof' => 'mimes:jpeg,png,jpg,pdf|file|max:6000',
             'business_states' => 'required|max:5',
             'business_description' => 'nullable',
-            'social_media_1' => 'nullable|url',
-            'social_media_2' => 'nullable|url',
-            'social_media_3' => 'nullable|url',
-            'social_media_4' => 'nullable|url',
+            'social_media_1' => 'nullable|facebook_url',
+            'social_media_2' => 'nullable|twitter_url',
+            'social_media_3' => 'nullable|linkedin_url',
+            'social_media_4' => 'nullable|instagram_url',
         ], [
-            'legal_proof.mimes' => 'The file must be an image (jpeg, png, jpg) or a PDF.',
-            'legal_proof.max' => 'The file size must not exceed 6 MB.',
+            'legal_proof.*' => 'The file must be an image (jpeg, png, jpg) or a PDF, and may not be greater than 6 MB.',
         ]);
 
         // Validate the request data

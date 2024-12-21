@@ -274,9 +274,9 @@
                                                 <li><i class="fas fa-map-marker-alt"></i><b>Serving:</b> {{ str_replace(',', ', ', $listings[$i]->getBusinessStatesFormatted()) }}</li>
                                             @endif
                                             <li><i class="fas fa-phone-alt"></i>{{ $listings[$i]->getFormattedBusinessContactAttribute() }}</li>
-                                            @if($listings[$i]->getProductServicesInsuranceList() != '')
+                                            {{--@if($listings[$i]->getProductServicesInsuranceList() != '')
                                                 <li><i class="fas fa-list-alt"></i>{{ trim($listings[$i]->getProductServicesInsuranceList(), ', ') }}</li>
-                                            @endif
+                                            @endif--}}
                                         </ul>
                                         @notUserRole(UserRole::ROLE_INSURANCE_PROVIDER)
                                             <div class="listing_bottom">
