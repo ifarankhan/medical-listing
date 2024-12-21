@@ -146,10 +146,13 @@ class ListingController extends Controller
                 $this->updateListing($listing, $validatedData);
                 $message = 'Listing updated successfully.';
             } else {
+                // Check if the user already has a listing.
+                if (auth()->user()->listings) {
+                    return redirect()->back()->with('error', 'You can only have one listing.');
+                }
                 $listing = $this->createListing($validatedData);
-                $message = 'Listing created successfully. Please choose the plan.';
+                $message = 'Listing created successfully.';
             }
-
             // Save product/services associated with the listing.
             $this->saveProductServices($listing, $validatedData['products']);
             // Save details associated with the listing.
