@@ -83,7 +83,7 @@ class ListingController extends Controller
     /**
      * @throws Exception
      */
-    public function uploadAndSaveProfilePicture($image, ?Listing $listing): void
+    private function uploadAndSaveProfilePicture($image, ?Listing $listing): void
     {
         if (is_null($image)) {
             return;
@@ -105,7 +105,7 @@ class ListingController extends Controller
     /**
      * @throws Exception
      */
-    public function uploadAndSaveLegalProof($file, ?Listing $listing): void
+    private function uploadAndSaveLegalProof($file, ?Listing $listing): void
     {
         if (is_null($file)) {
             return;
@@ -146,10 +146,13 @@ class ListingController extends Controller
                 $this->updateListing($listing, $validatedData);
                 $message = 'Listing updated successfully.';
             } else {
+                // Check if the user already has a listing.
+                if (auth()->user()->listings) {
+                    return redirect()->back()->with('error', 'You can only have one listing.');
+                }
                 $listing = $this->createListing($validatedData);
-                $message = 'Listing created successfully. Please choose the plan.';
+                $message = 'Listing created successfully.';
             }
-
             // Save product/services associated with the listing.
             $this->saveProductServices($listing, $validatedData['products']);
             // Save details associated with the listing.
@@ -394,9 +397,9 @@ class ListingController extends Controller
     /**
      * @param Listing $listing
      *
-     * @return bool
+     * @return void
      */
-    private function deleteListing(Listing $listing): bool
+    private function deleteListing(Listing $listing): void
     {
         if ($listing->user_id !== Auth::id()) {
             abort(403, 'Unauthorized'); // Or redirect to a different page
@@ -404,11 +407,9 @@ class ListingController extends Controller
 
         $listing->productService()->delete();
         $listing->delete();
-
-        return true;
     }
 
-    public function deleteProductService($id): JsonResponse
+    private function deleteProductService($id): JsonResponse
     {
         try {
             // Find the product by ID

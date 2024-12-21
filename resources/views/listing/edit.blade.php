@@ -262,7 +262,7 @@
 
             <div class="add_property_input">
                 <label for="social_media_1">Facebook:</label>
-                <input type="url" id="social_media_1" class="@error('social_media_1')is-invalid @enderror" name="social_media_1" placeholder="Social Media Link"
+                <input type="url" id="social_media_1" class="@error('social_media_1')is-invalid @enderror" name="social_media_1" placeholder="Facebook Link"
                        value="{{ old('social_media_1', $listing->getDetail('social_media_1')) }}"/>
                 @if ($errors->has('social_media_1'))
                     <div class="invalid-feedback">{{ $errors->first('social_media_1') }}</div>
@@ -271,7 +271,7 @@
 
             <div class="add_property_input">
                 <label for="social_media_4">Instagram:</label>
-                <input type="url" id="social_media_4" class="@error('social_media_4')is-invalid @enderror" name="social_media_4" placeholder="Social Media Link"
+                <input type="url" id="social_media_4" class="@error('social_media_4')is-invalid @enderror" name="social_media_4" placeholder="Instagram Link"
                        value="{{ old('social_media_4', $listing->getDetail('social_media_4')) }}"/>
 
                 @if ($errors->has('social_media_4'))
@@ -285,7 +285,7 @@
             <div class="add_property_input mt-2">
 
                 <label for="social_media_2">Twitter:</label>
-                <input type="url" id="social_media_2" class="@error('social_media_2')is-invalid @enderror" name="social_media_2" placeholder="Social Media Link"
+                <input type="url" id="social_media_2" class="@error('social_media_2')is-invalid @enderror" name="social_media_2" placeholder="Twitter Link"
                        value="{{ old('social_media_2', $listing->getDetail('social_media_2')) }}"/>
                 @if ($errors->has('social_media_2'))
                     <div class="invalid-feedback">{{ $errors->first('social_media_2') }}</div>
@@ -297,7 +297,7 @@
 
             <div class="add_property_input">
                 <label for="social_media_3">Linkedin:</label>
-                <input type="url" id="social_media_3" class="@error('social_media_3')is-invalid @enderror" name="social_media_3" placeholder="Social Media Link"
+                <input type="url" id="social_media_3" class="@error('social_media_3')is-invalid @enderror" name="social_media_3" placeholder="Linkedin Link"
                        value="{{ old('social_media_3', $listing->getDetail('social_media_3')) }}"/>
                 @if ($errors->has('social_media_3'))
                     <div class="invalid-feedback">{{ $errors->first('social_media_3') }}</div>
