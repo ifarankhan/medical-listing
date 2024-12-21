@@ -836,8 +836,7 @@ $(function () {
     $(document).ready(function() {
 
         const templateHtml = `
-<div class="border-top my-3"></div>
-
+    <div class="border-top my-3"></div>
     <div class="row mt-4 border-1 product-row" data-index="{index}">
         <div class="col-xxl-12 mb-3 d-flex justify-content-between align-items-center">
             <h4>Product/Service {index}</h4>
@@ -942,6 +941,7 @@ $(function () {
         // Delegate delete button event
         $(additionalProductsDivId).on('click', '.delete-product-btn', function() {
 
+            $(this).closest('.border-top').remove();
             // Find and destroy existing select2 instances
             $(this).closest('.product-row').remove();
 

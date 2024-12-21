@@ -365,7 +365,7 @@
             </div>
         @endif
         @foreach($listing->productService as $index => $item)
-                <div class="border-top my-3"></div>
+            <div class="border-top my-3"></div>
             <div class="row mt-4 border-1 product-row" data-index="{{ $index }}" data-id="{{ $item->id }}">
                 <div class="col-xxl-12 mb-3 d-flex justify-content-between align-items-center">
                     <h4>Product/Service {{ $index + 1 }}</h4>
@@ -474,7 +474,6 @@
 
                 </div>
             </div>
-
         @endforeach
     </div>
 
