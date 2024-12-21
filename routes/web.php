@@ -139,6 +139,7 @@ Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('
 
 Route::view('/privacy-policy', 'static.privacy-policy')->name('privacy.policy');
 Route::view('/terms-of-use', 'static.terms-of-use')->name('terms.of.use');
+Route::view('/safe-space-policy', 'static.safe-space-policy')->name('safe.space.policy');
 /*use Illuminate\Support\Facades\Mail;
 
 Route::get('/test-email', function () {
