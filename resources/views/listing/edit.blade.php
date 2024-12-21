@@ -42,7 +42,7 @@
             <div class="add_property_input">
 
                 <label>Upload a file <span class="text-danger">*</span></label>
-                <input {{ $listing->getDetail('legal_proof') ? '' : 'required' }} class="form-control @error('legal_proof')is-invalid @enderror" type="file" name="legal_proof" accept="image/*,application/pdf">
+                <input {{ $listing->getDetail('legal_proof') ? '' : 'required' }} class="@error('legal_proof')is-invalid @enderror" type="file" name="legal_proof" accept="image/*,application/pdf">
                 @if ($errors->has('legal_proof'))
                     <div class="invalid-feedback">{{ $errors->first('legal_proof') }}</div>
                 @endif
@@ -87,7 +87,7 @@
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
                 <label for="first_name">First Name: <span class="text-danger">*</span></label>
-                <input type="text" id="first_name" class="form-control @error('first_name')is-invalid @enderror" name="first_name" placeholder="First Name"
+                <input type="text" id="first_name" class="@error('first_name')is-invalid @enderror" name="first_name" placeholder="First Name"
                        value="{{ old('first_name', $listing->first_name) }}" required>
                 @if ($errors->has('email'))
                     <div class="invalid-feedback">{{ $errors->first('first_name') }}</div>
@@ -97,7 +97,7 @@
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
                 <label for="last_name">Last Name: <span class="text-danger">*</span></label>
-                <input type="text" id="last_name" class="form-control @error('last_name')is-invalid @enderror" name="last_name" placeholder="Last Name"
+                <input type="text" id="last_name" class="@error('last_name')is-invalid @enderror" name="last_name" placeholder="Last Name"
                        value="{{ old('last_name', $listing->last_name) }}" required>
                 @if ($errors->has('last_name'))
                     <div class="invalid-feedback">{{ $errors->first('last_name') }}</div>
@@ -107,7 +107,7 @@
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
                 <label for="email">Email Address: <span class="text-danger">*</span></label>
-                <input type="email" id="email" class="form-control @error('email')is-invalid @enderror" name="email" placeholder="Email Address"
+                <input type="email" id="email" class="@error('email')is-invalid @enderror" name="email" placeholder="Email Address"
                        value="{{ old('email', $listing->email) }}" required>
                 @if ($errors->has('email'))
                     <div class="invalid-feedback">{{ $errors->first('email') }}</div>
@@ -117,7 +117,7 @@
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
                 <label for="contact_number">Contact Number: <span class="text-danger">*</span></label>
-                <input type="text" id="contact_number" class="form-control @error('contact_number')is-invalid @enderror" name="contact_number" placeholder="(000) 000-0000"
+                <input type="text" id="contact_number" class="@error('contact_number')is-invalid @enderror" name="contact_number" placeholder="(000) 000-0000"
 {{--                       pattern="\+1\d{10}" --}}
                        title="Please enter a valid phone number in the format (000) 000-0000"
                        value="{{ old('contact_number', $listing->contact_number) }}" required>
@@ -141,7 +141,7 @@
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
                 <label for="business_name">Legal Business Name: <span class="text-danger">*</span></label>
-                <input type="text" id="business_name" class="form-control @error('business_name')is-invalid @enderror" name="business_name" placeholder="Business Name"
+                <input type="text" id="business_name" class="@error('business_name')is-invalid @enderror" name="business_name" placeholder="Business Name"
                        value="{{ old('business_name', $listing->business_name) }}" required>
                 @if ($errors->has('business_name'))
                     <div class="invalid-feedback">{{ $errors->first('business_name') }}</div>
@@ -163,7 +163,7 @@
             <div class="add_property_input">
                 <label>Profile Picture <span class="text-danger">*</span></label>
 
-                <input {{ $listing->profile_picture ? '' : 'required' }} class="form-control @error('profile_picture')is-invalid @enderror" type="file" name="profile_picture" accept="image/*">
+                <input {{ $listing->profile_picture ? '' : 'required' }} class="@error('profile_picture')is-invalid @enderror" type="file" name="profile_picture" accept="image/*">
                 @if ($errors->has('profile_picture'))
                     <div class="invalid-feedback">{{ $errors->first('profile_picture') }}</div>
                 @endif
@@ -190,7 +190,7 @@
 
             <div class="add_property_input">
                 <label for="business_email">Email Address: <span class="text-danger">*</span></label>
-                <input type="email" id="business_email" class="form-control @error('business_email')is-invalid @enderror" name="business_email" placeholder="Business Email"
+                <input type="email" id="business_email" class="@error('business_email')is-invalid @enderror" name="business_email" placeholder="Business Email"
                        value="{{ old('business_email', $listing->business_email) }}" required>
                 @if ($errors->has('business_email'))
                     <div class="invalid-feedback">{{ $errors->first('business_email') }}</div>
@@ -201,7 +201,7 @@
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
                 <label for="business_address">Address: <span class="text-danger">*</span></label>
-                <input type="text" id="business_address" class="form-control @error('business_address')is-invalid @enderror" name="business_address" placeholder="Business Address"
+                <input type="text" id="business_address" class="@error('business_address')is-invalid @enderror" name="business_address" placeholder="Business Address"
                        value="{{ old('business_address', $listing->business_address) }}"
                        required>
                 @if ($errors->has('business_address'))
@@ -230,7 +230,7 @@
                     $businessStates = old('business_states', json_decode($listing->getDetail('business_states')));
                 @endphp
 
-                <select class="js-data-states select_2 form-control @error('business_states')is-invalid @enderror" id="business_states" name="business_states[]" multiple="multiple">
+                <select class="js-data-states select_2 @error('business_states')is-invalid @enderror" id="business_states" name="business_states[]" multiple="multiple">
 
                     @if(!is_null($states) && !is_null($businessStates))
                         @foreach($states as $stateId => $stateName)
@@ -252,7 +252,7 @@
 
             <label for="zipcode">Description:</label>
             <div class="add_property_input">
-                <textarea class="form-control summer_note" name="business_description">{{ old('business_description', $listing->getDetail('business_description', '')) }}</textarea>
+                <textarea class="summer_note" name="business_description">{{ old('business_description', $listing->getDetail('business_description', '')) }}</textarea>
                 <small class="text-muted">1000 characters or 200 words.</small>
             </div>
 
@@ -262,7 +262,7 @@
 
             <div class="add_property_input">
                 <label for="social_media_1">Facebook:</label>
-                <input type="url" id="social_media_1" class="form-control @error('social_media_1')is-invalid @enderror" name="social_media_1" placeholder="Social Media Link"
+                <input type="url" id="social_media_1" class="@error('social_media_1')is-invalid @enderror" name="social_media_1" placeholder="Social Media Link"
                        value="{{ old('social_media_1', $listing->getDetail('social_media_1')) }}"/>
                 @if ($errors->has('social_media_1'))
                     <div class="invalid-feedback">{{ $errors->first('social_media_1') }}</div>
@@ -271,7 +271,7 @@
 
             <div class="add_property_input">
                 <label for="social_media_4">Instagram:</label>
-                <input type="url" id="social_media_4" class="form-control @error('social_media_4')is-invalid @enderror" name="social_media_4" placeholder="Social Media Link"
+                <input type="url" id="social_media_4" class="@error('social_media_4')is-invalid @enderror" name="social_media_4" placeholder="Social Media Link"
                        value="{{ old('social_media_4', $listing->getDetail('social_media_4')) }}"/>
 
                 @if ($errors->has('social_media_4'))
@@ -285,7 +285,7 @@
             <div class="add_property_input mt-2">
 
                 <label for="social_media_2">Twitter:</label>
-                <input type="url" id="social_media_2" class="form-control @error('social_media_2')is-invalid @enderror" name="social_media_2" placeholder="Social Media Link"
+                <input type="url" id="social_media_2" class="@error('social_media_2')is-invalid @enderror" name="social_media_2" placeholder="Social Media Link"
                        value="{{ old('social_media_2', $listing->getDetail('social_media_2')) }}"/>
                 @if ($errors->has('social_media_2'))
                     <div class="invalid-feedback">{{ $errors->first('social_media_2') }}</div>
@@ -297,7 +297,7 @@
 
             <div class="add_property_input">
                 <label for="social_media_3">Linkedin:</label>
-                <input type="url" id="social_media_3" class="form-control @error('social_media_3')is-invalid @enderror" name="social_media_3" placeholder="Social Media Link"
+                <input type="url" id="social_media_3" class="@error('social_media_3')is-invalid @enderror" name="social_media_3" placeholder="Social Media Link"
                        value="{{ old('social_media_3', $listing->getDetail('social_media_3')) }}"/>
                 @if ($errors->has('social_media_3'))
                     <div class="invalid-feedback">{{ $errors->first('social_media_3') }}</div>
