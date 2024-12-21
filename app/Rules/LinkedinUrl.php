@@ -4,17 +4,16 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
-class WordCount implements Rule
+class LinkedinUrl implements Rule
 {
-    protected int $maxWords = 200;
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct(int $maxWords)
+    public function __construct()
     {
-        $this->maxWords = $maxWords;
+        //
     }
 
     /**
@@ -26,8 +25,8 @@ class WordCount implements Rule
      */
     public function passes($attribute, $value): bool
     {
-        $wordCount = str_word_count($value);
-        return $wordCount <= $this->maxWords;
+        // Match LinkedIn URLs with optional subdomains
+        return preg_match('/^https?:\/\/([a-zA-Z0-9-]+\.)?linkedin\.com\/?$/', $value);
     }
 
     /**
@@ -37,6 +36,6 @@ class WordCount implements Rule
      */
     public function message(): string
     {
-        return "The :attribute may not be greater than {$this->maxWords} words.";
+        return 'Please provide a valid Linkedin URL.';
     }
 }
