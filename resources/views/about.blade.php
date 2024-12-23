@@ -98,7 +98,7 @@
                                 </div>
                             </li>
                         </ul>
-                        <a href="mailto: info@diverrx.com" class="common_btn">Get in touch</a>
+                        <a href="{{ route('register') }}" class="common_btn">Join Now</a>
                     </div>
                 </div>
                 <div class="col-xxl-5 col-lg-6">
@@ -146,7 +146,7 @@
                         </div>
                         <div class="text">
                             <h4>2. Select Your Package</h4>
-                            <p>Select from our very affordable packages: Monthly $29..99 | Value Pack $300.00
+                            <p>Select from our very affordable packages: Monthly 19.99 | Value Pack $99.00
                                 for 12-months.</p>
                         </div>
                     </div>
