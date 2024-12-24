@@ -144,7 +144,7 @@ class ListingController extends Controller
             } else {
                 // Check if the user already has a listing.
                 if (auth()->user()->listings) {
-                    return redirect()->back()->with('error', 'You can only have one listing.');
+                    return redirect()->back()->with('error', 'You can only create one listing.');
                 }
                 $listing = $this->createListing($validatedData);
                 $message = 'Listing created successfully.';
