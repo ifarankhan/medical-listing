@@ -191,6 +191,7 @@ class ListingController extends Controller
         $listing->details()
                 ->whereNotIn('key', ['legal_proof'])
                 ->delete();
+
     }
 
     /**
@@ -238,7 +239,7 @@ class ListingController extends Controller
         ]);
 
         $rules = array_merge($rules, [
-            'legal_proof' => 'mimes:jpeg,png,jpg,pdf|file|max:6000',
+            'legal_proof' => 'mimes:jpeg,png,jpg,pdf|file|max:10000',
             'business_states' => 'required|max:5',
             'business_description' => 'nullable',
             'social_media_1' => 'nullable|facebook_url',
@@ -246,7 +247,7 @@ class ListingController extends Controller
             'social_media_3' => 'nullable|linkedin_url',
             'social_media_4' => 'nullable|instagram_url',
         ], [
-            'legal_proof.*' => 'The file must be an image (jpeg, png, jpg) or a PDF, and may not be greater than 6 MB.',
+            'legal_proof.*' => 'The file must be an image (jpeg, png, jpg) or a PDF, and may not be greater than 10MB.',
         ]);
 
         // Validate the request data
@@ -409,7 +410,7 @@ class ListingController extends Controller
         $listing->delete();
     }
 
-    private function deleteProductService($id): JsonResponse
+    public function deleteProductService($id): JsonResponse
     {
         try {
             // Find the product by ID

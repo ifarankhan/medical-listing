@@ -25,7 +25,7 @@ class TwitterUrl implements Rule
      */
     public function passes($attribute, $value): bool
     {
-        return preg_match('/^https:\/\/(www\.)?twitter\.com\/?$/', $value);
+        return preg_match('/^https:\/\/(www\.)?x\.com\/?$/', $value);
     }
 
     /**
@@ -35,6 +35,6 @@ class TwitterUrl implements Rule
      */
     public function message(): string
     {
-        return 'Please provide a valid Twitter URL.';
+        return 'Please provide a valid X URL.';
     }
 }

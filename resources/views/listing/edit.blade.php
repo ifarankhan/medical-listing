@@ -46,7 +46,7 @@
                 @if ($errors->has('legal_proof'))
                     <div class="invalid-feedback">{{ $errors->first('legal_proof') }}</div>
                 @endif
-                <small class="text-muted">Please upload proof in JPEG, PNG, JPG or PDF format, with max size upto 6MB, of your legal authorization to provide this service/product: business/professional license.</small>
+                <small class="text-muted">Please upload proof in JPEG, PNG, JPG or PDF format, with max size upto 10MB, of your legal authorization to provide this service/product: business/professional license.</small>
 
                 @if(!empty($listing->getDetail('legal_proof')))
                     <div class="mt-3">
@@ -284,8 +284,8 @@
 
             <div class="add_property_input mt-2">
 
-                <label for="social_media_2">Twitter:</label>
-                <input type="url" id="social_media_2" class="@error('social_media_2')is-invalid @enderror" name="social_media_2" placeholder="Twitter Link"
+                <label for="social_media_2">X:</label>
+                <input type="url" id="social_media_2" class="@error('social_media_2')is-invalid @enderror" name="social_media_2" placeholder="X Link"
                        value="{{ old('social_media_2', $listing->getDetail('social_media_2')) }}"/>
                 @if ($errors->has('social_media_2'))
                     <div class="invalid-feedback">{{ $errors->first('social_media_2') }}</div>
@@ -407,6 +407,7 @@
                 </div>
             </div>
         @endif
+
         @foreach($listing->productService as $index => $item)
             <div class="border-top my-3"></div>
             <div class="row mt-4 border-1 product-row" data-index="{{ $index }}" data-id="{{ $item->id }}">
