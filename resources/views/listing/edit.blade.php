@@ -117,20 +117,20 @@
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
                 <label for="contact_number">Contact Number: <span class="text-danger">*</span></label>
-                <input type="text" id="contact_number" class="@error('contact_number')is-invalid @enderror" name="contact_number" placeholder="(000) 000-0000"
-{{--                       pattern="\+1\d{10}" --}}
-                       title="Please enter a valid phone number in the format (000) 000-0000"
+                <input type="text"
+                       id="contact_number"
+                       class="@error('contact_number')is-invalid @enderror"
+                       name="contact_number"
+                       placeholder="(000) 000-0000"
+                       pattern="^\(\d{3}\) \d{3}-\d{4}$"
+                       title="Please enter a valid phone number in the format (000) 000-0000."
                        value="{{ old('contact_number', $listing->contact_number) }}" required>
                 @if ($errors->has('contact_number'))
                     <div class="invalid-feedback">{{ $errors->first('contact_number') }}</div>
                 @endif
             </div>
-
-
-
         </div>
     </div>
-{{--    <div id="map" style="height: 400px; width: 100%;"></div>--}}
 </div>
 
 <!-- Business Information Section -->
@@ -151,9 +151,13 @@
 
             <div class="add_property_input">
                 <label for="business_contact">Contact: <span class="text-danger">*</span></label>
-                <input type="text" class="@error('business_contact')is-invalid @enderror" id="business_contact" name="business_contact" placeholder="(000) 000-0000"
-                       {{--                       pattern="\+1\d{10}" --}}
-                       title="Please enter a valid phone number in the format (000) 000-0000"
+                <input type="text"
+                       class="@error('business_contact')is-invalid @enderror"
+                       id="business_contact"
+                       name="business_contact"
+                       placeholder="(000) 000-0000"
+                       pattern="^\(\d{3}\) \d{3}-\d{4}$"
+                       title="Please enter a valid phone number in the format (000) 000-0000."
                        value="{{ old('business_contact', $listing->business_contact) }}" required>
                 @if ($errors->has('business_contact'))
                     <div class="invalid-feedback">{{ $errors->first('business_contact') }}</div>
@@ -327,6 +331,10 @@
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ old('products.0.category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                             @endforeach
+
+                            @if ($errors->has('product_service_0'))
+                                <div class="invalid-feedback">{{ $errors->first('product_service_0') }}</div>
+                            @endif
                         </select>
 
                         <span class="form-text text-muted">
