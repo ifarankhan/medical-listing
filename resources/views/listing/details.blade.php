@@ -69,7 +69,7 @@
                     </div>
                     @if($businessDescription)
                         <div class="single_property_details mt_25 wow fadeInUp" data-wow-duration="1.5s">
-                            <h4>Description</h4>
+                            <h4 class="mb-4">Description</h4>
                             {!! $businessDescription !!}
                         </div>
                     @endunless
@@ -333,18 +333,18 @@
 {{--                            <p>Sales Executive</p>--}}
                             <ul class="d-flex flex-wrap justify-content-center">
                                 @if($listing->getDetail('social_media_1'))
-                                    <li><a href="{{ $listing->getDetail('social_media_1') }}"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
+                                    <li><a href="{{ $listing->getDetail('social_media_1') }}" target="_blank"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
                                 @endif
                                 @if($listing->getDetail('social_media_2'))
-                                    <li><a href="{{ $listing->getDetail('social_media_2') }}"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+                                    <li><a href="{{ $listing->getDetail('social_media_2') }}" target="_blank"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
                                 @endif
 
                                 @if($listing->getDetail('social_media_3'))
-                                    <li><a href="{{ $listing->getDetail('social_media_3') }}"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a></li>
+                                    <li><a href="{{ $listing->getDetail('social_media_3') }}" target="_blank"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a></li>
                                 @endif
 
                                 @if($listing->getDetail('social_media_4'))
-                                    <li><a href="{{ $listing->getDetail('social_media_4') }}"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
+                                    <li><a href="{{ $listing->getDetail('social_media_4') }}" target="_blank"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
                                 @endif
                             </ul>
                         </div>

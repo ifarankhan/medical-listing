@@ -21,10 +21,10 @@
                 @if($errors->any() || session('error'))
                     <div class="alert alert-danger">
                         <ul>
-                            <li>Please correct the errors below:</li>
-                            @if(session('error'))
-                                <li>{{ session('error') }}</li>
-                            @endif
+                            <li><strong>Please correct the errors below:</strong></li>
+                            @foreach($errors->all() as $error)
+                                <li class="ml-5">{{ $error }}</li>
+                            @endforeach
                         </ul>
                     </div>
                 @endif
