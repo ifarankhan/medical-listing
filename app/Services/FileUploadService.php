@@ -38,18 +38,18 @@ class FileUploadService
         if (!File::exists($directoryPath)) {
             File::makeDirectory($directoryPath, 0755, true); // Create the directory if it doesn't exist
         }
-        // Check if the file is an image and handle resizing
+        // Check if the file is an image and handle resizing.
         if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
-            // Resize the image using Intervention Image
+            // Resize the image using Intervention Image.
             $image = Image::read($file);
             $image->resize($maxWidth, $maxHeight)
                  ->save($directoryPath . '/' . $fileName);
 
         } elseif ($extension === 'pdf') {
-            // Handle PDF file upload (no resizing needed)
+            // Handle PDF file upload (no resizing needed).
             $file->move($directoryPath, $fileName);
         }
-        // Return the path to the saved file
+        // Return the path to the saved file.
         return $directory . '/' . $fileName;
     }
 }
