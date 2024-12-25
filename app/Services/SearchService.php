@@ -13,8 +13,9 @@ class SearchService
     public array $filters = [
         'category' => 'filterByCategory',
         'q' => 'filterByString',
-        'zip_code' => 'filterByZipCode',
-        'city' => 'filterByCity',
+        //'zip_code' => 'filterByZipCode',
+        //'city' => 'filterByCity',
+        'state' => 'filterByState',
     ];
     public function search(array $filters, $paginate = self::RESULT_THRESHOLD): LengthAwarePaginator
     {
@@ -40,7 +41,7 @@ class SearchService
         /*$sql = $query->toSql();
         $bindings = $query->getBindings();
         $fullQuery = vsprintf(str_replace('?', "'%s'", $sql), $bindings);
-       // dd($fullQuery);*/
+        dd($fullQuery);*/
         return $query->paginate($paginate);
     }
 
@@ -82,6 +83,14 @@ class SearchService
         $query->where(function($q) use ($city) {
 
             $q->where('business_city', $city);
+        });
+    }
+
+    protected function filterByState($query, string $state): void
+    {
+        $query->whereHas('details', function($q) use ($state) {
+            $q->where('key', 'business_states')
+              ->whereRaw("JSON_CONTAINS(value, JSON_QUOTE(?))", [$state]);
         });
     }
 }

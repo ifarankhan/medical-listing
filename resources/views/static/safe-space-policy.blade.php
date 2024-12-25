@@ -36,7 +36,7 @@
             <div class="row wow fadeInUp" data-wow-duration="1.5s">
                 <div class="col-xl-12">
                     <div class="privacy_policy_area">
-                        <h1 class="mb-3">Safe Space Policy</h1>
+                        <h1 class="mb-3 mt-4">Safe Space Policy</h1>
                         <p>
                             At Diverrx.com, we are committed to providing a trusted platform where users can connect with
 reputable businesses offering quality services. To ensure that all businesses listed meet the

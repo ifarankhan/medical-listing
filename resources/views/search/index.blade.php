@@ -106,6 +106,19 @@
                                 @endforeach
                             </select>
                         </div>
+
+                        <div class="sidebar_dropdown sidebar_wizerd">
+                            <h3>state</h3>
+                            <select class="select_2" name="state">
+                                <option value="">Select State</option>
+                                @foreach($businessStates as $state)
+                                    <option value="{{ $state->id }}"
+                                        {{ isset($filters['state']) && $filters['state'] === "$state->id" ? 'selected' : '' }}
+                                    >{{ $state->abbreviation }} - {{ $state->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         {{--<div class="sidebar_dropdown sidebar_wizerd">
                             <h3>Price</h3>
                             <select class="select_2" name="price">

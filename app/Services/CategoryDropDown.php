@@ -9,6 +9,6 @@ class CategoryDropDown
 {
     public function getServiceCategories(): Collection
     {
-        return Category::all();
+        return Category::orderBy('name', 'asc')->get();
     }
 }
