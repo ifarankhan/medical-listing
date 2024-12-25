@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\State;
 use App\Services\CategoryDropDown;
 use App\Services\SearchService;
 use Illuminate\Contracts\Foundation\Application;
@@ -23,6 +24,7 @@ class SearchController extends Controller
     public function search(Request $request): Factory|View|Application
     {
         $serviceCategories = $this->categoryDropDown->getServiceCategories();
+        $businessStates = $this->getBusinessStates();
         $filters = $request->only(array_keys($this->searchService->filters));
         $listings = $this->searchService->search($filters);
         $resultThreshold = SearchService::RESULT_THRESHOLD;
@@ -30,10 +32,16 @@ class SearchController extends Controller
         return view('search.index', compact(
             'listings',
             'serviceCategories',
+            'businessStates',
             'filters',
             'resultThreshold',
         ))->with(['meta' => [
             'og:title' => 'Search Result'
         ]]);
+    }
+
+    protected function getBusinessStates()
+    {
+        return State::orderBy('name')->get();
     }
 }

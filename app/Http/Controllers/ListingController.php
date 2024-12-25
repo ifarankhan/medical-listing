@@ -92,7 +92,13 @@ class ListingController extends Controller
             }
         }
         // Return the saved image path.
-        $listing->profile_picture = $this->fileUploadService->uploadFile($image, "listings/$listing->id/profile_picture", maxSize: 4096);
+        $listing->profile_picture = $this->fileUploadService->uploadFile(
+            $image,
+            "listings/$listing->id/profile_picture",
+            maxWidth: 880,
+            maxHeight: 500,
+            maxSize: 4096
+        );
 
         $listing->save();
     }
