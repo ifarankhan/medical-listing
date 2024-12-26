@@ -55,6 +55,7 @@ class DashboardController extends Controller
             ->sum('product_service_count');
     }
 
+
     private function getCustomerMessagesForListing($user)
     {
         return $user->listings->sum(function ($listing) {
