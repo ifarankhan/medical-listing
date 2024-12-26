@@ -58,9 +58,9 @@ class DashboardController extends Controller
 
     private function getCustomerMessagesForListing($user)
     {
-        return $user->listings->sum(function ($listing) {
+        return optional($user->listings)->sum(function ($listing) {
             return $listing->getCustomerLeadsCount();
-        });
+        }) ?? 0;
     }
 
     private function getProductServicesInListing($user)
