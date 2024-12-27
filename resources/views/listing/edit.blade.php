@@ -276,14 +276,18 @@
 
         <div class="col-xxl-12 col-md-12 mt-2">
 
-            <label for="zipcode">Description:</label>
-            <div class="add_property_input">
-                <textarea class="summer_note"
+            <label for="business_description">Description:</label>
+            <div class="note-editor note-frame">
+                <textarea class="word-count"
                           name="business_description"
                           data-word-limit="200"
+                          rows="5"
+                          placeholder="Brief description (200 word limit)"
                 >{{ old('business_description', $listing->getDetail('business_description', '')) }}</textarea>
             </div>
-
+            <div class="word-count-feedback text-muted">
+                Words remaining: <span class="word-count-remaining" data-index="0">200</span>
+            </div>
         </div>
 
         <div class="col-xxl-4 col-md-6 mt-2">

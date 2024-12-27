@@ -1068,8 +1068,10 @@ $(function () {
                 const wordLimit = parseInt($textarea.data('word-limit'), 10);
 
                 // Locate the .word-count-feedback element outside the parent div
-                const feedback = $textarea.closest('.col-xxl-4').find('.word-count-feedback .word-count-remaining');
-
+                //const feedback = $textarea.closest('.col-xxl-4, .col-xxl-12').find('.word-count-feedback .word-count-remaining');
+                const feedback = $textarea
+                    .parents()
+                    .find('.word-count-feedback .word-count-remaining');
                 // Get current words and limit
                 const words = $textarea.val().trim().split(/\s+/).filter(word => word.length > 0);
                 const remaining = wordLimit - words.length;
