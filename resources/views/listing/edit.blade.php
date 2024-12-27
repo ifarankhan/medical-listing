@@ -7,7 +7,8 @@
     <div class="row">
         <div class="col-xxl-6 col-md-6">
             <div class="add_property_input">
-                <label>Are you legally authorized to promote products and services that you wish to list on diverrx? <span class="text-danger">*</span></label>
+                <label>Are you legally authorized to promote products and services that you wish to list on
+                    diverrx? <span class="text-danger">*</span></label>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" id="authorized_yes" name="authorized" value="1"
                            {{ old('authorized', $listing->authorized) == 1 ? 'checked' : '' }} required>
@@ -23,7 +24,8 @@
         </div>
         <div class="col-xxl-6 col-md-6">
             <div class="add_property_input">
-                <label>Is the business you wish to promote on diverrx a legally registered entity? (Proof of registration will be required in subsequent steps) <span class="text-danger">*</span></label>
+                <label>Is the business you wish to promote on diverrx a legally registered entity? (Proof of
+                    registration will be required in subsequent steps). <span class="text-danger">*</span></label>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" id="registered_yes" name="registered" value="1"
                            {{ old('registered', $listing->registered) == 1 ? 'checked' : '' }} required>
@@ -42,11 +44,14 @@
             <div class="add_property_input">
 
                 <label>Upload a file <span class="text-danger">*</span></label>
-                <input {{ $listing->getDetail('legal_proof') ? '' : 'required' }} class="@error('legal_proof')is-invalid @enderror" type="file" name="legal_proof" accept="image/*,application/pdf">
+                <input {{ $listing->getDetail('legal_proof') ? '' : 'required' }}
+                       class="@error('legal_proof')is-invalid @enderror" type="file"
+                       name="legal_proof" accept="image/*,application/pdf">
                 @if ($errors->has('legal_proof'))
                     <div class="invalid-feedback">{{ $errors->first('legal_proof') }}</div>
                 @endif
-                <small class="text-muted">Please upload proof in JPEG, PNG, JPG or PDF format, with max size upto 10MB, of your legal authorization to provide this service/product: business/professional license.</small>
+                <small class="text-muted">Please upload proof in JPEG, PNG, JPG or PDF format, with max size upto 10MB,
+                    of your legal authorization to provide this service/product: business/professional license.</small>
 
                 @if(!empty($listing->getDetail('legal_proof')))
                     <div class="mt-3">
@@ -81,7 +86,8 @@
 
 <!-- User Information Section -->
 <div class="add_property_info wow fadeInUp" data-wow-duration="1.5s">
-    <h3>User Information <small class="text-muted" style="font-size: small">( For Individual Responsible to Manage Diverrx Account)</small></h3>
+    <h3>User Information <small class="text-muted" style="font-size: small">( For Individual Responsible to Manage
+            Diverrx Account)</small></h3>
 
     <div class="row">
         <div class="col-xxl-4 col-md-6">
@@ -107,7 +113,9 @@
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
                 <label for="email">Email Address: <span class="text-danger">*</span></label>
-                <input type="email" id="email" class="@error('email')is-invalid @enderror" name="email" placeholder="Email Address"
+                <input type="email" id="email" class="@error('email')is-invalid @enderror" name="email"
+                       placeholder="Email Address"
+                       title="Please enter a valid email address."
                        value="{{ old('email', $listing->email) }}" required>
                 @if ($errors->has('email'))
                     <div class="invalid-feedback">{{ $errors->first('email') }}</div>
@@ -141,7 +149,8 @@
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
                 <label for="business_name">Legal Business Name: <span class="text-danger">*</span></label>
-                <input type="text" id="business_name" class="@error('business_name')is-invalid @enderror" name="business_name" placeholder="Business Name"
+                <input type="text" id="business_name" class="@error('business_name')is-invalid @enderror"
+                       name="business_name" placeholder="Business Name"
                        value="{{ old('business_name', $listing->business_name) }}" required>
                 @if ($errors->has('business_name'))
                     <div class="invalid-feedback">{{ $errors->first('business_name') }}</div>
@@ -167,16 +176,22 @@
             <div class="add_property_input">
                 <label>Profile Picture <span class="text-danger">*</span></label>
 
-                <input {{ $listing->profile_picture ? '' : 'required' }} class="@error('profile_picture')is-invalid @enderror" type="file" name="profile_picture" accept="image/*">
+                <input {{ $listing->profile_picture ? '' : 'required' }}
+                       class="@error('profile_picture')is-invalid @enderror"
+                       type="file" name="profile_picture" accept="image/*"
+                title="Upload a profile picture (JPEG, PNG, JPG), preferably 880x500 resolution,
+                    max size 4MB.">
                 @if ($errors->has('profile_picture'))
                     <div class="invalid-feedback">{{ $errors->first('profile_picture') }}</div>
                 @endif
-                <small class="text-muted">Please upload a profile picture in JPEG, PNG, or JPG format. The file should be an image and must not exceed 4MB in size.</small>
+                <small class="text-muted">Upload a profile picture (JPEG, PNG, JPG), preferably 880x500 resolution,
+                    max size 4MB.</small>
                 <!-- Show the uploaded image if it exists. -->
                 @if(!empty($listing->profile_picture))
 
-                    <div class="mb-3">
-                        <img src="{{ asset('storage/'.$listing->profile_picture) }}" alt="Profile Picture" style="max-width: 150px; max-height: 150px; object-fit: cover;"/>
+                    <div class="mb-3 mt-2">
+                        <img src="{{ asset('storage/'.$listing->profile_picture) }}" alt="Profile Picture"
+                             style="max-width: 150px; max-height: 150px; object-fit: cover;"/>
                     </div>
                 @endif
             </div>
@@ -194,7 +209,9 @@
 
             <div class="add_property_input">
                 <label for="business_email">Email Address: <span class="text-danger">*</span></label>
-                <input type="email" id="business_email" class="@error('business_email')is-invalid @enderror" name="business_email" placeholder="Business Email"
+                <input type="email" id="business_email" class="@error('business_email')is-invalid @enderror"
+                       name="business_email" placeholder="Business Email"
+                       title="Please enter a valid email address."
                        value="{{ old('business_email', $listing->business_email) }}" required>
                 @if ($errors->has('business_email'))
                     <div class="invalid-feedback">{{ $errors->first('business_email') }}</div>
@@ -205,13 +222,15 @@
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
                 <label for="business_address">Address: <span class="text-danger">*</span></label>
-                <input type="text" id="business_address" class="@error('business_address')is-invalid @enderror" name="business_address" placeholder="Business Address"
+                <input type="text" id="business_address" class="@error('business_address')is-invalid @enderror"
+                       name="business_address" placeholder="Business Address"
                        value="{{ old('business_address', $listing->business_address) }}"
                        required>
                 @if ($errors->has('business_address'))
                     <div class="invalid-feedback">{{ $errors->first('business_address') }}</div>
                 @endif
-                <small class="text-muted"><b>Note:</b> Please select your address from the dropdown to automatically fill related fields. Pasting an address may not populate all details correctly.</small>
+                <small class="text-muted"><b>Note:</b> Please select your address from the dropdown to automatically
+                    fill related fields. Pasting an address may not populate all details correctly.</small>
             </div>
 
             <div class="add_property_input">
@@ -234,7 +253,10 @@
                     $businessStates = old('business_states', json_decode($listing->getDetail('business_states')));
                 @endphp
 
-                <select class="js-data-states select_2 @error('business_states')is-invalid @enderror" id="business_states" name="business_states[]" multiple="multiple">
+                <select class="js-data-states select_2 @error('business_states')is-invalid @enderror"
+                        id="business_states" name="business_states[]"
+                        title="Please select upto 5 states."
+                        multiple="multiple">
 
                     @if(!is_null($states) && !is_null($businessStates))
                         @foreach($states as $stateId => $stateName)
@@ -256,8 +278,10 @@
 
             <label for="zipcode">Description:</label>
             <div class="add_property_input">
-                <textarea class="summer_note" name="business_description">{{ old('business_description', $listing->getDetail('business_description', '')) }}</textarea>
-                <small class="text-muted">1000 characters or 200 words.</small>
+                <textarea class="summer_note"
+                          name="business_description"
+                          data-word-limit="200"
+                >{{ old('business_description', $listing->getDetail('business_description', '')) }}</textarea>
             </div>
 
         </div>
@@ -362,9 +386,11 @@
                 <div class="col-xxl-4 col-md-6">
                     <div class="add_property_input">
                         <label for="description_0">Brief description (200 word limit): <span class="text-danger">*</span></label>
-                        <div class="note-editor note-frame panel panel-default">
+                        <div class="note-editor note-frame">
 
-                            <textarea id="description_0" name="products[0][description]" class="word-count"  placeholder="Description" data-word-limit="200" required>{{ old('products.0.description') }}</textarea>
+                            <textarea id="description_0" name="products[0][description]" class="word-count"
+                                      placeholder="Description" data-word-limit="200"
+                                      required>{{ old('products.0.description') }}</textarea>
 
                         </div>
                         <div class="word-count-feedback text-muted">
@@ -461,7 +487,7 @@
                 <div class="col-xxl-4 mb-3 col-md-6">
                     <div class="add_property_input">
                         <label for="description_{{ $index }}">Brief description (200 word limit): <span class="text-danger">*</span></label>
-                        <div class="note-editor note-frame panel panel-default">
+                        <div class="note-editor note-frame">
 
                             <textarea id="description_{{ $index }}"
                                       name="products[{{ $index }}][description]"
