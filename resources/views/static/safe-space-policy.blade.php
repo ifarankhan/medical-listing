@@ -52,7 +52,8 @@ are the key steps we take to verify businesses before they are enlisted on Diver
                                 <strong>Verify Legal Registration:</strong>
                                 <ul>
                                     <li>Search government databases to confirm the business’s legal registration.</li>
-                                    <li>Cross-check the company name, registration number, and physical address to ensure compliance with local laws.</li>
+                                    <li>Cross-check the company name, registration number, and physical address to
+                                        ensure they are properly documented and compliant with local laws.</li>
                                 </ul>
                             </li>
                             <li class="list-group-item border-0">
@@ -66,20 +67,23 @@ are the key steps we take to verify businesses before they are enlisted on Diver
                                 <strong>Investigate Online Presence:</strong>
                                 <ul>
                                     <li>Review the business’s website, social media pages, and other online platforms.</li>
-                                    <li>Evaluate customer reviews, social media activity, and website content to gauge the business’s reputation and legitimacy.</li>
+                                    <li>Evaluate customer reviews, social media activity, and website content to gauge
+                                        the business’s reputation and legitimacy in the market.</li>
                                 </ul>
                             </li>
                             <li class="list-group-item border-0">
                                 <strong>Verify Contact Information:</strong>
                                 <ul>
-                                    <li>Check if the provided phone numbers and email addresses are valid and functional.</li>
-                                    <li>Ensure the contact details match the business's registration information.</li>
+                                    <li>Check if the provided phone numbers and email addresses are valid, functional,
+                                        and match the business's registration information.</li>
+                                    <li>Ensure that the contact details are easily accessible to potential customers.</li>
                                 </ul>
                             </li>
                             <li class="list-group-item border-0">
                                 <strong>Validate Physical Address:</strong>
                                 <ul>
-                                    <li>Confirm the business’s physical address using online maps or direct visits.</li>
+                                    <li>Confirm the business’s physical address by using online maps or visiting the
+                                        location directly.</li>
                                     <li>Ensure the business operates from a verifiable, legitimate address.</li>
                                 </ul>
                             </li>
@@ -87,14 +91,14 @@ are the key steps we take to verify businesses before they are enlisted on Diver
                                 <strong>Review Legal History:</strong>
                                 <ul>
                                     <li>Search for any past lawsuits, legal disputes, or regulatory issues involving the business.</li>
-                                    <li>Evaluate the business's legal standing to ensure a clean record.</li>
+                                    <li>Evaluate the business's legal standing to ensure it maintains a clean record.</li>
                                 </ul>
                             </li>
                         </ol>
 
                         <h3>Features: Reviews and Ratings</h3>
-                        <div class="mt-4">
-                            <strong class="mt-4">Customer Reviews and Ratings:</strong>
+                        <div class="mt-4">7.
+                            <strong class="mt-4"> Customer Reviews and Ratings:</strong>
 
                             <ul class="mb-4 border-0">
                                 <li class="list-group-item border-0">Enable customers to leave detailed feedback based on their experiences with the
