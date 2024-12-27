@@ -222,7 +222,7 @@ class ListingController extends Controller
             'business_states' => 'required|max:5',
             'profile_picture' => 'mimes:jpeg,png,jpg|image|max:4096',
             'legal_proof' => 'mimes:jpeg,png,jpg,pdf|file|max:10240',
-            'business_description' => 'nullable',
+            'business_description' => ['nullable', new WordCount(200)],
             'social_media_1' => 'nullable|facebook_url',
             'social_media_2' => 'nullable|twitter_url',
             'social_media_3' => 'nullable|linkedin_url',
