@@ -107,6 +107,9 @@
                             <li>
                                 <a href="{{ route('privacy.policy') }}">Privacy Policy</a>
                             </li>
+                            <li>
+                                <a href="{{ route('safe.space.policy') }}">Safe Space</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
