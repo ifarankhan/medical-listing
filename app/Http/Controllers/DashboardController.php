@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Listing;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -56,11 +57,12 @@ class DashboardController extends Controller
     }
 
 
-    private function getCustomerMessagesForListing($user)
+    private function getCustomerMessagesForListing($user): int
     {
-        return optional($user->listings)->sum(function ($listing) {
-            return $listing->getCustomerLeadsCount();
-        }) ?? 0;
+        /** @var Listing $listing */
+        $listing = $user->listings;
+
+        return $listing ? $listing->getCustomerLeadsCount(): 0;
     }
 
     private function getProductServicesInListing($user)

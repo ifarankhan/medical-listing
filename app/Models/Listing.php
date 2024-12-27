@@ -109,7 +109,7 @@ class Listing extends Model
         return $this->hasMany(Message::class, 'listing_id')
             ->select('email')
             ->distinct()
-            ->count('email');
+            ->count();
     }
 
     /**
