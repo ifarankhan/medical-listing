@@ -61,7 +61,7 @@ class DashboardController extends Controller
     {
         /** @var Listing $listing */
         $listing = $user->listings;
-
+        // A listing can have many messages.
         return $listing ? $listing->getCustomerLeadsCount(): 0;
     }
 
