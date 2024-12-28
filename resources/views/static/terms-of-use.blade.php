@@ -103,8 +103,8 @@
                                 on the Site.
                             </li>
                             <li>Report inappropriate content or misuse to info@diverrx.com.</li>
-                            <li>Conduct yourself in a manner that does not interfere with other users’ ability to enjoy
-                                the Site.
+                            <li>Conduct yourself in a professional manner that does not interfere with other users’ ability
+                                to utilize or enjoy the Site.
                             </li>
                             <li>We may investigate any reported violations and take appropriate action, including
                                 suspension or termination of accounts or appropriate legal action.</li>
