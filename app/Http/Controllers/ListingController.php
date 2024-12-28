@@ -233,7 +233,7 @@ class ListingController extends Controller
             'products.*.virtual' => 'nullable|boolean', // Validate each product virtual attribute.
             'products.*.in_person' => 'nullable|boolean', // Validate each product in_person attribute.
             'products.*.accept_insurance' => 'nullable|boolean', // Validate each product accept_insurance attribute.
-            'products.*.insurance_list' => 'nullable|string', // Validate each product insurance_list attribute.
+            'products.*.insurance_list' => 'nullable|string|required_if:products.*.accept_insurance,1', // Validate each product insurance_list attribute.
             'products.*.price' => 'nullable|numeric|min:0', // Validate each product price.
             'products.*.accepting_clients' => 'required'
         ];
@@ -246,11 +246,8 @@ class ListingController extends Controller
             'products.*.category_id.required' => 'The Product/Service is required for each product.',
             'products.*.category_id.exists' => 'The selected Product/Service does not exist.',
             'products.*.category_id.distinct' => 'Each product must have a unique Product/Service.',
-            'products.0.category_id' => 'Product/Service for Product 1',
-            'products.1.category_id' => 'Product/Service for Product 2',
-            'products.2.category_id' => 'Product/Service for Product 3',
-            'products.3.category_id' => 'Product/Service for Product 4',
-            'products.4.category_id' => 'Product/Service for Product 5',
+            'products.*.insurance_list.required_if' => 'Insurance List is required when Insurance is accepted for each product.'
+
         ];
 
         return $request->validate($rules, $messages);
@@ -368,8 +365,6 @@ class ListingController extends Controller
                 ->with('error', 'An error occurred while deleting the listing.');
         }
     }
-
-
     /**
      * @param Listing $listing
      *

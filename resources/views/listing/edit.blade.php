@@ -376,13 +376,13 @@
 
                     <div class="form-check">
 
-                        <input class="form-check-input" type="checkbox" id="virtual_0" name="products[0][virtual]" {{ old('products.0.virtual') ? 'checked' : '' }} value="1">
+                        <input class="form-check-input" type="checkbox" id="virtual_0" data-required="true" name="products[0][virtual]" {{ old('products.0.virtual') ? 'checked' : '' }} value="1">
                         <label class="form-check-label" for="virtual_0">Virtual</label>
 
                     </div>
 
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="in_person_0" name="products[0][in_person]" value="1" {{ old('products.0.in_person') ? 'checked' : '' }}>
+                        <input class="form-check-input" type="checkbox" id="in_person_0" data-required="true" name="products[0][in_person]" value="1" {{ old('products.0.in_person') ? 'checked' : '' }}>
                         <label class="form-check-label" for="in_person_0">In person</label>
                     </div>
 
@@ -476,13 +476,15 @@
                     <label>Click all options below that apply: <span class="text-danger">*</span></label>
 
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="virtual_{{ $index }}" name="products[{{ $index }}][virtual]"
+                        <input class="form-check-input" type="checkbox"
+                               name="products[{{ $index }}][virtual]" data-required="true"
                                value="1" {{ old('products.' . $index . '.virtual', $item->virtual) ? 'checked' : '' }}>
                         <label class="form-check-label" for="virtual_0">Virtual</label>
                     </div>
 
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="in_person_{{ $index }}" name="products[{{ $index }}][in_person]" value="1"
+                        <input class="form-check-input" type="checkbox"
+                               name="products[{{ $index }}][in_person]" value="1" data-required="true"
                             {{ old('products.' . $index . '.in_person', $item->in_person) ? 'checked' : '' }}>
                         <label class="form-check-label" for="in_person_{{ $index }}">In person</label>
                     </div>
@@ -510,12 +512,12 @@
                     <label>Do you accept insurance for this product? <span class="text-danger">*</span></label>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="accept_insurance_yes_{{ $index }}" name="products[{{ $index }}][accept_insurance]" value="1"
-                               {{ old('products.' . $index . '.accept_insurance', $item->accept_insurance) == '1' ? 'checked' : '' }} required>
+                               {{ old('products.' . $index . '.accept_insurance', $item->accept_insurance) == '1' ? 'checked' : '' }} data-required="true">
                         <label for="accept_insurance_yes_{{ $index }}">Yes</label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="accept_insurance_no_{{ $index }}" name="products[{{ $index }}][accept_insurance]" value="0"
-                               {{ old('products.' . $index . '.accept_insurance', $item->accept_insurance) == '0' ? 'checked' : '' }} required>
+                               {{ old('products.' . $index . '.accept_insurance', $item->accept_insurance) == '0' ? 'checked' : '' }} data-required="true">
                         <label class="form-check-label" for="accept_insurance_no_{{ $index }}">No</label>
                     </div>
 

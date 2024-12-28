@@ -1046,9 +1046,9 @@ $(function () {
             let index = parentRow.data('index'); // Get the index from the data attribute
 
             // Handle the static element with index 0 separately
-            if (index === 1) {
+            /*if (index === 1) {
                 index = 0; // Adjust to match the original index 0 for the first element
-            }
+            }*/
 
             let insuranceList = $('#insurance_list_' + index);
             let priceInput = $('#price_' + index);
@@ -1300,6 +1300,46 @@ $(function () {
 
         // Loop through each input to validate
         inputs.forEach(input => {
+            // Handle checkbox groups with the `data-group` attribute
+            if (input.type === 'checkbox' && input.dataset.group) {
+                const group = input.dataset.group;
+                const isRequired = input.dataset.required === "true";
+                const checkboxes = form.querySelectorAll(`input[data-group="${group}"]`);
+                const isGroupValid = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+                if (isRequired) {
+                    checkboxes.forEach(checkbox => {
+                        // Handle error message for the group
+                        let errorElement = checkbox.parentNode.querySelector('.error-message');
+                        if (!isGroupValid) {
+                            isValid = false;
+                            checkbox.classList.add('is-invalid');
+
+                            // Create or update the error message for the group
+                            if (!errorElement) {
+                                errorElement = document.createElement('div');
+                                errorElement.className = 'error-message text-danger';
+                                checkbox.parentNode.appendChild(errorElement);
+                            }
+                            errorElement.textContent = 'Please select at least one option.';
+                        } else {
+                            checkbox.classList.remove('is-invalid');
+                            if (errorElement) {
+                                errorElement.remove();
+                            }
+                        }
+                    });
+
+                    // If the group is invalid, track the first checkbox in the group
+                    if (!isGroupValid && !firstInvalidElement) {
+                        firstInvalidElement = checkboxes[0];
+                    }
+                }
+
+                return; // Skip individual checkbox validation since the group is handled
+            }
+
+            // Validate other input types
             if (!input.checkValidity()) {
                 isValid = false;
 
@@ -1307,14 +1347,14 @@ $(function () {
                 input.classList.add('is-invalid');
 
                 // Show a custom error message (using 'title' attribute or custom text)
-                const errorMessage = input.getAttribute('title') || 'Invalid input.';
-                let errorElement = input.nextElementSibling;
+                const errorMessage = input.getAttribute('title') || 'Please provide valid input.';
+                let errorElement = input.parentNode.querySelector('.error-message');
 
                 // If no error element exists, create one
-                if (!errorElement || !errorElement.classList.contains('error-message')) {
+                if (!errorElement) {
                     errorElement = document.createElement('div');
                     errorElement.className = 'error-message text-danger';
-                    input.parentNode.insertBefore(errorElement, input.nextSibling);
+                    input.parentNode.appendChild(errorElement);
                 }
 
                 // Update the error message
@@ -1324,12 +1364,11 @@ $(function () {
                 if (!firstInvalidElement) {
                     firstInvalidElement = input;
                 }
-
             } else {
                 // Remove 'is-invalid' class and error message if valid
                 input.classList.remove('is-invalid');
-                const errorElement = input.nextElementSibling;
-                if (errorElement && errorElement.classList.contains('error-message')) {
+                const errorElement = input.parentNode.querySelector('.error-message');
+                if (errorElement) {
                     errorElement.remove();
                 }
             }
@@ -1346,6 +1385,9 @@ $(function () {
             }
         }
     });
+
+
+
 
     $(document).ready(function (){
 
