@@ -223,13 +223,13 @@
                             apply to you.</p>
 
                         <h4 class="mt-4">11. Copyright and Intellectual Property</h4>
-                        <p>All content on the Site is protected by copyright law. If you believe that your intellectual
-                            property rights have been violated, please notify our designated agent for copyright
+                        <p>All content on the Site is protected by United States copyright law. If you believe that your
+                            intellectual property rights have been violated, please notify our designated agent for copyright
                             infringement claims.</p>
 
                         <h4 class="mt-4">12. Governing Law and Dispute Resolution</h4>
-                        <p>These Terms of Service are governed by the laws of the Commonwealth of Virginia. Any disputes
-                            arising under these terms will be resolved in the courts located in Fairfax County,
+                        <p>These Terms of Service are governed by the laws of the Commonwealth of Virginia. Any
+                            disputes arising under these terms will be resolved in the courts located in Fairfax County,
                             Virginia.</p>
 
                         <h4 class="mt-4">13. Notices</h4>

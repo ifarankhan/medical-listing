@@ -141,7 +141,7 @@
                             as the rest of the submitted content.</p>
 
                         <h4 class="mt-4">5. Marketing and Promotional Communications</h4>
-                        <p>Diverrx may use third-party marketing lists for promotional purposes. While we make every
+                        <p>Diverxx may use third-party marketing lists for promotional purposes. While we make every
                             effort to ensure that these lists are obtained from compliant sources, Diverrx is not responsible
                             for the practices of any third-party marketing lists. If you receive unwanted marketing
                             communications from us, you can opt out at any time by contacting us at <a href="mailto:info@diverrx.com">info@diverrx.com</a>.</p>
@@ -151,7 +151,8 @@
                             unauthorized access, misuse, or disclosure, including reasonable technological, administrative
                             and physical security measures. However, no method of internet transmission or electronic
                             storage is completely secure. While we strive to protect your data, we cannot guarantee its
-                            absolute security. We may retain your data for as long as necessary to fulfill the purposes outlined in this Privacy
+                            absolute security.</p>
+                        <p>We may retain your data for as long as necessary to fulfill the purposes outlined in this Privacy
                             Notice, comply with legal obligations, resolve disputes, and enforce agreements. Where
                             personal information is collected and used for more than one purpose, we will retain it until the
                             purpose with the latest period expires.</p>
@@ -160,12 +161,12 @@
                         <p>You have the right to access, correct, or request the deletion of your personal information. If you
                             wish to exercise these rights, please email us at <a href="mailto:info@diverrx.com">info@diverrx.com</a> with the subject line
                             "Personal Data Request." We will verify your identity and respond to your request within the
-                            timeframe required by law.
-                            You have the right to know what Personal Information Diverrx has about you, the categories of
+                            timeframe required by law.</p>
+                        <p>You have the right to know what Personal Information Diverrx has about you, the categories of
                             use, and the specific third-parties with whom your information may have been shared. You also
                             have the right to obtain a transportable copy of your Personal Information. Your right to know
-                            request may be made no more than twice in a 12-month period.
-                            You may also have additional rights under certain regional or state-specific laws, including the
+                            request may be made no more than twice in a 12-month period.</p>
+                        <p>You may also have additional rights under certain regional or state-specific laws, including the
                             right to opt out of the sale or sharing of your personal data for targeted advertising.</p>
 
                         <h4 class="mt-4">8. International Visitors</h4>
