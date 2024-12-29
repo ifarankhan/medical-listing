@@ -11,7 +11,7 @@
                     diverrx? <span class="text-danger">*</span></label>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" id="authorized_yes" name="authorized" value="1"
-                           {{ old('authorized', $listing->authorized) == 1 ? 'checked' : '' }} required>
+                           {{ old('authorized', $listing->authorized) == 1 ? 'checked' : '' }} >
                     <label class="form-check-label" for="authorized_yes">Yes</label>
                 </div>
                 <div class="form-check">
@@ -28,7 +28,7 @@
                     registration will be required in subsequent steps). <span class="text-danger">*</span></label>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" id="registered_yes" name="registered" value="1"
-                           {{ old('registered', $listing->registered) == 1 ? 'checked' : '' }} required>
+                           {{ old('registered', $listing->registered) == 1 ? 'checked' : '' }} >
                     <label class="form-check-label" for="registered_yes">Yes</label>
 
                 </div>
@@ -94,7 +94,7 @@
             <div class="add_property_input">
                 <label for="first_name">First Name: <span class="text-danger">*</span></label>
                 <input type="text" id="first_name" class="@error('first_name')is-invalid @enderror" name="first_name" placeholder="First Name"
-                       value="{{ old('first_name', $listing->first_name) }}" required>
+                       value="{{ old('first_name', $listing->first_name) }}" >
                 @if ($errors->has('email'))
                     <div class="invalid-feedback">{{ $errors->first('first_name') }}</div>
                 @endif
@@ -104,7 +104,7 @@
             <div class="add_property_input">
                 <label for="last_name">Last Name: <span class="text-danger">*</span></label>
                 <input type="text" id="last_name" class="@error('last_name')is-invalid @enderror" name="last_name" placeholder="Last Name"
-                       value="{{ old('last_name', $listing->last_name) }}" required>
+                       value="{{ old('last_name', $listing->last_name) }}" >
                 @if ($errors->has('last_name'))
                     <div class="invalid-feedback">{{ $errors->first('last_name') }}</div>
                 @endif
@@ -116,7 +116,7 @@
                 <input type="email" id="email" class="@error('email')is-invalid @enderror" name="email"
                        placeholder="Email Address"
                        title="Please enter a valid email address."
-                       value="{{ old('email', $listing->email) }}" required>
+                       value="{{ old('email', $listing->email) }}" >
                 @if ($errors->has('email'))
                     <div class="invalid-feedback">{{ $errors->first('email') }}</div>
                 @endif
@@ -130,9 +130,9 @@
                        class="@error('contact_number')is-invalid @enderror"
                        name="contact_number"
                        placeholder="(000) 000-0000"
-                       pattern="^\(\d{3}\) \d{3}-\d{4}$"
+{{--                       pattern="^\(\d{3}\) \d{3}-\d{4}$"--}}
                        title="Please enter a valid phone number in the format (000) 000-0000."
-                       value="{{ old('contact_number', $listing->contact_number) }}" required>
+                       value="{{ old('contact_number', $listing->contact_number) }}" >
                 @if ($errors->has('contact_number'))
                     <div class="invalid-feedback">{{ $errors->first('contact_number') }}</div>
                 @endif
@@ -151,7 +151,7 @@
                 <label for="business_name">Legal Business Name: <span class="text-danger">*</span></label>
                 <input type="text" id="business_name" class="@error('business_name')is-invalid @enderror"
                        name="business_name" placeholder="Business Name"
-                       value="{{ old('business_name', $listing->business_name) }}" required>
+                       value="{{ old('business_name', $listing->business_name) }}" >
                 @if ($errors->has('business_name'))
                     <div class="invalid-feedback">{{ $errors->first('business_name') }}</div>
                 @endif
@@ -161,23 +161,20 @@
             <div class="add_property_input">
                 <label for="business_contact">Contact: <span class="text-danger">*</span></label>
                 <input type="text"
-                       class="@error('business_contact')is-invalid @enderror"
                        id="business_contact"
                        name="business_contact"
                        placeholder="(000) 000-0000"
-                       pattern="^\(\d{3}\) \d{3}-\d{4}$"
+{{--                       pattern="^\(\d{3}\) \d{3}-\d{4}$"--}}
                        title="Please enter a valid phone number in the format (000) 000-0000."
-                       value="{{ old('business_contact', $listing->business_contact) }}" required>
-                @if ($errors->has('business_contact'))
-                    <div class="invalid-feedback">{{ $errors->first('business_contact') }}</div>
-                @endif
+                       value="{{ old('business_contact', $listing->business_contact) }}" >
+
             </div>
 
             <div class="add_property_input">
                 <label>Profile Picture <span class="text-danger">*</span></label>
 
                 <input {{ $listing->profile_picture ? '' : 'required' }}
-                       class="@error('profile_picture')is-invalid @enderror"
+
                        type="file" name="profile_picture" accept="image/*"
                 title="Upload a profile picture (JPEG, PNG, JPG), preferably 880x500 resolution,
                     max size 4MB.">
@@ -209,26 +206,22 @@
 
             <div class="add_property_input">
                 <label for="business_email">Email Address: <span class="text-danger">*</span></label>
-                <input type="email" id="business_email" class="@error('business_email')is-invalid @enderror"
+                <input type="text" id="business_email"
                        name="business_email" placeholder="Business Email"
                        title="Please enter a valid email address."
-                       value="{{ old('business_email', $listing->business_email) }}" required>
-                @if ($errors->has('business_email'))
-                    <div class="invalid-feedback">{{ $errors->first('business_email') }}</div>
-                @endif
+                       value="{{ old('business_email', $listing->business_email) }}" >
+
             </div>
 
         </div>
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
                 <label for="business_address">Address: <span class="text-danger">*</span></label>
-                <input type="text" id="business_address" class="@error('business_address')is-invalid @enderror"
+                <input type="text" id="business_address"
                        name="business_address" placeholder="Business Address"
                        value="{{ old('business_address', $listing->business_address) }}"
                        required>
-                @if ($errors->has('business_address'))
-                    <div class="invalid-feedback">{{ $errors->first('business_address') }}</div>
-                @endif
+
                 <small class="text-muted"><b>Note:</b> Please select your address from the dropdown to automatically
                     fill related fields. Pasting an address may not populate all details correctly.</small>
             </div>
@@ -253,7 +246,7 @@
                     $businessStates = old('business_states', json_decode($listing->getDetail('business_states')));
                 @endphp
 
-                <select class="js-data-states select_2 @error('business_states')is-invalid @enderror"
+                <select class="js-data-states select_2"
                         id="business_states" name="business_states[]"
                         title="Please select upto 5 states."
                         multiple="multiple">
@@ -266,9 +259,7 @@
                         @endforeach
                     @endif
                 </select>
-                @if ($errors->has('business_states'))
-                    <div class="invalid-feedback">{{ $errors->first('business_states') }}</div>
-                @endif
+
                 <small class="text-muted">You can add up to 5 states where you’re currently operating.</small>
             </div>
 
@@ -372,13 +363,12 @@
                 </div>
                 <div class="col-xxl-4 col-md-6">
 
-                    <label>Click all options below that apply: <span class="text-danger">*</span></label>
+                    <label>Click all options below that apply:</label>
 
                     <div class="form-check">
 
                         <input class="form-check-input" type="checkbox" id="virtual_0" data-required="true" name="products[0][virtual]" {{ old('products.0.virtual') ? 'checked' : '' }} value="1">
                         <label class="form-check-label" for="virtual_0">Virtual</label>
-
                     </div>
 
                     <div class="form-check">
@@ -473,18 +463,18 @@
                 </div>
                 <div class="col-xxl-4 mb-3 col-md-6">
 
-                    <label>Click all options below that apply: <span class="text-danger">*</span></label>
+                    <label>Click all options below that apply:</label>
 
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox"
-                               name="products[{{ $index }}][virtual]" data-required="true"
+                               name="products[{{ $index }}][virtual]"
                                value="1" {{ old('products.' . $index . '.virtual', $item->virtual) ? 'checked' : '' }}>
                         <label class="form-check-label" for="virtual_0">Virtual</label>
                     </div>
 
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox"
-                               name="products[{{ $index }}][in_person]" value="1" data-required="true"
+                               name="products[{{ $index }}][in_person]" value="1"
                             {{ old('products.' . $index . '.in_person', $item->in_person) ? 'checked' : '' }}>
                         <label class="form-check-label" for="in_person_{{ $index }}">In person</label>
                     </div>

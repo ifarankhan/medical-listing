@@ -196,6 +196,21 @@ class ListingController extends Controller
 
     }
 
+    public function validateListing(Request $request): JsonResponse
+    {
+        try {
+            // Use your validation method
+            $this->validateListingData($request);
+            // If validation passes
+            return response()->json(['success' => true]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Return validation errors
+            return response()->json([
+                'success' => false,
+                'errors' => $e->errors(),
+            ], 422);
+        }
+    }
     /**
      * @param Request $request
      *
@@ -246,8 +261,10 @@ class ListingController extends Controller
             'products.*.category_id.required' => 'The Product/Service is required for each product.',
             'products.*.category_id.exists' => 'The selected Product/Service does not exist.',
             'products.*.category_id.distinct' => 'Each product must have a unique Product/Service.',
-            'products.*.insurance_list.required_if' => 'Insurance List is required when Insurance is accepted for each product.'
-
+            'products.*.insurance_list.required_if' => 'Insurance List is required when Insurance is accepted for each product.',
+            'business_contact' => 'Please enter a valid phone number in the format (000) 000-0000.',
+            'contact_number' => 'Please enter a valid phone number in the format (000) 000-0000.',
+            //'business_states' => 'You can add up to 5 states where you’re currently operating.'
         ];
 
         return $request->validate($rules, $messages);

@@ -1070,8 +1070,9 @@ $(function () {
                 // Locate the .word-count-feedback element outside the parent div
                 //const feedback = $textarea.closest('.col-xxl-4, .col-xxl-12').find('.word-count-feedback .word-count-remaining');
                 const feedback = $textarea
-                    .parents()
-                    .find('.word-count-feedback .word-count-remaining');
+                    .closest('.note-editor') // Find the closest parent div
+                    .next('.word-count-feedback') // Select the next sibling with class word-count-feedback
+                    .find('.word-count-remaining'); // Locate the span inside it
                 // Get current words and limit
                 const words = $textarea.val().trim().split(/\s+/).filter(word => word.length > 0);
                 const remaining = wordLimit - words.length;
@@ -1290,7 +1291,7 @@ $(function () {
     });
 
 
-    $('#multiStepForm .common_btn').on('click', function (event) {
+    /*$('#multiStepForm .common_btn').on('click', function (event) {
         const form = $('#multiStepForm')[0];
         let isValid = true;
         let firstInvalidElement = null;
@@ -1384,9 +1385,72 @@ $(function () {
                 });
             }
         }
+    });*/
+
+
+
+    $(document).ready(function () {
+        $('#multiStepForm').on('submit', function (e) {
+            e.preventDefault();
+
+            const form = $(this);
+            const formData = new FormData(this);
+
+            $.ajax({
+                url: '/validate-listing', // Your validation route
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // CSRF token
+                },
+                success: function (response) {
+                    if (response.success) {
+                        alert('Validation passed. Proceeding...');
+                        // Submit the form or perform any other action
+                    }
+                },
+                error: function (xhr) {
+                    if (xhr.status === 422) {
+                        const errors = xhr.responseJSON.errors;
+
+                        // Clear previous error messages
+                        $('.error-message').remove();
+                        $('.is-invalid').removeClass('is-invalid');
+
+                        // Display errors
+                        for (const [field, messages] of Object.entries(errors)) { console.log(field);
+                            // Handle array fields like business_states[]
+                            const fieldSelector = field.includes('[]')
+                                ? `[name="${field}"]`
+                                : `[name="${field}"], [name="${field}[]"]`;
+
+                            const input = $(fieldSelector); console.log(fieldSelector)
+
+                            if (input.length) {
+                                const errorDiv = `<div class="error-message text-danger mt-1">${messages[0]}</div>`;
+
+                                // Append the error message after the input field
+                                input.addClass('is-invalid');
+
+                                if (input.is('select') || input.attr('multiple') === 'multiple') {
+                                    input.parent().append(errorDiv); // For select and multi-select
+                                } else {
+                                    input.after(errorDiv); // For other input types
+                                }
+                            }
+                        }
+                    }
+
+                    // Scroll to the first invalid input
+                    $('html, body').animate({
+                        scrollTop: $('.is-invalid').first().offset().top - 100
+                    }, 500);
+                }
+            });
+        });
     });
-
-
 
 
     $(document).ready(function (){
