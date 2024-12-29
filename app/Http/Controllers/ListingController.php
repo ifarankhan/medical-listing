@@ -136,15 +136,14 @@ class ListingController extends Controller
     /**
      * Store a newly created listing in storage.
      *
-     * @param Request $request
+     * @param ListingRequest $request
      *
      * @return RedirectResponse
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(ListingRequest $request): RedirectResponse
     {
         $validatedData = $request->validated();
-        $listingId     = $validatedData ?? null;
+        $listingId     = $request->get('listing_id') ?? null;
 
         try {
             // Create a new listing instance and save the data
@@ -179,10 +178,13 @@ class ListingController extends Controller
                                  ->with('success', $message);
             }
         } catch (ValidationException $exception) {
-            // If validation fails, redirect back with validation errors.
-            return redirect()->back()->withErrors($validatedData)->withInput();
+            return redirect()->back()
+                 ->withErrors($exception->errors()) // Use validation errors
+                 ->withInput();
         } catch (Exception $e) {
-            return redirect()->back()->withErrors($validatedData)->withInput();
+            return redirect()->back()
+                 ->withErrors(['error' => 'An unexpected error occurred: ' . $e->getMessage()])
+                 ->withInput();
         }
     }
 

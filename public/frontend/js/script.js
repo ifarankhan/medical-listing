@@ -1396,6 +1396,9 @@ $(function () {
             const form = $(this);
             const formData = new FormData(this);
 
+            // Add the action value
+            formData.append('action', $('button[name="action"]').val());
+
             $.ajax({
                 url: '/validate-listing', // Your validation route
                 method: 'POST',
@@ -1407,7 +1410,10 @@ $(function () {
                 },
                 success: function (response) {
                     if (response.success) {
-                        alert('Validation passed. Proceeding...');
+                        //alert('Validation passed. Proceeding...');
+                        // If validation passes, submit the form normally
+                        form.off('submit'); // Remove the submit handler to prevent recursion
+                        form.submit(); // Submit the form
                     }
                 },
                 error: function (xhr) {
@@ -1422,8 +1428,6 @@ $(function () {
                         for (const [field, messages] of Object.entries(errors)) {
                             const fieldSelector = `#${field}`;  // Select by ID
                             const input = $(fieldSelector);
-console.log(fieldSelector)
-                            console.log(input);
                             if (input.length) {
                                 const errorDiv = `<div class="error-message text-danger mt-1">${messages[0]}</div>`;
 
@@ -1447,11 +1451,6 @@ console.log(fieldSelector)
             });
         });
     });
-
-
-
-
-
 
     $(document).ready(function (){
 

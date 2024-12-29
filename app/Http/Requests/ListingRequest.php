@@ -25,6 +25,8 @@ class ListingRequest extends FormRequest
     public function rules(): array
     {
         $contactFormatRule = 'required|regex:/^\(\d{3}\)\s\d{3}-\d{4}$/|max:14';
+        // Check if this is a create or update request
+        $isUpdate = $this->has('listing_id');
         return [
             'authorized' => 'required|boolean',
             'registered' => 'required|boolean',
@@ -41,8 +43,12 @@ class ListingRequest extends FormRequest
             'business_contact' => $contactFormatRule,
             'business_email' => 'required|email:rfc',
             'business_states' => 'required|max:5',
-            'profile_picture' => 'required|mimes:jpeg,png,jpg|image|max:4096',
-            'legal_proof' => 'required|mimes:jpeg,png,jpg,pdf|file|max:10240',
+            'profile_picture' => $isUpdate
+                ? 'nullable|mimes:jpeg,png,jpg|image|max:4096'
+                : 'required|mimes:jpeg,png,jpg|image|max:4096', // Required only for new entries
+            'legal_proof' => $isUpdate
+                ? 'nullable|mimes:jpeg,png,jpg,pdf|file|max:10240'
+                : 'required|mimes:jpeg,png,jpg,pdf|file|max:10240', // Required only for new entries
             'business_description' => ['nullable', new WordCount(200)],
             'social_media_1' => 'nullable|facebook_url',
             'social_media_2' => 'nullable|twitter_url',

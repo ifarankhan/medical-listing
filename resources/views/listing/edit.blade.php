@@ -45,11 +45,9 @@
 
                 <label>Upload a file <span class="text-danger">*</span></label>
                 <input {{ $listing->getDetail('legal_proof') ? '' : 'required' }}
-                       class="@error('legal_proof')is-invalid @enderror" type="file"
+                        type="file"
                        name="legal_proof" accept="image/*,application/pdf">
-                @if ($errors->has('legal_proof'))
-                    <div class="invalid-feedback">{{ $errors->first('legal_proof') }}</div>
-                @endif
+
                 <small class="text-muted">Please upload proof in JPEG, PNG, JPG or PDF format, with max size upto 10MB,
                     of your legal authorization to provide this service/product: business/professional license.</small>
 
@@ -543,6 +541,7 @@
 <div class="add_property_info add_property_aminities wow fadeInUp" data-wow-duration="1.5s">
     <div class="row">
         <div class="col-6 text-start">
+            <input type="hidden" name="action" value="save">
             <button type="submit" name="action" value="save" class="common_btn">{{ $listing->id ? 'Save': 'Free Sign Up' }}</button>
         </div>
         {{--<div class="col-6 text-end">
