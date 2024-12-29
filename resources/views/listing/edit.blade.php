@@ -95,7 +95,7 @@
                 <label for="first_name">First Name: <span class="text-danger">*</span></label>
                 <input type="text" id="first_name" class="@error('first_name')is-invalid @enderror" name="first_name" placeholder="First Name"
                        value="{{ old('first_name', $listing->first_name) }}" >
-                @if ($errors->has('email'))
+                @if ($errors->has('first_name'))
                     <div class="invalid-feedback">{{ $errors->first('first_name') }}</div>
                 @endif
             </div>
@@ -175,12 +175,10 @@
 
                 <input {{ $listing->profile_picture ? '' : 'required' }}
 
-                       type="file" name="profile_picture" accept="image/*"
+                       type="file" name="profile_picture"
                 title="Upload a profile picture (JPEG, PNG, JPG), preferably 880x500 resolution,
                     max size 4MB.">
-                @if ($errors->has('profile_picture'))
-                    <div class="invalid-feedback">{{ $errors->first('profile_picture') }}</div>
-                @endif
+
                 <small class="text-muted">Upload a profile picture (JPEG, PNG, JPG), preferably 880x500 resolution,
                     max size 4MB.</small>
                 <!-- Show the uploaded image if it exists. -->
@@ -285,21 +283,14 @@
 
             <div class="add_property_input">
                 <label for="social_media_1">Facebook:</label>
-                <input type="url" id="social_media_1" class="@error('social_media_1')is-invalid @enderror" name="social_media_1" placeholder="Facebook Link"
+                <input type="url" id="social_media_1" name="social_media_1" placeholder="Facebook Link"
                        value="{{ old('social_media_1', $listing->getDetail('social_media_1')) }}"/>
-                @if ($errors->has('social_media_1'))
-                    <div class="invalid-feedback">{{ $errors->first('social_media_1') }}</div>
-                @endif
             </div>
 
             <div class="add_property_input">
                 <label for="social_media_4">Instagram:</label>
-                <input type="url" id="social_media_4" class="@error('social_media_4')is-invalid @enderror" name="social_media_4" placeholder="Instagram Link"
+                <input type="url" id="social_media_4" name="social_media_4" placeholder="Instagram Link"
                        value="{{ old('social_media_4', $listing->getDetail('social_media_4')) }}"/>
-
-                @if ($errors->has('social_media_4'))
-                    <div class="invalid-feedback">{{ $errors->first('social_media_4') }}</div>
-                @endif
             </div>
         </div>
 
@@ -308,11 +299,9 @@
             <div class="add_property_input mt-2">
 
                 <label for="social_media_2">X:</label>
-                <input type="url" id="social_media_2" class="@error('social_media_2')is-invalid @enderror" name="social_media_2" placeholder="X Link"
+                <input type="url" id="social_media_2" name="social_media_2" placeholder="X Link"
                        value="{{ old('social_media_2', $listing->getDetail('social_media_2')) }}"/>
-                @if ($errors->has('social_media_2'))
-                    <div class="invalid-feedback">{{ $errors->first('social_media_2') }}</div>
-                @endif
+
             </div>
         </div>
 
@@ -320,11 +309,8 @@
 
             <div class="add_property_input">
                 <label for="social_media_3">Linkedin:</label>
-                <input type="url" id="social_media_3" class="@error('social_media_3')is-invalid @enderror" name="social_media_3" placeholder="Linkedin Link"
+                <input type="url" id="social_media_3" name="social_media_3" placeholder="Linkedin Link"
                        value="{{ old('social_media_3', $listing->getDetail('social_media_3')) }}"/>
-                @if ($errors->has('social_media_3'))
-                    <div class="invalid-feedback">{{ $errors->first('social_media_3') }}</div>
-                @endif
             </div>
         </div>
     </div>
@@ -334,7 +320,6 @@
 <div class="add_property_info add_property_aminities wow fadeInUp" data-wow-duration="1.5s">
     <h3>Product/Services Information</h3>
     <div id="additional_products">
-
         @if($listing->productService->isEmpty())
             <div class="border-top my-3"></div>
             <div class="row product-row" data-index="1">
@@ -345,15 +330,14 @@
                     <div class="add_property_input">
                         <label>Choose the Name of the product/service 1: <span class="text-danger">*</span></label>
 
-                        <select class="select_2" id="product_service_0" name="products[0][category_id]" required>
+                        <select class="select_2" id="products.0.category_id" name="products[0][category_id]" required>
                             <option value="">Select a product/service</option>
                             @foreach($categories as $category)
-                                <option value="{{ $category->id }}" {{ old('products.0.category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                <option
+                                    value="{{ $category->id }}"
+                                    {{ old('products.0.category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                             @endforeach
 
-                            @if ($errors->has('product_service_0'))
-                                <div class="invalid-feedback">{{ $errors->first('product_service_0') }}</div>
-                            @endif
                         </select>
 
                         <span class="form-text text-muted">
@@ -367,12 +351,14 @@
 
                     <div class="form-check">
 
-                        <input class="form-check-input" type="checkbox" id="virtual_0" data-required="true" name="products[0][virtual]" {{ old('products.0.virtual') ? 'checked' : '' }} value="1">
+                        <input class="form-check-input" type="checkbox" id="products.0.virtual"
+                               name="products[0][virtual]" {{ old('products.0.virtual') ? 'checked' : '' }} value="1">
                         <label class="form-check-label" for="virtual_0">Virtual</label>
                     </div>
 
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="in_person_0" data-required="true" name="products[0][in_person]" value="1" {{ old('products.0.in_person') ? 'checked' : '' }}>
+                        <input class="form-check-input" type="checkbox" id="products.0.in_person"
+                               name="products[0][in_person]" value="1" {{ old('products.0.in_person') ? 'checked' : '' }}>
                         <label class="form-check-label" for="in_person_0">In person</label>
                     </div>
 
@@ -382,7 +368,7 @@
                         <label for="description_0">Brief description (200 word limit): <span class="text-danger">*</span></label>
                         <div class="note-editor note-frame">
 
-                            <textarea id="description_0" name="products[0][description]" class="word-count"
+                            <textarea id="description.0.description" name="products[0][description]" class="word-count"
                                       placeholder="Description" data-word-limit="200"
                                       required>{{ old('products.0.description') }}</textarea>
 

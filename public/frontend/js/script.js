@@ -1408,7 +1408,6 @@ $(function () {
                 success: function (response) {
                     if (response.success) {
                         alert('Validation passed. Proceeding...');
-                        // Submit the form or perform any other action
                     }
                 },
                 error: function (xhr) {
@@ -1420,14 +1419,11 @@ $(function () {
                         $('.is-invalid').removeClass('is-invalid');
 
                         // Display errors
-                        for (const [field, messages] of Object.entries(errors)) { console.log(field);
-                            // Handle array fields like business_states[]
-                            const fieldSelector = field.includes('[]')
-                                ? `[name="${field}"]`
-                                : `[name="${field}"], [name="${field}[]"]`;
-
-                            const input = $(fieldSelector); console.log(fieldSelector)
-
+                        for (const [field, messages] of Object.entries(errors)) {
+                            const fieldSelector = `#${field}`;  // Select by ID
+                            const input = $(fieldSelector);
+console.log(fieldSelector)
+                            console.log(input);
                             if (input.length) {
                                 const errorDiv = `<div class="error-message text-danger mt-1">${messages[0]}</div>`;
 
@@ -1441,16 +1437,20 @@ $(function () {
                                 }
                             }
                         }
-                    }
 
-                    // Scroll to the first invalid input
-                    $('html, body').animate({
-                        scrollTop: $('.is-invalid').first().offset().top - 100
-                    }, 500);
+                        // Scroll to the first invalid input
+                        $('html, body').animate({
+                            scrollTop: $('.is-invalid').first().offset().top - 100
+                        }, 500);
+                    }
                 }
             });
         });
     });
+
+
+
+
 
 
     $(document).ready(function (){
