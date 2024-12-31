@@ -895,7 +895,7 @@ $(function () {
         <div class="col-xxl-4 mb-3 col-md-6">
             <div class="add_property_input">
                 <label for="product_service_{index}">Choose the Name of the product/service {index}: <span class="text-danger">*</span></label>
-                <select class="select_2" id="select_product_service_{index}" name="products[{index}][category_id]" required>
+                <select class="select_2" id="products_{index}_category_id" name="products[{index}][category_id]" required>
                     categoryOptions
                 </select>
 
@@ -917,9 +917,9 @@ $(function () {
         </div>
         <div class="col-xxl-4 mb-3 col-md-6">
             <div class="add_property_input">
-                <label for="description_{index}">Brief description (200 words limit): <span class="text-danger">*</span></label>
+                <label for="products_{index}_description">Brief description (200 words limit): <span class="text-danger">*</span></label>
                 <div class="note-editor note-frame">
-                    <textarea id="description_{index}" name="products[{index}][description]" class="word-count" data-word-limit="200" placeholder="Description" required></textarea>
+                    <textarea id="products_{index}_description" name="products[{index}][description]" class="word-count" data-word-limit="200" placeholder="Description" required></textarea>
                 </div>
                 <div class="word-count-feedback text-muted">
                     Words remaining: <span class="word-count-remaining" data-index="{index}">200</span>
@@ -930,11 +930,11 @@ $(function () {
             <label>Do you accept insurance for this product? <span class="text-danger">*</span></label>
             <div class="form-check">
                 <input class="form-check-input" type="radio" id="accept_insurance_yes_{index}" name="products[{index}][accept_insurance]" value="1" required>
-                <label class="form-check-label" for="accept_insurance_yes_{index}">Yes</label>
+                <label for="accept_insurance_yes_{index}">Yes</label>
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="radio" id="accept_insurance_no_{index}" name="products[{index}][accept_insurance]" value="0" required>
-                <label class="form-check-label" for="accept_insurance_no_{index}">No</label>
+                <label for="accept_insurance_no_{index}">No</label>
             </div>
         </div>
         <div class="col-xxl-4 mb-3 col-md-6" id="insurance_list_{index}" style="display:none;">
@@ -961,7 +961,7 @@ $(function () {
             <div class="form-check">
                 <input class="form-check-input" type="radio" id="accepting_clients_{index}"
                        name="products[{index}][accepting_clients]" value="2" required>
-                <label class="form-check-label" for="accepting_clients_{index}">Currently Have A Waitlist</label>
+                <label for="accepting_clients_{index}">Currently Have A Waitlist</label>
             </div>
 
         </div>
@@ -983,14 +983,14 @@ $(function () {
             // Append the new row
             $(additionalProductsDivId).append($newRow);
             // Initialize select2 only on the newly added select element
-            $newRow.find('#select_product_service_' + productIndex).select2();
+            $newRow.find('#products_' + productIndex + '_category_id').select2();
             // Increment the index for the next row
             productIndex++;
         });
 
         // Delegate delete button event
         $(additionalProductsDivId).on('click', '.delete-product-btn', function() {
-            // Remove closest border div.
+            // Remove the closest border div.
             $(this).closest('.product-row').prev('.border-top').remove();
             // Find and destroy existing select2 instances
             $(this).closest('.product-row').remove();
@@ -1044,7 +1044,6 @@ $(function () {
         $(additionalProductsDivId).on('change', '[name^="products"][name$="[accept_insurance]"]', function() {
             let parentRow = $(this).closest('.product-row');
             let index = parentRow.data('index'); // Get the index from the data attribute
-
             // Handle the static element with index 0 separately
             /*if (index === 1) {
                 index = 0; // Adjust to match the original index 0 for the first element
@@ -1418,36 +1417,47 @@ $(function () {
                 },
                 error: function (xhr) {
                     if (xhr.status === 422) {
+                        const invalidClassStr = '.is-invalid';
                         const errors = xhr.responseJSON.errors;
 
                         // Clear previous error messages
                         $('.error-message').remove();
-                        $('.is-invalid').removeClass('is-invalid');
+                        $(invalidClassStr).removeClass('is-invalid');
 
                         // Display errors
                         for (const [field, messages] of Object.entries(errors)) {
-                            const fieldSelector = `#${field}`;  // Select by ID
+                            // Transform field name to match ID format (if applicable)
+                            const fieldSelector = `[name="${field}"], [name="${field}[]"]`;
+
                             const input = $(fieldSelector);
+
                             if (input.length) {
-                                const errorDiv = `<div class="error-message text-danger mt-1">${messages[0]}</div>`;
+                                const errorDiv = `<div class="error-message text-danger">${messages[0]}</div>`;
 
-                                // Append the error message after the input field
-                                input.addClass('is-invalid');
-
-                                if (input.is('select') || input.attr('multiple') === 'multiple') {
-                                    input.parent().append(errorDiv); // For select and multi-select
+                                // Handle radio button groups
+                                if (input.is(':radio')) {
+                                    // Find the container for the radio buttons and append the error message
+                                    input.closest('.form-check').parent().append(errorDiv);
+                                    input.addClass('is-invalid');
                                 } else {
-                                    input.after(errorDiv); // For other input types
+                                    // Append the error message for other input types
+                                    input.addClass('is-invalid');
+                                    if (input.is('select') || input.attr('multiple') === 'multiple') {
+                                        input.parent().append(errorDiv); // For select and multi-select
+                                    } else {
+                                        input.parent().parent().append(errorDiv); // For other input types
+                                    }
                                 }
                             }
                         }
 
                         // Scroll to the first invalid input
                         $('html, body').animate({
-                            scrollTop: $('.is-invalid').first().offset().top - 100
+                            scrollTop: $(invalidClassStr).first().offset().top - 100
                         }, 500);
                     }
                 }
+
             });
         });
     });
