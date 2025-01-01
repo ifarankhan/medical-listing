@@ -503,7 +503,7 @@
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="accept_insurance_no_{{ $index }}" name="products[{{ $index }}][accept_insurance]" value="0"
                                {{ old('products.' . $index . '.accept_insurance', $item->accept_insurance) == '0' ? 'checked' : '' }} data-required="true">
-                        <label class="form-check-label" for="accept_insurance_no_{{ $index }}">No</label>
+                        <label for="accept_insurance_no_{{ $index }}">No</label>
                     </div>
 
                 </div>
@@ -538,7 +538,7 @@
                                name="products[{{ $index }}][accepting_clients]" value="2"
                                {{ old('products.' . $index . '.accepting_clients', $item->accepting_clients) == '2' ? 'checked' : '' }}
                                required>
-                        <label class="form-check-label" for="accepting_clients_{{ $index }}">Currently Have A Waitlist</label>
+                        <label for="accepting_clients_{{ $index }}">Currently Have A Waitlist</label>
                     </div>
 
                 </div>
