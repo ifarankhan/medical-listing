@@ -67,6 +67,7 @@
                             </ul>
                         </div>
                     </div>
+
                     @if($businessDescription)
                         <div class="single_property_details mt_25 wow fadeInUp" data-wow-duration="1.5s">
                             <h4 class="mb-4">Description</h4>

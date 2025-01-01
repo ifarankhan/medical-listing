@@ -376,6 +376,7 @@
 
                     <div class="form-check">
 
+
                         <input class="form-check-input" type="checkbox" id="virtual_0" name="products[0][virtual]" {{ old('products.0.virtual') ? 'checked' : '' }} value="1">
                         <label class="form-check-label" for="virtual_0">Virtual</label>
 

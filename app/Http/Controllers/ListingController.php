@@ -217,6 +217,7 @@ class ListingController extends Controller
             'business_address' => 'required|string',
             'business_city' => 'string',
             'business_zipcode' => 'string|regex:/^\d{5}(-\d{4})?$/',
+
             'business_contact' => $contactFormatRule,
             'business_email' => 'required|email:rfc',
             'business_states' => 'required|max:5',

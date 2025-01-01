@@ -917,6 +917,7 @@ $(function () {
         </div>
         <div class="col-xxl-4 mb-3 col-md-6">
             <div class="add_property_input">
+
                 <label for="description_{index}">Brief description (200 words limit): <span class="text-danger">*</span></label>
                 <div class="note-editor note-frame">
                     <textarea id="description_{index}" name="products[{index}][description]" class="word-count" data-word-limit="200" placeholder="Description" required></textarea>
