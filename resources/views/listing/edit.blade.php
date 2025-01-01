@@ -11,7 +11,7 @@
                     diverrx? <span class="text-danger">*</span></label>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" id="authorized_yes" name="authorized" value="1"
-                           {{ old('authorized', $listing->authorized) == 1 ? 'checked' : '' }} required>
+                           {{ old('authorized', $listing->authorized) == 1 ? 'checked' : '' }} >
                     <label class="form-check-label" for="authorized_yes">Yes</label>
                 </div>
                 <div class="form-check">
@@ -28,7 +28,7 @@
                     registration will be required in subsequent steps). <span class="text-danger">*</span></label>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" id="registered_yes" name="registered" value="1"
-                           {{ old('registered', $listing->registered) == 1 ? 'checked' : '' }} required>
+                           {{ old('registered', $listing->registered) == 1 ? 'checked' : '' }} >
                     <label class="form-check-label" for="registered_yes">Yes</label>
 
                 </div>
@@ -45,11 +45,9 @@
 
                 <label>Upload a file <span class="text-danger">*</span></label>
                 <input {{ $listing->getDetail('legal_proof') ? '' : 'required' }}
-                       class="@error('legal_proof')is-invalid @enderror" type="file"
+                        type="file"
                        name="legal_proof" accept="image/*,application/pdf">
-                @if ($errors->has('legal_proof'))
-                    <div class="invalid-feedback">{{ $errors->first('legal_proof') }}</div>
-                @endif
+
                 <small class="text-muted">Please upload proof in JPEG, PNG, JPG or PDF format, with max size upto 10MB,
                     of your legal authorization to provide this service/product: business/professional license.</small>
 
@@ -92,50 +90,46 @@
     <div class="row">
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
-                <label for="first_name">First Name: <span class="text-danger">*</span></label>
-                <input type="text" id="first_name" class="@error('first_name')is-invalid @enderror" name="first_name" placeholder="First Name"
-                       value="{{ old('first_name', $listing->first_name) }}" required>
-                @if ($errors->has('email'))
-                    <div class="invalid-feedback">{{ $errors->first('first_name') }}</div>
-                @endif
+                <div>
+                    <label for="first_name">First Name: <span class="text-danger">*</span></label>
+                    <input type="text" id="first_name" name="first_name" placeholder="First Name"
+                           value="{{ old('first_name', $listing->first_name) }}" >
+                </div>
             </div>
         </div>
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
                 <label for="last_name">Last Name: <span class="text-danger">*</span></label>
-                <input type="text" id="last_name" class="@error('last_name')is-invalid @enderror" name="last_name" placeholder="Last Name"
-                       value="{{ old('last_name', $listing->last_name) }}" required>
-                @if ($errors->has('last_name'))
-                    <div class="invalid-feedback">{{ $errors->first('last_name') }}</div>
-                @endif
+                <div>
+                    <input type="text" id="last_name" name="last_name" placeholder="Last Name"
+                       value="{{ old('last_name', $listing->last_name) }}" >
+                </div>
             </div>
         </div>
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
-                <label for="email">Email Address: <span class="text-danger">*</span></label>
-                <input type="email" id="email" class="@error('email')is-invalid @enderror" name="email"
-                       placeholder="Email Address"
-                       title="Please enter a valid email address."
-                       value="{{ old('email', $listing->email) }}" required>
-                @if ($errors->has('email'))
-                    <div class="invalid-feedback">{{ $errors->first('email') }}</div>
-                @endif
+                <div>
+                    <label for="email">Email Address: <span class="text-danger">*</span></label>
+                    <input type="email" id="email" name="email"
+                           placeholder="Email Address"
+                           title="Please enter a valid email address."
+                           value="{{ old('email', $listing->email) }}" >
+                </div>
             </div>
         </div>
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
-                <label for="contact_number">Contact Number: <span class="text-danger">*</span></label>
-                <input type="text"
-                       id="contact_number"
-                       class="@error('contact_number')is-invalid @enderror"
-                       name="contact_number"
-                       placeholder="(000) 000-0000"
-                       pattern="^\(\d{3}\) \d{3}-\d{4}$"
-                       title="Please enter a valid phone number in the format (000) 000-0000."
-                       value="{{ old('contact_number', $listing->contact_number) }}" required>
-                @if ($errors->has('contact_number'))
-                    <div class="invalid-feedback">{{ $errors->first('contact_number') }}</div>
-                @endif
+                <div>
+                    <label for="contact_number">Contact Number: <span class="text-danger">*</span></label>
+                    <input type="text"
+                           id="contact_number"
+                           class="@error('contact_number')is-invalid @enderror"
+                           name="contact_number"
+                           placeholder="(000) 000-0000"
+    {{--                       pattern="^\(\d{3}\) \d{3}-\d{4}$"--}}
+                           title="Please enter a valid phone number in the format (000) 000-0000."
+                           value="{{ old('contact_number', $listing->contact_number) }}" >
+                </div>
             </div>
         </div>
     </div>
@@ -148,44 +142,42 @@
     <div class="row">
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
-                <label for="business_name">Legal Business Name: <span class="text-danger">*</span></label>
-                <input type="text" id="business_name" class="@error('business_name')is-invalid @enderror"
-                       name="business_name" placeholder="Business Name"
-                       value="{{ old('business_name', $listing->business_name) }}" required>
-                @if ($errors->has('business_name'))
-                    <div class="invalid-feedback">{{ $errors->first('business_name') }}</div>
-                @endif
-                <small class="text-muted">Write as it appears on your registration document.</small>
+                <div>
+                    <label for="business_name">Legal Business Name: <span class="text-danger">*</span></label>
+                    <input type="text" id="business_name"
+                           name="business_name" placeholder="Business Name"
+                           value="{{ old('business_name', $listing->business_name) }}" >
+
+                    <small class="text-muted">Write as it appears on your registration document.</small>
+                </div>
             </div>
 
             <div class="add_property_input">
-                <label for="business_contact">Contact: <span class="text-danger">*</span></label>
-                <input type="text"
-                       class="@error('business_contact')is-invalid @enderror"
-                       id="business_contact"
-                       name="business_contact"
-                       placeholder="(000) 000-0000"
-                       pattern="^\(\d{3}\) \d{3}-\d{4}$"
-                       title="Please enter a valid phone number in the format (000) 000-0000."
-                       value="{{ old('business_contact', $listing->business_contact) }}" required>
-                @if ($errors->has('business_contact'))
-                    <div class="invalid-feedback">{{ $errors->first('business_contact') }}</div>
-                @endif
+                <div>
+                    <label for="business_contact">Contact: <span class="text-danger">*</span></label>
+                    <input type="text"
+                           id="business_contact"
+                           name="business_contact"
+                           placeholder="(000) 000-0000"
+    {{--                       pattern="^\(\d{3}\) \d{3}-\d{4}$"--}}
+                           title="Please enter a valid phone number in the format (000) 000-0000."
+                           value="{{ old('business_contact', $listing->business_contact) }}" >
+                </div>
             </div>
 
             <div class="add_property_input">
-                <label>Profile Picture <span class="text-danger">*</span></label>
+                <div>
+                    <label>Profile Picture <span class="text-danger">*</span></label>
 
-                <input {{ $listing->profile_picture ? '' : 'required' }}
-                       class="@error('profile_picture')is-invalid @enderror"
-                       type="file" name="profile_picture" accept="image/*"
-                title="Upload a profile picture (JPEG, PNG, JPG), preferably 880x500 resolution,
-                    max size 4MB.">
-                @if ($errors->has('profile_picture'))
-                    <div class="invalid-feedback">{{ $errors->first('profile_picture') }}</div>
-                @endif
-                <small class="text-muted">Upload a profile picture (JPEG, PNG, JPG), preferably 880x500 resolution,
-                    max size 4MB.</small>
+                    <input {{ $listing->profile_picture ? '' : 'required' }}
+
+                           type="file" name="profile_picture"
+                    title="Upload a profile picture (JPEG, PNG, JPG), preferably 880x500 resolution,
+                        max size 4MB.">
+
+                    <small class="text-muted">Upload a profile picture (JPEG, PNG, JPG), preferably 880x500 resolution,
+                        max size 4MB.</small>
+                </div>
                 <!-- Show the uploaded image if it exists. -->
                 @if(!empty($listing->profile_picture))
 
@@ -200,76 +192,82 @@
 
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
-                <label for="ein">EIN:</label>
-                <input type="text" id="ein" name="ein" placeholder="XX-XXXXXXX"
-                       pattern="\d{2}-\d{7}"
-                       value="{{ old('ein', $listing->ein) }}">
-                <small class="text-muted">This will be used to verify business information.</small>
+                <div>
+                    <label for="ein">EIN:</label>
+                    <input type="text" id="ein" name="ein" placeholder="XX-XXXXXXX"
+                           pattern="\d{2}-\d{7}"
+                           value="{{ old('ein', $listing->ein) }}">
+                    <small class="text-muted">This will be used to verify business information.</small>
+                </div>
             </div>
 
             <div class="add_property_input">
-                <label for="business_email">Email Address: <span class="text-danger">*</span></label>
-                <input type="email" id="business_email" class="@error('business_email')is-invalid @enderror"
-                       name="business_email" placeholder="Business Email"
-                       title="Please enter a valid email address."
-                       value="{{ old('business_email', $listing->business_email) }}" required>
-                @if ($errors->has('business_email'))
-                    <div class="invalid-feedback">{{ $errors->first('business_email') }}</div>
-                @endif
+                <div>
+                    <label for="business_email">Email Address: <span class="text-danger">*</span></label>
+                    <input type="text" id="business_email"
+                           name="business_email" placeholder="Business Email"
+                           title="Please enter a valid email address."
+                           value="{{ old('business_email', $listing->business_email) }}" >
+                </div>
+
             </div>
 
         </div>
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
-                <label for="business_address">Address: <span class="text-danger">*</span></label>
-                <input type="text" id="business_address" class="@error('business_address')is-invalid @enderror"
-                       name="business_address" placeholder="Business Address"
-                       value="{{ old('business_address', $listing->business_address) }}"
-                       required>
-                @if ($errors->has('business_address'))
-                    <div class="invalid-feedback">{{ $errors->first('business_address') }}</div>
-                @endif
-                <small class="text-muted"><b>Note:</b> Please select your address from the dropdown to automatically
-                    fill related fields. Pasting an address may not populate all details correctly.</small>
+                <div>
+                    <label for="business_address">Address: <span class="text-danger">*</span></label>
+                    <input type="text" id="business_address"
+                           name="business_address" placeholder="Business Address"
+                           value="{{ old('business_address', $listing->business_address) }}"
+                           required>
+
+                    <small class="text-muted"><b>Note:</b> Please select your address from the dropdown to automatically
+                        fill related fields. Pasting an address may not populate all details correctly.</small>
+                </div>
             </div>
 
             <div class="add_property_input">
-                <label for="city">City: <span class="text-danger">*</span></label>
-                <input readonly type="text" id="business_city" name="business_city" placeholder="City"
-                       value="{{ old('business_city', $listing->business_city) }}">
+                <div>
+                    <label for="city">City: <span class="text-danger">*</span></label>
+                    <input readonly type="text" id="business_city" name="business_city" placeholder="City"
+                           value="{{ old('business_city', $listing->business_city) }}">
+                </div>
             </div>
 
             <div class="add_property_input">
-                <label for="zipcode">ZIP Code: <span class="text-danger">*</span></label>
-                <input required type="text" id="business_zipcode" name="business_zipcode" placeholder="ZIP Code"
-                       value="{{ old('business_zipcode', $listing->business_zipcode) }}"
-                       title="Format: 12345 or 12345-6789" readonly />
+                <div>
+                    <label for="zipcode">ZIP Code: <span class="text-danger">*</span></label>
+                    <input required type="text" id="business_zipcode" name="business_zipcode" placeholder="ZIP Code"
+                           value="{{ old('business_zipcode', $listing->business_zipcode) }}"
+                           title="Format: 12345 or 12345-6789" readonly />
+                </div>
             </div>
 
 
             <div class="add_property_input">
-                <label for="states">State(s): <span class="text-danger">*</span></label>
-                @php
-                    $businessStates = old('business_states', json_decode($listing->getDetail('business_states')));
-                @endphp
+                <div>
+                    <label for="states">State(s): <span class="text-danger">*</span></label>
+                    @php
+                        $businessStates = old('business_states', json_decode($listing->getDetail('business_states')));
+                    @endphp
 
-                <select class="js-data-states select_2 @error('business_states')is-invalid @enderror"
-                        id="business_states" name="business_states[]"
-                        title="Please select upto 5 states."
-                        multiple="multiple">
+                    <select class="js-data-states select_2"
+                            id="business_states" name="business_states[]"
+                            title="Please select upto 5 states."
+                            multiple="multiple">
 
-                    @if(!is_null($states) && !is_null($businessStates))
-                        @foreach($states as $stateId => $stateName)
-                            <option value="{{ $stateId }}" @if(in_array($stateId, $businessStates)) selected @endif>
-                                {{ $stateName }}
-                            </option>
-                        @endforeach
-                    @endif
-                </select>
-                @if ($errors->has('business_states'))
-                    <div class="invalid-feedback">{{ $errors->first('business_states') }}</div>
-                @endif
-                <small class="text-muted">You can add up to 5 states where you’re currently operating.</small>
+                        @if(!is_null($states) && !is_null($businessStates))
+                            @foreach($states as $stateId => $stateName)
+                                <option value="{{ $stateId }}" @if(in_array($stateId, $businessStates)) selected @endif>
+                                    {{ $stateName }}
+                                </option>
+                            @endforeach
+                        @endif
+                    </select>
+
+                    <small class="text-muted">You can add up to 5 states where you’re currently operating.</small>
+                </div>
             </div>
 
         </div>
@@ -294,21 +292,14 @@
 
             <div class="add_property_input">
                 <label for="social_media_1">Facebook:</label>
-                <input type="url" id="social_media_1" class="@error('social_media_1')is-invalid @enderror" name="social_media_1" placeholder="Facebook Link"
+                <input type="url" id="social_media_1" name="social_media_1" placeholder="Facebook Link"
                        value="{{ old('social_media_1', $listing->getDetail('social_media_1')) }}"/>
-                @if ($errors->has('social_media_1'))
-                    <div class="invalid-feedback">{{ $errors->first('social_media_1') }}</div>
-                @endif
             </div>
 
             <div class="add_property_input">
                 <label for="social_media_4">Instagram:</label>
-                <input type="url" id="social_media_4" class="@error('social_media_4')is-invalid @enderror" name="social_media_4" placeholder="Instagram Link"
+                <input type="url" id="social_media_4" name="social_media_4" placeholder="Instagram Link"
                        value="{{ old('social_media_4', $listing->getDetail('social_media_4')) }}"/>
-
-                @if ($errors->has('social_media_4'))
-                    <div class="invalid-feedback">{{ $errors->first('social_media_4') }}</div>
-                @endif
             </div>
         </div>
 
@@ -317,11 +308,9 @@
             <div class="add_property_input mt-2">
 
                 <label for="social_media_2">X:</label>
-                <input type="url" id="social_media_2" class="@error('social_media_2')is-invalid @enderror" name="social_media_2" placeholder="X Link"
+                <input type="url" id="social_media_2" name="social_media_2" placeholder="X Link"
                        value="{{ old('social_media_2', $listing->getDetail('social_media_2')) }}"/>
-                @if ($errors->has('social_media_2'))
-                    <div class="invalid-feedback">{{ $errors->first('social_media_2') }}</div>
-                @endif
+
             </div>
         </div>
 
@@ -329,11 +318,8 @@
 
             <div class="add_property_input">
                 <label for="social_media_3">Linkedin:</label>
-                <input type="url" id="social_media_3" class="@error('social_media_3')is-invalid @enderror" name="social_media_3" placeholder="Linkedin Link"
+                <input type="url" id="social_media_3" name="social_media_3" placeholder="Linkedin Link"
                        value="{{ old('social_media_3', $listing->getDetail('social_media_3')) }}"/>
-                @if ($errors->has('social_media_3'))
-                    <div class="invalid-feedback">{{ $errors->first('social_media_3') }}</div>
-                @endif
             </div>
         </div>
     </div>
@@ -343,10 +329,9 @@
 <div class="add_property_info add_property_aminities wow fadeInUp" data-wow-duration="1.5s">
     <h3>Product/Services Information</h3>
     <div id="additional_products">
-
         @if($listing->productService->isEmpty())
             <div class="border-top my-3"></div>
-            <div class="row product-row" data-index="1">
+            <div class="row product-row" data-index="0">
                 <div class="col-xxl-12">
                     <h4>Product/Service 1</h4>
                 </div>
@@ -354,15 +339,14 @@
                     <div class="add_property_input">
                         <label>Choose the Name of the product/service 1: <span class="text-danger">*</span></label>
 
-                        <select class="select_2" id="product_service_0" name="products[0][category_id]" required>
+                        <select class="select_2" id="products_0_category_id" name="products[0][category_id]" required>
                             <option value="">Select a product/service</option>
                             @foreach($categories as $category)
-                                <option value="{{ $category->id }}" {{ old('products.0.category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                <option
+                                    value="{{ $category->id }}"
+                                    {{ old('products.0.category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                             @endforeach
 
-                            @if ($errors->has('product_service_0'))
-                                <div class="invalid-feedback">{{ $errors->first('product_service_0') }}</div>
-                            @endif
                         </select>
 
                         <span class="form-text text-muted">
@@ -372,28 +356,28 @@
                 </div>
                 <div class="col-xxl-4 col-md-6">
 
-                    <label>Click all options below that apply: <span class="text-danger">*</span></label>
+                    <label>Click all options below that apply:</label>
 
                     <div class="form-check">
 
-
-                        <input class="form-check-input" type="checkbox" id="virtual_0" name="products[0][virtual]" {{ old('products.0.virtual') ? 'checked' : '' }} value="1">
-                        <label class="form-check-label" for="virtual_0">Virtual</label>
-
+                        <input class="form-check-input" type="checkbox" id="products_0_virtual"
+                               name="products[0][virtual]" {{ old('products.0.virtual') ? 'checked' : '' }} value="1">
+                        <label for="virtual_0">Virtual</label>
                     </div>
 
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="in_person_0" name="products[0][in_person]" value="1" {{ old('products.0.in_person') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="in_person_0">In person</label>
+                        <input class="form-check-input" type="checkbox" id="products_0_in_person"
+                               name="products[0][in_person]" value="1" {{ old('products.0.in_person') ? 'checked' : '' }}>
+                        <label for="in_person_0">In person</label>
                     </div>
 
                 </div>
                 <div class="col-xxl-4 col-md-6">
                     <div class="add_property_input">
-                        <label for="description_0">Brief description (200 word limit): <span class="text-danger">*</span></label>
+                        <label for="products_0_description">Brief description (200 word limit): <span class="text-danger">*</span></label>
                         <div class="note-editor note-frame">
 
-                            <textarea id="description_0" name="products[0][description]" class="word-count"
+                            <textarea id="products_0_description" name="products[0][description]" class="word-count"
                                       placeholder="Description" data-word-limit="200"
                                       required>{{ old('products.0.description') }}</textarea>
 
@@ -412,7 +396,7 @@
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="accept_insurance_no_0" name="products[0][accept_insurance]" value="0" required {{ old('products.0.accept_insurance') == '0' ? 'checked' : '' }}>
-                        <label class="form-check-label" for="accept_insurance_no_0">No</label>
+                        <label for="accept_insurance_no_0">No</label>
                     </div>
 
                 </div>
@@ -440,7 +424,7 @@
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="accepting_clients_0"
                                name="products[0][accepting_clients]" value="2" required {{ old('products.0.accepting_clients') == '2' ? 'checked' : '' }}>
-                        <label class="form-check-label" for="accepting_clients_0">Currently Have A Waitlist</label>
+                        <label for="accepting_clients_0">Currently Have A Waitlist</label>
                     </div>
 
                 </div>
@@ -474,18 +458,20 @@
                 </div>
                 <div class="col-xxl-4 mb-3 col-md-6">
 
-                    <label>Click all options below that apply: <span class="text-danger">*</span></label>
+                    <label>Click all options below that apply:</label>
 
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="virtual_{{ $index }}" name="products[{{ $index }}][virtual]"
+                        <input class="form-check-input" type="checkbox"
+                               name="products[{{ $index }}][virtual]"
                                value="1" {{ old('products.' . $index . '.virtual', $item->virtual) ? 'checked' : '' }}>
-                        <label class="form-check-label" for="virtual_0">Virtual</label>
+                        <label for="virtual_0">Virtual</label>
                     </div>
 
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="in_person_{{ $index }}" name="products[{{ $index }}][in_person]" value="1"
+                        <input class="form-check-input" type="checkbox"
+                               name="products[{{ $index }}][in_person]" value="1"
                             {{ old('products.' . $index . '.in_person', $item->in_person) ? 'checked' : '' }}>
-                        <label class="form-check-label" for="in_person_{{ $index }}">In person</label>
+                        <label for="in_person_{{ $index }}">In person</label>
                     </div>
 
                 </div>
@@ -511,12 +497,12 @@
                     <label>Do you accept insurance for this product? <span class="text-danger">*</span></label>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="accept_insurance_yes_{{ $index }}" name="products[{{ $index }}][accept_insurance]" value="1"
-                               {{ old('products.' . $index . '.accept_insurance', $item->accept_insurance) == '1' ? 'checked' : '' }} required>
+                               {{ old('products.' . $index . '.accept_insurance', $item->accept_insurance) == '1' ? 'checked' : '' }} data-required="true">
                         <label for="accept_insurance_yes_{{ $index }}">Yes</label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="accept_insurance_no_{{ $index }}" name="products[{{ $index }}][accept_insurance]" value="0"
-                               {{ old('products.' . $index . '.accept_insurance', $item->accept_insurance) == '0' ? 'checked' : '' }} required>
+                               {{ old('products.' . $index . '.accept_insurance', $item->accept_insurance) == '0' ? 'checked' : '' }} data-required="true">
                         <label class="form-check-label" for="accept_insurance_no_{{ $index }}">No</label>
                     </div>
 
@@ -566,6 +552,7 @@
 <div class="add_property_info add_property_aminities wow fadeInUp" data-wow-duration="1.5s">
     <div class="row">
         <div class="col-6 text-start">
+            <input type="hidden" name="action" value="save">
             <button type="submit" name="action" value="save" class="common_btn">{{ $listing->id ? 'Save': 'Free Sign Up' }}</button>
         </div>
         {{--<div class="col-6 text-end">
