@@ -77,6 +77,8 @@ Route::group(['middleware' => ['role:customer,insurance_provider']], function ()
 });
 
 Route::group(['middleware' => ['role:insurance_provider']], function () {
+
+    Route::post('/validate-listing', [ListingController::class, 'validateListing'])->name('validate.listing');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/listing', [ListingController::class, 'index'])->name('listing.index');
     Route::get('/dashboard/listing/create', [ListingController::class, 'create'])->name('listing.create');

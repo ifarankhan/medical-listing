@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ListingRequest;
 use App\Models\Category;
 use App\Models\Listing;
 use App\Models\ProductService;
@@ -31,20 +32,23 @@ class ListingController extends Controller
         protected PaymentService $paymentService,
         protected Subscription $subscription,
         protected FileUploadService $fileUploadService,
-        protected PhoneService  $phoneService,
-    ){}
+        protected PhoneService $phoneService,
+    ) {
+    }
+
     public function index(): Factory|View|Application
     {
         $currentUser = Auth::user();
-        $hasListing = $currentUser->listings()
-            ->exists();
+        $hasListing  = $currentUser->listings()
+                                   ->exists();
         // Show only listings that are paid for.
         $listings = $currentUser->listings()
             //->where('listing_status', self::STATUS_SUBSCRIBED)
-            ->get();
+                                ->get();
 
         return view('listing.index', compact('listings', 'hasListing'));
     }
+
     /**
      * Show the form for creating a new listing.
      *
@@ -53,8 +57,9 @@ class ListingController extends Controller
     public function create(): Factory|View|Application
     {
         $categories = Category::all();
-        $listing = new Listing();
-        $states = State::all()->pluck('name', 'id')->toArray();
+        $listing    = new Listing();
+        $states     = State::all()->pluck('name', 'id')->toArray();
+
         return view('listing.create', compact('listing', 'categories', 'states'));
     }
 
@@ -69,7 +74,7 @@ class ListingController extends Controller
             abort(403, 'Unauthorized'); // Or redirect to a different page
         }
         $categories = Category::all();
-        $states = State::all()->pluck('name', 'id')->toArray();
+        $states     = State::all()->pluck('name', 'id')->toArray();
         $listing->with(['productService', 'productService.category', 'details']);
 
         return view('listing.create', compact('listing', 'categories', 'states'));
@@ -123,7 +128,7 @@ class ListingController extends Controller
         // Return the saved image path.
         $path = $this->fileUploadService->uploadFile($file, "listings/$listing->id/legal_proof");
         $listing->details()->create([
-            'key' => 'legal_proof',
+            'key'   => 'legal_proof',
             'value' => $path,
         ]);
     }
@@ -131,15 +136,14 @@ class ListingController extends Controller
     /**
      * Store a newly created listing in storage.
      *
-     * @param Request $request
+     * @param ListingRequest $request
      *
      * @return RedirectResponse
-     * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(ListingRequest $request): RedirectResponse
     {
-        $listingId = $request->input('listing_id');
-        $validatedData = $this->validateListingData($request);
+        $validatedData = $request->validated();
+        $listingId     = $request->get('listing_id') ?? null;
 
         try {
             // Create a new listing instance and save the data
@@ -165,27 +169,28 @@ class ListingController extends Controller
             $this->uploadAndSaveLegalProof($request->file('legal_proof'), $listing);
 
             if ($request->input('action') == 'save') {
-
                 // Redirect back to the form with a success message.
                 return redirect()
                     ->route('listing.edit', $listing->id)
                     ->with('success', 'The listing was updated successfully!');
             } else {
-
                 return redirect()->route('listing.step.subscription', $listing)
                                  ->with('success', $message);
             }
         } catch (ValidationException $exception) {
-            // If validation fails, redirect back with validation errors.
-            return redirect()->back()->withErrors($validatedData)->withInput();
+            return redirect()->back()
+                 ->withErrors($exception->errors()) // Use validation errors
+                 ->withInput();
         } catch (Exception $e) {
-
-            return redirect()->back()->withErrors($validatedData)->withInput();
+            return redirect()->back()
+                 ->withErrors(['error' => 'An unexpected error occurred: ' . $e->getMessage()])
+                 ->withInput();
         }
     }
+
     private function updateListing(Listing $listing, array $data): void
     {
-        $data['contact_number'] = $this->phoneService->unformatPhoneNumber($data['contact_number']);
+        $data['contact_number']   = $this->phoneService->unformatPhoneNumber($data['contact_number']);
         $data['business_contact'] = $this->phoneService->unformatPhoneNumber($data['business_contact']);
         $listing->update($data);
         $listing->productService()->delete();
@@ -193,90 +198,32 @@ class ListingController extends Controller
         $listing->details()
                 ->whereNotIn('key', ['legal_proof'])
                 ->delete();
-
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return array
-     */
-    private function validateListingData(Request $request): array
+    public function validateListing(ListingRequest $request): JsonResponse
     {
-        $contactFormatRule = 'required|regex:/^\(\d{3}\)\s\d{3}-\d{4}$/|max:14';
-        $rules = [
-            'authorized' => 'required|boolean',
-            'registered' => 'required|boolean',
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'email' => 'required|email',
-            'contact_number' => $contactFormatRule,
-            //'address' => 'required|string',
-            'business_name' => 'required|string',
-            'ein' => 'nullable|regex:/^\d{2}-\d{7}$/',
-            'business_address' => 'required|string',
-            'business_city' => 'string',
-            'business_zipcode' => 'string|regex:/^\d{5}(-\d{4})?$/',
-
-            'business_contact' => $contactFormatRule,
-            'business_email' => 'required|email:rfc',
-            'business_states' => 'required|max:5',
-            'profile_picture' => 'mimes:jpeg,png,jpg|image|max:4096',
-            'legal_proof' => 'mimes:jpeg,png,jpg,pdf|file|max:10240',
-            'business_description' => ['nullable', new WordCount(200)],
-            'social_media_1' => 'nullable|facebook_url',
-            'social_media_2' => 'nullable|twitter_url',
-            'social_media_3' => 'nullable|linkedin_url',
-            'social_media_4' => 'nullable|instagram_url',
-            'products' => 'required|array|max:5', // Maximum 5 products allowed.
-            'products.*.category_id' => 'bail|required|exists:categories,id|distinct', // Using bail to stop after first failure.
-            'products.*.description' => ['required', 'string', new WordCount(200)], // Validate each product description.
-            'products.*.virtual' => 'nullable|boolean', // Validate each product virtual attribute.
-            'products.*.in_person' => 'nullable|boolean', // Validate each product in_person attribute.
-            'products.*.accept_insurance' => 'nullable|boolean', // Validate each product accept_insurance attribute.
-            'products.*.insurance_list' => 'nullable|string', // Validate each product insurance_list attribute.
-            'products.*.price' => 'nullable|numeric|min:0', // Validate each product price.
-            'products.*.accepting_clients' => 'required'
-        ];
-
-        $messages = [
-            'profile_picture.max' => 'The profile picture must be a file of type: jpeg, png, jpg, must be an image, and may not be greater than 4 MB.',
-            'profile_picture.mimes' => 'The profile picture must be a file of type: jpeg, png, jpg, must be an image, and may not be greater than 4 MB.',
-            'legal_proof.max' => 'The file must be an image (jpeg, png, jpg) or a PDF, and may not be greater than 10MB.',
-            'legal_proof.mimes' => 'The file must be an image (jpeg, png, jpg) or a PDF, and may not be greater than 10MB.',
-            'products.*.category_id.required' => 'The Product/Service is required for each product.',
-            'products.*.category_id.exists' => 'The selected Product/Service does not exist.',
-            'products.*.category_id.distinct' => 'Each product must have a unique Product/Service.',
-            'products.0.category_id' => 'Product/Service for Product 1',
-            'products.1.category_id' => 'Product/Service for Product 2',
-            'products.2.category_id' => 'Product/Service for Product 3',
-            'products.3.category_id' => 'Product/Service for Product 4',
-            'products.4.category_id' => 'Product/Service for Product 5',
-        ];
-
-        return $request->validate($rules, $messages);
+        return response()->json(['success' => true]);
     }
-
 
     /**
      * @throws Exception
      */
     private function createListing(array $data): Listing
     {
-        $listing = new Listing();
-        $listing->user_id = Auth::id();
-        $listing->authorized = $data['authorized'];
-        $listing->registered = $data['registered'];
-        $listing->first_name = $data['first_name'];
-        $listing->last_name = $data['last_name'];
-        $listing->email = $data['email'];
+        $listing                 = new Listing();
+        $listing->user_id        = Auth::id();
+        $listing->authorized     = $data['authorized'];
+        $listing->registered     = $data['registered'];
+        $listing->first_name     = $data['first_name'];
+        $listing->last_name      = $data['last_name'];
+        $listing->email          = $data['email'];
         $listing->contact_number = $this->phoneService->unformatPhoneNumber($data['contact_number']);
         //$listing->address = $data['address'];
-        $listing->business_name = $data['business_name'];
-        $listing->ein = $data['ein'];
+        $listing->business_name    = $data['business_name'];
+        $listing->ein              = $data['ein'];
         $listing->business_address = $data['business_address'];
         $listing->business_zipcode = $data['business_zipcode'];
-        $listing->business_city = $data['business_city'];
+        $listing->business_city    = $data['business_city'];
         /*// Extract the ZIP code using a regex pattern for US ZIP codes.
         $zipCodePattern = '/\b\d{5}(?:-\d{4})?\b/';
         preg_match($zipCodePattern, $data['business_address'], $matches);
@@ -285,7 +232,7 @@ class ListingController extends Controller
         $listing->business_zipcode = !empty($matches) ? $matches[0] : null;*/
 
         $listing->business_contact = $this->phoneService->unformatPhoneNumber($data['business_contact']);
-        $listing->business_email = $data['business_email'];
+        $listing->business_email   = $data['business_email'];
 
         $listing->save();
 
@@ -293,19 +240,19 @@ class ListingController extends Controller
 
         return $listing;
     }
+
     private function saveProductServices(Listing $listing, array $products): void
     {
         foreach ($products as $product) {
-
             $productService = new ProductService([
-                'listing_id' => $listing->id,
-                'category_id' => $product['category_id'],
-                'description' => $product['description'],
-                'virtual' => $product['virtual'] ?? false,
-                'in_person' => $product['in_person'] ?? false,
-                'accept_insurance' => $product['accept_insurance'] ?? false,
-                'insurance_list' => $product['insurance_list'] ?? '',
-                'price' => $product['price'],
+                'listing_id'        => $listing->id,
+                'category_id'       => $product['category_id'],
+                'description'       => $product['description'],
+                'virtual'           => $product['virtual'] ?? false,
+                'in_person'         => $product['in_person'] ?? false,
+                'accept_insurance'  => $product['accept_insurance'] ?? false,
+                'insurance_list'    => $product['insurance_list'] ?? '',
+                'price'             => $product['price'],
                 'accepting_clients' => $product['accepting_clients'],
             ]);
 
@@ -342,7 +289,7 @@ class ListingController extends Controller
                     // Check if the subscription is more than 14 days old.
                     if ($createdDate->diffInDays(Carbon::now()) > 14) {
                         return redirect()->route('listing.index')
-                            ->with('error', 'Cannot delete listing that is more than 14 days old.');
+                                         ->with('error', 'Cannot delete listing that is more than 14 days old.');
                     }
                 }
                 // Step 1: Cancel the associated subscription in Stripe
@@ -350,26 +297,31 @@ class ListingController extends Controller
                 // And it's best to perform deletion and archiving there.
                 // On charge.refund, the related payment is also gets refunded.
                 $this->paymentService->cancel($listing);
-                Log::info('Listing ID: '. $listingId .' Subscription: '. $subscriptionModel->stripe_subscription_id . ' Deleted');
+                Log::info(
+                    'Listing ID: ' . $listingId . ' Subscription: ' . $subscriptionModel->stripe_subscription_id . ' Deleted'
+                );
             }
 
             $this->deleteListing($listing);
+
             // Step 4: Redirect with success message
             return redirect()->route('listing.index')
-                ->with('success', 'Listing deletion is in process. You will be notified once the cancellation is confirmed.');
+                             ->with(
+                                 'success',
+                                 'Listing deletion is in process. You will be notified once the cancellation is confirmed.'
+                             );
         } catch (ApiErrorException $e) {
             Log::error('Stripe API error for listing ID ' . $listingId . ': ' . $e->getMessage());
 
             return redirect()->route('listing.index')
-                ->with('error', 'Stripe API error: ' . $e->getMessage());
+                             ->with('error', 'Stripe API error: ' . $e->getMessage());
         } catch (Exception $exception) {
             Log::error('Error deleting listing ID ' . $listingId . ': ' . $exception->getMessage());
 
             return redirect()->route('listing.index')
-                ->with('error', 'An error occurred while deleting the listing.');
+                             ->with('error', 'An error occurred while deleting the listing.');
         }
     }
-
 
     /**
      * @param Listing $listing
@@ -393,6 +345,7 @@ class ListingController extends Controller
             $product = ProductService::findOrFail($id);
             // Delete the product
             $product->delete();
+
             // Return a success response
             return response()->json(['success' => true, 'message' => 'Product deleted successfully.']);
         } catch (Exception $e) {
@@ -408,21 +361,21 @@ class ListingController extends Controller
     {
         $details = [
             'business_description' => $data['business_description'] ?? null,
-            'business_states' => !empty($data['business_states']) ? json_encode($data['business_states']) : null,
-            'social_media_1' => $data['social_media_1'] ?? null,
-            'social_media_2' => $data['social_media_2'] ?? null,
-            'social_media_3' => $data['social_media_3'] ?? null,
-            'social_media_4' => $data['social_media_4'] ?? null,
+            'business_states'      => ! empty($data['business_states']) ? json_encode($data['business_states']) : null,
+            'social_media_1'       => $data['social_media_1'] ?? null,
+            'social_media_2'       => $data['social_media_2'] ?? null,
+            'social_media_3'       => $data['social_media_3'] ?? null,
+            'social_media_4'       => $data['social_media_4'] ?? null,
         ];
         // Filter out null or empty values
         $filteredDetails = array_filter($details, function ($value) {
-            return !is_null($value) && $value !== '';
+            return ! is_null($value) && $value !== '';
         });
 
         foreach ($filteredDetails as $key => $detail) {
             // Save in Listing details.
             $listing->details()->create([
-                'key' => $key,
+                'key'   => $key,
                 'value' => $detail,
             ]);
         }
