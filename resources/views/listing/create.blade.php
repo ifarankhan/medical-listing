@@ -18,11 +18,12 @@
             <h2 class="dashboard_title">Products/Services</h2>
             <div class="dashboard_add_property">
 
-                @if($errors->any())
+                @if($errors->any() || session('error'))
                     <div class="alert alert-danger">
                         <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
+                            <li><strong>Please correct the errors below:</strong></li>
+                            @foreach($errors->all() as $error)
+                                <li class="ml-5">{{ $error }}</li>
                             @endforeach
                         </ul>
                     </div>

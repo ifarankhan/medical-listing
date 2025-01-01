@@ -2,7 +2,7 @@
 @php use App\Models\UserRole; @endphp
 @extends('layout')
 
-@section('title', 'Listings')
+@section('title', 'Search Result')
 
 @section('content')
     @include('partials.menu')
@@ -106,6 +106,19 @@
                                 @endforeach
                             </select>
                         </div>
+
+                        <div class="sidebar_dropdown sidebar_wizerd">
+                            <h3>state</h3>
+                            <select class="select_2" name="state">
+                                <option value="">Select State</option>
+                                @foreach($businessStates as $state)
+                                    <option value="{{ $state->id }}"
+                                        {{ isset($filters['state']) && $filters['state'] === "$state->id" ? 'selected' : '' }}
+                                    >{{ $state->abbreviation }} - {{ $state->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         {{--<div class="sidebar_dropdown sidebar_wizerd">
                             <h3>Price</h3>
                             <select class="select_2" name="price">
@@ -274,9 +287,9 @@
                                                 <li><i class="fas fa-map-marker-alt"></i><b>Serving:</b> {{ str_replace(',', ', ', $listings[$i]->getBusinessStatesFormatted()) }}</li>
                                             @endif
                                             <li><i class="fas fa-phone-alt"></i>{{ $listings[$i]->getFormattedBusinessContactAttribute() }}</li>
-                                            @if($listings[$i]->getProductServicesInsuranceList() != '')
+                                            {{--@if($listings[$i]->getProductServicesInsuranceList() != '')
                                                 <li><i class="fas fa-list-alt"></i>{{ trim($listings[$i]->getProductServicesInsuranceList(), ', ') }}</li>
-                                            @endif
+                                            @endif--}}
                                         </ul>
                                         @notUserRole(UserRole::ROLE_INSURANCE_PROVIDER)
                                             <div class="listing_bottom">

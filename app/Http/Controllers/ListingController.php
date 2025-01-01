@@ -19,16 +19,11 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Laravel\Facades\Image;
 use Nette\Schema\ValidationException;
 use Stripe\Exception\ApiErrorException;
-use Stripe\Exception\InvalidRequestException;
 
 class ListingController extends Controller
 {
@@ -83,7 +78,7 @@ class ListingController extends Controller
     /**
      * @throws Exception
      */
-    public function uploadAndSaveProfilePicture($image, ?Listing $listing): void
+    private function uploadAndSaveProfilePicture($image, ?Listing $listing): void
     {
         if (is_null($image)) {
             return;
@@ -97,7 +92,13 @@ class ListingController extends Controller
             }
         }
         // Return the saved image path.
-        $listing->profile_picture = $this->fileUploadService->uploadFile($image, "listings/$listing->id/profile_picture");
+        $listing->profile_picture = $this->fileUploadService->uploadFile(
+            $image,
+            "listings/$listing->id/profile_picture",
+            maxWidth: 880,
+            maxHeight: 500,
+            maxSize: 4096
+        );
 
         $listing->save();
     }
@@ -105,7 +106,7 @@ class ListingController extends Controller
     /**
      * @throws Exception
      */
-    public function uploadAndSaveLegalProof($file, ?Listing $listing): void
+    private function uploadAndSaveLegalProof($file, ?Listing $listing): void
     {
         if (is_null($file)) {
             return;
@@ -137,23 +138,23 @@ class ListingController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        try {
+        $listingId = $request->input('listing_id');
+        $validatedData = $this->validateListingData($request);
 
-            $listingId = $request->input('listing_id');
+        try {
             // Create a new listing instance and save the data
             if ($listingId) {
-                // Validate the request data
-                $validatedData = $this->validateListingData($request, true);
                 $listing = Listing::findOrFail($listingId);
                 $this->updateListing($listing, $validatedData);
                 $message = 'Listing updated successfully.';
             } else {
-                // Validate the request data
-                $validatedData = $this->validateListingData($request);
+                // Check if the user already has a listing.
+                if (auth()->user()->listings) {
+                    return redirect()->back()->with('error', 'You can only create one listing.');
+                }
                 $listing = $this->createListing($validatedData);
-                $message = 'Listing created successfully. Please choose the plan.';
+                $message = 'Listing created successfully.';
             }
-
             // Save product/services associated with the listing.
             $this->saveProductServices($listing, $validatedData['products']);
             // Save details associated with the listing.
@@ -176,10 +177,10 @@ class ListingController extends Controller
             }
         } catch (ValidationException $exception) {
             // If validation fails, redirect back with validation errors.
-            return redirect()->back()->withErrors($exception->errors())->withInput();
+            return redirect()->back()->withErrors($validatedData)->withInput();
         } catch (Exception $e) {
 
-            return redirect()->back()->withErrors($e->getMessage())->withInput();
+            return redirect()->back()->withErrors($validatedData)->withInput();
         }
     }
     private function updateListing(Listing $listing, array $data): void
@@ -192,23 +193,44 @@ class ListingController extends Controller
         $listing->details()
                 ->whereNotIn('key', ['legal_proof'])
                 ->delete();
+
     }
 
     /**
      * @param Request $request
-     * @param bool $isEdit
      *
      * @return array
-     * @throws \Illuminate\Validation\ValidationException
      */
-    private function validateListingData(Request $request, bool $isEdit = false): array
+    private function validateListingData(Request $request): array
     {
-        // Define validation rules
+        $contactFormatRule = 'required|regex:/^\(\d{3}\)\s\d{3}-\d{4}$/|max:14';
         $rules = [
-            // Common rules
+            'authorized' => 'required|boolean',
+            'registered' => 'required|boolean',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'email' => 'required|email',
+            'contact_number' => $contactFormatRule,
+            //'address' => 'required|string',
+            'business_name' => 'required|string',
+            'ein' => 'nullable|regex:/^\d{2}-\d{7}$/',
+            'business_address' => 'required|string',
+            'business_city' => 'string',
+            'business_zipcode' => 'string|regex:/^\d{5}(-\d{4})?$/',
+
+            'business_contact' => $contactFormatRule,
+            'business_email' => 'required|email:rfc',
+            'business_states' => 'required|max:5',
+            'profile_picture' => 'mimes:jpeg,png,jpg|image|max:4096',
+            'legal_proof' => 'mimes:jpeg,png,jpg,pdf|file|max:10240',
+            'business_description' => ['nullable', new WordCount(200)],
+            'social_media_1' => 'nullable|facebook_url',
+            'social_media_2' => 'nullable|twitter_url',
+            'social_media_3' => 'nullable|linkedin_url',
+            'social_media_4' => 'nullable|instagram_url',
             'products' => 'required|array|max:5', // Maximum 5 products allowed.
-            'products.*.category_id' => 'bail|required|exists:categories,id', // Using bail to stop after first failure.
-            'products.*.description' => ['required', 'string', new WordCount(150)], // Validate each product description.
+            'products.*.category_id' => 'bail|required|exists:categories,id|distinct', // Using bail to stop after first failure.
+            'products.*.description' => ['required', 'string', new WordCount(200)], // Validate each product description.
             'products.*.virtual' => 'nullable|boolean', // Validate each product virtual attribute.
             'products.*.in_person' => 'nullable|boolean', // Validate each product in_person attribute.
             'products.*.accept_insurance' => 'nullable|boolean', // Validate each product accept_insurance attribute.
@@ -217,70 +239,22 @@ class ListingController extends Controller
             'products.*.accepting_clients' => 'required'
         ];
 
-        $rules = array_merge($rules, [
-            'authorized' => 'required|boolean',
-            'registered' => 'required|boolean',
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'email' => 'required|email',
-            'contact_number' => 'required|regex:/^\(\d{3}\)\s\d{3}-\d{4}$/',
-            //'address' => 'required|string',
-            'business_name' => 'required|string',
-            'ein' => 'nullable|regex:/^\d{2}-\d{7}$/',
-            'business_address' => 'required|string',
-            'business_city' => 'string',
-            'business_zipcode' => 'string|regex:/^\d{5}(-\d{4})?$/',
-            'business_contact' => 'required|regex:/^\(\d{3}\)\s\d{3}-\d{4}$/',
-            'business_email' => 'required|email',
-            'profile_picture' => 'mimes:jpeg,png,jpg|image|max:4096',
-        ], [
-            'profile_picture.mimes' => 'The profile picture must be a file of type: jpeg, png, jpg.',
-            'profile_picture.image' => 'The profile picture must be an image.',
-            'profile_picture.max' => 'The profile picture may not be greater than 4 MB.',
-        ]);
-
-        $rules = array_merge($rules, [
-            'legal_proof' => 'mimes:jpeg,png,jpg,pdf|file|max:6000',
-            'business_states' => 'required|max:5',
-            'business_description' => 'nullable',
-            'social_media_1' => 'nullable|url',
-            'social_media_2' => 'nullable|url',
-            'social_media_3' => 'nullable|url',
-            'social_media_4' => 'nullable|url',
-        ], [
-            'legal_proof.mimes' => 'The file must be an image (jpeg, png, jpg) or a PDF.',
-            'legal_proof.max' => 'The file size must not exceed 6 MB.',
-        ]);
-
-        // Validate the request data
-        $validatedData = $request->validate($rules, [
-            // Custom error messages.
+        $messages = [
+            'profile_picture.max' => 'The profile picture must be a file of type: jpeg, png, jpg, must be an image, and may not be greater than 4 MB.',
+            'profile_picture.mimes' => 'The profile picture must be a file of type: jpeg, png, jpg, must be an image, and may not be greater than 4 MB.',
+            'legal_proof.max' => 'The file must be an image (jpeg, png, jpg) or a PDF, and may not be greater than 10MB.',
+            'legal_proof.mimes' => 'The file must be an image (jpeg, png, jpg) or a PDF, and may not be greater than 10MB.',
             'products.*.category_id.required' => 'The Product/Service is required for each product.',
             'products.*.category_id.exists' => 'The selected Product/Service does not exist.',
-        ], [
-            // Custom attributes for friendly error messages.
+            'products.*.category_id.distinct' => 'Each product must have a unique Product/Service.',
             'products.0.category_id' => 'Product/Service for Product 1',
             'products.1.category_id' => 'Product/Service for Product 2',
             'products.2.category_id' => 'Product/Service for Product 3',
             'products.3.category_id' => 'Product/Service for Product 4',
             'products.4.category_id' => 'Product/Service for Product 5',
-        ]);
+        ];
 
-        // Check for duplicate category_ids
-        $categoryIds = collect($validatedData['products'])->pluck('category_id');
-        $duplicates = $categoryIds->duplicates()->unique();
-
-        // If duplicates are found, throw a validation exception
-        if ($duplicates->isNotEmpty()) {
-            $duplicateCategoryIds = implode(', ', $duplicates->toArray());
-
-            // Add a custom error message for duplicates
-            throw \Illuminate\Validation\ValidationException::withMessages([
-                'products' => ['Each product must have a unique Product/Service.'],
-            ]);
-        }
-
-        return $validatedData;
+        return $request->validate($rules, $messages);
     }
 
 
@@ -400,9 +374,9 @@ class ListingController extends Controller
     /**
      * @param Listing $listing
      *
-     * @return bool
+     * @return void
      */
-    private function deleteListing(Listing $listing): bool
+    private function deleteListing(Listing $listing): void
     {
         if ($listing->user_id !== Auth::id()) {
             abort(403, 'Unauthorized'); // Or redirect to a different page
@@ -410,8 +384,6 @@ class ListingController extends Controller
 
         $listing->productService()->delete();
         $listing->delete();
-
-        return true;
     }
 
     public function deleteProductService($id): JsonResponse

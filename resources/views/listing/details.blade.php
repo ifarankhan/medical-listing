@@ -67,27 +67,30 @@
                             </ul>
                         </div>
                     </div>
-                    @unless(trim($listing->getDetail('business_description')) === '<p><br></p>')
+
+                    @if($businessDescription)
                         <div class="single_property_details mt_25 wow fadeInUp" data-wow-duration="1.5s">
-                            <h4>Description</h4>
-                            {!! $listing->getDetail('business_description') !!}
+                            <h4 class="mb-4">Description</h4>
+                            {!! $businessDescription !!}
                         </div>
                     @endunless
                     <div class="single_property_details mt_25 wow fadeInUp" data-wow-duration="1.5s">
                         <div class="property_facilities">
                             <h4>Services/Products Offered</h4>
-                            <ul class="list-group list-group-horizontal-lg w-100">
+                            <div class="row">  <!-- Use row here to create a new grid -->
                                 @foreach($listing->productService as $item)
-                                    <li class="w-100">
+                                    <div class="col-md-6">  <!-- Use col-md-6 for two columns per row -->
+                                        <div class="p-3">
                                         <b>{{ $item->category->name }}</b> {{ $item->getAcceptingNewClientsOrWaitlistAttribute() }}
                                         <ul class="list-group w-100">
                                             <li class="list-unstyled w-100">{{ $item->description }}</li>
                                             <li class="w-100"><b>Accepts Insurance:</b> {{ $item->accept_insurance == 1 ? 'Yes': 'No' }}</li>
                                         </ul>
-                                    </li>
+                                        </div>
+                                    </div>
                                 @endforeach
 
-                            </ul>
+                            </div>
                         </div>
                     </div>
                     {{--<div class="single_property_details mt_25 wow fadeInUp" data-wow-duration="1.5s">
@@ -310,9 +313,9 @@
                         <div class="opening_our">
                             <h3>at a glance </h3>
                             <ul>
-                                <li><span>Registered Business Address:</span> <span>{{ $listing->business_address }}</span></li>
-                                <li><a href="#"><span>Verified as per Diverrx's Safe Space Policy</span></a></li>
-                                <li><span>Acceptable Insurances:</span> <span>{{ $listing->getProductServicesInsuranceList()? $listing->getProductServicesInsuranceList(): 'No'  }}</span></li>
+                                <li><span><b>Registered Business Address:</b></span> <span>{{ $listing->business_address }}</span></li>
+                                <li><span>Verified as per Diverrx's <a href="{{ route('safe.space.policy') }}" target="_blank">Safe Space Policy</a></span></li>
+                                <li><span><b>Acceptable Insurances:</b></span> <span>{{ $listing->getProductServicesInsuranceList()? $listing->getProductServicesInsuranceList(): 'No'  }}</span></li>
 
                             </ul>
                         </div>
@@ -330,10 +333,20 @@
                             <a href="javascript: void(0)" class="sales_executive_name" style="pointer-events: none">{{ $listing->user->name }}</a>
 {{--                            <p>Sales Executive</p>--}}
                             <ul class="d-flex flex-wrap justify-content-center">
-                                <li><a href="#"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
+                                @if($listing->getDetail('social_media_1'))
+                                    <li><a href="{{ $listing->getDetail('social_media_1') }}" target="_blank"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
+                                @endif
+                                @if($listing->getDetail('social_media_2'))
+                                    <li><a href="{{ $listing->getDetail('social_media_2') }}" target="_blank"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+                                @endif
+
+                                @if($listing->getDetail('social_media_3'))
+                                    <li><a href="{{ $listing->getDetail('social_media_3') }}" target="_blank"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a></li>
+                                @endif
+
+                                @if($listing->getDetail('social_media_4'))
+                                    <li><a href="{{ $listing->getDetail('social_media_4') }}" target="_blank"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
+                                @endif
                             </ul>
                         </div>
                     </div>

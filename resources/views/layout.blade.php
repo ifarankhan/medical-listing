@@ -6,11 +6,20 @@
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-QX099FPKPV"></script>
         <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-QX099FPKPV'); </script>
     @endif
-    <title>@yield('title', 'Medical Listing')</title>
+    <title>@yield('title', 'Diverrx ')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+
+    <!-- Generic Meta Tags -->
+    <meta property="og:title" content="{{ $meta['og:title'] ?? config('app.name') }}">
+    <meta property="og:description" content="{{ $meta['og:description'] ?? 'Our mission is to enhance quality of life for individuals with neuro-diversity and special needs by offering innovative products, services, and a supportive community through an inclusive marketplace.' }}">
+    <meta property="og:image" content="{{ $meta['og:image'] ?? asset('frontend/images/logo_diverrx.png') }}">
+    <meta property="og:url" content="{{ $meta['og:url'] ?? url()->current() }}">
+    <meta property="og:type" content="{{ $meta['og:type'] ?? 'website' }}">
+
+
     <link rel="icon" type="image/png" href="{{ asset('frontend/images/Logo-black-favicon.png') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/bootstrap.min.css') }}">
@@ -31,7 +40,9 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            let categories = @json($categories ?? []);
+            let categories = [];
+            // eslint-disable-next-line no-undef
+            categories = @json($categories ?? []);
             // Ensure categories is an array
             if (!Array.isArray(categories)) {
                 categories = [];

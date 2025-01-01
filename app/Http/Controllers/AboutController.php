@@ -10,6 +10,8 @@ class AboutController extends Controller
 {
     public function index(): Factory|View|Application
     {
-        return view('about');
+        return view('about')->with(['meta' => [
+            'og:title' => 'Providers/Businesses'
+        ]]);
     }
 }

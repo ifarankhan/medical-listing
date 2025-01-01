@@ -423,12 +423,62 @@ $(function () {
         $('#bar8').barfiller();
     });
 
-
     //=====SUMMER NOTE========
     $(document).ready(function () {
-        $('.summer_note').summernote();
-    });
+        $('.summer_note').summernote({
+            callbacks: {
+                onInit: function () {
+                    updateWordCount(this); // Show existing count on initialization
+                },
+                onKeyup: function (e) {
+                    updateWordCount(this); // Update count as user types
+                },
+                onPaste: function (e) {
+                    // Handle pasted content
+                    let bufferText = (e.originalEvent || e).clipboardData.getData('Text');
+                    let editor = $(this);
+                    setTimeout(function () {
+                        let content = editor.summernote('code');
+                        let words = stripHtml(content).split(/\s+/);
+                        if (words.length > 200) {
+                            words = words.slice(0, 200);
+                            editor.summernote('code', words.join(' '));
+                        }
+                        updateWordCount(editor); // Update count after pasting
+                    }, 10);
+                }
+            }
+        });
 
+
+        function updateWordCount(editor) {
+            let content = $(editor).summernote('code');
+            let wordCount = stripHtml(content).split(/\s+/).filter(function (word) {
+                return word.length > 0;
+            }).length;
+
+            wordCount = content.trim() === "" ? 0 : wordCount; // Set to 0 if empty
+            let remaining = Math.max(0, 200 - wordCount);
+
+            $('#word-counter').text('Words remaining: ' + remaining);
+        }
+
+        function stripHtml(html) {
+            let div = document.createElement("div");
+            div.innerHTML = html;
+            return div.textContent || div.innerText || "";
+        }
+
+        // Add a counter element if it doesn't exist
+        if (!$('#word-counter').length) {
+            $('.panel-default').after('<div id="word-counter" class="text-muted">Words remaining: </div>');
+        }
+
+        // Calculate and display the word count for existing content
+        $('.summer_note').each(function () {
+            updateWordCount(this);
+        });
+    });
 
     //======MOBILE MENU BUTTON=======
     $(".navbar-toggler").on("click", function () {
@@ -836,8 +886,7 @@ $(function () {
     $(document).ready(function() {
 
         const templateHtml = `
-<div class="border-top my-3"></div>
-
+    <div class="border-top my-3"></div>
     <div class="row mt-4 border-1 product-row" data-index="{index}">
         <div class="col-xxl-12 mb-3 d-flex justify-content-between align-items-center">
             <h4>Product/Service {index}</h4>
@@ -868,12 +917,13 @@ $(function () {
         </div>
         <div class="col-xxl-4 mb-3 col-md-6">
             <div class="add_property_input">
-                <label for="description_{index}">Brief description (150 words limit): <span class="text-danger">*</span></label>
-                <div class="note-editor note-frame panel panel-default">
-                    <textarea id="description_{index}" name="products[{index}][description]" data-word-limit="150" class="word-count" placeholder="Description" required></textarea>
+
+                <label for="description_{index}">Brief description (200 words limit): <span class="text-danger">*</span></label>
+                <div class="note-editor note-frame">
+                    <textarea id="description_{index}" name="products[{index}][description]" class="word-count" data-word-limit="200" placeholder="Description" required></textarea>
                 </div>
                 <div class="word-count-feedback text-muted">
-                    Words remaining: <span class="word-count-remaining" data-index="{index}">150</span>
+                    Words remaining: <span class="word-count-remaining" data-index="{index}">200</span>
                 </div>
             </div>
         </div>
@@ -941,7 +991,8 @@ $(function () {
 
         // Delegate delete button event
         $(additionalProductsDivId).on('click', '.delete-product-btn', function() {
-
+            // Remove closest border div.
+            $(this).closest('.product-row').prev('.border-top').remove();
             // Find and destroy existing select2 instances
             $(this).closest('.product-row').remove();
 
@@ -1018,8 +1069,10 @@ $(function () {
                 const wordLimit = parseInt($textarea.data('word-limit'), 10);
 
                 // Locate the .word-count-feedback element outside the parent div
-                const feedback = $textarea.closest('.col-xxl-4').find('.word-count-feedback .word-count-remaining');
-
+                //const feedback = $textarea.closest('.col-xxl-4, .col-xxl-12').find('.word-count-feedback .word-count-remaining');
+                const feedback = $textarea
+                    .parents()
+                    .find('.word-count-feedback .word-count-remaining');
                 // Get current words and limit
                 const words = $textarea.val().trim().split(/\s+/).filter(word => word.length > 0);
                 const remaining = wordLimit - words.length;
@@ -1059,9 +1112,6 @@ $(function () {
                 }, 0); // Delay to allow the paste operation to complete
             });
         });
-
-
-
 
         $(additionalProductsDivId).on('click', '.delete-btn-ajx', function(e) {
             e.preventDefault(); // Prevent default form submission or link action
@@ -1241,16 +1291,60 @@ $(function () {
     });
 
 
-    $('#multiStepForm .common_btn').on('click', function(event) {
-        const action = $(this).val(); // Capture which button was clicked
-        console.log('Button clicked:', action);
+    $('#multiStepForm .common_btn').on('click', function (event) {
+        const form = $('#multiStepForm')[0];
+        let isValid = true;
+        let firstInvalidElement = null;
 
-        // Trigger browser validation manually to show errors, but prevent form submission.
-        if (!$('#multiStepForm')[0].checkValidity()) {
-            console.log('validate ...')
-            //event.preventDefault(); // Prevent actual submission if the form is invalid
-            $('#multiStepForm')[0].reportValidity(); // Show validation messages
-            console.log('show validation ...')
+        // Select all input, select, and textarea elements
+        const inputs = form.querySelectorAll('input, textarea');
+
+        // Loop through each input to validate
+        inputs.forEach(input => {
+            if (!input.checkValidity()) {
+                isValid = false;
+
+                // Add 'is-invalid' class for highlighting
+                input.classList.add('is-invalid');
+
+                // Show a custom error message (using 'title' attribute or custom text)
+                const errorMessage = input.getAttribute('title') || 'Invalid input.';
+                let errorElement = input.nextElementSibling;
+
+                // If no error element exists, create one
+                if (!errorElement || !errorElement.classList.contains('error-message')) {
+                    errorElement = document.createElement('div');
+                    errorElement.className = 'error-message text-danger';
+                    input.parentNode.insertBefore(errorElement, input.nextSibling);
+                }
+
+                // Update the error message
+                errorElement.textContent = errorMessage;
+
+                // Keep track of the first invalid element to scroll to it
+                if (!firstInvalidElement) {
+                    firstInvalidElement = input;
+                }
+
+            } else {
+                // Remove 'is-invalid' class and error message if valid
+                input.classList.remove('is-invalid');
+                const errorElement = input.nextElementSibling;
+                if (errorElement && errorElement.classList.contains('error-message')) {
+                    errorElement.remove();
+                }
+            }
+        });
+
+        // If there are invalid fields, prevent form submission and scroll to the first invalid field
+        if (!isValid) {
+            event.preventDefault();
+            if (firstInvalidElement) {
+                firstInvalidElement.scrollIntoView({
+                    behavior: 'smooth', // Smooth scroll to the element
+                    block: 'center',    // Scroll to the center of the element
+                });
+            }
         }
     });
 
