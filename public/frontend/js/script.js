@@ -1278,8 +1278,8 @@ $(function () {
                     }
                 },
                 error: function(xhr) {
-                    const errors = xhr.responseJSON.errors;
-                    formMessage.text(errors.email[0]).css('color', 'red'); // Show validation error.
+                    const errors = xhr.responseJSON;
+                    formMessage.text(errors.message).css('color', 'red'); // Show validation error.
                     // Hide the message after 5 seconds (5000 milliseconds)
                     setTimeout(function() {
                         formMessage.fadeOut(); // You can use fadeOut for a smoother transition
