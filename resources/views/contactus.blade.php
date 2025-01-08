@@ -61,6 +61,11 @@
                             {{ session('success') }}
                         </div>
                     @endif
+                    @if (session('error'))
+                        <div class="alert alert-error">
+                            {{ session('error') }}
+                        </div>
+                    @endif
                     <form action="{{ route('contact.submit') }}" method="POST">
                         @csrf
                         <div class="row">
