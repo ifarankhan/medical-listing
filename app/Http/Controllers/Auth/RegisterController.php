@@ -74,9 +74,10 @@ class RegisterController extends Controller
             $roleId = $request->input('role');
             // Attach the role to the user
             $user->userRole()->attach($roleId);
+            DB::commit();
+
             Mail::to($user->email)->send(new RegisterUserMail($user));
 
-            DB::commit();
             return back()->with('success', 'User registered successfully');
         } catch (\Exception $e) {
 
