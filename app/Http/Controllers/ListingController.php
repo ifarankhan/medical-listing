@@ -220,6 +220,7 @@ class ListingController extends Controller
         $listing->contact_number = $this->phoneService->unformatPhoneNumber($data['contact_number']);
         //$listing->address = $data['address'];
         $listing->business_name    = $data['business_name'];
+        $listing->slug             = $data['slug'];
         $listing->ein              = $data['ein'];
         $listing->business_address = $data['business_address'];
         $listing->business_zipcode = $data['business_zipcode'];

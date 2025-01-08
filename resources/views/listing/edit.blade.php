@@ -212,6 +212,18 @@
 
             </div>
 
+            <div class="add_property_input">
+                <div>
+                    <label for="slug">Slug (Pretty URL): <span class="text-danger">*</span></label>
+                    <input type="text" id="slug"
+                           name="slug" placeholder="Your listing's URL (example: my-business-profile)"
+                           title="Enter a unique identifier for your listing in a 'my-listing' format.
+                           This will be used to access the listing in the frontend."
+                           value="{{ old('slug', $listing->slug) }}" >
+                </div>
+
+            </div>
+
         </div>
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">

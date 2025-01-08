@@ -45,6 +45,13 @@ class ListingRequest extends FormRequest
             'business_zipcode' => 'string|regex:/^\d{5}(-\d{4})?$/',
             'business_contact' => $contactFormatRule,
             'business_email' => 'required|email:rfc',
+            'slug' => [
+                'required',
+                'string',
+                'regex:/^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$/', // Enforces slug format
+                'max:100',
+                'unique:listings,slug,' . $this->route('listing') // Ignore the current record if updating
+            ],
             'business_states' => 'required|max:5',
             'profile_picture' => $isUpdate
                 ? 'nullable|mimes:jpeg,png,jpg|image|max:4096'
@@ -97,6 +104,11 @@ class ListingRequest extends FormRequest
             'business_contact' => $contactNumber,
             'contact_number' => $contactNumber,
             'business_states' => 'Please add up to 5 states where you’re currently operating.',
+            'slug.required' => 'The slug is required.',
+            'slug.string' => 'The slug must be a valid string.',
+            'slug.regex' => 'The slug format is invalid. Use only letters, numbers, and hyphens without spaces.',
+            'slug.max' => 'The slug must not exceed 100 characters.',
+            'slug.unique' => 'The slug must be unique. This one is already taken.',
         ];
     }
 

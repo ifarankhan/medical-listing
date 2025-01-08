@@ -36,6 +36,7 @@ class Listing extends Model
         'contact_number',
         'address',
         'business_name',
+        'slug',
         'ein',
         'business_address',
         'business_zipcode',
