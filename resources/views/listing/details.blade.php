@@ -315,7 +315,7 @@
                             <ul>
                                 <li><span><b>Registered Business Address:</b></span> <span>{{ $listing->business_address }}</span></li>
                                 <li><span>Verified as per Diverrx's <a href="{{ route('safe.space.policy') }}" target="_blank">Safe Space Policy</a></span></li>
-                                <li><span><b>Acceptable Insurances:</b></span> <span>{{ $listing->getProductServicesInsuranceList()? $listing->getProductServicesInsuranceList(): 'No'  }}</span></li>
+                                <li><span><b>Accepting Insurances:</b></span> <span>{{ $listing->getProductServicesInsuranceList()? $listing->getProductServicesInsuranceList(): 'No'  }}</span></li>
 
                             </ul>
                         </div>
