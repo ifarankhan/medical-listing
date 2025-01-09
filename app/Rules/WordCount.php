@@ -26,7 +26,17 @@ class WordCount implements Rule
      */
     public function passes($attribute, $value): bool
     {
-        $wordCount = str_word_count($value);
+        // Ensure the value is a string or handle nullable
+        if (is_null($value)) {
+            return true;
+        }
+
+        // Strip HTML tags and normalize whitespace
+        $cleanedValue = trim(strip_tags($value));
+
+        // Match words consisting of letters and handle edge cases
+        $wordCount = preg_match_all('/\b[a-zA-Z]+\b/u', $cleanedValue);
+
         return $wordCount <= $this->maxWords;
     }
 
@@ -37,6 +47,6 @@ class WordCount implements Rule
      */
     public function message(): string
     {
-        return "The :attribute may not be greater than {$this->maxWords} words.";
+        return "The :attribute may not be greater than $this->maxWords words.";
     }
 }

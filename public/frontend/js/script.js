@@ -941,6 +941,9 @@ $(function () {
             <div class="add_property_input">
                 <label>If you accept insurance for this product, please list down all the insurances you are currently accepting: <span class="text-danger">*</span></label>
                 <input type="text" id="insurance_{index}" name="products[{index}][insurance_list]" placeholder="Insurance List">
+                <span class="form-text text-muted">
+                            <b>Note:</b> Add insurance list, separated by commas (,).
+                        </span>
             </div>
         </div>
         <div class="col-xxl-4 col-md-6" id="price_{index}" style="display:none;">
@@ -1073,7 +1076,10 @@ $(function () {
                     .next('.word-count-feedback') // Select the next sibling with class word-count-feedback
                     .find('.word-count-remaining'); // Locate the span inside it
                 // Get current words and limit
-                const words = $textarea.val().trim().split(/\s+/).filter(word => word.length > 0);
+                //const words = $textarea.val().trim().split(/\s+/).filter(word => word.length > 0);
+
+                const words = $textarea.val().trim().match(/\b[a-zA-Z]+\b/g) || [];
+
                 const remaining = wordLimit - words.length;
 
                 // Update feedback text
@@ -1101,7 +1107,8 @@ $(function () {
                 const wordLimit = parseInt($textarea.data('word-limit'), 10);
 
                 setTimeout(function () {
-                    const words = $textarea.val().trim().split(/\s+/).filter(word => word.length > 0);
+                    //const words = $textarea.val().trim().split(/\s+/).filter(word => word.length > 0);
+                    const words = $textarea.val().trim().match(/\b[a-zA-Z]+\b/g) || [];
 
                     if (words.length > wordLimit) {
                         $textarea.val(words.slice(0, wordLimit).join(' ')); // Truncate words
