@@ -895,7 +895,7 @@ $(function () {
         <div class="col-xxl-4 mb-3 col-md-6">
             <div class="add_property_input">
                 <label for="product_service_{index}">Choose the Name of the product/service {index}: <span class="text-danger">*</span></label>
-                <select class="select_2" id="select_product_service_{index}" name="products[{index}][category_id]" required>
+                <select class="select_2" id="products_{index}_category_id" name="products[{index}][category_id]" required>
                     categoryOptions
                 </select>
 
@@ -917,10 +917,9 @@ $(function () {
         </div>
         <div class="col-xxl-4 mb-3 col-md-6">
             <div class="add_property_input">
-
-                <label for="description_{index}">Brief description (200 words limit): <span class="text-danger">*</span></label>
+                <label for="products_{index}_description">Brief description (200 words limit): <span class="text-danger">*</span></label>
                 <div class="note-editor note-frame">
-                    <textarea id="description_{index}" name="products[{index}][description]" class="word-count" data-word-limit="200" placeholder="Description" required></textarea>
+                    <textarea id="products_{index}_description" name="products[{index}][description]" class="word-count" data-word-limit="200" placeholder="Description" required></textarea>
                 </div>
                 <div class="word-count-feedback text-muted">
                     Words remaining: <span class="word-count-remaining" data-index="{index}">200</span>
@@ -931,17 +930,20 @@ $(function () {
             <label>Do you accept insurance for this product? <span class="text-danger">*</span></label>
             <div class="form-check">
                 <input class="form-check-input" type="radio" id="accept_insurance_yes_{index}" name="products[{index}][accept_insurance]" value="1" required>
-                <label class="form-check-label" for="accept_insurance_yes_{index}">Yes</label>
+                <label for="accept_insurance_yes_{index}">Yes</label>
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="radio" id="accept_insurance_no_{index}" name="products[{index}][accept_insurance]" value="0" required>
-                <label class="form-check-label" for="accept_insurance_no_{index}">No</label>
+                <label for="accept_insurance_no_{index}">No</label>
             </div>
         </div>
         <div class="col-xxl-4 mb-3 col-md-6" id="insurance_list_{index}" style="display:none;">
             <div class="add_property_input">
                 <label>If you accept insurance for this product, please list down all the insurances you are currently accepting: <span class="text-danger">*</span></label>
                 <input type="text" id="insurance_{index}" name="products[{index}][insurance_list]" placeholder="Insurance List">
+                <span class="form-text text-muted">
+                            <b>Note:</b> Add insurance list, separated by commas (,).
+                        </span>
             </div>
         </div>
         <div class="col-xxl-4 col-md-6" id="price_{index}" style="display:none;">
@@ -962,7 +964,7 @@ $(function () {
             <div class="form-check">
                 <input class="form-check-input" type="radio" id="accepting_clients_{index}"
                        name="products[{index}][accepting_clients]" value="2" required>
-                <label class="form-check-label" for="accepting_clients_{index}">Currently Have A Waitlist</label>
+                <label for="accepting_clients_{index}">Currently Have A Waitlist</label>
             </div>
 
         </div>
@@ -984,14 +986,14 @@ $(function () {
             // Append the new row
             $(additionalProductsDivId).append($newRow);
             // Initialize select2 only on the newly added select element
-            $newRow.find('#select_product_service_' + productIndex).select2();
+            $newRow.find('#products_' + productIndex + '_category_id').select2();
             // Increment the index for the next row
             productIndex++;
         });
 
         // Delegate delete button event
         $(additionalProductsDivId).on('click', '.delete-product-btn', function() {
-            // Remove closest border div.
+            // Remove the closest border div.
             $(this).closest('.product-row').prev('.border-top').remove();
             // Find and destroy existing select2 instances
             $(this).closest('.product-row').remove();
@@ -1045,11 +1047,10 @@ $(function () {
         $(additionalProductsDivId).on('change', '[name^="products"][name$="[accept_insurance]"]', function() {
             let parentRow = $(this).closest('.product-row');
             let index = parentRow.data('index'); // Get the index from the data attribute
-
             // Handle the static element with index 0 separately
-            if (index === 1) {
+            /*if (index === 1) {
                 index = 0; // Adjust to match the original index 0 for the first element
-            }
+            }*/
 
             let insuranceList = $('#insurance_list_' + index);
             let priceInput = $('#price_' + index);
@@ -1071,10 +1072,14 @@ $(function () {
                 // Locate the .word-count-feedback element outside the parent div
                 //const feedback = $textarea.closest('.col-xxl-4, .col-xxl-12').find('.word-count-feedback .word-count-remaining');
                 const feedback = $textarea
-                    .parents()
-                    .find('.word-count-feedback .word-count-remaining');
+                    .closest('.note-editor') // Find the closest parent div
+                    .next('.word-count-feedback') // Select the next sibling with class word-count-feedback
+                    .find('.word-count-remaining'); // Locate the span inside it
                 // Get current words and limit
-                const words = $textarea.val().trim().split(/\s+/).filter(word => word.length > 0);
+                //const words = $textarea.val().trim().split(/\s+/).filter(word => word.length > 0);
+
+                const words = $textarea.val().trim().match(/\b[a-zA-Z]+\b/g) || [];
+
                 const remaining = wordLimit - words.length;
 
                 // Update feedback text
@@ -1102,7 +1107,8 @@ $(function () {
                 const wordLimit = parseInt($textarea.data('word-limit'), 10);
 
                 setTimeout(function () {
-                    const words = $textarea.val().trim().split(/\s+/).filter(word => word.length > 0);
+                    //const words = $textarea.val().trim().split(/\s+/).filter(word => word.length > 0);
+                    const words = $textarea.val().trim().match(/\b[a-zA-Z]+\b/g) || [];
 
                     if (words.length > wordLimit) {
                         $textarea.val(words.slice(0, wordLimit).join(' ')); // Truncate words
@@ -1279,8 +1285,8 @@ $(function () {
                     }
                 },
                 error: function(xhr) {
-                    const errors = xhr.responseJSON.errors;
-                    formMessage.text(errors.email[0]).css('color', 'red'); // Show validation error.
+                    const errors = xhr.responseJSON;
+                    formMessage.text(errors.message).css('color', 'red'); // Show validation error.
                     // Hide the message after 5 seconds (5000 milliseconds)
                     setTimeout(function() {
                         formMessage.fadeOut(); // You can use fadeOut for a smoother transition
@@ -1291,7 +1297,7 @@ $(function () {
     });
 
 
-    $('#multiStepForm .common_btn').on('click', function (event) {
+    /*$('#multiStepForm .common_btn').on('click', function (event) {
         const form = $('#multiStepForm')[0];
         let isValid = true;
         let firstInvalidElement = null;
@@ -1301,6 +1307,46 @@ $(function () {
 
         // Loop through each input to validate
         inputs.forEach(input => {
+            // Handle checkbox groups with the `data-group` attribute
+            if (input.type === 'checkbox' && input.dataset.group) {
+                const group = input.dataset.group;
+                const isRequired = input.dataset.required === "true";
+                const checkboxes = form.querySelectorAll(`input[data-group="${group}"]`);
+                const isGroupValid = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+                if (isRequired) {
+                    checkboxes.forEach(checkbox => {
+                        // Handle error message for the group
+                        let errorElement = checkbox.parentNode.querySelector('.error-message');
+                        if (!isGroupValid) {
+                            isValid = false;
+                            checkbox.classList.add('is-invalid');
+
+                            // Create or update the error message for the group
+                            if (!errorElement) {
+                                errorElement = document.createElement('div');
+                                errorElement.className = 'error-message text-danger';
+                                checkbox.parentNode.appendChild(errorElement);
+                            }
+                            errorElement.textContent = 'Please select at least one option.';
+                        } else {
+                            checkbox.classList.remove('is-invalid');
+                            if (errorElement) {
+                                errorElement.remove();
+                            }
+                        }
+                    });
+
+                    // If the group is invalid, track the first checkbox in the group
+                    if (!isGroupValid && !firstInvalidElement) {
+                        firstInvalidElement = checkboxes[0];
+                    }
+                }
+
+                return; // Skip individual checkbox validation since the group is handled
+            }
+
+            // Validate other input types
             if (!input.checkValidity()) {
                 isValid = false;
 
@@ -1308,14 +1354,14 @@ $(function () {
                 input.classList.add('is-invalid');
 
                 // Show a custom error message (using 'title' attribute or custom text)
-                const errorMessage = input.getAttribute('title') || 'Invalid input.';
-                let errorElement = input.nextElementSibling;
+                const errorMessage = input.getAttribute('title') || 'Please provide valid input.';
+                let errorElement = input.parentNode.querySelector('.error-message');
 
                 // If no error element exists, create one
-                if (!errorElement || !errorElement.classList.contains('error-message')) {
+                if (!errorElement) {
                     errorElement = document.createElement('div');
                     errorElement.className = 'error-message text-danger';
-                    input.parentNode.insertBefore(errorElement, input.nextSibling);
+                    input.parentNode.appendChild(errorElement);
                 }
 
                 // Update the error message
@@ -1325,12 +1371,11 @@ $(function () {
                 if (!firstInvalidElement) {
                     firstInvalidElement = input;
                 }
-
             } else {
                 // Remove 'is-invalid' class and error message if valid
                 input.classList.remove('is-invalid');
-                const errorElement = input.nextElementSibling;
-                if (errorElement && errorElement.classList.contains('error-message')) {
+                const errorElement = input.parentNode.querySelector('.error-message');
+                if (errorElement) {
                     errorElement.remove();
                 }
             }
@@ -1346,6 +1391,82 @@ $(function () {
                 });
             }
         }
+    });*/
+
+
+
+    $(document).ready(function () {
+        $('#multiStepForm').on('submit', function (e) {
+            e.preventDefault();
+
+            const form = $(this);
+            const formData = new FormData(this);
+
+            // Add the action value
+            formData.append('action', $('button[name="action"]').val());
+
+            $.ajax({
+                url: '/validate-listing', // Your validation route
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // CSRF token
+                },
+                success: function (response) {
+                    if (response.success) {
+                        //alert('Validation passed. Proceeding...');
+                        // If validation passes, submit the form normally
+                        form.off('submit'); // Remove the submit handler to prevent recursion
+                        form.submit(); // Submit the form
+                    }
+                },
+                error: function (xhr) {
+                    if (xhr.status === 422) {
+                        const invalidClassStr = '.is-invalid';
+                        const errors = xhr.responseJSON.errors;
+
+                        // Clear previous error messages
+                        $('.error-message').remove();
+                        $(invalidClassStr).removeClass('is-invalid');
+
+                        // Display errors
+                        for (const [field, messages] of Object.entries(errors)) {
+                            // Transform field name to match ID format (if applicable)
+                            const fieldSelector = `[name="${field}"], [name="${field}[]"]`;
+
+                            const input = $(fieldSelector);
+
+                            if (input.length) {
+                                const errorDiv = `<div class="error-message text-danger">${messages[0]}</div>`;
+
+                                // Handle radio button groups
+                                if (input.is(':radio')) {
+                                    // Find the container for the radio buttons and append the error message
+                                    input.closest('.form-check').parent().append(errorDiv);
+                                    input.addClass('is-invalid');
+                                } else {
+                                    // Append the error message for other input types
+                                    input.addClass('is-invalid');
+                                    if (input.is('select') || input.attr('multiple') === 'multiple') {
+                                        input.parent().append(errorDiv); // For select and multi-select
+                                    } else {
+                                        input.parent().parent().append(errorDiv); // For other input types
+                                    }
+                                }
+                            }
+                        }
+
+                        // Scroll to the first invalid input
+                        $('html, body').animate({
+                            scrollTop: $(invalidClassStr).first().offset().top - 100
+                        }, 500);
+                    }
+                }
+
+            });
+        });
     });
 
     $(document).ready(function (){
@@ -1380,7 +1501,7 @@ $(function () {
     });
 
     $(document).ready(function(){
-        $('#contact_number, #business_contact').mask('(000) 000-0000'); // Mask phone number format
+        $('#contact_number, #business_contact, #contact_phone').mask('(000) 000-0000'); // Mask phone number format
     });
 });
 

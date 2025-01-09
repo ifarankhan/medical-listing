@@ -145,7 +145,7 @@
                             <img src="{{ asset('frontend/images/process_icon_4.png') }}" alt="icon" class="img-fluid w-100">
                         </div>
                         <div class="text">
-                            <h4>2. Select Your Package</h4>
+                            <h4>2. Start your free trial</h4>
                             <p>Select from our very affordable packages: Monthly 19.99 | Value Pack $99.00
                                 for 12-months.</p>
                         </div>
