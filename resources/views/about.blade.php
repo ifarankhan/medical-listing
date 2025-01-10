@@ -135,7 +135,7 @@
                         </div>
                         <div class="text">
                             <h4>1. Create A Profile</h4>
-                            <p>create your business profile, add products and services you wish to list on Diverrx.</p>
+                            <p>Create your business profile, add products and services you wish to list on Diverrx.</p>
                         </div>
                     </div>
                 </div>
@@ -146,8 +146,9 @@
                         </div>
                         <div class="text">
                             <h4>2. Start your free trial</h4>
-                            <p>Select from our very affordable packages: Monthly 19.99 | Value Pack $99.00
-                                for 12-months.</p>
+                            <p>Current features are free for providers and community, start your free trial today.</p>
+{{--                            <p>Select from our very affordable packages: Monthly 19.99 | Value Pack $99.00--}}
+{{--                                for 12-months.</p>--}}
                         </div>
                     </div>
                 </div>

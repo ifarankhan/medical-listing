@@ -1449,7 +1449,9 @@ $(function () {
                                 } else {
                                     // Append the error message for other input types
                                     input.addClass('is-invalid');
-                                    if (input.is('select') || input.attr('multiple') === 'multiple') {
+                                    if (input.is('select')
+                                        || input.attr('multiple') === 'multiple'
+                                        || input.attr('name')?.includes('social_media')) {
                                         input.parent().append(errorDiv); // For select and multi-select
                                     } else {
                                         input.parent().parent().append(errorDiv); // For other input types
