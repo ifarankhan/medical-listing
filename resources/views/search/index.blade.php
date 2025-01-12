@@ -279,7 +279,7 @@
         {{--                                <a class="love" href="#"><i class="fas fa-heart"></i></a>--}}
                                     </div>
                                     <div class="listing_text">
-                                        <a href="{{ route('listing.details', $listings[$i]->id) }}">
+                                        <a href="{{ route('listing.details', $listings[$i]->slug) }}">
                                             <h5>{{ $listings[$i]->business_name }}</h5>
                                         </a>
                                         <ul>
