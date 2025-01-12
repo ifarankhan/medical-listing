@@ -416,6 +416,9 @@
                     <div class="add_property_input">
                         <label>If you accept insurance for this product, please list down all the insurances you are currently accepting: <span class="text-danger">*</span></label>
                         <input type="text" id="insurance_0" name="products[0][insurance_list]" placeholder="Insurance List" value="{{ old('products.0.insurance_list') }}">
+                        <span class="form-text text-muted">
+                            <b>Note:</b> Add insurance list, separated by commas (,).
+                        </span>
                     </div>
                 </div>
                 <div class="col-xxl-4 col-md-6" id="price_0" style="display:{{ old('products.0.accept_insurance') == '0' ? 'block' : 'none' }};">
@@ -524,6 +527,9 @@
                         <label>If you accept insurance for this product, please list down all the insurances you are currently accepting: <span class="text-danger">*</span></label>
                         <input type="text" id="insurance_{{ $index }}" name="products[{{ $index }}][insurance_list]" placeholder="Insurance List"
                                value="{{ old('products.' . $index . '.insurance_list', $item->insurance_list) }}">
+                        <span class="form-text text-muted">
+                            <b>Note:</b> Add insurance list, separated by commas (,).
+                        </span>
                     </div>
                 </div>
                 <div class="col-xxl-4 mb-3 col-md-6" id="price_{{ $index }}" style="display: {{ old('products.' . $index . '.accept_insurance', $item->accept_insurance) == '0' ? 'block' : 'none' }};">
