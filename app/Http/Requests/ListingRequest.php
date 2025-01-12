@@ -48,7 +48,7 @@ class ListingRequest extends FormRequest
             'slug' => [
                 'required',
                 'string',
-                'regex:/^(?=.*[a-z])[a-z0-9-]+$/', // Enforces slug format
+                'regex:/^(?=.*[a-z])[a-z0-9-]+(?<!-)$/', // Enforces slug format
                 'max:100',
                 'min:3',
                 'unique:listings,slug,' . $this->input('listing_id') // Ignore the current record if updating
