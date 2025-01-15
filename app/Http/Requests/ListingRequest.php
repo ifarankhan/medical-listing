@@ -57,9 +57,8 @@ class ListingRequest extends FormRequest
             'profile_picture' => $isUpdate
                 ? 'nullable|mimes:jpeg,png,jpg|image|max:4096'
                 : 'required|mimes:jpeg,png,jpg|image|max:4096', // Required only for new entries
-            'legal_proof' => $isUpdate
-                ? 'nullable|mimes:jpeg,png,jpg,pdf|file|max:10240'
-                : 'required|mimes:jpeg,png,jpg,pdf|file|max:10240', // Required only for new entries
+            'legal_proof' => 'nullable|mimes:jpeg,png,jpg,pdf|file|max:10240',
+               // : 'required|mimes:jpeg,png,jpg,pdf|file|max:10240', // Required only for new entries
             'business_description' => ['nullable', new WordCount(200)],
             'social_media_1' => 'nullable|facebook_url',
             'social_media_2' => 'nullable|twitter_url',

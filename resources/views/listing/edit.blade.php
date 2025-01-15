@@ -43,7 +43,7 @@
         <div class="col-xxl-6 col-md-6">
             <div class="add_property_input">
 
-                <label>Upload a file <span class="text-danger">*</span></label>
+                <label>Upload a file</label>
                 <input {{ $listing->getDetail('legal_proof') ? '' : 'required' }}
                         type="file"
                        name="legal_proof" accept="image/*,application/pdf">

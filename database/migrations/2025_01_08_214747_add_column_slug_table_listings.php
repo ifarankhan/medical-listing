@@ -6,8 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -18,8 +17,7 @@ return new class extends Migration
         // Check if the table 'listings' exists
         if (Schema::hasTable('listings')) {
             // Check if the column 'slug' already exists
-            if (!Schema::hasColumn('listings', 'slug')) {
-
+            if ( ! Schema::hasColumn('listings', 'slug')) {
                 Schema::table('listings', function (Blueprint $table) {
                     $table->string('slug', 100)
                           ->after('business_name')
@@ -57,13 +55,32 @@ return new class extends Migration
 
     protected function backfillExistingDataWithBusinessNameAndIdAsSlug(): void
     {
-        DB::table('listings')->get()->each(function ($listing) {
+        // Update slugs in chunks for efficiency.
+        DB::table('listings')
+          ->orderBy('id')
+          ->chunk(100, function ($listings) {
+              $updates = [];
 
-            $uniqueSuffix = substr(md5(uniqid($listing->business_name, true)), 0, 6);
-            $slug = Str::slug($listing->business_name . '-' . $uniqueSuffix);
-            DB::table('listings')
-              ->where('id', $listing->id)
-              ->update(['slug' => $slug]);
-        });
+              foreach ($listings as $listing) {
+                  // Using Str::random() for better efficiency.
+                  $uniqueSuffix = Str::random(6);
+                  $slug         = Str::slug($listing->business_name . '-' . $uniqueSuffix);
+                  // Collect the updates for each listing.
+                  $updates[] = [
+                      'id'   => $listing->id,
+                      'slug' => $slug,
+                  ];
+              }
+              // Perform the bulk update using a single query to minimize DB hits.
+              DB::table('listings')
+                ->whereIn('id', array_column($updates, 'id'))
+                ->update([
+                    'slug' => DB::raw(
+                        'CASE ' . implode(' ', array_map(function ($update) {
+                            return "WHEN id = {$update['id']} THEN '{$update['slug']}'";
+                        }, $updates)) . ' END'
+                    )
+                ]);
+          });
     }
 };
