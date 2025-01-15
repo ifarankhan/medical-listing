@@ -45,13 +45,20 @@ class ListingRequest extends FormRequest
             'business_zipcode' => 'string|regex:/^\d{5}(-\d{4})?$/',
             'business_contact' => $contactFormatRule,
             'business_email' => 'required|email:rfc',
+            'slug' => [
+                'required',
+                'string',
+                'regex:/^(?=.*[a-z])[a-z0-9-]+(?<!-)$/', // Enforces slug format
+                'max:100',
+                'min:3',
+                'unique:listings,slug,' . $this->input('listing_id') // Ignore the current record if updating
+            ],
             'business_states' => 'required|max:5',
             'profile_picture' => $isUpdate
                 ? 'nullable|mimes:jpeg,png,jpg|image|max:4096'
                 : 'required|mimes:jpeg,png,jpg|image|max:4096', // Required only for new entries
-            'legal_proof' => $isUpdate
-                ? 'nullable|mimes:jpeg,png,jpg,pdf|file|max:10240'
-                : 'required|mimes:jpeg,png,jpg,pdf|file|max:10240', // Required only for new entries
+            'legal_proof' => 'nullable|mimes:jpeg,png,jpg,pdf|file|max:10240',
+               // : 'required|mimes:jpeg,png,jpg,pdf|file|max:10240', // Required only for new entries
             'business_description' => ['nullable', new WordCount(200)],
             'social_media_1' => 'nullable|facebook_url',
             'social_media_2' => 'nullable|twitter_url',
@@ -97,6 +104,11 @@ class ListingRequest extends FormRequest
             'business_contact' => $contactNumber,
             'contact_number' => $contactNumber,
             'business_states' => 'Please add up to 5 states where you’re currently operating.',
+            'slug.required' => 'The slug is required.',
+            'slug.string' => 'The slug must be a valid string.',
+            'slug.regex' => 'The slug format is invalid. Use only lowercase letters, numbers, and hyphens without spaces. At least one letter is required.',
+            'slug.max' => 'The slug must not exceed 100 characters.',
+            'slug.unique' => 'The slug must be unique. This one is already taken.',
         ];
     }
 

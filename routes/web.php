@@ -46,7 +46,7 @@ Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
 Route::get('/contact', [ContactUsController::class, 'index'])->name('contact');
 Route::post('/contact/submit', [ContactUsController::class, 'submit'])->name('contact.submit');
 Route::get('/search', [SearchController::class, 'search'])->name('search');
-Route::get('/listing/details/{listing}', [DetailsController::class, 'index'])->name('listing.details');
+Route::get('/listing/{slug}', [DetailsController::class, 'index'])->name('listing.details');
 
 Route::get('/check-auth', [AuthController::class, 'checkAuth'])->name('check-auth');
 

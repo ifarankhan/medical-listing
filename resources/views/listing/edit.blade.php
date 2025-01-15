@@ -43,7 +43,7 @@
         <div class="col-xxl-6 col-md-6">
             <div class="add_property_input">
 
-                <label>Upload a file <span class="text-danger">*</span></label>
+                <label>Upload a file</label>
                 <input {{ $listing->getDetail('legal_proof') ? '' : 'required' }}
                         type="file"
                        name="legal_proof" accept="image/*,application/pdf">
@@ -208,6 +208,18 @@
                            name="business_email" placeholder="Business Email"
                            title="Please enter a valid email address."
                            value="{{ old('business_email', $listing->business_email) }}" >
+                </div>
+
+            </div>
+
+            <div class="add_property_input">
+                <div>
+                    <label for="slug">Slug (Pretty URL): <span class="text-danger">*</span></label>
+                    <input type="text" id="slug"
+                           name="slug" placeholder="Your listing's URL (example: my-business-profile)"
+                           title="Enter a unique identifier for your listing in a 'my-listing' format.
+                           This will be used to access the listing in the frontend."
+                           value="{{ old('slug', $listing->slug) }}" >
                 </div>
 
             </div>

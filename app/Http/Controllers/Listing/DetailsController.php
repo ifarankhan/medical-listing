@@ -8,9 +8,11 @@ use Illuminate\Http\Request;
 
 class DetailsController extends Controller
 {
-    public function index(Listing $listing)
+    public function index($slug)
     {
-        $listing->with(['productService', 'productService.category', 'details']);
+        $listing = Listing::with(['productService', 'productService.category', 'details'])
+                          ->where('slug', $slug)
+                          ->firstOrFail(); // Fails if listing not found
 
         $businessDescription = (trim($listing->getDetail('business_description')) !== '<p><br></p>')
                                ? $listing->getDetail('business_description'): '';
