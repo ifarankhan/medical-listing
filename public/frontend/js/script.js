@@ -1396,13 +1396,14 @@ $(function () {
 
 
     $(document).ready(function () {
-        $('#multiStepForm').on('submit', function (e) {
+        $('#multiStepForm').on('input', 'input', function (e) {
             e.preventDefault();
 
-            const form = $(this);
-            const formData = new FormData(this);
+            // Reference the form element instead of the input element.
+            const form = document.getElementById('multiStepForm');
+            const formData = new FormData(form);
 
-            // Add the action value
+            // Add the action value.
             formData.append('action', $('button[name="action"]').val());
 
             $.ajax({
@@ -1418,8 +1419,8 @@ $(function () {
                     if (response.success) {
                         //alert('Validation passed. Proceeding...');
                         // If validation passes, submit the form normally
-                        form.off('submit'); // Remove the submit handler to prevent recursion
-                        form.submit(); // Submit the form
+                        $(form).off('submit'); // Remove the submit handler to prevent recursion
+                        $(form).submit(); // Submit the form
                     }
                 },
                 error: function (xhr) {
