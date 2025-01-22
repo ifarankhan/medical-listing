@@ -259,7 +259,7 @@
 
             <div class="add_property_input">
                 <div>
-                    <label for="states">State(s): <span class="text-danger">*</span></label>
+                    <label for="states">Select Locations (U.S. State or Country): <span class="text-danger">*</span></label>
                     @php
                         $businessStates = old('business_states', json_decode($listing->getDetail('business_states')));
                     @endphp
