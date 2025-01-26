@@ -21,7 +21,7 @@ class FileUploadService
         int $maxSize = 10000
     ): string {
         // Validate file extension
-        $extension = $file->getClientOriginalExtension();
+        $extension = strtolower($file->getClientOriginalExtension());
         if (!in_array($extension, $allowedExtensions)) {
             throw new Exception('File type is not allowed');
         }
