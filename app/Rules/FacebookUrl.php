@@ -17,15 +17,20 @@ class FacebookUrl implements Rule
     }
 
     /**
-     * Determine if the validation rule passes.
+     * Examples of valid URLs:
+     * - `https://facebook.com/username`
+     * - `http://m.facebook.com/page.name`
+     * - `https://www.facebook.com/group_name/`
+     * - `https://developers.facebook.com`
+     * - `https://business.facebook.com`
+     * - `https://fb.com/username`
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @return bool
+     * @param string $value The URL to validate.
+     * @return bool Returns `true` if the URL is a valid Facebook URL, otherwise `false`.
      */
     public function passes($attribute, $value): bool
     {
-        return preg_match('/^https:\/\/(www\.)?facebook\.com\/[A-Za-z0-9._-]+\/?$/', $value);
+        return preg_match('/^(https?:\/\/)?([a-z0-9]+(\.[a-z0-9]+)*\.)?facebook\.(com|me|net)\/[A-Za-z0-9._-]+(\/)?$/i', $value);
     }
 
     /**
