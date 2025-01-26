@@ -20,7 +20,41 @@ $(function () {
 
     //=======select2======
     $(document).ready(function () {
-        $('.select_2').select2();
+        $('.select_2').select2({
+            matcher: function(params, data) {
+                if ($.trim(params.term) === '') {
+                    return data;
+                }
+
+                const term = params.term.toLowerCase();
+                const text = data.text.toLowerCase();
+
+                // Exact match has the highest priority
+                if (text === term) {
+                    return data;
+                }
+
+                // Starts-with match has the second-highest priority
+                if (text.startsWith(term)) {
+                    return $.extend({}, data, { sort: 1 });
+                }
+
+                // Contains match comes next
+                if (text.includes(term)) {
+                    return $.extend({}, data, { sort: 2 });
+                }
+
+                // No match
+                return null;
+            },
+            // Sorting based on custom priorities
+            sorter: function(results) {
+                return results.sort(function(a, b) {
+                    // Custom sorting by the "sort" property
+                    return (a.sort || 3) - (b.sort || 3);
+                });
+            }
+        });
     });
 
 
