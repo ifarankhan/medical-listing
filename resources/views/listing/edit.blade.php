@@ -79,7 +79,7 @@
             </div>
         </div>
     </div>
-
+    <p class="mt-md-4">(Ignore the error message if all the mandatory items in this section are updated).</p>
 </div>
 
 <!-- User Information Section -->
@@ -133,6 +133,7 @@
             </div>
         </div>
     </div>
+    <p class="mt-md-4">(Ignore the error message if all the mandatory items in this section are updated).</p>
 </div>
 
 <!-- Business Information Section -->
@@ -335,6 +336,7 @@
             </div>
         </div>
     </div>
+    <p class="mt-md-4">(Ignore the error message if all the mandatory items in this section are updated).</p>
 </div>
 
 <!-- Product/Services Information Section -->
@@ -565,6 +567,8 @@
     </div>
 
     <button type="button" class="common_btn mt-4" id="add_product_btn">Add Another Product/Service</button>
+
+    <p class="mt-md-4">(Ignore the error message if all the mandatory items in this section are updated).</p>
 </div>
 
 <div class="add_property_info add_property_aminities wow fadeInUp" data-wow-duration="1.5s">
