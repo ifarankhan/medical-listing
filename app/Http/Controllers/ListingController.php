@@ -9,6 +9,7 @@ use App\Models\ProductService;
 use App\Models\State;
 use App\Models\Subscription;
 use App\Rules\WordCount;
+use App\Services\CategoryDropDown;
 use App\Services\FileUploadService;
 use App\Services\PaymentService;
 use App\Services\PhoneService;
@@ -17,6 +18,7 @@ use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -33,9 +35,14 @@ class ListingController extends Controller
         protected Subscription $subscription,
         protected FileUploadService $fileUploadService,
         protected PhoneService $phoneService,
+        protected CategoryDropDown $serviceCategory
     ) {
     }
 
+    protected function getProductServiceCategories(): Collection
+    {
+        return $this->serviceCategory->getServiceCategories();
+    }
     public function index(): Factory|View|Application
     {
         $currentUser = Auth::user();
@@ -56,7 +63,7 @@ class ListingController extends Controller
      */
     public function create(): Factory|View|Application
     {
-        $categories = Category::all();
+        $categories = $this->getProductServiceCategories();
         $listing    = new Listing();
         $states     = State::all()->pluck('name', 'id')->toArray();
 
@@ -73,7 +80,7 @@ class ListingController extends Controller
         if ($listing->user_id !== Auth::id()) {
             abort(403, 'Unauthorized'); // Or redirect to a different page
         }
-        $categories = Category::all();
+        $categories = $this->getProductServiceCategories();
         $states     = State::all()->pluck('name', 'id')->toArray();
         $listing->with(['productService', 'productService.category', 'details']);
 
@@ -153,7 +160,7 @@ class ListingController extends Controller
                 $message = 'Listing updated successfully.';
             } else {
                 // Check if the user already has a listing.
-                if (auth()->user()->listings) {
+                if (auth()->check() && auth()->user()->listings) {
                     return redirect()->back()->with('error', 'You can only create one listing.');
                 }
                 $listing = $this->createListing($validatedData);

@@ -26,8 +26,13 @@
                                                    class="img-fluid w-100"></span>
                                     </li>
                                     <li class="banner_selector">
-                                        <select class="select_2" name="zip_code" id="zip_code">
-                                            <option value="">Zip Code</option>
+                                        <select class="select_2" name="state">
+                                            <option value="">Select Location (U.S. State/Country)</option>
+                                            @foreach($businessStatesCountries as $state)
+                                                <option value="{{ $state->id }}"
+                                                    {{ isset($filters['state']) && $filters['state'] === "$state->id" ? 'selected' : '' }}
+                                                >{{ $state->abbreviation }} - {{ $state->name }}</option>
+                                            @endforeach
                                         </select>
                                     </li>
                                     <li class="banner_selector">
