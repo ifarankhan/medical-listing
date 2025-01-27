@@ -149,6 +149,14 @@ class ListingController extends Controller
      */
     public function store(ListingRequest $request): RedirectResponse
     {
+        // Redirect unauthenticated users to the login page.
+        if (!auth()->check()) {
+
+            return redirect()
+                ->route('login')
+                ->with('error', 'Please log in to continue.');
+        }
+
         $validatedData = $request->validated();
         $listingId     = $request->get('listing_id') ?? null;
 
@@ -160,7 +168,7 @@ class ListingController extends Controller
                 $message = 'Listing updated successfully.';
             } else {
                 // Check if the user already has a listing.
-                if (auth()->check() && auth()->user()->listings) {
+                if (auth()->user()->listings) {
                     return redirect()->back()->with('error', 'You can only create one listing.');
                 }
                 $listing = $this->createListing($validatedData);
