@@ -108,9 +108,9 @@
                         </div>
 
                         <div class="sidebar_dropdown sidebar_wizerd">
-                            <h3>state</h3>
+                            <h3>Select Location (u.s. state or country)</h3>
                             <select class="select_2" name="state">
-                                <option value="">Select State</option>
+                                <option value="">Select Location (U.S. State/Country)</option>
                                 @foreach($businessStates as $state)
                                     <option value="{{ $state->id }}"
                                         {{ isset($filters['state']) && $filters['state'] === "$state->id" ? 'selected' : '' }}
@@ -279,7 +279,7 @@
         {{--                                <a class="love" href="#"><i class="fas fa-heart"></i></a>--}}
                                     </div>
                                     <div class="listing_text">
-                                        <a href="{{ route('listing.details', $listings[$i]->id) }}">
+                                        <a href="{{ route('listing.details', $listings[$i]->slug) }}">
                                             <h5>{{ $listings[$i]->business_name }}</h5>
                                         </a>
                                         <ul>

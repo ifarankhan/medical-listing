@@ -1505,5 +1505,14 @@ $(function () {
     $(document).ready(function(){
         $('#contact_number, #business_contact, #contact_phone').mask('(000) 000-0000'); // Mask phone number format
     });
+
+    $(document).ready(function (){
+        $("#business_address").on('keydown', function(e) {
+
+            if (e.key === "Enter") {
+                e.preventDefault();
+            }
+        })
+    })
 });
 

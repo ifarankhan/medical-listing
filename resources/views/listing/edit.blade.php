@@ -43,7 +43,7 @@
         <div class="col-xxl-6 col-md-6">
             <div class="add_property_input">
 
-                <label>Upload a file <span class="text-danger">*</span></label>
+                <label>Upload a file</label>
                 <input {{ $listing->getDetail('legal_proof') ? '' : 'required' }}
                         type="file"
                        name="legal_proof" accept="image/*,application/pdf">
@@ -79,7 +79,7 @@
             </div>
         </div>
     </div>
-
+    <p class="mt-md-4">(Ignore the error message if all the mandatory items in this section are updated).</p>
 </div>
 
 <!-- User Information Section -->
@@ -133,6 +133,7 @@
             </div>
         </div>
     </div>
+    <p class="mt-md-4">(Ignore the error message if all the mandatory items in this section are updated).</p>
 </div>
 
 <!-- Business Information Section -->
@@ -212,6 +213,18 @@
 
             </div>
 
+            <div class="add_property_input">
+                <div>
+                    <label for="slug">Slug (Pretty URL): <span class="text-danger">*</span></label>
+                    <input type="text" id="slug"
+                           name="slug" placeholder="Your listing's URL (example: my-business-profile)"
+                           title="Enter a unique identifier for your listing in a 'my-listing' format.
+                           This will be used to access the listing in the frontend."
+                           value="{{ old('slug', $listing->slug) }}" >
+                </div>
+
+            </div>
+
         </div>
         <div class="col-xxl-4 col-md-6">
             <div class="add_property_input">
@@ -247,7 +260,7 @@
 
             <div class="add_property_input">
                 <div>
-                    <label for="states">State(s): <span class="text-danger">*</span></label>
+                    <label for="states">Select Locations (U.S. State or Country): <span class="text-danger">*</span></label>
                     @php
                         $businessStates = old('business_states', json_decode($listing->getDetail('business_states')));
                     @endphp
@@ -323,6 +336,7 @@
             </div>
         </div>
     </div>
+    <p class="mt-md-4">(Ignore the error message if all the mandatory items in this section are updated).</p>
 </div>
 
 <!-- Product/Services Information Section -->
@@ -553,6 +567,8 @@
     </div>
 
     <button type="button" class="common_btn mt-4" id="add_product_btn">Add Another Product/Service</button>
+
+    <p class="mt-md-4">(Ignore the error message if all the mandatory items in this section are updated).</p>
 </div>
 
 <div class="add_property_info add_property_aminities wow fadeInUp" data-wow-duration="1.5s">
