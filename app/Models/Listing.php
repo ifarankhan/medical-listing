@@ -168,4 +168,9 @@ class Listing extends Model
         $contact = $this->attributes['business_contact'];
         return $this->getPhoneService()->formatPhoneNumber($contact);
     }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
 }

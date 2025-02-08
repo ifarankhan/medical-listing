@@ -140,4 +140,9 @@ class User extends Authenticatable
 
         return Carbon::parse($this->trial_period_end)->format('F j, Y');
     }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'customer_id');
+    }
 }
