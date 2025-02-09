@@ -42,7 +42,9 @@
                         <div class="row listing_det_slider">
                             <div class="col-12">
                                 <div class="property_details_large_img">
-                                    <img src="{{ asset($listing->profile_picture ? 'storage/' . $listing->profile_picture : 'frontend/images/listing_1.jpg') }}" alt="img-fluid w-100">
+                                    <img
+                                        src="{{ asset($listing->profile_picture ? 'storage/' . $listing->profile_picture : 'frontend/images/listing_1.jpg') }}"
+                                        alt="img-fluid w-100">
                                 </div>
                             </div>
                         </div>
@@ -81,11 +83,13 @@
                                 @foreach($listing->productService as $item)
                                     <div class="col-md-6">  <!-- Use col-md-6 for two columns per row -->
                                         <div class="p-3">
-                                        <b>{{ $item->category->name }}</b> {{ $item->getAcceptingNewClientsOrWaitlistAttribute() }}
-                                        <ul class="list-group w-100">
-                                            <li class="list-unstyled w-100">{{ $item->description }}</li>
-                                            <li class="w-100"><b>Accepts Insurance:</b> {{ $item->accept_insurance == 1 ? 'Yes': 'No' }}</li>
-                                        </ul>
+                                            <b>{{ $item->category->name }}</b> {{ $item->getAcceptingNewClientsOrWaitlistAttribute() }}
+                                            <ul class="list-group w-100">
+                                                <li class="list-unstyled w-100">{{ $item->description }}</li>
+                                                <li class="w-100"><b>Accepts
+                                                        Insurance:</b> {{ $item->accept_insurance == 1 ? 'Yes': 'No' }}
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
                                 @endforeach
@@ -93,9 +97,16 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Include the review section component -->
-                    <x-review-section :reviews="$listing->reviews" />
-                    <x-review-form :listing="$listing" />
+                    @if ($listing->reviews->isNotEmpty())
+                        <div class="single_property_details mt_25 wow fadeInUp" data-wow-duration="1.5s">
+                            <!-- Include the review section component -->
+                            <x-ratings-overview :averageRating="$listing->average_rating"
+                                                :totalReviews="$listing->reviews->count()"
+                                                :ratingsPercentage="$listing->ratings_percentage"/>
+                            <x-review-section :reviews="$listing->reviews"/>
+                        </div>
+                    @endif
+                    <x-review-form :listing="$listing"/>
                     {{--<div class="single_property_details mt_25 wow fadeInUp" data-wow-duration="1.5s">
                         <h4>Map Location</h4>
                         <div class=" apertment_map">
@@ -316,9 +327,13 @@
                         <div class="opening_our">
                             <h3>at a glance </h3>
                             <ul>
-                                <li><span><b>Registered Business Address:</b></span> <span>{{ $listing->business_address }}</span></li>
-                                <li><span>Verified as per Diverrx's <a href="{{ route('safe.space.policy') }}" target="_blank">Safe Space Policy</a></span></li>
-                                <li><span><b>Accepting Insurances:</b></span> <span>{{ $listing->getProductServicesInsuranceList()? $listing->getProductServicesInsuranceList(): 'No'  }}</span></li>
+                                <li><span><b>Registered Business Address:</b></span>
+                                    <span>{{ $listing->business_address }}</span></li>
+                                <li><span>Verified as per Diverrx's <a href="{{ route('safe.space.policy') }}"
+                                                                       target="_blank">Safe Space Policy</a></span></li>
+                                <li><span><b>Accepting Insurances:</b></span>
+                                    <span>{{ $listing->getProductServicesInsuranceList()? $listing->getProductServicesInsuranceList(): 'No'  }}</span>
+                                </li>
 
                             </ul>
                         </div>
@@ -328,27 +343,35 @@
                             <a href="#" class="sales_executive_img">
                                 @if($listing->user->profile_picture)
                                     <!-- Display the user's profile picture if it exists -->
-                                    <img id="profilePicture" src="{{ asset('storage/profile_pictures/' . $listing->user->profile_picture) }}" alt="dashboard" class="img-fluid w-100">
+                                    <img id="profilePicture"
+                                         src="{{ asset('storage/profile_pictures/' . $listing->user->profile_picture) }}"
+                                         alt="dashboard" class="img-fluid w-100">
                                 @else
-                                    <img src="{{ asset('frontend/images/blog_owner.png') }}" alt="img" class="img-fluid w-100">
+                                    <img src="{{ asset('frontend/images/blog_owner.png') }}" alt="img"
+                                         class="img-fluid w-100">
                                 @endif
                             </a>
-                            <a href="javascript: void(0)" class="sales_executive_name" style="pointer-events: none">{{ $listing->user->name }}</a>
-{{--                            <p>Sales Executive</p>--}}
+                            <a href="javascript: void(0)" class="sales_executive_name"
+                               style="pointer-events: none">{{ $listing->user->name }}</a>
+                            {{--                            <p>Sales Executive</p>--}}
                             <ul class="d-flex flex-wrap justify-content-center">
                                 @if($listing->getDetail('social_media_1'))
-                                    <li><a href="{{ $listing->getDetail('social_media_1') }}" target="_blank"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
+                                    <li><a href="{{ $listing->getDetail('social_media_1') }}" target="_blank"><i
+                                                class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
                                 @endif
                                 @if($listing->getDetail('social_media_2'))
-                                    <li><a href="{{ $listing->getDetail('social_media_2') }}" target="_blank"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+                                    <li><a href="{{ $listing->getDetail('social_media_2') }}" target="_blank"><i
+                                                class="fab fa-twitter" aria-hidden="true"></i></a></li>
                                 @endif
 
                                 @if($listing->getDetail('social_media_3'))
-                                    <li><a href="{{ $listing->getDetail('social_media_3') }}" target="_blank"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a></li>
+                                    <li><a href="{{ $listing->getDetail('social_media_3') }}" target="_blank"><i
+                                                class="fab fa-linkedin-in" aria-hidden="true"></i></a></li>
                                 @endif
 
                                 @if($listing->getDetail('social_media_4'))
-                                    <li><a href="{{ $listing->getDetail('social_media_4') }}" target="_blank"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
+                                    <li><a href="{{ $listing->getDetail('social_media_4') }}" target="_blank"><i
+                                                class="fab fa-instagram" aria-hidden="true"></i></a></li>
                                 @endif
                             </ul>
                         </div>

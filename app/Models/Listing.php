@@ -17,14 +17,14 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Listing extends Model
 {
     const STATUS_SUBSCRIBED = 'subscribed';
-    CONST STATUS_ACTIVE_TRIAL = 'active_trial';
-    CONST STATUS_EXPIRED_TRIAL = 'trial_expired';
+    const STATUS_ACTIVE_TRIAL = 'active_trial';
+    const STATUS_EXPIRED_TRIAL = 'trial_expired';
 
     const STATUS_PAID = 'paid';
     const STATUS_PENDING = 'pending';
 
     const STATUS_CANCELLED = 'canceled';
-    CONST STATUS_REFUNDED = 'refunded';
+    const STATUS_REFUNDED = 'refunded';
 
     protected $fillable = [
         'user_id',
@@ -55,6 +55,7 @@ class Listing extends Model
         // Resolve the service lazily using the app() helper
         return $this->phoneService ?? app(PhoneService::class);
     }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -78,26 +79,31 @@ class Listing extends Model
     public function activeSubscription(): HasOne|Builder
     {
         return $this->hasOne(Subscription::class)
-            ->whereHas('listing', function ($query) {
-                $query->whereIn('status', [
-                    Subscription::STATUS_ACTIVE,
-                    Subscription::STATUS_PENDING
-                ]);
-                $query->where('stripe_subscription_id', '!=', null);
-            });
+                    ->whereHas('listing', function ($query) {
+                        $query->whereIn('status', [
+                            Subscription::STATUS_ACTIVE,
+                            Subscription::STATUS_PENDING
+                        ]);
+                        $query->where('stripe_subscription_id', '!=', null);
+                    });
     }
 
     public function getProductServicesInsuranceList(): string
     {
         $insuranceList = $this->productService->pluck('insurance_list');
+
         // Fetch related product services and format them into a string.
         return ($insuranceList->isNotEmpty()) ?
-                preg_replace('/\s*,\s*/', ', ', trim(
+            preg_replace(
+                '/\s*,\s*/',
+                ', ',
+                trim(
                     $this->productService->pluck('insurance_list')
-                        ->filter()
-                        ->implode(', '), ', ')
-                ) : '';
-
+                                         ->filter()
+                                         ->implode(', '),
+                    ', '
+                )
+            ) : '';
     }
 
     /**
@@ -108,9 +114,9 @@ class Listing extends Model
     public function getCustomerLeadsCount(): int
     {
         return $this->hasMany(Message::class, 'listing_id')
-            ->select('email')
-            ->distinct()
-            ->count();
+                    ->select('email')
+                    ->distinct()
+                    ->count();
     }
 
     /**
@@ -121,7 +127,6 @@ class Listing extends Model
     public function getFormattedStatus(): string
     {
         return match ($this->listing_status) {
-
             self::STATUS_ACTIVE_TRIAL => 'Active',
             self::STATUS_EXPIRED_TRIAL => 'Trial Expired',
             default => $this->listing_status,
@@ -160,17 +165,48 @@ class Listing extends Model
     public function getFormattedContactNumberAttribute(): string
     {
         $contact = $this->attributes['contact_number'];
+
         return $this->getPhoneService()->formatPhoneNumber($contact);
     }
 
     public function getFormattedBusinessContactAttribute(): string
     {
         $contact = $this->attributes['business_contact'];
+
         return $this->getPhoneService()->formatPhoneNumber($contact);
     }
 
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function getAverageRatingAttribute(): float
+    {
+        $average = $this->reviews()
+                        ->avg('rating');
+
+        return number_format($average, 1) ?? 0.0;
+    }
+
+    public function getRatingsPercentageAttribute(): \Illuminate\Support\Collection
+    {
+        // Count total reviews.
+        $totalReviews = $this->reviews
+            ->count();
+        // Count occurrences of each rating (1-5). Use collection to apply map.
+        $ratingCounts = $this->reviews
+            ->groupBy('rating')
+            ->map(fn($reviews) => $reviews->count());
+
+        // Calculate percentages for each rating (default to 0% if no reviews).
+        return collect(range(1, 5))->mapWithKeys(function ($rating) use ($ratingCounts, $totalReviews) {
+            return [
+                $rating => $totalReviews > 0 ? number_format(
+                    ($ratingCounts->get($rating, 0) / $totalReviews) * 100,
+                    1
+                ) : 0.0
+            ];
+        });
     }
 }
