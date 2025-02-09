@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,6 +13,14 @@ class Review extends Model
 
     protected $fillable = ['listing_id', 'customer_id', 'rating', 'review_text'];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+    ];
+
+    public function getFormattedCreatedAtAttribute(): string
+    {
+        return Carbon::parse($this->created_at)->format('F d, Y');
+    }
     public function listing(): BelongsTo
     {
         return $this->belongsTo(Listing::class);
@@ -19,6 +28,6 @@ class Review extends Model
 
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id');
+        return $this->belongsTo(User::class, 'customer_id');
     }
 }

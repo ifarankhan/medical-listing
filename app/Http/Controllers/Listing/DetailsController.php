@@ -17,7 +17,7 @@ class DetailsController extends Controller
             'productService',
             'productService.category',
             'details',
-            'reviews',
+            'reviews.customer',
         ])->where('slug', $slug)
           ->firstOrFail(); // Fails if listing not found.
 

@@ -67,66 +67,36 @@
         </div>
     </div>
     <div class="apartment_review_area">
-        <h4>2 Reviews</h4>
-        <div class="single_review">
-            <div class="single_review_img">
-                <img src="assets/images/comment_1.png" alt="img" class="img-fluid w-100">
+
+        <h4>{{ $reviews->count() }} Reviews</h4>
+
+        @foreach($reviews as $review)
+
+            <div class="single_review">
+                <div class="single_review_img">
+                    <img
+                        src="{{ asset(
+                            $review->customer->profile_picture
+                                ? 'storage/profile_pictures/' . $review->customer->profile_picture
+                                : 'assets/images/comment_3.png'
+                            ) }}"
+                        alt="img" class="img-fluid w-100">
+                </div>
+                <div class="single_review_text">
+                    <h3>{{ $review->customer->name }}
+                        <span>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </span>
+                    </h3>
+                    <h6>{{ $review->getFormattedCreatedAtAttribute() }}</h6>
+                    <p>{{ $review->review_text }}</p>
+                </div>
             </div>
-            <div class="single_review_text">
-                <h3>Elon Gated
-                    <span>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                        </span>
-                </h3>
-                <h6>February 24, 2024</h6>
-                <p>Nullam metus metus, imperdiet ut ex quis, ultrices feugiat neque. Etiam vitae
-                    accumsan neque, id gravida ligula donec ut tincidunt orci dignissim id sed
-                    tincidunt mi libero.</p>
-            </div>
-        </div>
-        <div class="single_review">
-            <div class="single_review_img">
-                <img src="assets/images/comment_2.png" alt="img" class="img-fluid w-100">
-            </div>
-            <div class="single_review_text">
-                <h3>abrar khan
-                    <span>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                        </span>
-                </h3>
-                <h6>February 24, 2024</h6>
-                <p>Nullam metus metus, imperdiet ut ex quis, ultrices feugiat neque. Etiam vitae
-                    accumsan neque, id gravida ligula donec ut tincidunt orci dignissim id sed
-                    tincidunt mi libero.</p>
-            </div>
-        </div>
-        <div class="single_review">
-            <div class="single_review_img">
-                <img src="assets/images/comment_3.png" alt="img" class="img-fluid w-100">
-            </div>
-            <div class="single_review_text">
-                <h3>maria jahan
-                    <span>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                        </span>
-                </h3>
-                <h6>February 24, 2024</h6>
-                <p>Nullam metus metus, imperdiet ut ex quis, ultrices feugiat neque. Etiam vitae
-                    accumsan neque, id gravida ligula donec ut tincidunt orci dignissim id sed
-                    tincidunt mi libero.</p>
-            </div>
-        </div>
+        @endforeach
+
     </div>
 </div>
