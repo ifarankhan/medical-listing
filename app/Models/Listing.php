@@ -154,7 +154,7 @@ class Listing extends Model
 
         $states = State::whereIn('id', $decodedStates)->pluck('name')->toArray();
 
-        return implode(',', $states);
+        return implode(', ', $states);
     }
 
     public function getFormattedContactNumberAttribute(): string
