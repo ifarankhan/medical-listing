@@ -435,7 +435,7 @@ $(function () {
                 },
                 onPaste: function (e) {
                     // Handle pasted content
-                    let bufferText = (e.originalEvent || e).clipboardData.getData('Text');
+                    //let bufferText = (e.originalEvent || e).clipboardData.getData('Text');
                     let editor = $(this);
                     setTimeout(function () {
                         let content = editor.summernote('code');
@@ -1514,5 +1514,58 @@ $(function () {
             }
         })
     })
+
+    // REVIEW START:
+    //
+    // Handle star rating click
+    $(".rating-stars li").on("click", function () {
+        const rating = $(this).data("value"); // Get rating value
+        $("#selected_rating").val(rating); // Set hidden input value
+
+        // Highlight selected stars
+        $(".rating-stars li").removeClass("selected");
+        $(this).addClass("selected");
+
+        // Remove active class from all stars and highlight only selected ones
+        $(".rating-stars li i").removeClass("text-warning");
+        $(this).find("i").addClass("text-warning");
+    });
+
+    // AJAX form submission
+    $("#submitReview").on("click", function () {
+        const listing_id = $("#listing_id").val(); // Assuming listing ID is available in hidden input
+        const rating = $("#selected_rating").val();
+        const review_text = $("#review_text").val();
+
+        if (!rating) {
+            alert("Please select a rating before submitting.");
+            return;
+        }
+
+        $.ajax({
+            url: "/reviews/store",
+            type: "POST",
+            data: {
+                _token: $("meta[name='csrf-token']").attr("content"),
+                listing_id: listing_id,
+                rating: rating,
+                review_text: review_text
+            },
+            success: function (response) {
+                if (response.success) {
+                    $(".apertment_form").html("<p class='text-success mt-2'>Thank you for your review!</p>");
+                } else {
+                    alert(response.error);
+                }
+            },
+            error: function (xhr) {
+                const errors = xhr.responseJSON.errors;
+                if (errors) {
+                    alert(Object.values(errors).join("\n"));
+                }
+            }
+        });
+    });
+    // REVIEW END
 });
 
