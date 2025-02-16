@@ -13,8 +13,7 @@ use Illuminate\Support\Facades\Auth;
 class ReviewController extends Controller
 {
     public function __construct(protected readonly Review $review)
-    {
-    }
+    {}
 
     public function index(): Factory|View|Application
     {

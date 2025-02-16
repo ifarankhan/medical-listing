@@ -103,7 +103,8 @@
                             <x-ratings-overview :averageRating="$listing->average_rating"
                                                 :totalReviews="$listing->reviews->count()"
                                                 :ratingsPercentage="$listing->ratings_percentage"/>
-                            <x-review-section :reviews="$listing->reviews"/>
+
+                            <x-review-section :reviews="$reviews"/>
                         </div>
                     @endif
                     <x-review-form :listing="$listing"/>

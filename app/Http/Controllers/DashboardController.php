@@ -34,12 +34,16 @@ class DashboardController extends Controller
         // Each listing must have one product/service
         $listing = $listing->first();
         $loadBarChart = true;
+
+        $listingReviewCount = $this->getServiceProviderListingReviewCount($listing);
+
         return view('dashboard', compact(
             'user',
             'numberOfProductServicesInListing',
             'customerLeads',
             'listing',
-            'loadBarChart'
+            'loadBarChart',
+            'listingReviewCount',
         ));
     }
 
@@ -70,5 +74,11 @@ class DashboardController extends Controller
         return $user->listings()
             ->with('productService')
             ->get();
+    }
+
+    private function getServiceProviderListingReviewCount(Listing $listing): int
+    {
+        return $listing->reviews()
+            ->count();
     }
 }

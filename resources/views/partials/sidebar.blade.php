@@ -119,16 +119,18 @@
                     Wishlist
                 </a>
             </li>
-            <li>
-                <a class="{{ request()->routeIs('review') ? 'active' : '' }}" href="dashboard_review.html"
-                   style="display: none;">
+            <!-- Menu items for insurance_provider role -->
+            @userRole(UserRole::ROLE_INSURANCE_PROVIDER)
+                <li>
+                    <a class="{{ request()->routeIs('dashboard.reviews.index') ? 'active' : '' }}" href="{{ route('dashboard.reviews.index') }}">
                             <span>
                                 <img src="{{ asset('frontend/images/dashboard_icon_5.png') }}" alt="icon"
                                      class="img-fluid w-100">
                             </span>
-                    Reviews
-                </a>
-            </li>
+                        Reviews
+                    </a>
+                </li>
+            @enduserRole
             <li>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
