@@ -21,7 +21,7 @@ class IndexController extends Controller
             $reviews = $listing->reviews()
                 ->latest()
                 ->orderBy('created_at', 'desc')
-                ->paginate(10);
+                ->paginate(5);
         }
         // Return a view having reviews grid.
         return view('dashboard.reviews.grid', compact(
