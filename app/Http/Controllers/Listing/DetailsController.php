@@ -17,9 +17,13 @@ class DetailsController extends Controller
             'productService',
             'productService.category',
             'details',
-            'reviews.customer',
         ])->where('slug', $slug)
           ->firstOrFail(); // Fails if listing not found.
+
+        $reviews = $listing->reviews()
+            ->with('customer')
+            ->latest()
+            ->paginate(3);
 
         $businessDescription = (trim($listing->getDetail('business_description')) !== '<p><br></p>')
                                ? $listing->getDetail('business_description'): '';
@@ -27,7 +31,8 @@ class DetailsController extends Controller
 
         return view('listing.details', compact(
             'listing',
-            'businessDescription'
+            'businessDescription',
+            'reviews'
         ))->with(['meta' => [
             'og:title' => $listing->business_name,
             'og:description' => $businessDescription ? strip_tags($businessDescription) : null,

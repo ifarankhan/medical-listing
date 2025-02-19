@@ -115,6 +115,11 @@ Route::group(['middleware' => ['role:insurance_provider']], function () {
     ])->name('product.destroy');
 
     Route::get('/leads-per-month', [BarChartWidgetController::class, 'index']);
+
+    Route::get('/dashboard/reviews', [
+        App\Http\Controllers\Dashboard\Review\IndexController::class,
+        'execute'
+    ])->name('dashboard.reviews.index');
 });
 
 Route::group(['middleware' => ['role:customer']], function () {
