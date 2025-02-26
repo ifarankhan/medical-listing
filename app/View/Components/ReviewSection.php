@@ -5,6 +5,9 @@ namespace App\View\Components;
 use App\Models\Review;
 use Closure;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -37,13 +40,15 @@ class ReviewSection extends Component
     /**
      * Get the view / contents that represent the component.
      */
-    public function render()
+    public function render(): Factory|View|Htmlable|string|Closure|Application|null
     {
-        if ($this->getReviews()->isNotEmpty()) {
-            return view('components.review-section', [
-                'user' => $this->user,
-                'reviews' => $this->getReviews(),
-            ]);
+        if ($this->getReviews()->isEmpty()) {
+            return null;
         }
+
+        return view('components.review-section', [
+            'user' => $this->user,
+            'reviews' => $this->getReviews(),
+        ]);
     }
 }
