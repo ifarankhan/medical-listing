@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\ReviewCreatedEvent;
 use App\Http\Requests\StoreReviewRequest;
 use App\Models\Review;
 use Illuminate\Support\Facades\Log;
@@ -17,25 +18,21 @@ class ReviewService
     )
     {}
 
-    public function storeReview(StoreReviewRequest $request): bool
+    public function storeReview(StoreReviewRequest $request)
     {
-        try {
-            $this->setListingId($request->listingn_id)
-                ->userHasReviewed();
-            // Store review
-            $this->review->create([
-                'listing_id'  => $request->listing_id,
-                'customer_id' => $this->userId,
-                'rating'      => $request->rating,
-                'review_text' => $request->review_text,
-            ]);
+        $this->setListingId($request->listing_id)
+             ->userHasReviewed();
+        // Store review
+        $review = $this->review->create([
+            'listing_id'  => $request->listing_id,
+            'customer_id' => $this->userId,
+            'rating'      => $request->rating,
+            'review_text' => $request->review_text,
+        ]);
+        // Dispatch event.
+        event(new ReviewCreatedEvent($review->getKey()));
 
-            return true;
-        } catch (InvalidArgumentException $e) {
-
-            Log::error($e->getMessage());
-            return false;
-        }
+        return $review;
     }
 
     private function userHasReviewed(): void
