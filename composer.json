@@ -22,6 +22,7 @@
     },
     "require-dev": {
         "backpack/generators": "^3.3",
+        "barryvdh/laravel-debugbar": "^3.15",
         "fakerphp/faker": "^1.9.1",
         "laracasts/generators": "^2.0",
         "laravel/pint": "^1.0",

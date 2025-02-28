@@ -14,7 +14,7 @@ class ReviewNotificationService
     public function sendEmails(int $reviewId)
     {
         $review = $this->reviewRepository->findById($reviewId);
-
+dd($review->listing->id);
         $listingId = $review->listing->user->id; dd($listingId);
     }
 }

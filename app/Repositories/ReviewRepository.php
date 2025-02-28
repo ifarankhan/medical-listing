@@ -11,9 +11,8 @@ class ReviewRepository implements ReviewRepositoryInterface
     {}
     public function findById(int $id): ?Review
     {
-        $this->review->with([
-            'listing',
-            ''
-        ])->find($id);
+        // This return Review model instance.
+        return $this->review->where('id', $id)
+        ->first();
     }
 }
