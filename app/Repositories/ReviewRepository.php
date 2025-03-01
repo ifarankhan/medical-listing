@@ -13,6 +13,6 @@ class ReviewRepository implements ReviewRepositoryInterface
     {
         // This return Review model instance.
         return $this->review->where('id', $id)
-        ->first();
+            ->first();
     }
 }

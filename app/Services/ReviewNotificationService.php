@@ -14,7 +14,10 @@ class ReviewNotificationService
     public function sendEmails(int $reviewId)
     {
         $review = $this->reviewRepository->findById($reviewId);
-dd($review->listing->id);
+
+        // Send confirmation email to customer.
+
+        // Send notification email to Service Provider.
         $listingId = $review->listing->user->id; dd($listingId);
     }
 }
