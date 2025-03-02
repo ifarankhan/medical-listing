@@ -16,7 +16,7 @@ class ReviewNotification
      * @return void
      */
     public function __construct(
-        private ReviewNotificationService $reviewNotificationService
+        private readonly ReviewNotificationService $reviewNotificationService
     )
     {}
 
@@ -26,9 +26,9 @@ class ReviewNotification
      * @param ReviewCreatedEvent $event
      * @return void
      */
-    public function handle(ReviewCreatedEvent $event)
+    public function handle(ReviewCreatedEvent $event): void
     {
         // Call ReviewNotificationService to send emails.
-        $this->reviewNotificationService->sendEmails($event->reviewId);
+        $this->reviewNotificationService->send($event->reviewId);
     }
 }
