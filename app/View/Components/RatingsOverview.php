@@ -16,8 +16,8 @@ class RatingsOverview extends Component
      */
     public function __construct(
         public readonly float $averageRating,
+        public readonly ?Collection $ratingsPercentage,
         public readonly int $totalReviews = 0,
-        public readonly ?Collection $ratingsPercentage
     )
     {}
 

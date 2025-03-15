@@ -18,6 +18,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 /**
  * @property Collection|Listing[] $listings
+ * @property mixed $email
  */
 class User extends Authenticatable
 {

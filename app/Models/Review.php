@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property mixed $listingId
+ * @property mixed $customer_id
+ * @property Listing $listing
+ * @property User $customer
+ */
 class Review extends Model
 {
     use HasFactory;

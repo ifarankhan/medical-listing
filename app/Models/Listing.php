@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property Collection $productService
+ * @property mixed $user_id
+ * @property mixed $id
+ * @property User $user
  */
 class Listing extends Model
 {
