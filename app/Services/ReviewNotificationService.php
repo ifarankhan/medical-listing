@@ -9,10 +9,11 @@ use App\Repositories\Interfaces\ReviewRepositoryInterface;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
-class ReviewNotificationService
+readonly class ReviewNotificationService
 {
     public function __construct(
-        private readonly ReviewRepositoryInterface $reviewRepository,
+        private ReviewRepositoryInterface $reviewRepository,
+        private EmailService $emailService,
     )
     {}
 
@@ -24,17 +25,15 @@ class ReviewNotificationService
             return; // Handle case where review is deleted before processing.
         }
 
-        try {
-            // Send confirmation email to customer.
-            Mail::to($review->customer->email)->send(
-                new CustomerReviewMail($review)
-            );
-            // Send notification email to Service Provider.
-            Mail::to($review->listing->user->email)->send(
-                new ServiceProviderReviewMail($review)
-            );
-        } catch (ReviewException $exception) {
-            Log::error($exception->getMessage());
-        }
+        // Send confirmation email to customer.
+        $this->emailService->send(
+            $review->customer->email,
+            new CustomerReviewMail($review)
+        );
+        // Send notification email to Service Provider.
+        $this->emailService->send(
+            $review->listing->user->email,
+            new ServiceProviderReviewMail($review)
+        );
     }
 }
