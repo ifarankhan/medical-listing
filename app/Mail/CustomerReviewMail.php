@@ -20,7 +20,7 @@ class CustomerReviewMail extends Mailable
      *
      * @return void
      */
-    public function __construct(protected Review $review)
+    public function __construct(protected readonly Review $review)
     {}
 
     /**
@@ -48,6 +48,7 @@ class CustomerReviewMail extends Mailable
     {
         return new Content(
             view: 'emails.reviews.customer',
+            with: [ 'review' => $this->review]
         );
     }
 

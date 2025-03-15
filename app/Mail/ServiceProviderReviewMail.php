@@ -48,6 +48,7 @@ class ServiceProviderReviewMail extends Mailable
     {
         return new Content(
             view: 'emails.reviews.provider',
+            with: ['review' => $this->review]
         );
     }
 

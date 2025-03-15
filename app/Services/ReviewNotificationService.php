@@ -9,7 +9,7 @@ use App\Repositories\Interfaces\ReviewRepositoryInterface;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
-readonly class ReviewNotificationService
+class ReviewNotificationService
 {
     public function __construct(
         private ReviewRepositoryInterface $reviewRepository,
