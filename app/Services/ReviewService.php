@@ -4,8 +4,11 @@ namespace App\Services;
 
 use App\Events\ReviewCreatedEvent;
 use App\Http\Requests\StoreReviewRequest;
+use App\Mail\RequestReviewMail;
 use App\Models\Review;
+use App\Repositories\Interfaces\ReviewRepositoryInterface;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use InvalidArgumentException;
 
 class ReviewService
@@ -15,6 +18,7 @@ class ReviewService
 
     public function __construct(
         protected readonly Review $review,
+        protected readonly ReviewRepositoryInterface $reviewRepository,
     )
     {}
 
@@ -52,10 +56,28 @@ class ReviewService
         }
     }
 
-    public function sendEmail()
+    public function sendReviewRequest(): void
     {
+        $customer = $this->reviewRepository->getCustomerById(
+            $this->getUserId()
+        );
 
+        $listing = $this->reviewRepository->getListingById(
+            $this->getListingId()
+        );
+
+        if (!$customer || !$listing) {
+            throw new InvalidArgumentException('Invalid customer or listing.');
+        }
+        // Send email (queued for performance)
+        Mail::to($customer->email)->queue(
+            new RequestReviewMail(
+                $customer,
+                $listing
+            )
+        );
     }
+
 
     public function setUserId(int $userId): ReviewService
     {
@@ -64,10 +86,20 @@ class ReviewService
         return $this;
     }
 
+    public function getUserId(): int
+    {
+        return $this->userId;
+    }
+
     public function setListingId(int $listingId): ReviewService
     {
         $this->listingId = $listingId;
 
         return $this;
+    }
+
+    public function getListingId(): int
+    {
+        return $this->listingId;
     }
 }

@@ -29,7 +29,11 @@
 
                     @if($message->listing->reviews->where('customer_id', $message->user->id)->isEmpty())
                         <div>
-                            <a style="text-align: right" href="">Request Review</a>
+                            <button class="btn btn-primary request-review-btn"
+                                    data-customer-id="{{ $message->user->id }}"
+                                    data-listing-id="{{ $message->listing->id }}">
+                                Request Review
+                            </button>
                         </div>
                     @endisset
                 @endif

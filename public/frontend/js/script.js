@@ -1567,5 +1567,32 @@ $(function () {
         });
     });
     // REVIEW END
+
+    // Request review - Service provider message.
+    $(document).on('click', '.request-review-btn', function(e) {
+        e.preventDefault();
+
+        let customerId = $(this).data('customer-id');
+        let listingId = $(this).data('listing-id');
+
+        $.ajax({
+            url: "/request/review",
+            type: "POST",
+            data: {
+                customer_id: customerId,
+                listing_id: listingId,
+                _token: $("meta[name='csrf-token']").attr("content"),
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert(response.message); // Show success message
+                }
+            },
+            error: function(xhr) {
+                alert('Error: ' + xhr.responseJSON.message); // Show error message
+            }
+        });
+    });
+
 });
 

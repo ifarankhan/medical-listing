@@ -120,6 +120,11 @@ Route::group(['middleware' => ['role:insurance_provider']], function () {
         App\Http\Controllers\Dashboard\Review\IndexController::class,
         'execute'
     ])->name('dashboard.reviews.index');
+
+    Route::post('/request/review', [
+        ReviewController::class,
+        'requestReview'
+    ])->name('request.review');
 });
 
 Route::group(['middleware' => ['role:customer']], function () {
