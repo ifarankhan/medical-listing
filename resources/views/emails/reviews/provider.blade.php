@@ -8,7 +8,7 @@
 
     <p>Dear {{ $review->listing->user->name }},</p>
 
-    <p>Your listing <strong>{{ $review->listing->title }}</strong> has received a new review.</p>
+    <p>We are pleased to inform you that your listing has received a new customer review.</p>
 
     <p>Customer: {{ $review->customer->name }}</p>
 
@@ -18,8 +18,8 @@
         "{{ $review->review_text }}"
     </blockquote>
 
-    <p>Check your dashboard for more details.</p>
+    <p>For more details, please visit your dashboard & reviews section after login into your account.</p>
 
-    <p>Best Regards,<br>Team</p>
+    <p>Best Regards,<br>Diverrx Team</p>
 
 @endsection

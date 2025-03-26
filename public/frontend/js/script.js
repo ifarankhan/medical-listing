@@ -1572,6 +1572,7 @@ $(function () {
     $(document).on('click', '.request-review-btn', function(e) {
         e.preventDefault();
 
+        let button = $(this);
         let customerId = $(this).data('customer-id');
         let listingId = $(this).data('listing-id');
 
@@ -1584,9 +1585,12 @@ $(function () {
                 _token: $("meta[name='csrf-token']").attr("content"),
             },
             success: function(response) {
+
                 if (response.success) {
-                    alert(response.message); // Show success message
+                    button.prop('disabled', true);
                 }
+
+                alert(response.message); // Show success message
             },
             error: function(xhr) {
                 alert('Error: ' + xhr.responseJSON.message); // Show error message

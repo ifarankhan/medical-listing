@@ -30,12 +30,14 @@ class CustomerReviewMail extends Mailable
      */
     public function envelope(): Envelope
     {
+        $listingTitle = $this->review->listing->business_name;
+
         return new Envelope(
             from: new Address(
                 env('MAIL_FROM_ADDRESS'),
                 env('MAIL_FROM_NAME')
             ),
-            subject: 'Customer Review Mail',
+            subject: "Thank You for Your Feedback on {$listingTitle}’s Services!",
         );
     }
 

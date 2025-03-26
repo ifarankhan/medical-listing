@@ -11,6 +11,8 @@
 
     <p>We would really appreciate it if you could take a moment to share your experience by leaving a review.</p>
 
+    <p>Please login into your account to submit review.</p>
+
     <div style="text-align: center; margin-top: 20px;">
         <a href="{{ route('listing.details', $listing->slug) }}"
            style="display: inline-block; padding: 12px 20px; background-color: #FF3845; color: #ffffff; text-decoration: none; border-radius: 5px;">
