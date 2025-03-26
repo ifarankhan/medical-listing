@@ -100,7 +100,7 @@
                     @if ($listing->reviews->isNotEmpty())
                         <div class="single_property_details mt_25 wow fadeInUp" data-wow-duration="1.5s">
                             <!-- Include the review section component -->
-                            <x-ratings-overview :averageRating="$listing->average_rating"
+                            <x-ratings-overview :averageRating="round($listing->average_rating)"
                                                 :totalReviews="$listing->reviews->count()"
                                                 :ratingsPercentage="$listing->ratings_percentage"/>
 

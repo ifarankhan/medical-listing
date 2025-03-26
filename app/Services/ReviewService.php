@@ -6,6 +6,7 @@ use App\Events\ReviewCreatedEvent;
 use App\Http\Requests\StoreReviewRequest;
 use App\Mail\RequestReviewMail;
 use App\Models\Review;
+use App\Models\User;
 use App\Repositories\Interfaces\ReviewRepositoryInterface;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -78,7 +79,12 @@ class ReviewService
         );
     }
 
-
+    public function getCustomerById(): ?User
+    {
+        return $this->reviewRepository->getCustomerById(
+            $this->getUserId()
+        );
+    }
     public function setUserId(int $userId): ReviewService
     {
         $this->userId = $userId;

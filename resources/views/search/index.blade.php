@@ -303,7 +303,7 @@
                                                 </p>
 
                                                 <x-star-rating
-                                                    :rating="$listings[$i]->average_rating"
+                                                    :rating="round($listings[$i]->average_rating)"
                                                     :isListingsPage="true"
                                                 />
                                                 @php

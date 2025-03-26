@@ -30,12 +30,14 @@ class ServiceProviderReviewMail extends Mailable
      */
     public function envelope(): Envelope
     {
+        $listingTitle = $this->review->listing->business_name;
+
         return new Envelope(
             from: new Address(
                 env('MAIL_FROM_ADDRESS'),
                 env('MAIL_FROM_NAME')
             ),
-            subject: 'Service Provider Review Mail',
+            subject: "New Review Notification for Your Listing - $listingTitle",
         );
     }
 

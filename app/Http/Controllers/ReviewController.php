@@ -61,14 +61,33 @@ class ReviewController extends Controller
             'listing_id' => 'required|exists:listings,id',
         ]);
 
+        $sessionKey = 'review_request_sent_' . (int) $request->customer_id;
+
+        if (session()->has($sessionKey)) {
+
+            return response()->json([
+                'success' => false,
+                'message' => "Review request has already been sent for this session."
+            ]);
+        }
+
         try {
             $this->reviewService->setUserId((int) $request->customer_id)
                 ->setListingId((int) $request->listing_id)
                 ->sendReviewRequest();
 
+            $customer = $this->reviewService->setUserId((int) $request->customer_id)
+                ->getCustomerById()
+                ?->toArray();
+
+            $customerName = ' '.$customer['name'] ?? '';
+
+            // Store session flag
+            session([$sessionKey => true]);
+
             return response()->json([
                 'success' => true,
-                'message' => 'Review request sent successfully!'
+                'message' => "Email has been sent to the customer$customerName for leaving a review!"
             ]);
         } catch (\Exception $e) {
 

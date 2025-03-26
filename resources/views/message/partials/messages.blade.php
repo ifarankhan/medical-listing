@@ -30,6 +30,7 @@
                     @if($message->listing->reviews->where('customer_id', $message->user->id)->isEmpty())
                         <div>
                             <button class="btn btn-primary request-review-btn"
+                                    {{ session()->has('review_request_sent_' . $message->user->id) ? 'disabled' : '' }}
                                     data-customer-id="{{ $message->user->id }}"
                                     data-listing-id="{{ $message->listing->id }}">
                                 Request Review
