@@ -76,9 +76,17 @@ class ReviewCrudController extends CrudController
     {
         CRUD::setValidation(ReviewRequest::class);
 
-        CRUD::field('listing_id');
-        CRUD::field('customer_id');
-        CRUD::field('rating');
+        CRUD::field('listing_id')->type('select')
+            ->entity('listing')
+            ->attribute('business_name')
+            ->attributes(['disabled' => 'disabled'])
+            ->model(Listing::class)
+            ->label('Service');
+        CRUD::field('listing.user.name')->label('Service Provider')
+            ->attributes(['disabled' => 'disabled']);
+        CRUD::field('customer_id')->attributes(['disabled' => 'disabled']);
+        CRUD::field('rating')->type('number')
+           ->attributes(['disabled' => 'disabled']);
         CRUD::field('review_text');
 
         /**
