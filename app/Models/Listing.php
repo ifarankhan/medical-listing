@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Http\Controllers\ListingController;
 use App\Services\PhoneService;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class Listing extends Model
 {
+    use CrudTrait;
     const STATUS_SUBSCRIBED = 'subscribed';
     const STATUS_ACTIVE_TRIAL = 'active_trial';
     const STATUS_EXPIRED_TRIAL = 'trial_expired';

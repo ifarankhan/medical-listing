@@ -40,11 +40,11 @@ class CheckIfAdmin
     /**
      * Answer to unauthorized access request.
      *
-     * @param  Request  $request
+     * @param Request $request
      *
      * @return Response|RedirectResponse
      */
-    private function respondToUnauthorizedRequest($request)
+    private function respondToUnauthorizedRequest(Request $request): Response|RedirectResponse
     {
         if ($request->ajax() || $request->wantsJson()) {
             return response(trans('backpack::base.unauthorized'), 401);
@@ -61,17 +61,18 @@ class CheckIfAdmin
     /**
      * Handle an incoming request.
      *
-     * @param  Request  $request
-     * @param  \Closure  $next
+     * @param Request $request
+     * @param Closure $next
+     *
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): mixed
     {
         if (backpack_auth()->guest()) {
             return $this->respondToUnauthorizedRequest($request);
         }
 
-        if (! $this->checkIfUserIsAdmin(backpack_user())) {
+        if (!$this->checkIfUserIsAdmin(backpack_user())) {
             return $this->respondToUnauthorizedRequest($request);
         }
 
