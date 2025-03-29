@@ -36,7 +36,9 @@ class ReviewCrudController extends CrudController
     {
         CRUD::setModel(Review::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/review');
-        CRUD::setEntityNameStrings('review', 'reviews');
+        CRUD::setEntityNameStrings('review', 'reviews manager');
+        // Disable create operation
+        CRUD::denyAccess(['create']);
     }
 
     /**
