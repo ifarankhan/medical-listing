@@ -141,15 +141,17 @@
                         @endif
                     </div>
 
-                    <div class="col-xxl-3 col-xl-4 wow fadeInRight" data-wow-duration="1.5s">
-                        <div class="dashboard_overview_review">
-                            <h2>Recent Reviews</h2>
-                            <x-review-section
-                                :reviews="$listing->reviews"
-                                :showCount="false"
-                                :onlyRecent="true"/>
+                    @if($listing && $listing->reviews)
+                        <div class="col-xxl-3 col-xl-4 wow fadeInRight" data-wow-duration="1.5s">
+                            <div class="dashboard_overview_review">
+                                <h2>Recent Reviews</h2>
+                                <x-review-section
+                                    :reviews="$listing->reviews"
+                                    :showCount="false"
+                                    :onlyRecent="true"/>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
 

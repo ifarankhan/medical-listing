@@ -6,6 +6,7 @@ use App\Models\Listing;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -69,15 +70,24 @@ class DashboardController extends Controller
         return $listing ? $listing->getCustomerLeadsCount(): 0;
     }
 
-    private function getProductServicesInListing($user)
+    /**
+     * @param $user
+     *
+     * @return Collection
+     */
+    private function getProductServicesInListing($user): Collection
     {
         return $user->listings()
             ->with('productService')
             ->get();
     }
 
-    private function getServiceProviderListingReviewCount(Listing $listing): int
+    private function getServiceProviderListingReviewCount(?Listing $listing): int
     {
+        if (is_null($listing)) {
+            return 0;
+        }
+
         return $listing->reviews()
             ->count();
     }
