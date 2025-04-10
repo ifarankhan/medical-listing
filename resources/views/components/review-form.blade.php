@@ -62,7 +62,7 @@
                     </div>
                 </div>--}}
                 <div class="col-xl-12">
-                    <a class="common_btn" id="submitReview">Submit Review</a>
+                    <a class="common_btn" style="cursor: pointer" id="submitReview">Submit Review</a>
                 </div>
             </div>
         </form>
