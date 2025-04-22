@@ -302,6 +302,10 @@
                                                         class="btn sendMessageBtn">Send Message</button>
                                                 </p>
 
+                                                <x-star-rating
+                                                    :rating="round($listings[$i]->average_rating)"
+                                                    :isListingsPage="true"
+                                                />
                                                 @php
                                                     // Get the selected values from the session, defaulting to an empty array if not set
                                                     $selectedValues = session('selectedValues', []) ?? [];

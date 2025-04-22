@@ -17,6 +17,7 @@ use App\Http\Controllers\Listing\DetailsController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SearchController;
 
 use App\Http\Controllers\StateController;
@@ -77,7 +78,6 @@ Route::group(['middleware' => ['role:customer,insurance_provider']], function ()
 });
 
 Route::group(['middleware' => ['role:insurance_provider']], function () {
-
     Route::post('/validate-listing', [ListingController::class, 'validateListing'])->name('validate.listing');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/listing', [ListingController::class, 'index'])->name('listing.index');
@@ -115,6 +115,16 @@ Route::group(['middleware' => ['role:insurance_provider']], function () {
     ])->name('product.destroy');
 
     Route::get('/leads-per-month', [BarChartWidgetController::class, 'index']);
+
+    Route::get('/dashboard/reviews', [
+        App\Http\Controllers\Dashboard\Review\IndexController::class,
+        'execute'
+    ])->name('dashboard.reviews.index');
+
+    Route::post('/request/review', [
+        ReviewController::class,
+        'requestReview'
+    ])->name('request.review');
 });
 
 Route::group(['middleware' => ['role:customer']], function () {
@@ -128,6 +138,11 @@ Route::group(['middleware' => ['role:customer']], function () {
          ->name('my-dash');
 
     Route::get('/customer-queries-per-month', [CustomerBarChartController::class, 'index']);
+
+    Route::post('/reviews/store', [
+        ReviewController::class,
+        'store'
+    ])->name('reviews.store');
 });
 
 use App\Http\Controllers\Auth\ForgotPasswordController;

@@ -2,7 +2,7 @@
 <div>
     @foreach ($messages as $message)
         <div class="card mb-3">
-            <div class="card-header" id="heading-{{ $message->id }}">
+            <div class="card-header d-flex justify-content-between align-items-center" id="heading-{{ $message->id }}">
                 <h5 class="mb-0">
                     <button style="text-align: left;" class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#collapse-{{ $message->id }}" aria-expanded="true" aria-controls="collapse-{{ $message->id }}">
 
@@ -24,6 +24,21 @@
                         {{ $subject }}
                     </button>
                 </h5>
+
+                @if(auth()->user()->isServiceProvider())
+
+                    @if($message->listing->reviews->where('customer_id', $message->user->id)->isEmpty())
+                        <div>
+                            <button class="btn btn-primary request-review-btn"
+                                    {{ session()->has('review_request_sent_' . $message->user->id) ? 'disabled' : '' }}
+                                    data-customer-id="{{ $message->user->id }}"
+                                    data-listing-id="{{ $message->listing->id }}">
+                                Request Review
+                            </button>
+                        </div>
+                    @endisset
+                @endif
+
             </div>
 
             <div id="collapse-{{ $message->id }}" class="collapse" aria-labelledby="heading-{{ $message->id }}" data-parent="#messages-container">

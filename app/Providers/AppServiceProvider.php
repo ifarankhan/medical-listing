@@ -5,11 +5,14 @@ namespace App\Providers;
 use App\Models\Listing;
 use App\Models\Subscription;
 use App\Observers\ListingObserver;
+use App\Repositories\Interfaces\ReviewRepositoryInterface;
+use App\Repositories\ReviewRepository;
 use App\Rules\FacebookUrl;
 use App\Rules\InstagramUrl;
 use App\Rules\LinkedinUrl;
 use App\Rules\TwitterUrl;
 use App\Services\PaymentService;
+use App\Services\ReviewNotificationService;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
@@ -33,6 +36,15 @@ class AppServiceProvider extends ServiceProvider
 
             return new PaymentService(new StripeClient($stripeSecret), new Subscription());
         });
+
+        $this->app->bind(
+            ReviewRepositoryInterface::class,
+            ReviewRepository::class
+        );
+
+        $this->app->singleton(
+            ReviewNotificationService::class,
+        );
     }
 
     /**

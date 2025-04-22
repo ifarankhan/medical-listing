@@ -40,7 +40,7 @@
                             <div class="icon">
                                 <i class="far fa-star"></i>
                             </div>
-                            <h3 style="font-size: 12px"> Coming Soon <span>Reviews</span></h3>
+                            <h3> {{ $listingReviewCount }} <span>Reviews</span></h3>
                         </div>
                     </div>
                 </div>
@@ -140,71 +140,18 @@
                         </div>
                         @endif
                     </div>
-                    {{--<div class="col-xxl-3 col-xl-4 wow fadeInRight" data-wow-duration="1.5s">
-                        <div class="dashboard_overview_review">
-                            <h2>Recent Reviews</h2>
-                            <div class="single_review">
-                                <div class="single_review_img">
-                                    <img src="{{ asset('frontend/images/comment_1.png') }}" alt="img" class="img-fluid w-100">
-                                </div>
-                                <div class="single_review_text">
-                                    <h3>Elon Gated
-                                        <span>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                        </span>
-                                    </h3>
-                                    <h6>February 24, 2024</h6>
-                                    <p>Nullam metus metus, imperdiet ut ex quis, ultrices feugiat neque. Etiam vitae
-                                        accumsan neque, id gravida ligula donec ut tincidunt orci dignissim id sed
-                                        tincidunt mi libero.</p>
-                                </div>
-                            </div>
-                            <div class="single_review">
-                                <div class="single_review_img">
-                                    <img src="{{ asset('frontend/images/comment_2.png') }}" alt="img" class="img-fluid w-100">
-                                </div>
-                                <div class="single_review_text">
-                                    <h3>Elon Gated
-                                        <span>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                        </span>
-                                    </h3>
-                                    <h6>February 24, 2024</h6>
-                                    <p>Nullam metus metus, imperdiet ut ex quis, ultrices feugiat neque. Etiam vitae
-                                        accumsan neque, id gravida ligula donec ut tincidunt orci dignissim id sed
-                                        tincidunt mi libero.</p>
-                                </div>
-                            </div>
-                            <div class="single_review">
-                                <div class="single_review_img">
-                                    <img src="{{ asset('frontend/images/comment_3.png') }}" alt="img" class="img-fluid w-100">
-                                </div>
-                                <div class="single_review_text">
-                                    <h3>Elon Gated
-                                        <span>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                        </span>
-                                    </h3>
-                                    <h6>February 24, 2024</h6>
-                                    <p>Nullam metus metus, imperdiet ut ex quis, ultrices feugiat neque. Etiam vitae
-                                        accumsan neque, id gravida ligula donec ut tincidunt orci dignissim id sed
-                                        tincidunt mi libero.</p>
-                                </div>
+
+                    @if($listing && $listing->reviews)
+                        <div class="col-xxl-3 col-xl-4 wow fadeInRight" data-wow-duration="1.5s">
+                            <div class="dashboard_overview_review">
+                                <h2>Recent Reviews</h2>
+                                <x-review-section
+                                    :reviews="$listing->reviews"
+                                    :showCount="false"
+                                    :onlyRecent="true"/>
                             </div>
                         </div>
-                    </div>--}}
+                    @endif
                 </div>
             </div>
 
