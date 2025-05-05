@@ -139,7 +139,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xl-12">
-                    <p>© 2024 All Rights Reserved by DivSol LLC</p>
+                    <p>© 2025 All Rights Reserved by The 7Q Foundation</p>
                 </div>
             </div>
         </div>
