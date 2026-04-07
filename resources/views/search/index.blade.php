@@ -279,18 +279,20 @@
         {{--                                <a class="love" href="#"><i class="fas fa-heart"></i></a>--}}
                                     </div>
                                     <div class="listing_text">
-                                        <a href="{{ route('listing.details', $listings[$i]->slug) }}">
-                                            <h5>{{ $listings[$i]->business_name }}</h5>
-                                        </a>
-                                        <ul>
-                                            @if($listings[$i]->getBusinessStatesFormatted())
-                                                <li><i class="fas fa-map-marker-alt"></i><b>Serving:</b> {{ str_replace(',', ', ', $listings[$i]->getBusinessStatesFormatted()) }}</li>
-                                            @endif
-                                            <li><i class="fas fa-phone-alt"></i>{{ $listings[$i]->getFormattedBusinessContactAttribute() }}</li>
-                                            {{--@if($listings[$i]->getProductServicesInsuranceList() != '')
-                                                <li><i class="fas fa-list-alt"></i>{{ trim($listings[$i]->getProductServicesInsuranceList(), ', ') }}</li>
-                                            @endif--}}
-                                        </ul>
+                                        <div>
+                                            <a href="{{ route('listing.details', $listings[$i]->slug) }}">
+                                                <h5>{{ $listings[$i]->business_name }}</h5>
+                                                <ul>
+                                                    @if($listings[$i]->getBusinessStatesFormatted())
+                                                        <li><i class="fas fa-map-marker-alt"></i><b>Serving:</b> {{ str_replace(',', ', ', $listings[$i]->getBusinessStatesFormatted()) }}</li>
+                                                    @endif
+                                                    <li><i class="fas fa-phone-alt"></i>{{ $listings[$i]->getFormattedBusinessContactAttribute() }}</li>
+                                                    {{--@if($listings[$i]->getProductServicesInsuranceList() != '')
+                                                        <li><i class="fas fa-list-alt"></i>{{ trim($listings[$i]->getProductServicesInsuranceList(), ', ') }}</li>
+                                                    @endif--}}
+                                                </ul>
+                                            </a>
+                                        </div>
                                         @notUserRole(UserRole::ROLE_INSURANCE_PROVIDER)
                                             <div class="listing_bottom">
                                                 <p class="small">
@@ -367,6 +369,7 @@
 ==============================-->
     <!-- Include the custom send message form -->
     @include('partials.message-modal')
+    @include('partials.auth-prompt-modal')
     @include('partials.footer')
     <script>
         const contactMultipleProvidersUrl = "{{ route('contact.multiple.providers') }}";

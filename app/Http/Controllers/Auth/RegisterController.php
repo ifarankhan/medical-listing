@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class RegisterController extends Controller
 {
@@ -44,6 +45,7 @@ class RegisterController extends Controller
             ],
             'password_confirmation' => 'min:8',
             'role' => 'required',
+            'terms' => 'required|accepted',
             'g-recaptcha-response' => 'required|captcha',
         ], [
             'name.required' => 'Name is required',
@@ -56,34 +58,44 @@ class RegisterController extends Controller
             one number and one special character.',
             'password.confirmed' => 'Password confirmation does not match',
             'role.required' => 'Role is required',
+            'terms.required' => 'You must agree to the terms and conditions.',
+            'terms.accepted' => 'You must agree to the terms and conditions.',
             'g-recaptcha-response.required' => 'Please verify that you are not a robot.',
             'g-recaptcha-response.captcha' => 'Captcha error! try again later or contact site admin.',
         ]);
 
         try {
+            Log::info('Registration attempt started for email: ' . $request->email);
             DB::beginTransaction();
 
             $user = new User();
 
             $user->name = $request->name;
             $user->email = $request->email;
-            $user->password = $request->password;
+            $user->password = Hash::make($request->password);
 
             $user->save();
+            Log::info('User created with ID: ' . $user->id);
+            
             // Fetch the role ID from the request
             $roleId = $request->input('role');
             // Attach the role to the user
             $user->userRole()->attach($roleId);
+            Log::info('Role attached: ' . $roleId);
+            
             DB::commit();
+            Log::info('Registration completed for user: ' . $user->email);
 
             Mail::to($user->email)->send(new RegisterUserMail($user));
 
-            return back()->with('success', 'User registered successfully');
+            session()->flash('registration_success', true);
+            return redirect()->route('register');
         } catch (\Exception $e) {
-
+            Log::error('Registration error: ' . $e->getMessage());
+            Log::error($e->getTraceAsString());
             DB::rollBack();
 
-            return back()->with('error', 'Registration failed. Please try again.');
+            return back()->withInput()->with('error', 'Registration failed: ' . $e->getMessage());
         }
     }
 }
