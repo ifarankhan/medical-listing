@@ -66,18 +66,37 @@
     ==============================-->
     <section class="login_area registration pt_120 xs_pt_100 pb_120 xs_pb_100">
         <div class="container">
+            @if($errors->any())
+                <div class="row justify-content-center mb-4">
+                    <div class="col-xxl-10 col-lg-8 col-xl-11">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Error!</strong>
+                            <ul class="mb-0">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+            @endif
+            @if(session('error'))
+                <div class="row justify-content-center mb-4">
+                    <div class="col-xxl-10 col-lg-8 col-xl-11">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Error!</strong> {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+            @endif
             <div class="row justify-content-center">
                 <div class="col-xxl-10 col-lg-8 col-xl-11">
                     <div class="main_login_area">
                         <div class="row">
                             <div class="col-xl-6 wow fadeInLeft" data-wow-duration="1.5s">
                                 <div class="login_text">
-
-                                    @if(Session::has('success'))
-                                        <div class="alert alert-success" role="alert">
-                                            {{ Session::get('success') }}
-                                        </div>
-                                    @endif
 
                                     <h4>Create an account</h4>
                                     <form action="{{ route('register') }}" method="POST">
@@ -377,7 +396,10 @@
 
     <!--=============================
         REGISTRATION Success Modal
-    ==============================-->
+    ==============================--> 
+    @if(session()->has('registration_success'))
+        <div id="showSuccessModal" style="display: none;">true</div>
+    @endif
     <div class="modal fade" id="registrationSuccessModal" tabindex="-1" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog">
@@ -398,7 +420,6 @@
     </div>
 
     <script>
-
         document.addEventListener('DOMContentLoaded', function () {
             // Get the terms checkbox and submit button
             const termsCheckbox = document.getElementById('terms');
@@ -411,11 +432,15 @@
         });
 
         document.addEventListener("DOMContentLoaded", function () {
-
-            @if(session('success'))
-            const successModal = new bootstrap.Modal(document.getElementById('registrationSuccessModal'), {});
-            successModal.show();
-            @endif
+            const successDiv = document.getElementById('showSuccessModal');
+            if (successDiv) {
+                console.log('Registration successful, showing modal');
+                const successModal = new bootstrap.Modal(document.getElementById('registrationSuccessModal'), {
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                successModal.show();
+            }
         });
     </script>
 

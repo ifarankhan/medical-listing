@@ -645,6 +645,7 @@ $(function () {
 
         const selectedValuesKey = 'selectedValues';
         const sendMessageModal = $('#sendMessageModal');
+        const authPromptModal = $('#authPromptModal');
         const sendMessageForm = $('#sendMessageForm');
         // Handle click on Send Message button
         $('.sendMessageBtn').click(function(e) {
@@ -667,14 +668,19 @@ $(function () {
                         // User is authenticated, show the modal.
                         sendMessageModal.modal('show');
                     } else {
-                        // User is not authenticated, redirect to login.
-                        window.location.href = '/login';
+                        // User is not authenticated, show auth prompt modal.
+                        authPromptModal.modal('show');
                     }
                 },
                 error: function(xhr) {
                     alert('An error occurred: ' + xhr.responseText);
                 }
             });
+        });
+
+        // Handle OK button in auth prompt modal
+        $('#confirmAuthBtn').click(function() {
+            window.location.href = '/login';
         });
 
         // Set up AJAX to include the CSRF token in the headers
